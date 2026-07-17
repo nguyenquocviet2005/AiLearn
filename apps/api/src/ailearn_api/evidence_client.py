@@ -1,0 +1,95 @@
+from collections.abc import Mapping
+from typing import Any
+
+import httpx
+from ailearn_diagnostic import to_persistence_row, validate_evidence_event
+from ailearn_schemas import EvidenceEventV1
+
+from ailearn_api.config import Settings
+from ailearn_api.models.evidence import EvidenceEventRecord
+from ailearn_api.supabase_client import SupabaseUnavailableError
+
+
+def _auth_headers(settings: Settings) -> dict[str, str]:
+    assert settings.supabase_secret_key is not None
+    return {
+        "apikey": settings.supabase_secret_key,
+        "Authorization": f"Bearer {settings.supabase_secret_key}",
+        "Content-Type": "application/json",
+    }
+
+
+async def insert_evidence_event(
+    settings: Settings,
+    event: EvidenceEventV1,
+    client: httpx.AsyncClient | None = None,
+) -> EvidenceEventRecord:
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseUnavailableError("Supabase is not configured")
+
+    owns_client = client is None
+    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    try:
+        response = await http_client.post(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
+            headers={
+                **_auth_headers(settings),
+                "Prefer": "return=representation",
+            },
+            json=to_persistence_row(event),
+        )
+        response.raise_for_status()
+        payload: Any = response.json()
+        if not isinstance(payload, list) or len(payload) != 1:
+            raise SupabaseUnavailableError("Evidence event insert did not return a row")
+        record = payload[0]
+        if not isinstance(record, Mapping):
+            raise SupabaseUnavailableError("Evidence event insert response is invalid")
+        return EvidenceEventRecord.model_validate(record)
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SupabaseUnavailableError("Supabase request failed") from exc
+    finally:
+        if owns_client:
+            await http_client.aclose()
+
+
+async def fetch_evidence_event(
+    settings: Settings,
+    event_id: str,
+    client: httpx.AsyncClient | None = None,
+) -> EvidenceEventRecord:
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseUnavailableError("Supabase is not configured")
+
+    owns_client = client is None
+    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    try:
+        response = await http_client.get(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
+            headers=_auth_headers(settings),
+            params={
+                "select": (
+                    "id,schema_version,student_id,session_id,skill_id,item_id,"
+                    "is_correct,recorded_at,lesson_id,response_label"
+                ),
+                "id": f"eq.{event_id}",
+                "limit": "1",
+            },
+        )
+        response.raise_for_status()
+        payload: Any = response.json()
+        if not isinstance(payload, list) or len(payload) != 1:
+            raise SupabaseUnavailableError("Evidence event row is missing")
+        record = payload[0]
+        if not isinstance(record, Mapping):
+            raise SupabaseUnavailableError("Evidence event response is invalid")
+        return EvidenceEventRecord.model_validate(record)
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SupabaseUnavailableError("Supabase request failed") from exc
+    finally:
+        if owns_client:
+            await http_client.aclose()
+
+
+def parse_evidence_event_payload(payload: dict[str, Any]) -> EvidenceEventV1:
+    return validate_evidence_event(payload)

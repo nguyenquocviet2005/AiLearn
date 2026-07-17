@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ailearn.local/schemas/evidence-event.v1.schema.json",
+  "title": "EvidenceEventV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "student_id",
+    "session_id",
+    "skill_id",
+    "item_id",
+    "is_correct",
+    "recorded_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "id": { "type": "string", "minLength": 1 },
+    "student_id": { "type": "string", "minLength": 1 },
+    "session_id": { "type": "string", "minLength": 1 },
+    "skill_id": { "type": "string", "minLength": 1 },
+    "item_id": { "type": "string", "minLength": 1 },
+    "is_correct": { "type": "boolean" },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "lesson_id": { "type": ["string", "null"], "minLength": 1 },
+    "response_label": { "type": ["string", "null"] }
+  }
+}

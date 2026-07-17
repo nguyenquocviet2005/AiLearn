@@ -1,11 +1,11 @@
 # AiLearn
 
-AiLearn is an adaptive tutoring platform for Vietnamese general education. This repository currently
-contains a solution-agnostic full-stack walking skeleton: a React landing page calls a FastAPI endpoint,
-which reads a small infrastructure status row from Supabase.
+AiLearn is an adaptive tutoring platform for Vietnamese general education. This repository contains a
+full-stack walking skeleton plus a contract-first V1 foundation: shared schemas/fixtures, evidence
+write/read, and the VAI-10 infrastructure status path.
 
-Product flows, authentication, offline behavior, adaptive-learning logic, AI agents, and all
-product-specific data models are deliberately deferred.
+Full diagnostic engines, teacher UI, authentication, offline behavior, and curriculum seeds remain
+deferred to later issues.
 
 ## Prerequisites
 
@@ -59,12 +59,17 @@ The API exposes:
 
 - `GET /health` for liveness without requiring Supabase.
 - `GET /api/v1/system-status` for the Supabase-backed infrastructure check.
+- `POST /api/v1/evidence-events` and `GET /api/v1/evidence-events/{id}` for evidence write/read.
 - `/docs` for FastAPI's generated OpenAPI documentation.
 
 ## Supabase Migration
 
-`supabase/migrations/20260717000000_create_system_status.sql` contains the only schema in this
-bootstrap: an infrastructure-only singleton used by the system-status endpoint. It is not a product model.
+`supabase/migrations/` currently includes:
+
+- `20260717000000_create_system_status.sql` — infrastructure singleton for system-status.
+- `20260718000000_create_evidence_events.sql` — product table for `EvidenceEventV1` persistence.
+
+Shared V1 contracts and fixtures live in `packages/schemas/` and `data/fixtures/`.
 
 With a local Supabase CLI and Docker-compatible runtime:
 
@@ -101,8 +106,12 @@ Dockerfile build, `$PORT` start command, and `/health` health check. Configure `
 ## Repository Layout
 
 ```text
-apps/web  React, Vite, TypeScript, shadcn/ui components
-apps/api  FastAPI, Pydantic, Supabase Data API client
-supabase  Infrastructure-only migration configuration
-docs      Architecture and API contracts
+apps/web           React, Vite, TypeScript, shadcn/ui components
+apps/api           FastAPI thin transport adapters
+packages/schemas   Shared V1 contracts (JSON Schema, Pydantic, TypeScript)
+ai/diagnostic      Evidence foundation stubs
+data/fixtures      Shared anonymized contract fixtures
+supabase           Infrastructure and evidence migrations
+docs               Architecture, API contracts, ADRs
+tests/unit         Schema and diagnostic unit tests
 ```

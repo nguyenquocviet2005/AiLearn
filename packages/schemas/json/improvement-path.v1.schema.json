@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ailearn.local/schemas/improvement-path.v1.schema.json",
+  "title": "StudentImprovementPathV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "student_id",
+    "target_skill_id",
+    "current_state",
+    "representation",
+    "steps",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "id": { "type": "string", "minLength": 1 },
+    "student_id": { "type": "string", "minLength": 1 },
+    "target_skill_id": { "type": "string", "minLength": 1 },
+    "current_state": {
+      "type": "string",
+      "enum": [
+        "CONFIRMATION",
+        "REPAIR",
+        "PRACTICE",
+        "TRANSFER",
+        "TEACHER_ESCALATION"
+      ]
+    },
+    "representation": {
+      "type": "string",
+      "enum": ["text", "table", "diagram"]
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "state", "completed"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "worked_example",
+              "guided_problem",
+              "independent_problem",
+              "near_transfer",
+              "result"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "CONFIRMATION",
+              "REPAIR",
+              "PRACTICE",
+              "TRANSFER",
+              "TEACHER_ESCALATION"
+            ]
+          },
+          "completed": { "type": "boolean" }
+        }
+      }
+    },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "root_cause_skill_id": { "type": ["string", "null"], "minLength": 1 }
+  }
+}

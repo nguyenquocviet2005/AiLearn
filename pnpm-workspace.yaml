@@ -1,5 +1,6 @@
 packages:
   - apps/web
+  - packages/schemas
 allowBuilds:
   esbuild: true
   supabase: set this to true or false

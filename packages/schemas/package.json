@@ -1,0 +1,19 @@
+{
+  "name": "@ailearn/schemas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared AiLearn V1 contract types (frozen after VAI-11 merge)",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.2"
+  }
+}

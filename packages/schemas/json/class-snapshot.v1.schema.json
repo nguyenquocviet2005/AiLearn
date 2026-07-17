@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ailearn.local/schemas/class-snapshot.v1.schema.json",
+  "title": "ClassSnapshotV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "class_id",
+    "lesson_id",
+    "generated_at",
+    "students",
+    "unknown_student_ids",
+    "groups",
+    "teaching_priorities"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "class_id": { "type": "string", "minLength": 1 },
+    "lesson_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "students": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "student_id",
+          "readiness_status",
+          "confidence",
+          "primary_root_cause_skill_id"
+        ],
+        "properties": {
+          "student_id": { "type": "string", "minLength": 1 },
+          "readiness_status": {
+            "type": "string",
+            "enum": ["ready", "needs_support", "abstained"]
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "primary_root_cause_skill_id": {
+            "type": ["string", "null"],
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "unknown_student_ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "intervention_need", "student_ids", "rationale"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "intervention_need": { "type": "string", "minLength": 1 },
+          "student_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "teaching_priorities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["skill_id", "rank", "rationale"],
+        "properties": {
+          "skill_id": { "type": "string", "minLength": 1 },
+          "rank": { "type": "integer", "minimum": 1 },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
