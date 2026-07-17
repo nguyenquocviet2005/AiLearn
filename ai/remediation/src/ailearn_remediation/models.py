@@ -45,8 +45,12 @@ class DiagnosticProfile:
                 RootCause(
                     skill_id=rc["skill_id"],
                     rank=int(rc["rank"]),
-                    supporting_evidence_ids=tuple(rc.get("supporting_evidence_ids", ())),
-                    contradicting_evidence_ids=tuple(rc.get("contradicting_evidence_ids", ())),
+                    supporting_evidence_ids=tuple(
+                        rc.get("supporting_evidence_ids", ())
+                    ),
+                    contradicting_evidence_ids=tuple(
+                        rc.get("contradicting_evidence_ids", ())
+                    ),
                 )
                 for rc in data.get("root_causes", [])
             ),

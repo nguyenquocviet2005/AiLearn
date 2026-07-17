@@ -1,4 +1,4 @@
-﻿"""AiLearn content service: template-first, LLM-optional."""
+"""AiLearn content service: template-first, LLM-optional."""
 
 from .generator import Content, ContentGenerator, LLMAdapter, NullLLMAdapter, Template
 

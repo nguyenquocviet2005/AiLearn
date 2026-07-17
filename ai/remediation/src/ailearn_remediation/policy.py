@@ -38,7 +38,9 @@ class Policy:
     fallback_by_misconception: dict[str, tuple[Representation, ...]]
     max_consecutive_failures: int = MAX_CONSECUTIVE_FAILURES
 
-    def fallback_order(self, misconception_id: Optional[str]) -> tuple[Representation, ...]:
+    def fallback_order(
+        self, misconception_id: Optional[str]
+    ) -> tuple[Representation, ...]:
         if misconception_id and misconception_id in self.fallback_by_misconception:
             return self.fallback_by_misconception[misconception_id]
         return self.default_fallback
@@ -60,17 +62,22 @@ def load_policy(templates_path: Optional[str] = None) -> Policy:
 
     order = data.get("representation_fallback_order", {})
     default = tuple(
-        Representation(r) for r in order.get("default", [r.value for r in DEFAULT_FALLBACK])
+        Representation(r)
+        for r in order.get("default", [r.value for r in DEFAULT_FALLBACK])
     )
     by_mis = {
         mis: tuple(Representation(r) for r in reps)
         for mis, reps in order.get("by_misconception", {}).items()
     }
-    return Policy(default_fallback=default or DEFAULT_FALLBACK, fallback_by_misconception=by_mis)
+    return Policy(
+        default_fallback=default or DEFAULT_FALLBACK, fallback_by_misconception=by_mis
+    )
 
 
 @lru_cache(maxsize=1)
-def load_prerequisites(curriculum_path: Optional[str] = None) -> dict[str, tuple[str, ...]]:
+def load_prerequisites(
+    curriculum_path: Optional[str] = None,
+) -> dict[str, tuple[str, ...]]:
     """Map skill_id -> prerequisite skill_ids, from data/seeds/curriculum.json."""
     path = Path(curriculum_path) if curriculum_path else _CURRICULUM_PATH
     try:
@@ -78,8 +85,7 @@ def load_prerequisites(curriculum_path: Optional[str] = None) -> dict[str, tuple
     except (OSError, json.JSONDecodeError):
         return {}
     return {
-        s["skill_id"]: tuple(s.get("prerequisites", ()))
-        for s in data.get("skills", [])
+        s["skill_id"]: tuple(s.get("prerequisites", ())) for s in data.get("skills", [])
     }
 
 

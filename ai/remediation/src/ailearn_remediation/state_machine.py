@@ -19,8 +19,14 @@ from __future__ import annotations
 
 from typing import Optional
 
-from .enums import SEQUENCE, STEP_STATE, ReadinessStatus, RemediationState, Representation, StepKind
-from .models import AttemptOutcome, DiagnosticProfile, ImprovementPath, SessionState, Step
+from .enums import SEQUENCE, STEP_STATE, ReadinessStatus, RemediationState, StepKind
+from .models import (
+    AttemptOutcome,
+    DiagnosticProfile,
+    ImprovementPath,
+    SessionState,
+    Step,
+)
 from .policy import Policy, load_policy, load_prerequisites, load_skill_misconceptions
 
 
@@ -34,9 +40,13 @@ class RemediationEngine:
         skill_misconceptions: Optional[dict[str, str]] = None,
     ) -> None:
         self._policy = policy or load_policy()
-        self._prereqs = prerequisites if prerequisites is not None else load_prerequisites()
+        self._prereqs = (
+            prerequisites if prerequisites is not None else load_prerequisites()
+        )
         self._skill_mis = (
-            skill_misconceptions if skill_misconceptions is not None else load_skill_misconceptions()
+            skill_misconceptions
+            if skill_misconceptions is not None
+            else load_skill_misconceptions()
         )
 
     # ------------------------------------------------------------------ start
@@ -47,11 +57,16 @@ class RemediationEngine:
         AC1: abstained (insufficient/conflicting evidence) -> CONFIRMATION.
         AC2: a diagnosed prerequisite gap -> REPAIR.
         """
-        root_cause_skill_id = profile.root_causes[0].skill_id if profile.root_causes else None
+        root_cause_skill_id = (
+            profile.root_causes[0].skill_id if profile.root_causes else None
+        )
 
         if profile.readiness_status is ReadinessStatus.ABSTAINED:
             state = RemediationState.CONFIRMATION
-        elif profile.readiness_status is ReadinessStatus.NEEDS_SUPPORT and root_cause_skill_id:
+        elif (
+            profile.readiness_status is ReadinessStatus.NEEDS_SUPPORT
+            and root_cause_skill_id
+        ):
             state = RemediationState.REPAIR
         else:
             # ready, or needs_support with no identified cause -> confirm first.
