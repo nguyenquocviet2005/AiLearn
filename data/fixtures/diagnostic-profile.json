@@ -1,0 +1,23 @@
+{
+  "schema_version": "1",
+  "student_id": "stu_demo_01",
+  "lesson_id": "lesson_demo_fractions_01",
+  "target_skill_id": "skill_fractions_add_unlike",
+  "readiness_status": "needs_support",
+  "confidence": 0.78,
+  "root_causes": [
+    {
+      "skill_id": "skill_fractions_equivalent",
+      "rank": 1,
+      "supporting_evidence_ids": ["ev_demo_001", "ev_demo_002"],
+      "contradicting_evidence_ids": []
+    },
+    {
+      "skill_id": "skill_common_denominator",
+      "rank": 2,
+      "supporting_evidence_ids": ["ev_demo_003"],
+      "contradicting_evidence_ids": ["ev_demo_004"]
+    }
+  ],
+  "generated_at": "2026-07-18T01:05:00Z"
+}

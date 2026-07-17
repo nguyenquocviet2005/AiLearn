@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "id": "ev_demo_001",
+  "student_id": "stu_demo_01",
+  "session_id": "sess_demo_readiness_01",
+  "skill_id": "skill_fractions_equivalent",
+  "item_id": "item_eq_frac_01",
+  "is_correct": false,
+  "recorded_at": "2026-07-18T01:00:00Z",
+  "lesson_id": "lesson_demo_fractions_01",
+  "response_label": "2/4 = 1/3"
+}
