@@ -84,3 +84,52 @@ values are recorded in this log, and no application code change was required.
 ## Remaining Risks
 
 - Independent verification and human review remain required before merge.
+## Production Deployment Verification
+
+### Deployment targets
+
+- Frontend:
+  https://ai-learn-web-eight.vercel.app
+- Backend:
+  https://api-production-8a6d.up.railway.app
+- Production branch:
+  `main`
+
+### Provider configuration
+
+#### Vercel
+
+- Root directory: `apps/web`
+- Framework: Vite
+- API base URL configured through `VITE_API_BASE_URL`
+- No backend or Supabase secret was exposed to the frontend
+
+#### Railway
+
+- Root directory: `/apps/api`
+- Config file: `/apps/api/railway.toml`
+- Healthcheck path: `/health`
+- Application binds to Railway-provided `$PORT`
+- Production CORS origin:
+  `https://ai-learn-web-eight.vercel.app`
+
+### Deployment corrections
+
+1. Added `.vite/` to `apps/web/.prettierignore` because generated Vite
+   metadata caused local formatting verification to fail.
+
+2. Wrapped the Railway start command in `sh -c` so `$PORT` is expanded
+   before uvicorn receives it.
+
+3. Used `exec` in the Railway start command to preserve correct process
+   signal handling.
+
+4. Configured the Vercel production API URL and Railway production CORS
+   origin.
+
+### Public verification
+
+```text
+GET /health
+HTTP 200
+{"status":"ok"}
