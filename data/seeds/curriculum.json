@@ -1,0 +1,109 @@
+{
+  "schema_version": "1",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
+  "title": "Đại lượng tỉ lệ nghịch",
+  "grade": 7,
+  "subject": "math",
+  "curriculum_framework": "GDPT_2018",
+  "target_skill_id": "skill_word_problem_work_rate",
+  "skills": [
+    {
+      "skill_id": "skill_ratio_proportion_basics",
+      "name": "Tỉ số và tỉ lệ thức",
+      "level": 1,
+      "prerequisites": []
+    },
+    {
+      "skill_id": "skill_fraction_multiplication",
+      "name": "Nhân chia số hữu tỉ",
+      "level": 1,
+      "prerequisites": []
+    },
+    {
+      "skill_id": "skill_direct_proportion",
+      "name": "Đại lượng tỉ lệ thuận (y = kx)",
+      "level": 1,
+      "prerequisites": ["skill_ratio_proportion_basics"]
+    },
+    {
+      "skill_id": "skill_inverse_proportion_definition",
+      "name": "Định nghĩa đại lượng tỉ lệ nghịch (x·y = k)",
+      "level": 2,
+      "prerequisites": ["skill_ratio_proportion_basics", "skill_direct_proportion"]
+    },
+    {
+      "skill_id": "skill_find_constant_k",
+      "name": "Tìm hệ số tỉ lệ k",
+      "level": 2,
+      "prerequisites": ["skill_inverse_proportion_definition"]
+    },
+    {
+      "skill_id": "skill_solve_unknown_value",
+      "name": "Tìm giá trị chưa biết từ x·y = k",
+      "level": 2,
+      "prerequisites": ["skill_find_constant_k", "skill_fraction_multiplication"]
+    },
+    {
+      "skill_id": "skill_distinguish_direct_inverse",
+      "name": "Phân biệt tỉ lệ thuận và tỉ lệ nghịch",
+      "level": 2,
+      "prerequisites": ["skill_direct_proportion", "skill_inverse_proportion_definition"]
+    },
+    {
+      "skill_id": "skill_verify_inverse_by_product",
+      "name": "Kiểm tra tỉ lệ nghịch bằng cách xét tích",
+      "level": 2,
+      "prerequisites": ["skill_inverse_proportion_definition"]
+    },
+    {
+      "skill_id": "skill_equal_ratios_property",
+      "name": "Tính chất dãy tỉ số bằng nhau",
+      "level": 2,
+      "prerequisites": ["skill_ratio_proportion_basics", "skill_inverse_proportion_definition"]
+    },
+    {
+      "skill_id": "skill_word_problem_work_rate",
+      "name": "Bài toán năng suất lao động và thời gian hoàn thành",
+      "level": 3,
+      "prerequisites": ["skill_solve_unknown_value", "skill_distinguish_direct_inverse", "skill_equal_ratios_property"]
+    },
+    {
+      "skill_id": "skill_word_problem_speed_distance",
+      "name": "Bài toán vận tốc - thời gian (quãng đường không đổi)",
+      "level": 3,
+      "prerequisites": ["skill_solve_unknown_value", "skill_distinguish_direct_inverse"]
+    },
+    {
+      "skill_id": "skill_multistep_reasoning",
+      "name": "Bài toán tam suất kép, suy luận nhiều bước",
+      "level": 3,
+      "prerequisites": ["skill_word_problem_work_rate", "skill_word_problem_speed_distance"]
+    }
+  ],
+  "misconceptions": [
+    {
+      "misconception_id": "mis_direct_inverse_confusion",
+      "name": "Nhầm tỉ lệ nghịch thành tỉ lệ thuận",
+      "description": "Áp dụng y = kx cho tình huống tỉ lệ nghịch; nghĩ x tăng thì y tăng",
+      "related_skill_ids": ["skill_distinguish_direct_inverse", "skill_inverse_proportion_definition"]
+    },
+    {
+      "misconception_id": "mis_computation_error",
+      "name": "Lỗi tính toán",
+      "description": "Chọn đúng mô hình nhưng nhân/chia sai, rút gọn sai",
+      "related_skill_ids": ["skill_fraction_multiplication", "skill_solve_unknown_value"]
+    },
+    {
+      "misconception_id": "mis_context_representation_gap",
+      "name": "Không dịch được đề bài thành quan hệ toán học",
+      "description": "Làm đúng khi cho sẵn công thức, sai khi phải tự lập từ lời văn",
+      "related_skill_ids": ["skill_word_problem_work_rate", "skill_word_problem_speed_distance", "skill_multistep_reasoning"]
+    },
+    {
+      "misconception_id": "mis_insufficient_evidence",
+      "name": "Bằng chứng không đủ hoặc mâu thuẫn",
+      "description": "Quá ít dữ liệu hoặc kết quả mâu thuẫn, hệ thống phải abstain",
+      "related_skill_ids": []
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "schema_version": "1",
+  "class_id": "class_g7a_demo",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
+  "students": [
+    {
+      "student_id": "stu_g7_001",
+      "display_name": "Học sinh 001",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_002",
+      "display_name": "Học sinh 002",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_003",
+      "display_name": "Học sinh 003",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_004",
+      "display_name": "Học sinh 004",
+      "class_id": "class_g7a_demo",
+      "profile_type": "weak_foundation"
+    },
+    {
+      "student_id": "stu_g7_005",
+      "display_name": "Học sinh 005",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_006",
+      "display_name": "Học sinh 006",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_007",
+      "display_name": "Học sinh 007",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_008",
+      "display_name": "Học sinh 008",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_009",
+      "display_name": "Học sinh 009",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_010",
+      "display_name": "Học sinh 010",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_011",
+      "display_name": "Học sinh 011",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_012",
+      "display_name": "Học sinh 012",
+      "class_id": "class_g7a_demo",
+      "profile_type": "weak_foundation"
+    },
+    {
+      "student_id": "stu_g7_013",
+      "display_name": "Học sinh 013",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_014",
+      "display_name": "Học sinh 014",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_015",
+      "display_name": "Học sinh 015",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_016",
+      "display_name": "Học sinh 016",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_017",
+      "display_name": "Học sinh 017",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_018",
+      "display_name": "Học sinh 018",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_019",
+      "display_name": "Học sinh 019",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_020",
+      "display_name": "Học sinh 020",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_021",
+      "display_name": "Học sinh 021",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_022",
+      "display_name": "Học sinh 022",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_023",
+      "display_name": "Học sinh 023",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_024",
+      "display_name": "Học sinh 024",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_025",
+      "display_name": "Học sinh 025",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_026",
+      "display_name": "Học sinh 026",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_027",
+      "display_name": "Học sinh 027",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m3_language"
+    },
+    {
+      "student_id": "stu_g7_028",
+      "display_name": "Học sinh 028",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_029",
+      "display_name": "Học sinh 029",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_030",
+      "display_name": "Học sinh 030",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m2_calc"
+    },
+    {
+      "student_id": "stu_g7_031",
+      "display_name": "Học sinh 031",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_032",
+      "display_name": "Học sinh 032",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_033",
+      "display_name": "Học sinh 033",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_034",
+      "display_name": "Học sinh 034",
+      "class_id": "class_g7a_demo",
+      "profile_type": "weak_foundation"
+    },
+    {
+      "student_id": "stu_g7_035",
+      "display_name": "Học sinh 035",
+      "class_id": "class_g7a_demo",
+      "profile_type": "weak_foundation"
+    },
+    {
+      "student_id": "stu_g7_036",
+      "display_name": "Học sinh 036",
+      "class_id": "class_g7a_demo",
+      "profile_type": "strong"
+    },
+    {
+      "student_id": "stu_g7_037",
+      "display_name": "Học sinh 037",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_038",
+      "display_name": "Học sinh 038",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_039",
+      "display_name": "Học sinh 039",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    },
+    {
+      "student_id": "stu_g7_040",
+      "display_name": "Học sinh 040",
+      "class_id": "class_g7a_demo",
+      "profile_type": "m1_confusion"
+    }
+  ]
+}
