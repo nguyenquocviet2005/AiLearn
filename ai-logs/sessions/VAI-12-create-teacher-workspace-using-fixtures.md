@@ -8,7 +8,7 @@
 - Linear issue: VAI-12
 - Branch: `VAI-12-create-teacher-workspace-using-fixtures`
 - Worktree: `/Users/haipham/Documents/AiLearn` (primary working tree)
-- Pull request: Not created
+- Pull request: Draft #11, https://github.com/nguyenquocviet2005/AiLearn/pull/11
 
 ## Objective
 
