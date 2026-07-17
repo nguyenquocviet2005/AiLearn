@@ -8,7 +8,7 @@
 - Linear issue: VAI-11
 - Branch: `vai-11-add-shared-schemas-fixtures-and-evidence-foundation`
 - Worktree: `/home/viet2005/workspace/AiLearn`
-- Pull request: pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/5 (Draft)
 
 ## Objective
 
