@@ -84,6 +84,7 @@ values are recorded in this log, and no application code change was required.
 ## Remaining Risks
 
 - Independent verification and human review remain required before merge.
+
 ## Production Deployment Verification
 
 ### Deployment targets
