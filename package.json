@@ -13,7 +13,7 @@
     "format:check": "pnpm --filter @ailearn/web format:check",
     "lint": "pnpm --filter @ailearn/web lint",
     "test": "pnpm --filter @ailearn/web test",
-    "typecheck": "pnpm --filter @ailearn/web typecheck"
+    "typecheck": "pnpm --filter @ailearn/web typecheck && pnpm --filter @ailearn/schemas typecheck"
   },
   "dependencies": {
     "@supabase/server": "^1.4.0"
