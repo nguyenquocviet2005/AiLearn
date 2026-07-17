@@ -83,6 +83,15 @@ When `readiness_status` is `abstained`, `root_causes` may be empty.
 
 Fixture: `data/fixtures/diagnostic-profile.json`.
 
+### Domain diagnostic engine (VAI-14)
+
+Pure Python surface in `ai/diagnostic` (no new HTTP routes in VAI-14):
+
+- `diagnose(events, curriculum, items, *, now=None) -> StudentDiagnosticProfileV1`
+- Inputs: `EvidenceEventV1` list + curriculum/items loaded from `data/seeds/`
+- Deterministic: same events + fixed `now` → identical profile
+- No LLM calls; product Diagnostic HTTP remains VAI-17
+
 ### `ClassSnapshotV1`
 
 Required: `schema_version`, `class_id`, `lesson_id`, `generated_at`, `students[]`,
