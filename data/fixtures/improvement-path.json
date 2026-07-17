@@ -1,0 +1,42 @@
+{
+  "schema_version": "1",
+  "id": "path_demo_01",
+  "student_id": "stu_demo_01",
+  "target_skill_id": "skill_fractions_add_unlike",
+  "current_state": "REPAIR",
+  "representation": "table",
+  "root_cause_skill_id": "skill_fractions_equivalent",
+  "steps": [
+    {
+      "id": "step_demo_worked",
+      "kind": "worked_example",
+      "state": "REPAIR",
+      "completed": true
+    },
+    {
+      "id": "step_demo_guided",
+      "kind": "guided_problem",
+      "state": "REPAIR",
+      "completed": false
+    },
+    {
+      "id": "step_demo_independent",
+      "kind": "independent_problem",
+      "state": "PRACTICE",
+      "completed": false
+    },
+    {
+      "id": "step_demo_transfer",
+      "kind": "near_transfer",
+      "state": "TRANSFER",
+      "completed": false
+    },
+    {
+      "id": "step_demo_result",
+      "kind": "result",
+      "state": "TRANSFER",
+      "completed": false
+    }
+  ],
+  "updated_at": "2026-07-18T01:20:00Z"
+}

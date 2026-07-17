@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ailearn.local/schemas/diagnostic-profile.v1.schema.json",
+  "title": "StudentDiagnosticProfileV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "student_id",
+    "lesson_id",
+    "target_skill_id",
+    "readiness_status",
+    "confidence",
+    "root_causes",
+    "generated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "student_id": { "type": "string", "minLength": 1 },
+    "lesson_id": { "type": "string", "minLength": 1 },
+    "target_skill_id": { "type": "string", "minLength": 1 },
+    "readiness_status": {
+      "type": "string",
+      "enum": ["ready", "needs_support", "abstained"]
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "root_causes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "skill_id",
+          "rank",
+          "supporting_evidence_ids",
+          "contradicting_evidence_ids"
+        ],
+        "properties": {
+          "skill_id": { "type": "string", "minLength": 1 },
+          "rank": { "type": "integer", "minimum": 1 },
+          "supporting_evidence_ids": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "contradicting_evidence_ids": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "generated_at": { "type": "string", "format": "date-time" }
+  }
+}
