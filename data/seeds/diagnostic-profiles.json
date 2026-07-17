@@ -1,0 +1,958 @@
+{
+  "schema_version": "1",
+  "profiles": [
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_001",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.88,
+      "root_causes": [],
+      "generated_at": "2026-07-18T01:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_002",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.75,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_002_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_002_008",
+            "ev_stu_g7_002_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T02:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_003",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.78,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_003_012",
+            "ev_stu_g7_003_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_003_005"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_003_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T02:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_004",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.85,
+      "root_causes": [
+        {
+          "skill_id": "skill_ratio_proportion_basics",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_004_001"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_direct_proportion",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_004_003"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T03:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_005",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.75,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_005_002"
+          ]
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_005_008",
+            "ev_stu_g7_005_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T03:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_006",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.78,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_006_012",
+            "ev_stu_g7_006_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_006_005"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_006_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T04:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_007",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.82,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_007_013"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_007_012"
+          ]
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_007_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T04:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_008",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.84,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_008_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_008_008",
+            "ev_stu_g7_008_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T05:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_009",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.94,
+      "root_causes": [],
+      "generated_at": "2026-07-18T05:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_010",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.89,
+      "root_causes": [],
+      "generated_at": "2026-07-18T06:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_011",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.95,
+      "root_causes": [],
+      "generated_at": "2026-07-18T06:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_012",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.89,
+      "root_causes": [
+        {
+          "skill_id": "skill_ratio_proportion_basics",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_012_001"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_direct_proportion",
+          "rank": 2,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_012_003"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T07:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_013",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.77,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_013_016",
+            "ev_stu_g7_013_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_013_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T07:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_014",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.86,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_014_016",
+            "ev_stu_g7_014_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_014_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T08:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_015",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.85,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_015_016",
+            "ev_stu_g7_015_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_015_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T08:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_016",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.81,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_016_016"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_016_017"
+          ]
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_016_020"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T09:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_017",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.76,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_017_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_017_008"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_017_009"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T09:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_018",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.94,
+      "root_causes": [],
+      "generated_at": "2026-07-18T10:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_019",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.76,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_019_016",
+            "ev_stu_g7_019_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_019_020"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T10:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_020",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.78,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_020_016",
+            "ev_stu_g7_020_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_020_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T11:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_021",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.83,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_021_002"
+          ]
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_021_008",
+            "ev_stu_g7_021_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T11:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_022",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.89,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_022_012",
+            "ev_stu_g7_022_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_022_004",
+            "ev_stu_g7_022_005"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T12:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_023",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.85,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_023_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_023_008",
+            "ev_stu_g7_023_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T12:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_024",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.79,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_024_016",
+            "ev_stu_g7_024_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_024_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T13:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_025",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.87,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_025_012",
+            "ev_stu_g7_025_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_025_005"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_025_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T13:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_026",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.86,
+      "root_causes": [],
+      "generated_at": "2026-07-18T14:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_027",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.79,
+      "root_causes": [
+        {
+          "skill_id": "skill_word_problem_work_rate",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_027_016",
+            "ev_stu_g7_027_017"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_multistep_reasoning",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_027_020"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T14:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_028",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.84,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_028_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_028_008",
+            "ev_stu_g7_028_009"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T15:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_029",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.85,
+      "root_causes": [],
+      "generated_at": "2026-07-18T15:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_030",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.8,
+      "root_causes": [
+        {
+          "skill_id": "skill_fraction_multiplication",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_030_002"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_solve_unknown_value",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_030_009"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_030_008"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T16:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_031",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.85,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_031_012",
+            "ev_stu_g7_031_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_031_004"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_031_005"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T16:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_032",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.85,
+      "root_causes": [],
+      "generated_at": "2026-07-18T17:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_033",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.92,
+      "root_causes": [],
+      "generated_at": "2026-07-18T17:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_034",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.88,
+      "root_causes": [
+        {
+          "skill_id": "skill_ratio_proportion_basics",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_034_001"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_direct_proportion",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_034_003"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T18:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_035",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.92,
+      "root_causes": [
+        {
+          "skill_id": "skill_ratio_proportion_basics",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_035_001"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_direct_proportion",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_035_003"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T18:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_036",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "ready",
+      "confidence": 0.93,
+      "root_causes": [],
+      "generated_at": "2026-07-18T19:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_037",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.8,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_037_012",
+            "ev_stu_g7_037_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_037_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T19:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_038",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.89,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_038_012",
+            "ev_stu_g7_038_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_038_005"
+          ],
+          "contradicting_evidence_ids": [
+            "ev_stu_g7_038_004"
+          ]
+        }
+      ],
+      "generated_at": "2026-07-18T20:25:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_039",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.77,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_039_012",
+            "ev_stu_g7_039_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_039_004",
+            "ev_stu_g7_039_005"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T20:55:00Z"
+    },
+    {
+      "schema_version": "1",
+      "student_id": "stu_g7_040",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "target_skill_id": "skill_word_problem_work_rate",
+      "readiness_status": "needs_support",
+      "confidence": 0.87,
+      "root_causes": [
+        {
+          "skill_id": "skill_distinguish_direct_inverse",
+          "rank": 1,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_040_012",
+            "ev_stu_g7_040_013"
+          ],
+          "contradicting_evidence_ids": []
+        },
+        {
+          "skill_id": "skill_inverse_proportion_definition",
+          "rank": 2,
+          "supporting_evidence_ids": [
+            "ev_stu_g7_040_004",
+            "ev_stu_g7_040_005"
+          ],
+          "contradicting_evidence_ids": []
+        }
+      ],
+      "generated_at": "2026-07-18T21:25:00Z"
+    }
+  ]
+}

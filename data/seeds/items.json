@@ -1,0 +1,606 @@
+{
+  "schema_version": "1",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
+  "items": [
+    {
+      "item_id": "item_inv_prop_01",
+      "skill_ids": [
+        "skill_ratio_proportion_basics"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Từ tỉ lệ thức 3/4 = x/12, giá trị của x là:",
+      "options": [
+        {
+          "label": "9",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "16",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "8",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "36",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_02",
+      "skill_ids": [
+        "skill_fraction_multiplication"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Tính: 3/5 × 10/9 =",
+      "options": [
+        {
+          "label": "2/3",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "30/45",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "13/14",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "27/50",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_03",
+      "skill_ids": [
+        "skill_direct_proportion"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Cho y tỉ lệ thuận với x theo hệ số 4. Khi x = 3 thì y bằng:",
+      "options": [
+        {
+          "label": "12",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "4/3",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "7",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "3/4",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_04",
+      "skill_ids": [
+        "skill_inverse_proportion_definition"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Hai đại lượng x và y tỉ lệ nghịch với nhau khi:",
+      "options": [
+        {
+          "label": "x · y = k (k ≠ 0)",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "y = kx (k ≠ 0)",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "x + y = k",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "x − y = k",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_05",
+      "skill_ids": [
+        "skill_inverse_proportion_definition"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Nếu y tỉ lệ nghịch với x thì khi x tăng lên, y sẽ:",
+      "options": [
+        {
+          "label": "Giảm xuống",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "Tăng lên",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Không đổi",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Không xác định được",
+          "is_correct": false,
+          "misconception_id": "mis_context_representation_gap"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_06",
+      "skill_ids": [
+        "skill_find_constant_k"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Cho y tỉ lệ nghịch với x. Biết x = 4 thì y = 6. Hệ số tỉ lệ k bằng:",
+      "options": [
+        {
+          "label": "24",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "1.5",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "10",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "2/3",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_07",
+      "skill_ids": [
+        "skill_find_constant_k"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Cho y tỉ lệ nghịch với x với k = 36. Công thức liên hệ là:",
+      "options": [
+        {
+          "label": "y = 36/x",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "y = 36x",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "y = x/36",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "y = 36 − x",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_08",
+      "skill_ids": [
+        "skill_solve_unknown_value"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Cho y tỉ lệ nghịch với x, k = 24. Khi x = 8 thì y bằng:",
+      "options": [
+        {
+          "label": "3",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "192",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "16",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "32",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_09",
+      "skill_ids": [
+        "skill_solve_unknown_value"
+      ],
+      "form": "Dạng 1.1",
+      "stem": "Cho x và y tỉ lệ nghịch. Biết x₁ = 5, y₁ = 12, x₂ = 10. Giá trị y₂ là:",
+      "options": [
+        {
+          "label": "6",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "24",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "17",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "2.4",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_10",
+      "skill_ids": [
+        "skill_verify_inverse_by_product"
+      ],
+      "form": "Dạng 1.2",
+      "stem": "Bảng: x = 2, 3, 6 và y = 18, 12, 6. Hai đại lượng x, y có tỉ lệ nghịch không?",
+      "options": [
+        {
+          "label": "Có, vì tích x·y luôn bằng 36",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "Không, vì các tích khác nhau",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "Có, vì x tăng thì y tăng",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Tỉ lệ thuận với k = 9",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_11",
+      "skill_ids": [
+        "skill_verify_inverse_by_product"
+      ],
+      "form": "Dạng 1.2",
+      "stem": "Bảng: x = 1, 2, 4 và y = 12, 6, 4. Hai đại lượng này:",
+      "options": [
+        {
+          "label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "Tỉ lệ nghịch, vì y giảm khi x tăng",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Tỉ lệ thuận",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Tỉ lệ nghịch với k = 12",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_12",
+      "skill_ids": [
+        "skill_distinguish_direct_inverse"
+      ],
+      "form": "Dạng 1.2",
+      "stem": "Quan hệ nào sau đây là tỉ lệ NGHỊCH?",
+      "options": [
+        {
+          "label": "Số công nhân và số ngày hoàn thành cùng một công việc",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "Số sản phẩm và tổng tiền phải trả (giá cố định)",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Quãng đường đi được và thời gian (vận tốc không đổi)",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Cạnh hình vuông và chu vi",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_13",
+      "skill_ids": [
+        "skill_distinguish_direct_inverse"
+      ],
+      "form": "Dạng 1.2",
+      "stem": "Một nhóm 5 công nhân trong 1 ngày sản xuất được 35 sản phẩm. Số công nhân và số sản phẩm làm ra trong 1 ngày là hai đại lượng:",
+      "options": [
+        {
+          "label": "Tỉ lệ thuận",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "Tỉ lệ nghịch",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "Không tỉ lệ",
+          "is_correct": false,
+          "misconception_id": "mis_context_representation_gap"
+        },
+        {
+          "label": "Vừa thuận vừa nghịch",
+          "is_correct": false,
+          "misconception_id": "mis_context_representation_gap"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_14",
+      "skill_ids": [
+        "skill_equal_ratios_property"
+      ],
+      "form": "Dạng 2.2",
+      "stem": "Tìm hai số x, y biết chúng tỉ lệ nghịch với 3 và 5, và x + y = 32.",
+      "options": [
+        {
+          "label": "x = 20, y = 12",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "x = 12, y = 20",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "x = 16, y = 16",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "x = 15, y = 17",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_15",
+      "skill_ids": [
+        "skill_equal_ratios_property"
+      ],
+      "form": "Dạng 2.2",
+      "stem": "Ba số a, b, c tỉ lệ nghịch với 2, 3, 4 và a + b + c = 78. Giá trị của a là:",
+      "options": [
+        {
+          "label": "36",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "12",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "26",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "24",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_16",
+      "skill_ids": [
+        "skill_word_problem_work_rate"
+      ],
+      "form": "Dạng 2.1",
+      "stem": "12 công nhân hoàn thành một công việc trong 6 ngày. Hỏi 9 công nhân (cùng năng suất) hoàn thành công việc đó trong bao nhiêu ngày?",
+      "options": [
+        {
+          "label": "8 ngày",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "4.5 ngày",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "3 ngày",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "18 ngày",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_17",
+      "skill_ids": [
+        "skill_word_problem_work_rate"
+      ],
+      "form": "Dạng 2.1",
+      "stem": "Một đội máy cày dự định cày xong cánh đồng trong 10 ngày với 6 máy. Do cần xong sớm trong 4 ngày, đội cần bao nhiêu máy?",
+      "options": [
+        {
+          "label": "15 máy",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "2.4 máy",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "12 máy",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "24 máy",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_18",
+      "skill_ids": [
+        "skill_word_problem_speed_distance"
+      ],
+      "form": "Dạng 2.1",
+      "stem": "Một ô tô đi từ A đến B với vận tốc 60 km/h hết 3 giờ. Nếu đi với vận tốc 45 km/h thì hết bao lâu?",
+      "options": [
+        {
+          "label": "4 giờ",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "2.25 giờ",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "3.75 giờ",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "2 giờ",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_19",
+      "skill_ids": [
+        "skill_word_problem_speed_distance"
+      ],
+      "form": "Dạng 2.1",
+      "stem": "Cùng một quãng đường, xe máy đi hết 90 phút với vận tốc 40 km/h. Muốn đi hết quãng đường đó trong 60 phút thì vận tốc phải là:",
+      "options": [
+        {
+          "label": "60 km/h",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "26.7 km/h",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        },
+        {
+          "label": "70 km/h",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        },
+        {
+          "label": "80 km/h",
+          "is_correct": false,
+          "misconception_id": "mis_computation_error"
+        }
+      ]
+    },
+    {
+      "item_id": "item_inv_prop_20",
+      "skill_ids": [
+        "skill_multistep_reasoning"
+      ],
+      "form": "Dạng 3",
+      "stem": "100 công nhân làm trong 3 ngày được 600 sản phẩm. Để làm 900 sản phẩm trong 2 ngày cần bao nhiêu công nhân?",
+      "options": [
+        {
+          "label": "225 công nhân",
+          "is_correct": true,
+          "misconception_id": null
+        },
+        {
+          "label": "100 công nhân",
+          "is_correct": false,
+          "misconception_id": "mis_context_representation_gap"
+        },
+        {
+          "label": "150 công nhân",
+          "is_correct": false,
+          "misconception_id": "mis_context_representation_gap"
+        },
+        {
+          "label": "66 công nhân",
+          "is_correct": false,
+          "misconception_id": "mis_direct_inverse_confusion"
+        }
+      ]
+    }
+  ]
+}
