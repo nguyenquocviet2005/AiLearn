@@ -1,0 +1,77 @@
+{
+  "schema_version": "1",
+  "class_id": "class_demo_6a",
+  "lesson_id": "lesson_demo_fractions_01",
+  "generated_at": "2026-07-18T01:10:00Z",
+  "students": [
+    {
+      "student_id": "stu_demo_01",
+      "readiness_status": "needs_support",
+      "confidence": 0.78,
+      "primary_root_cause_skill_id": "skill_fractions_equivalent"
+    },
+    {
+      "student_id": "stu_demo_02",
+      "readiness_status": "needs_support",
+      "confidence": 0.71,
+      "primary_root_cause_skill_id": "skill_common_denominator"
+    },
+    {
+      "student_id": "stu_demo_03",
+      "readiness_status": "ready",
+      "confidence": 0.91,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_demo_04",
+      "readiness_status": "needs_support",
+      "confidence": 0.66,
+      "primary_root_cause_skill_id": "skill_fractions_equivalent"
+    },
+    {
+      "student_id": "stu_demo_05",
+      "readiness_status": "abstained",
+      "confidence": 0.2,
+      "primary_root_cause_skill_id": null
+    }
+  ],
+  "unknown_student_ids": ["stu_demo_06"],
+  "groups": [
+    {
+      "id": "grp_demo_repair_equivalent",
+      "intervention_need": "repair_equivalent_fractions",
+      "student_ids": ["stu_demo_01", "stu_demo_04"],
+      "rationale": "Shared prerequisite gap on equivalent fractions with supporting evidence."
+    },
+    {
+      "id": "grp_demo_repair_denominator",
+      "intervention_need": "repair_common_denominator",
+      "student_ids": ["stu_demo_02"],
+      "rationale": "Primary gap is finding a common denominator before adding unlike fractions."
+    },
+    {
+      "id": "grp_demo_ready",
+      "intervention_need": "extension_transfer",
+      "student_ids": ["stu_demo_03"],
+      "rationale": "Ready for near-transfer practice on the lesson target skill."
+    },
+    {
+      "id": "grp_demo_confirmation",
+      "intervention_need": "confirmation_insufficient_evidence",
+      "student_ids": ["stu_demo_05"],
+      "rationale": "Diagnostic abstained; needs confirmation items before intervention labeling."
+    }
+  ],
+  "teaching_priorities": [
+    {
+      "skill_id": "skill_fractions_equivalent",
+      "rank": 1,
+      "rationale": "Highest prevalence among diagnosed students and blocks the lesson target."
+    },
+    {
+      "skill_id": "skill_common_denominator",
+      "rank": 2,
+      "rationale": "Secondary gap with clear intervention need for one student."
+    }
+  ]
+}
