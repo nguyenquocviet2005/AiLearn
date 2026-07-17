@@ -8,7 +8,7 @@
 - Linear issue: VAI-14
 - Branch: `vai-14-implement-deterministic-diagnostic-engine`
 - Worktree: `/home/viet2005/workspace/AiLearn`
-- Pull request: pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/9 (Draft)
 
 ## Objective
 
