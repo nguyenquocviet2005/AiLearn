@@ -311,28 +311,35 @@ Update this section as soon as the technology stack is selected.
 
 ```bash
 # Install
-# TODO
+pnpm install --frozen-lockfile
+uv sync --project apps/api --locked --all-groups
 
 # Run locally
-# TODO
+uv run --project apps/api uvicorn ailearn_api.main:app --app-dir apps/api/src --reload
+pnpm --filter @ailearn/web dev
 
 # Format
-# TODO
+pnpm format
+uv run --project apps/api ruff format apps/api
 
 # Lint
-# TODO
+pnpm lint
+uv run --project apps/api ruff check apps/api
 
 # Type-check
-# TODO
+pnpm typecheck
+uv run --project apps/api mypy apps/api/src
 
 # Targeted tests
-# TODO
+pnpm --filter @ailearn/web test
+uv run --project apps/api pytest apps/api/tests
 
 # Full tests
-# TODO
+./scripts/verify.sh
 
 # Build
-# TODO
+pnpm build
+uv build --project apps/api
 
 # Preferred future full verification command
 ./scripts/verify.sh
