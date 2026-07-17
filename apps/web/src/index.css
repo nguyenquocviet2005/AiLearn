@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #f2efe7;
+  --ink: #1a2926;
+  --ink-soft: #334a44;
+  --muted: #66736d;
+  --line: #d9d4c8;
+  --accent: #e96e45;
+  --signal: #3d8a69;
+  --ring: #e96e45;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: Georgia, "Times New Roman", serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(
+      circle at 88% 10%,
+      rgba(233, 110, 69, 0.2),
+      transparent 26rem
+    ),
+    linear-gradient(120deg, #f7f4ed 0%, var(--canvas) 64%, #e6ede5 100%);
+}
+
+button {
+  font: inherit;
+}
+
+.shell {
+  display: grid;
+  min-height: 100vh;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(2rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+  align-content: center;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: clamp(2.5rem, 8vw, 7rem);
+}
+
+.intro {
+  max-width: 680px;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: var(--accent);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 11ch;
+  margin-bottom: 1.5rem;
+  font-size: clamp(3.4rem, 7vw, 6.5rem);
+  font-weight: 400;
+  letter-spacing: -0.075em;
+  line-height: 0.91;
+}
+
+h2 {
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.lede {
+  max-width: 51ch;
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.65;
+}
+
+.status-card {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.status-card::after {
+  position: absolute;
+  right: -2rem;
+  bottom: -3rem;
+  width: 9rem;
+  height: 9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  content: "";
+}
+
+.status-copy {
+  margin-bottom: 0.5rem;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.status-ready,
+.status-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.signal {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-top: 0.35rem;
+  border-radius: 999px;
+  background: var(--signal);
+  box-shadow: 0 0 0 0.3rem rgba(61, 138, 105, 0.13);
+}
+
+.signal-degraded,
+.signal-maintenance {
+  background: var(--accent);
+  box-shadow: 0 0 0 0.3rem rgba(233, 110, 69, 0.13);
+}
+
+.timestamp {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    max-width: 12ch;
+  }
+}
