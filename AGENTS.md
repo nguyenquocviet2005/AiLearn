@@ -689,23 +689,62 @@ Never represent planned, assumed, or skipped work as completed.
 
 ---
 
-## 20. Bootstrap Checklist
+## 20. Bounded AI Engineering Loop
 
-The first contributors should complete:
+For every approved Linear issue, divide implementation into bounded tasks.
 
-- [ ] Select and document the technology stack.
-- [ ] Add canonical install, run, format, lint, test, and build commands.
-- [ ] Create `README.md`.
-- [ ] Create `docs/PROJECT_BRIEF.md`.
-- [ ] Create `docs/ARCHITECTURE.md`.
-- [ ] Create `docs/API_CONTRACTS.md`.
-- [ ] Create `CONTRIBUTING.md`.
-- [ ] Create the AI log template.
-- [ ] Add a pull request template and CI.
-- [ ] Configure branch protection.
-- [ ] Connect Linear with GitHub.
-- [ ] Define the Linear issue template.
-- [ ] Define test-data privacy rules.
-- [ ] Create the first accepted ADR.
+Each bounded task must follow:
 
-When these files exist, shorten this document further by linking to them instead of duplicating details.
+1. Read relevant requirements, source, contracts, and tests.
+2. State the expected observable behavior.
+3. Add or update focused tests before or alongside implementation.
+4. Implement the smallest coherent change.
+5. Run targeted verification.
+6. Retry a failing approach no more than two times.
+7. Inspect the task diff.
+8. Record evidence in the issue AI collaboration log.
+9. Continue only when the bounded task passes.
+
+Run full verification only after all bounded tasks pass.
+
+Stop and request human input when:
+
+- requirements are missing or conflicting;
+- scope, architecture, public contracts, or dependencies must change;
+- a destructive migration or production action is required;
+- secrets, personal data, or security boundaries are involved;
+- verification cannot be completed;
+- the same approach fails twice.
+
+## 21. Task-Specific AI Tooling
+
+Before installing a skill, MCP server, plugin, or agent framework:
+
+- establish that it materially improves the active issue;
+- prefer official or reputable sources;
+- document required permissions and security risks;
+- apply least privilege and read-only access by default;
+- obtain human approval before installation;
+- pin or record the installed version;
+- verify the integration with a bounded test;
+- disable or remove tools that are no longer required.
+
+Do not install tools merely to increase the apparent number of AI integrations.
+
+## 22. AI Runtime Guardrails
+
+Any product feature that calls an AI model must define:
+
+- trusted and untrusted input boundaries;
+- schema and size validation;
+- sensitive-data handling;
+- tool allowlists and approval rules;
+- structured output validation;
+- grounding and confidence behavior;
+- timeouts, retry limits, and fallback;
+- human override for consequential decisions;
+- safe audit metadata;
+- evaluation and regression tests.
+
+AI-generated output must not be treated as authoritative without the
+validation appropriate to the use case.
