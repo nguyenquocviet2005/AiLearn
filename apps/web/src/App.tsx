@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { TeacherWorkspace } from "@/features/teacher/TeacherWorkspace";
 import { getSystemStatus, type SystemStatus } from "@/lib/api";
 
 type StatusState =
@@ -16,7 +17,11 @@ function formatTimestamp(value: string) {
   }).format(new Date(value));
 }
 
-export default function App() {
+function PlatformStatus({
+  onOpenTeacherWorkspace,
+}: {
+  onOpenTeacherWorkspace: () => void;
+}) {
   const [status, setStatus] = useState<StatusState>({ kind: "loading" });
 
   async function refreshStatus() {
@@ -85,7 +90,51 @@ export default function App() {
             </Button>
           </div>
         )}
+
+        <a
+          className="teacher-entry"
+          href="/teacher"
+          onClick={(event) => {
+            event.preventDefault();
+            onOpenTeacherWorkspace();
+          }}
+        >
+          Open teacher workspace
+        </a>
       </Card>
     </main>
   );
+}
+
+function currentPathname() {
+  return window.location.pathname;
+}
+
+export default function App() {
+  const [pathname, setPathname] = useState(currentPathname);
+
+  useEffect(() => {
+    function handlePopState() {
+      setPathname(currentPathname());
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  function navigate(path: "/teacher" | "/teacher/lesson-plan") {
+    window.history.pushState({}, "", path);
+    setPathname(path);
+  }
+
+  if (pathname === "/teacher" || pathname === "/teacher/lesson-plan") {
+    return (
+      <TeacherWorkspace
+        view={pathname === "/teacher" ? "overview" : "lesson-plan"}
+        onNavigate={navigate}
+      />
+    );
+  }
+
+  return <PlatformStatus onOpenTeacherWorkspace={() => navigate("/teacher")} />;
 }
