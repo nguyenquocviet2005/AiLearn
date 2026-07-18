@@ -131,5 +131,76 @@ async def fetch_evidence_events_for_student(
             await http_client.aclose()
 
 
+async def fetch_evidence_item_ids_for_session(
+    settings: Settings,
+    session_id: str,
+    client: httpx.AsyncClient | None = None,
+) -> set[str]:
+    """Read accepted response ids from the immutable evidence source of truth."""
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseUnavailableError("Supabase is not configured")
+
+    owns_client = client is None
+    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    try:
+        response = await http_client.get(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
+            headers=_auth_headers(settings),
+            params={
+                "select": "item_id",
+                "session_id": f"eq.{session_id}",
+            },
+        )
+        response.raise_for_status()
+        payload: Any = response.json()
+        if not isinstance(payload, list) or not all(isinstance(row, Mapping) for row in payload):
+            raise SupabaseUnavailableError("Evidence session response is invalid")
+        item_ids = {row.get("item_id") for row in payload}
+        if not all(isinstance(item_id, str) for item_id in item_ids):
+            raise SupabaseUnavailableError("Evidence session response is invalid")
+        return set(item_ids)
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SupabaseUnavailableError("Supabase request failed") from exc
+    finally:
+        if owns_client:
+            await http_client.aclose()
+
+
+async def fetch_evidence_events_for_lesson(
+    settings: Settings,
+    lesson_id: str,
+    client: httpx.AsyncClient | None = None,
+) -> list[EvidenceEventRecord]:
+    """Fetch one lesson's evidence for a deterministic class projection."""
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseUnavailableError("Supabase is not configured")
+
+    owns_client = client is None
+    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    try:
+        response = await http_client.get(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
+            headers=_auth_headers(settings),
+            params={
+                "select": (
+                    "id,schema_version,student_id,session_id,skill_id,item_id,"
+                    "is_correct,recorded_at,lesson_id,response_label,confidence"
+                ),
+                "lesson_id": f"eq.{lesson_id}",
+                "order": "recorded_at.asc",
+            },
+        )
+        response.raise_for_status()
+        payload: Any = response.json()
+        if not isinstance(payload, list):
+            raise SupabaseUnavailableError("Evidence event list response is invalid")
+        return [EvidenceEventRecord.model_validate(row) for row in payload]
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SupabaseUnavailableError("Supabase request failed") from exc
+    finally:
+        if owns_client:
+            await http_client.aclose()
+
+
 def parse_evidence_event_payload(payload: dict[str, Any]) -> EvidenceEventV1:
     return validate_evidence_event(payload)

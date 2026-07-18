@@ -151,10 +151,11 @@ Fixture: `data/fixtures/intervention-report.json`.
 
 ## Teacher planning endpoints
 
-- `GET /api/v1/classes/{class_id}/snapshot` returns the synthetic demo snapshot used for the
-  teacher proposal.
+- `GET /api/v1/classes/class_g7a_demo/snapshot` returns a deterministic G7 snapshot from the
+  `students` roster and `evidence_events` for the inverse-proportion lesson. When a persisted
+  teacher-plan version exists, its snapshot is returned so teacher edits are retained.
 - `GET /api/v1/lesson-plans/{plan_id}` returns the latest persisted `TeacherPlanVersionV1`, or the
-  immutable synthetic proposal when no edit version exists.
+  deterministic G7 seed projection when no edit version exists.
 - `POST /api/v1/lesson-plans/{plan_id}/versions` appends an edited version with a validated snapshot
   and lesson plan.
 - `POST /api/v1/lesson-plans/{plan_id}/approve` and `/reject` append the teacher decision.
@@ -203,10 +204,10 @@ Unavailable response (`503`) uses the same sanitized shape as other Supabase fai
 ## `POST /api/v1/diagnostics/start`
 
 Starts a readiness session for one student against the (single, demo) lesson curriculum, using
-`build_readiness_session()` from `packages/diagnostic`. Session state is held in an in-memory
-store scoped to the running API process — see "Operational behavior" in
-`docs/ARCHITECTURE.md`. Returned items never include the answer key (`is_correct`,
-`misconception_id` are stripped from each option).
+`build_readiness_session()` from `packages/diagnostic`. In a configured environment, selected item
+ids are stored in `diagnostic_sessions`; answered state is re-derived from `evidence_events` when a
+request resumes. The local in-memory store is only an unconfigured development fallback. Returned
+items never include the answer key (`is_correct`, `misconception_id` are stripped from each option).
 
 Request:
 
@@ -328,9 +329,9 @@ Unavailable response (`503`) uses the same sanitized shape as other Supabase fai
 ## `POST /api/v1/remediation/sessions`
 
 Starts a remediation session from a `StudentDiagnosticProfileV1`, using `RemediationEngine.start()`
-from `packages/remediation`. Session state is held in an in-memory store scoped to the running API
-process (registered in VAI-18; see "Operational behavior" below — this route existed as code since
-VAI-16 but was not wired into the app until VAI-18).
+from `packages/remediation`. In a configured environment, the state and the idempotency results for
+attempt and exit-ticket submissions are stored in `remediation_sessions`; an unconfigured local API
+uses the in-memory fallback.
 
 Request:
 
@@ -446,8 +447,10 @@ Success response (`200`): same shape as `POST /api/v1/remediation/sessions`.
 Records the final transfer response after a completed remediation path. The answer key is resolved
 server-side from the synthetic demo fixture; a repeated `submission_id` returns the first result.
 The response records one of `transfer_passed`, `teacher_escalation`, or
-`diagnosis_reclassified`. The reclassification response includes the newly selected
-`StudentDiagnosticProfileV1` and a new in-memory remediation path.
+`diagnosis_reclassified`. In a configured environment, it also writes one validated, server-derived
+`EvidenceEventV1` into `evidence_events` before returning, so the transfer outcome affects the live
+diagnostic profile and class projection. The reclassification response includes the newly selected
+`StudentDiagnosticProfileV1` and a new remediation path.
 
 Request:
 
@@ -492,9 +495,9 @@ answer key.
 display names used by the submission walkthrough. It does not expose profile evidence or answer
 keys.
 
-`POST /api/v1/demo/reset` accepts `{ "persona_id": "foundational-gap" }`, clears only the
-diagnostic and remediation in-memory session stores, and returns the selected synthetic profile to
-start a new path. It does not mutate Supabase, evidence events, or any production data.
+`POST /api/v1/demo/reset` accepts `{ "persona_id": "foundational-gap" }`, clears only the local
+diagnostic and remediation fallback stores, and returns the selected synthetic profile to start a
+new path. It does not mutate Supabase durable-session rows, evidence events, or any production data.
 
 ## `GET /api/v1/students/{student_id}/diagnostic-profile`
 

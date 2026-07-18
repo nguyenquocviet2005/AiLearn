@@ -23,12 +23,11 @@ class DiagnosticSessionState:
         return not self.remaining_item_ids()
 
 
-# In-memory session store. Swapped for Supabase during integration (VAI-20),
-# matching the precedent set by routes/remediation.py's `_sessions` dict.
+# Local-development fallback when Supabase is deliberately not configured.
 _sessions: dict[str, DiagnosticSessionState] = {}
 
 
-def create_session(
+def new_session(
     student_id: str,
     lesson_id: str,
     target_skill_id: str,
@@ -43,7 +42,18 @@ def create_session(
         items={item.item_id: item for item in items},
         item_order=[item.item_id for item in items],
     )
-    _sessions[session_id] = session
+    return session
+
+
+def create_session(
+    student_id: str,
+    lesson_id: str,
+    target_skill_id: str,
+    items: list[AssessmentItem],
+) -> DiagnosticSessionState:
+    """Create the local-development fallback session."""
+    session = new_session(student_id, lesson_id, target_skill_id, items)
+    _sessions[session.session_id] = session
     return session
 
 

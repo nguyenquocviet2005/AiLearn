@@ -37,7 +37,7 @@ describe("TeacherWorkspace", () => {
       }),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.example.test/api/v1/classes/class_demo_6a/snapshot",
+      "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",
       expect.any(Object),
     );
   });

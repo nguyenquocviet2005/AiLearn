@@ -27,8 +27,7 @@ def get_demo_personas() -> dict[str, list[dict[str, str]]]:
 def reset_demo(req: DemoResetRequest) -> dict[str, Any]:
     """Restore one synthetic persona and clear transient API state.
 
-    VAI-20 will replace these in-memory stores with durable session state. This
-    reset intentionally does not modify Supabase rows or production data.
+    This reset intentionally does not modify Supabase rows or production data.
     """
     persona = get_persona(req.persona_id)
     if persona is None:

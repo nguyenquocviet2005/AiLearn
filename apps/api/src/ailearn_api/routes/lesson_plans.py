@@ -6,9 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict
 
 from ailearn_api.config import Settings, get_settings
+from ailearn_api.durable_session_store import is_configured as durable_sessions_configured
 from ailearn_api.supabase_client import SupabaseUnavailableError
 from ailearn_api.teacher_fixtures import initial_plan_version
 from ailearn_api.teacher_plan_store import append_plan_version, fetch_latest_plan_version
+from ailearn_api.teacher_projection import DEMO_CLASS_ID, build_live_snapshot
 
 router = APIRouter(prefix="/api/v1/lesson-plans", tags=["lesson-plans"])
 
@@ -127,13 +129,34 @@ def _require_current_version(expected: int, current: int) -> None:
         )
 
 
+async def _initial(settings: Settings) -> TeacherPlanVersionV1:
+    if durable_sessions_configured(settings):
+        try:
+            snapshot = await build_live_snapshot(settings, DEMO_CLASS_ID)
+        except SupabaseUnavailableError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail={
+                    "code": "supabase_unavailable",
+                    "message": "Teacher class projection is unavailable.",
+                },
+            ) from exc
+        if snapshot is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "class_not_found", "message": "Class was not found."},
+            )
+        return initial_plan_version(snapshot)
+    return initial_plan_version()
+
+
 async def _latest(settings: Settings, plan_id: str) -> TeacherPlanVersionV1:
     try:
         stored = await fetch_latest_plan_version(settings, plan_id)
     except SupabaseUnavailableError as exc:
         if "not configured" in str(exc):
-            # The initial synthetic proposal is safe to inspect without persistence.
-            candidate = initial_plan_version()
+            # The committed seed projection is safe to inspect without persistence.
+            candidate = await _initial(settings)
             if candidate.plan_id == plan_id:
                 return candidate
         raise HTTPException(
@@ -145,7 +168,7 @@ async def _latest(settings: Settings, plan_id: str) -> TeacherPlanVersionV1:
         ) from exc
     if stored is not None:
         return stored
-    candidate = initial_plan_version()
+    candidate = await _initial(settings)
     if candidate.plan_id != plan_id:
         raise _not_found(plan_id)
     return candidate
