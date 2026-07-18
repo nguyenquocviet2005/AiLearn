@@ -19,6 +19,8 @@ async def test_fetch_student_reads_expected_row() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.method == "GET"
         assert request.url.path.endswith("/students")
+        assert request.headers["apikey"] == "test-secret"
+        assert request.headers["Authorization"] == "Bearer test-secret"
         assert request.url.params["id"] == "eq.stu_demo_01"
         return httpx.Response(200, json=[SAMPLE_ROW])
 

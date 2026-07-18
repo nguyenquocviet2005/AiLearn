@@ -31,6 +31,7 @@ def test_system_status_returns_sanitized_503_when_unconfigured(client: TestClien
 async def test_fetch_system_status_reads_expected_supabase_row() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.headers["apikey"] == "test-secret"
+        assert request.headers["Authorization"] == "Bearer test-secret"
         assert request.url.params["id"] == "eq.platform"
         return httpx.Response(
             200,

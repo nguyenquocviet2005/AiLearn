@@ -7,14 +7,12 @@ from ailearn_schemas import EvidenceEventV1
 
 from ailearn_api.config import Settings
 from ailearn_api.models.evidence import EvidenceEventRecord
-from ailearn_api.supabase_client import SupabaseUnavailableError
+from ailearn_api.supabase_client import SupabaseUnavailableError, supabase_auth_headers
 
 
 def _auth_headers(settings: Settings) -> dict[str, str]:
-    assert settings.supabase_secret_key is not None
     return {
-        "apikey": settings.supabase_secret_key,
-        "Authorization": f"Bearer {settings.supabase_secret_key}",
+        **supabase_auth_headers(settings),
         "Content-Type": "application/json",
     }
 
