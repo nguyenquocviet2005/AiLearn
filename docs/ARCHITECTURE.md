@@ -15,7 +15,7 @@ React/Vite browser application
 Shared contracts:
   packages/schemas + data/fixtures
 Evidence stubs:
-  ai/diagnostic
+  packages/diagnostic
 ```
 
 The web application contains presentation and a typed API client. The API owns transport validation,
