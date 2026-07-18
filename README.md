@@ -99,9 +99,11 @@ Create a Vercel project with root directory `apps/web`. Set `VITE_API_BASE_URL` 
 
 ### Railway
 
-Create a Railway service with root directory `apps/api`. The checked-in `railway.toml` defines the
-Dockerfile build, `$PORT` start command, and `/health` health check. Configure `APP_ENV`, `SUPABASE_URL`,
-`SUPABASE_SECRET_KEY`, and exact `CORS_ORIGINS` values in Railway's secret store.
+Create a Railway service with root directory `.` (repo root) — **not** `apps/api`. `apps/api` depends on
+`packages/schemas` and `packages/diagnostic` via editable path installs, so the Docker build context must
+span the whole repo to resolve them. The checked-in root-level `railway.toml` points `dockerfilePath` at
+`apps/api/Dockerfile` and defines the `$PORT` start command and `/health` health check. Configure `APP_ENV`,
+`SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and exact `CORS_ORIGINS` values in Railway's secret store.
 
 ## Repository Layout
 
@@ -109,7 +111,7 @@ Dockerfile build, `$PORT` start command, and `/health` health check. Configure `
 apps/web           React, Vite, TypeScript, shadcn/ui components
 apps/api           FastAPI thin transport adapters
 packages/schemas   Shared V1 contracts (JSON Schema, Pydantic, TypeScript)
-ai/diagnostic      Evidence foundation stubs
+packages/diagnostic Evidence foundation stubs
 data/fixtures      Shared anonymized contract fixtures
 supabase           Infrastructure and evidence migrations
 docs               Architecture, API contracts, ADRs
