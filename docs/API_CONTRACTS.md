@@ -85,7 +85,7 @@ Fixture: `data/fixtures/diagnostic-profile.json`.
 
 ### Domain diagnostic engine (VAI-14)
 
-Pure Python surface in `ai/diagnostic` (no new HTTP routes in VAI-14):
+Pure Python surface in `packages/diagnostic` (no new HTTP routes in VAI-14):
 
 - `diagnose(events, curriculum, items, *, now=None) -> StudentDiagnosticProfileV1`
 - Inputs: `EvidenceEventV1` list + curriculum/items loaded from `data/seeds/`

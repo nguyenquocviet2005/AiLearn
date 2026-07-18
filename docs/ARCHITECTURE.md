@@ -4,7 +4,7 @@
 
 VAI-10 established the infrastructure walking skeleton. VAI-11 added shared V1 contracts,
 fixtures, and evidence persistence. VAI-13 added demo curriculum seeds and golden cases.
-VAI-14 adds a deterministic diagnostic engine in `ai/diagnostic/` (domain-only; no product HTTP):
+VAI-14 adds a deterministic diagnostic engine in `packages/diagnostic/` (domain-only; no product HTTP):
 
 ```text
 React/Vite browser application
@@ -18,7 +18,7 @@ Shared contracts:
 Curriculum / golden inputs:
   data/seeds + eval/golden
 Diagnostic engine (pure domain):
-  ai/diagnostic  (MasteryEstimator, RootCauseRanker, diagnose)
+  packages/diagnostic  (MasteryEstimator, RootCauseRanker, diagnose)
 ```
 
 The web application contains presentation and a typed API client. The API owns transport validation,
@@ -38,7 +38,7 @@ issues.
 - `/health` is an API liveness endpoint and does not call Supabase.
 - `/api/v1/system-status` is a bounded Supabase read from a singleton infrastructure table.
 - `/api/v1/evidence-events` supports write and read of `EvidenceEventV1` rows.
-- `diagnose(events, curriculum, items)` in `ai/diagnostic` produces `StudentDiagnosticProfileV1`
+- `diagnose(events, curriculum, items)` in `packages/diagnostic` produces `StudentDiagnosticProfileV1`
   deterministically without LLM calls.
 - A missing configuration, timeout, malformed row, or Supabase HTTP failure returns a sanitized
   `503` (or `404` when an evidence id is missing).

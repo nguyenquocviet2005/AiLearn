@@ -66,7 +66,7 @@ def test_diagnose_is_deterministic() -> None:
 
 
 def test_diagnostic_package_has_no_llm_imports() -> None:
-    package_root = Path("ai/diagnostic/src/ailearn_diagnostic")
+    package_root = Path("packages/diagnostic/src/ailearn_diagnostic")
     forbidden = ("openai", "anthropic", "langchain", "litellm", "transformers")
     for path in package_root.rglob("*.py"):
         text = path.read_text(encoding="utf-8")
