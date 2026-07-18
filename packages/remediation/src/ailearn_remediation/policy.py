@@ -1,6 +1,6 @@
 """Policy loading from VAI-13 seed data.
 
-Reads ai/content/intervention-templates.json so escalation thresholds and
+Reads packages/content/intervention-templates.json so escalation thresholds and
 representation fallback order are DATA, not hard-coded constants.
 """
 
@@ -14,9 +14,9 @@ from typing import Any, Optional
 
 from .enums import Representation
 
-# Repo root = ai/remediation/src/ailearn_remediation/policy.py -> up 4
+# Repo root = packages/remediation/src/ailearn_remediation/policy.py -> up 4
 _REPO_ROOT = Path(__file__).resolve().parents[4]
-_TEMPLATES_PATH = _REPO_ROOT / "ai" / "content" / "intervention-templates.json"
+_TEMPLATES_PATH = _REPO_ROOT / "packages" / "content" / "intervention-templates.json"
 _CURRICULUM_PATH = _REPO_ROOT / "data" / "seeds" / "curriculum.json"
 
 # Escalate after this many consecutive failures on the same root cause

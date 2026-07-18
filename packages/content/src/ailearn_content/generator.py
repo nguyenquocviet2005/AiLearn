@@ -1,7 +1,7 @@
 """Template-based content service with optional LLM enrichment.
 
 Architecture rule (VAI-16):
-  "Content generation stays in ai/content/ via ContentGenerator and must not make
+  "Content generation stays in packages/content/ via ContentGenerator and must not make
    core diagnosis/grouping/path decisions. Core flow must work when the LLM API
    is unavailable."
 
@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any, Optional, Protocol
 
 _REPO_ROOT = Path(__file__).resolve().parents[4]
-_TEMPLATES_PATH = _REPO_ROOT / "ai" / "content" / "intervention-templates.json"
+_TEMPLATES_PATH = _REPO_ROOT / "packages" / "content" / "intervention-templates.json"
 
 
 @dataclass(frozen=True, slots=True)

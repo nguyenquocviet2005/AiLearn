@@ -1,6 +1,6 @@
 """Contract tests: serialized output must satisfy StudentImprovementPathV1.
 
-Validates against the real schema file so a drift in ai/remediation is caught here
+Validates against the real schema file so a drift in packages/remediation is caught here
 rather than at integration time (VAI-20).
 """
 

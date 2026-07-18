@@ -1,21 +1,19 @@
 """Remediation HTTP surface.
 
 Thin transport only (VAI-16 "thin HTTP only"): parse -> delegate to
-ai/remediation + ai/content -> serialize. No business logic lives here.
+packages/remediation + packages/content -> serialize. No business logic lives here.
 """
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 from ailearn_content import ContentGenerator
 from ailearn_remediation import (
     AttemptOutcome,
     DiagnosticProfile,
     RemediationEngine,
-    RemediationState,
-    Representation,
     SessionState,
 )
 from fastapi import APIRouter, HTTPException
@@ -31,7 +29,7 @@ _sessions: dict[str, SessionState] = {}
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class StartRequest(BaseModel):
@@ -99,9 +97,7 @@ def start_session(req: StartRequest) -> dict[str, Any]:
 def submit_attempt(req: AttemptRequest) -> dict[str, Any]:
     """Record one attempt and advance the path."""
     session = _get(req.student_id)
-    session = _engine.advance(
-        session, AttemptOutcome(req.step_id, req.is_correct, _now())
-    )
+    session = _engine.advance(session, AttemptOutcome(req.step_id, req.is_correct, _now()))
     _sessions[req.student_id] = session
     return _response(session)
 
