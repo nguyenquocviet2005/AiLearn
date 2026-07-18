@@ -85,6 +85,15 @@ Landing and student feature source files were not changed.
 - No third review cycle was run, respecting the two-cycle limit. The post-review correction is covered by 95 passing tests, typecheck, lint, format, production build, bundle inspection and direct-route probes.
 - Browser automation and screenshot capture were unavailable. No browser-only visual claim is recorded; responsive behavior was evaluated from CSS breakpoints, DOM interaction tests and production route probes.
 
+## Pull request delivery
+
+- Commit: `f44ef24`
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/37
+- Base: `dev`
+- GitHub CI: PASS — Web checks and API checks.
+- Vercel build statuses: PASS/Ready for both `ai-learn-web` and `ai-learn-web-test`.
+- Preview route verification: BLOCKED. Both generated Preview URLs redirect to Vercel SSO/login, so HTTP 200 responses are the provider login page rather than AiLearn. Deployment Protection must allow public Preview access or a human must supply an authorized Vercel share/bypass link before every live route can be truthfully verified.
+
 ## Risks and limitations
 
 - Detailed evidence, outcomes and improvement paths are typed deterministic demo records because the current snapshot API does not expose all source events/outcomes in one teacher payload. All related displayed aggregates are derived from those shared records; they are explicitly demo data, not production observations.
