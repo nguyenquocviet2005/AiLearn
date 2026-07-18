@@ -68,6 +68,9 @@ The API exposes:
 
 - `20260717000000_create_system_status.sql` — infrastructure singleton for system-status.
 - `20260718000000_create_evidence_events.sql` — product table for `EvidenceEventV1` persistence.
+- `20260719000000_create_students.sql` — student records used by the evidence pipeline.
+- `20260720000000_add_confidence_to_evidence_events.sql` — optional validated confidence values.
+- `20260721000000_create_lesson_plan_versions.sql` — immutable teacher plan versions and decisions.
 
 Shared V1 contracts and fixtures live in `packages/schemas/` and `data/fixtures/`.
 
@@ -78,8 +81,18 @@ supabase start
 supabase db reset --local
 ```
 
-Remote migration application is intentionally not automated by this repository. Run `supabase db push
---dry-run` first, then obtain environment-specific approval before applying a migration.
+Committing or deploying a migration file does **not** apply it to hosted Supabase. Remote migration
+application is intentionally not automated by this repository. For a release that depends on a new
+schema:
+
+1. Run `supabase migration list` and `supabase db push --dry-run` against the intended project.
+2. Review every pending migration and obtain environment-specific approval.
+3. Run `supabase db push` only after approval.
+4. Re-run `supabase migration list` and verify the affected live API endpoint.
+
+Missing this step can leave Railway healthy while product endpoints return `503 supabase_unavailable`.
+The hosted Supabase database continues running independently after the developer machine is shut down;
+`supabase start` is needed only for local development.
 
 ## Verification
 
