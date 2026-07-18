@@ -3,16 +3,22 @@ from collections.abc import Iterator
 import pytest
 from fastapi.testclient import TestClient
 
-from ailearn_api.routes.remediation import _processed_attempts, _sessions
+from ailearn_api.routes.remediation import (
+    _processed_attempts,
+    _processed_exit_tickets,
+    _sessions,
+)
 
 
 @pytest.fixture(autouse=True)
 def _clear_remediation_state() -> Iterator[None]:
     _sessions.clear()
     _processed_attempts.clear()
+    _processed_exit_tickets.clear()
     yield
     _sessions.clear()
     _processed_attempts.clear()
+    _processed_exit_tickets.clear()
 
 
 PROFILE_NEEDS_SUPPORT = {
@@ -199,3 +205,89 @@ def test_get_session_returns_404_for_unknown_student(client: TestClient) -> None
     response = client.get("/api/v1/remediation/sessions/stu_unknown")
 
     assert response.status_code == 404
+
+
+def _complete_remediation(client: TestClient, profile: dict[str, object]) -> dict[str, object]:
+    started = client.post("/api/v1/remediation/sessions", json={"profile": profile})
+    assert started.status_code == 200
+    latest = started.json()
+    for index in range(5):
+        response = client.post(
+            "/api/v1/remediation/attempts",
+            json={
+                "student_id": profile["student_id"],
+                "step_id": f"step_{profile['student_id']}_{latest['current_step_kind']}",
+                "is_correct": True,
+                "attempt_id": f"att_exit_{index}",
+            },
+        )
+        assert response.status_code == 200
+        latest = response.json()
+    assert latest["is_complete"] is True
+    assert latest["transfer_outcome"] is True
+    return latest
+
+
+def test_exit_ticket_records_passing_transfer_idempotently(client: TestClient) -> None:
+    completed = _complete_remediation(client, PROFILE_NEEDS_SUPPORT)
+    ticket = completed["exit_ticket"]
+    body = {
+        "student_id": PROFILE_NEEDS_SUPPORT["student_id"],
+        "ticket_id": ticket["id"],
+        "response_label": "Giảm xuống",
+        "submission_id": "exit_1",
+    }
+
+    first = client.post("/api/v1/remediation/exit-tickets", json=body)
+    second = client.post("/api/v1/remediation/exit-tickets", json=body)
+
+    assert first.status_code == second.status_code == 200
+    assert first.json() == second.json()
+    assert first.json()["outcome"]["kind"] == "transfer_passed"
+
+
+def test_exit_ticket_reclassifies_when_new_evidence_contradicts_profile(
+    client: TestClient,
+) -> None:
+    reset = client.post("/api/v1/demo/reset", json={"persona_id": "root-cause-changes"})
+    profile = reset.json()["persona"]["profile"]
+    completed = _complete_remediation(client, profile)
+
+    response = client.post(
+        "/api/v1/remediation/exit-tickets",
+        json={
+            "student_id": profile["student_id"],
+            "ticket_id": completed["exit_ticket"]["id"],
+            "response_label": "Tăng lên",
+            "submission_id": "exit_reclassify_1",
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["outcome"]["kind"] == "diagnosis_reclassified"
+    assert (
+        body["outcome"]["reclassified_profile"]["root_causes"][0]["skill_id"]
+        == "skill_distinguish_direct_inverse"
+    )
+    assert body["remediation"]["is_complete"] is False
+
+
+def test_exit_ticket_records_teacher_escalation(client: TestClient) -> None:
+    reset = client.post("/api/v1/demo/reset", json={"persona_id": "teacher-escalation"})
+    profile = reset.json()["persona"]["profile"]
+    completed = _complete_remediation(client, profile)
+
+    response = client.post(
+        "/api/v1/remediation/exit-tickets",
+        json={
+            "student_id": profile["student_id"],
+            "ticket_id": completed["exit_ticket"]["id"],
+            "response_label": "Tăng lên",
+            "submission_id": "exit_escalation_1",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["outcome"]["kind"] == "teacher_escalation"
+    assert response.json()["remediation"]["path"]["current_state"] == "TEACHER_ESCALATION"

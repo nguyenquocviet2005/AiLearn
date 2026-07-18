@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "id": "plan_demo_fractions_01",
+  "class_id": "class_demo_6a",
+  "lesson_id": "lesson_demo_fractions_01",
+  "status": "draft",
+  "total_duration_minutes": 45,
+  "activities": [
+    {
+      "id": "act_demo_warmup",
+      "title": "Warm-up confirmation items",
+      "duration_minutes": 5,
+      "root_cause_skill_id": "skill_fractions_equivalent",
+      "skill_id": "skill_fractions_equivalent",
+      "expected_evidence": "Correct identification of two equivalent fraction pairs",
+      "rationale": "Confirm prerequisite readiness before repair work."
+    },
+    {
+      "id": "act_demo_repair",
+      "title": "Guided equivalent-fraction repair",
+      "duration_minutes": 15,
+      "root_cause_skill_id": "skill_fractions_equivalent",
+      "skill_id": "skill_fractions_equivalent",
+      "expected_evidence": "Worked example plus guided problem completed with correct scaling",
+      "rationale": "Addresses the top teaching priority for the class."
+    },
+    {
+      "id": "act_demo_practice",
+      "title": "Independent unlike-fraction addition",
+      "duration_minutes": 15,
+      "root_cause_skill_id": "skill_common_denominator",
+      "skill_id": "skill_fractions_add_unlike",
+      "expected_evidence": "Two independent problems with correct common denominators",
+      "rationale": "Reconnect repaired prerequisites to the lesson target skill."
+    },
+    {
+      "id": "act_demo_transfer",
+      "title": "Near-transfer exit ticket",
+      "duration_minutes": 10,
+      "root_cause_skill_id": "skill_fractions_equivalent",
+      "skill_id": "skill_fractions_add_unlike",
+      "expected_evidence": "One near-transfer item distinguishing immediate success from transfer",
+      "rationale": "Capture transfer outcome evidence for the intervention report."
+    }
+  ],
+  "generated_at": "2026-07-18T01:15:00Z"
+}

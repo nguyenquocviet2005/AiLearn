@@ -6,10 +6,11 @@ import type {
 } from "@ailearn/schemas";
 
 import { InterventionReportDetails } from "@/features/teacher/report/TeacherReport";
-import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
+import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
 import { httpTeacherWorkspaceRepository } from "@/lib/adapters/teacher-repository";
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
+import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 
 type PrintState =
   | { kind: "loading" }
@@ -18,7 +19,7 @@ type PrintState =
       report: InterventionReportV1;
       plan: TeacherPlanVersionV1 | null;
     }
-  | { kind: "error" };
+  | { kind: "error"; message: string };
 
 export function PrintableTeacherReport({
   reportRepository = httpTeacherReportRepository,
@@ -54,7 +55,9 @@ export function PrintableTeacherReport({
           }
         }
       },
-      () => active && setState({ kind: "error" }),
+      (error) =>
+        active &&
+        setState({ kind: "error", message: teacherReportErrorMessage(error) }),
     );
     return () => {
       active = false;
@@ -65,18 +68,16 @@ export function PrintableTeacherReport({
     <main className="print-shell">
       <div className="print-actions">
         <a href="/teacher/report">Back to report</a>
-        <button type="button" onClick={() => window.print()}>
-          {state.kind === "ready" && !state.plan
-            ? "Print report"
-            : "Print report and lesson plan"}
-        </button>
+        {state.kind === "ready" && (
+          <button type="button" onClick={() => window.print()}>
+            {state.plan ? "Print report and lesson plan" : "Print report"}
+          </button>
+        )}
       </div>
       {state.kind === "loading" && (
         <p aria-live="polite">Preparing a low-bandwidth printable view...</p>
       )}
-      {state.kind === "error" && (
-        <p role="alert">The printable report is unavailable.</p>
-      )}
+      {state.kind === "error" && <p role="alert">{state.message}</p>}
       {state.kind === "ready" && (
         <article className="print-sheet">
           <header>

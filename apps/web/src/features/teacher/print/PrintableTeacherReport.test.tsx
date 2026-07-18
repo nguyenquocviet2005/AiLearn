@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { fixtureTeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
 import { reportTestRepository } from "@/features/teacher/report/report-test-fixture";
+import { fixtureTeacherWorkspaceRepository } from "@/test/teacher-fixtures";
 import { PrintableTeacherReport } from "./PrintableTeacherReport";
 
 afterEach(() => {
@@ -116,8 +116,11 @@ describe("PrintableTeacherReport", () => {
       />,
     );
 
+    expect(screen.queryByRole("button", { name: /Print report/ })).toBeNull();
+
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The printable report is unavailable.",
+      "The intervention report data could not be loaded.",
     );
+    expect(screen.queryByRole("button", { name: /Print report/ })).toBeNull();
   });
 });

@@ -7,11 +7,13 @@ import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 import type { StudentRepository } from "@/lib/adapters/student-repository";
 import type {
   AssessmentItemPublic,
+  ExitTicketResponse,
   RemediationResponse,
   StartSessionResponse,
 } from "@/lib/adapters/student-types";
 
 import { StudentWorkspace } from "./StudentWorkspace";
+import { saveToCache } from "@/lib/offline/content-cache";
 
 const ITEMS: AssessmentItemPublic[] = [
   {
@@ -110,6 +112,7 @@ function remediationResponse(
     },
     current_step_kind: "worked_example",
     is_complete: false,
+    transfer_outcome: null,
     escalation_reason: null,
     content: {
       template_id: "tpl_1",
@@ -151,6 +154,9 @@ function fakeRepository(
       }),
     ),
     confirmEvidence: vi.fn(),
+    submitExitTicket: vi.fn(),
+    listDemoPersonas: vi.fn().mockResolvedValue([]),
+    resetDemo: vi.fn(),
     ...overrides,
   } as unknown as StudentRepository;
 }
@@ -387,5 +393,148 @@ describe("StudentWorkspace", () => {
     expect(
       await screen.findByText("readiness-progress:stu_g7_001"),
     ).toBeInTheDocument();
+  });
+
+  it("records the exit ticket after a completed remediation path", async () => {
+    const completed = remediationResponse({
+      is_complete: true,
+      transfer_outcome: true,
+      current_step_kind: "result",
+      exit_ticket: {
+        id: "exit_inverse_relation",
+        question: "Khi số người tăng lên thì thời gian thay đổi thế nào?",
+        options: ["Tăng lên", "Giảm xuống"],
+      },
+    });
+    const exitTicketResult: ExitTicketResponse = {
+      outcome: {
+        kind: "transfer_passed",
+        recorded_at: "2026-07-18T11:00:00Z",
+        message: "Em đã áp dụng được kiến thức vào một tình huống mới.",
+        reclassified_profile: null,
+      },
+      remediation: completed,
+    };
+    const submitExitTicket = vi.fn().mockResolvedValue(exitTicketResult);
+    const repository = fakeRepository({ submitExitTicket });
+    saveToCache("remediation-progress:stu_g7_001", {
+      remediation: completed,
+      profile: NEEDS_SUPPORT_PROFILE,
+    });
+    const user = userEvent.setup();
+
+    render(<StudentWorkspace repository={repository} />);
+    await user.click(
+      screen.getByRole("button", { name: "Xem lộ trình của em →" }),
+    );
+
+    expect(
+      await screen.findByText(
+        "Khi số người tăng lên thì thời gian thay đổi thế nào?",
+      ),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("radio", { name: "Giảm xuống" }));
+    await user.click(screen.getByRole("button", { name: "Gửi bài cuối →" }));
+
+    await waitFor(() => {
+      expect(submitExitTicket).toHaveBeenCalledWith(
+        "stu_g7_001",
+        "exit_inverse_relation",
+        "Giảm xuống",
+        expect.any(String),
+      );
+    });
+    expect(
+      await screen.findByText(
+        "Em đã áp dụng được kiến thức vào một tình huống mới.",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("resets a selected seeded persona into its remediation path", async () => {
+    const persona = {
+      id: "foundational-gap",
+      label: "Củng cố nền tảng",
+      student_id: "stu_demo_foundation_01",
+      display_name: "Bạn An",
+      profile: {
+        ...NEEDS_SUPPORT_PROFILE,
+        student_id: "stu_demo_foundation_01",
+      },
+    };
+    const repository = fakeRepository({
+      listDemoPersonas: vi.fn().mockResolvedValue([persona]),
+      resetDemo: vi.fn().mockResolvedValue({ persona }),
+    });
+    const user = userEvent.setup();
+
+    render(<StudentWorkspace repository={repository} />);
+    await screen.findByRole("combobox", { name: "Tình huống demo" });
+    await user.click(screen.getByRole("button", { name: "Đặt lại" }));
+
+    await waitFor(() => {
+      expect(repository.resetDemo).toHaveBeenCalledWith("foundational-gap");
+    });
+    expect(repository.startRemediationSession).toHaveBeenCalledWith(
+      persona.profile,
+    );
+    expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+  });
+
+  it("keeps an offline exit ticket pending and resolves its original submission", async () => {
+    const completed = remediationResponse({
+      is_complete: true,
+      transfer_outcome: true,
+      current_step_kind: "result",
+      exit_ticket: {
+        id: "exit_inverse_relation",
+        question: "Bài cuối?",
+        options: ["Tăng lên", "Giảm xuống"],
+      },
+    });
+    const exitTicketResult: ExitTicketResponse = {
+      outcome: {
+        kind: "transfer_passed",
+        recorded_at: "2026-07-18T11:00:00Z",
+        message: "Đã ghi nhận bài cuối.",
+        reclassified_profile: null,
+      },
+      remediation: completed,
+    };
+    const submitExitTicket = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValue(exitTicketResult);
+    const repository = fakeRepository({ submitExitTicket });
+    saveToCache("remediation-progress:stu_g7_001", {
+      remediation: completed,
+      profile: NEEDS_SUPPORT_PROFILE,
+    });
+    const user = userEvent.setup();
+
+    render(<StudentWorkspace repository={repository} />);
+    await user.click(
+      screen.getByRole("button", { name: "Xem lộ trình của em →" }),
+    );
+    await user.click(screen.getByRole("radio", { name: "Giảm xuống" }));
+    await user.click(screen.getByRole("button", { name: "Gửi bài cuối →" }));
+
+    expect(
+      await screen.findByText(
+        "Đã lưu bài cuối trên máy. Đang chờ kết nối để gửi đi...",
+      ),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /Đang chờ đồng bộ/ }));
+
+    await waitFor(() => {
+      expect(submitExitTicket).toHaveBeenCalledTimes(2);
+    });
+    expect(
+      await screen.findByText("Đã ghi nhận bài cuối."),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Gửi bài cuối →" }),
+    ).not.toBeInTheDocument();
   });
 });

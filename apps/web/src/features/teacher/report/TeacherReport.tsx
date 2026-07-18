@@ -4,6 +4,7 @@ import type { InterventionReportV1, OutcomeKind } from "@ailearn/schemas";
 
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
+import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
 
 const outcomeLabels: Record<OutcomeKind, string> = {
   passed_transfer: "Passed independent transfer",
@@ -24,7 +25,7 @@ const outcomeOrder: OutcomeKind[] = [
 type ReportState =
   | { kind: "loading" }
   | { kind: "ready"; report: InterventionReportV1 }
-  | { kind: "error" };
+  | { kind: "error"; message: string };
 
 export function InterventionReportDetails({
   report,
@@ -130,7 +131,9 @@ export function TeacherReport({
     let active = true;
     void repository.getReport().then(
       (report) => active && setState({ kind: "ready", report }),
-      () => active && setState({ kind: "error" }),
+      (error) =>
+        active &&
+        setState({ kind: "error", message: teacherReportErrorMessage(error) }),
     );
     return () => {
       active = false;
@@ -180,7 +183,7 @@ export function TeacherReport({
       )}
       {state.kind === "error" && (
         <p className="teacher-state" role="alert">
-          The intervention report is unavailable.
+          {state.message}
         </p>
       )}
       {state.kind === "ready" && (

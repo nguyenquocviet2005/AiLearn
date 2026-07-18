@@ -28,10 +28,17 @@ describe("queue", () => {
       isCorrect: true,
       attemptId: "att_1",
     });
+    const third = enqueue("EXIT_TICKET", {
+      studentId: "stu_1",
+      ticketId: "exit_1",
+      responseLabel: "Giảm xuống",
+      submissionId: "exit_submission_1",
+    });
 
     expect(first.status).toBe("PENDING");
     expect(first.clientEventId).not.toBe(second.clientEventId);
-    expect(listAll()).toHaveLength(2);
+    expect(second.clientEventId).not.toBe(third.clientEventId);
+    expect(listAll()).toHaveLength(3);
   });
 
   it("lists only PENDING and FAILED writes as pending", () => {

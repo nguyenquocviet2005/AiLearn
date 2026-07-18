@@ -19,6 +19,11 @@ from ailearn_remediation import (
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from ailearn_api.demo_data import (
+    exit_ticket_definition,
+    public_exit_ticket,
+)
+
 router = APIRouter(prefix="/api/v1/remediation", tags=["remediation"])
 
 _engine = RemediationEngine()
@@ -31,6 +36,10 @@ _sessions: dict[str, SessionState] = {}
 # A retried attempt_id replays this instead of calling engine.advance() again,
 # since RemediationEngine.advance() has no idempotency of its own (VAI-18).
 _processed_attempts: dict[str, dict[str, dict[str, Any]]] = {}
+
+# Per-student idempotency store for exit-ticket submissions. This follows the
+# same transient-store boundary as remediation attempts until VAI-20.
+_processed_exit_tickets: dict[str, dict[str, dict[str, Any]]] = {}
 
 
 def _now() -> str:
@@ -53,6 +62,13 @@ class ConfirmRequest(BaseModel):
     evidence_sufficient: bool
 
 
+class ExitTicketRequest(BaseModel):
+    student_id: str
+    ticket_id: str
+    response_label: str
+    submission_id: str
+
+
 def _content_payload(session: SessionState) -> dict[str, Any]:
     c = _content.generate(
         skill_id=session.root_cause_skill_id,
@@ -72,13 +88,17 @@ def _content_payload(session: SessionState) -> dict[str, Any]:
 
 
 def _response(session: SessionState) -> dict[str, Any]:
-    return {
+    result: dict[str, Any] = {
         "path": _engine.to_path(session, _now()).to_dict(),
         "current_step_kind": _engine.current_step_kind(session).value,
         "is_complete": _engine.is_complete(session),
+        "transfer_outcome": session.transfer_outcome,
         "escalation_reason": session.escalation_reason,
         "content": _content_payload(session),
     }
+    if result["is_complete"]:
+        result["exit_ticket"] = public_exit_ticket(session.student_id)
+    return result
 
 
 def _get(student_id: str) -> SessionState:
@@ -86,6 +106,13 @@ def _get(student_id: str) -> SessionState:
     if session is None:
         raise HTTPException(status_code=404, detail=f"No session for {student_id}")
     return session
+
+
+def reset_remediation_state() -> None:
+    """Clear transient remediation state for an explicit demo reset only."""
+    _sessions.clear()
+    _processed_attempts.clear()
+    _processed_exit_tickets.clear()
 
 
 @router.post("/sessions")
@@ -128,6 +155,65 @@ def confirm_evidence(req: ConfirmRequest) -> dict[str, Any]:
     session = _engine.confirm(session, req.evidence_sufficient)
     _sessions[req.student_id] = session
     return _response(session)
+
+
+@router.post("/exit-tickets")
+def submit_exit_ticket(req: ExitTicketRequest) -> dict[str, Any]:
+    """Record a final transfer response and select the safe next action.
+
+    The answer key lives in the synthetic demo fixture and is never returned to
+    the browser. A deliberately contradictory answer in the reclassification
+    persona restarts remediation from the fixture's evidence-backed profile.
+    """
+    session = _get(req.student_id)
+    processed = _processed_exit_tickets.setdefault(req.student_id, {})
+    if req.submission_id in processed:
+        return processed[req.submission_id]
+    if not _engine.is_complete(session):
+        raise HTTPException(
+            status_code=409,
+            detail="Complete the remediation path before submitting an exit ticket.",
+        )
+
+    ticket = exit_ticket_definition(req.student_id)
+    public_ticket = public_exit_ticket(req.student_id)
+    if req.ticket_id != public_ticket["id"]:
+        raise HTTPException(status_code=422, detail="Unknown exit ticket")
+    if req.response_label not in public_ticket["options"]:
+        raise HTTPException(status_code=422, detail="Invalid exit-ticket response")
+
+    recorded_at = _now()
+    reclassified_profile = None
+    if req.response_label == ticket.get("reclassify_on_response_label"):
+        reclassified_profile = ticket["reclassified_profile"]
+        session = _engine.start(DiagnosticProfile.from_dict(reclassified_profile))
+        _sessions[req.student_id] = session
+        outcome = {
+            "kind": "diagnosis_reclassified",
+            "recorded_at": recorded_at,
+            "message": "Câu trả lời mới giúp điều chỉnh bài luyện tiếp theo.",
+            "reclassified_profile": reclassified_profile,
+        }
+    elif req.response_label == ticket["correct_response_label"]:
+        outcome = {
+            "kind": "transfer_passed",
+            "recorded_at": recorded_at,
+            "message": "Em đã áp dụng được kiến thức vào một tình huống mới.",
+            "reclassified_profile": None,
+        }
+    else:
+        session = _engine.escalate(session, "esc_exit_ticket")
+        _sessions[req.student_id] = session
+        outcome = {
+            "kind": "teacher_escalation",
+            "recorded_at": recorded_at,
+            "message": "Cô sẽ cùng em xem lại bước này ở buổi học tiếp theo.",
+            "reclassified_profile": None,
+        }
+
+    result = {"outcome": outcome, "remediation": _response(session)}
+    processed[req.submission_id] = result
+    return result
 
 
 @router.get("/sessions/{student_id}")

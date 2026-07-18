@@ -19,6 +19,9 @@ function fakeRepository(
     startRemediationSession: vi.fn(),
     submitRemediationAttempt: vi.fn().mockResolvedValue({}),
     confirmEvidence: vi.fn(),
+    submitExitTicket: vi.fn().mockResolvedValue({}),
+    listDemoPersonas: vi.fn(),
+    resetDemo: vi.fn(),
     ...overrides,
   } as unknown as StudentRepository;
 }
@@ -142,5 +145,27 @@ describe("sync", () => {
     unsubscribe();
 
     expect(counts).toEqual([0]);
+  });
+
+  it("flushes an exit-ticket result exactly once", async () => {
+    const repository = fakeRepository();
+    enqueue("EXIT_TICKET", {
+      studentId: "stu_1",
+      ticketId: "exit_1",
+      responseLabel: "Giảm xuống",
+      submissionId: "exit_submission_1",
+    });
+
+    await flush(repository);
+    await flush(repository);
+
+    expect(repository.submitExitTicket).toHaveBeenCalledTimes(1);
+    expect(repository.submitExitTicket).toHaveBeenCalledWith(
+      "stu_1",
+      "exit_1",
+      "Giảm xuống",
+      "exit_submission_1",
+    );
+    expect(listAll()[0].status).toBe("SYNCED");
   });
 });

@@ -101,6 +101,10 @@ credentials because API tests substitute the infrastructure client.
 Create a Vercel project with root directory `apps/web`. Set `VITE_API_BASE_URL` to the Railway API origin.
 `apps/web/vercel.json` provides the SPA fallback.
 
+The established production API origin is `https://api-production-8a6d.up.railway.app`. The web client
+uses this origin when a production build has no explicit `VITE_API_BASE_URL`; local development alone
+defaults to `http://localhost:8000`. Provider dashboard configuration still requires manual verification.
+
 ### Railway
 
 Create a Railway service with root directory `.` (repo root) — **not** `apps/api`. `apps/api` depends on

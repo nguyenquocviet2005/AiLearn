@@ -77,13 +77,25 @@ export function StudentHome({
     );
   }
 
-  if (stage.kind === "remediation" || stage.kind === "complete") {
+  if (
+    stage.kind === "remediation" ||
+    stage.kind === "complete" ||
+    stage.kind === "exit-ticket" ||
+    stage.kind === "exit-ticket-pending" ||
+    stage.kind === "exit-ticket-result"
+  ) {
     return (
       <article className="student-card">
         <p>
-          {stage.kind === "complete"
-            ? "Em đã hoàn thành lộ trình hôm nay!"
-            : "Em có một lộ trình đang chờ."}
+          {stage.kind === "exit-ticket"
+            ? "Em có một bài cuối để thử sức."
+            : stage.kind === "exit-ticket-pending"
+              ? "Bài cuối đã được lưu và đang chờ đồng bộ."
+              : stage.kind === "exit-ticket-result"
+                ? "Kết quả bài cuối của em đã sẵn sàng."
+                : stage.kind === "complete"
+                  ? "Em đã hoàn thành lộ trình hôm nay!"
+                  : "Em có một lộ trình đang chờ."}
         </p>
         <button
           type="button"

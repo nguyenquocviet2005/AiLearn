@@ -236,7 +236,12 @@ Success response (`201`):
       "skill_ids": ["skill_ratio_proportion_basics"],
       "form": "Dạng 1.1",
       "stem": "Từ tỉ lệ thức 3/4 = x/12, giá trị của x là:",
-      "options": [{ "label": "9" }, { "label": "16" }, { "label": "8" }, { "label": "36" }]
+      "options": [
+        { "label": "9" },
+        { "label": "16" },
+        { "label": "8" },
+        { "label": "36" }
+      ]
     }
   ]
 }
@@ -344,7 +349,12 @@ Request:
     "readiness_status": "needs_support",
     "confidence": 0.8,
     "root_causes": [
-      { "skill_id": "skill_ratio_proportion_basics", "rank": 1, "supporting_evidence_ids": [], "contradicting_evidence_ids": [] }
+      {
+        "skill_id": "skill_ratio_proportion_basics",
+        "rank": 1,
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": []
+      }
     ],
     "generated_at": "2026-07-19T10:50:00Z"
   }
@@ -363,7 +373,12 @@ Success response (`200`):
     "current_state": "REPAIR",
     "representation": "text",
     "steps": [
-      { "id": "step_stu_demo_01_worked_example", "kind": "worked_example", "state": "REPAIR", "completed": false }
+      {
+        "id": "step_stu_demo_01_worked_example",
+        "kind": "worked_example",
+        "state": "REPAIR",
+        "completed": false
+      }
     ],
     "updated_at": "2026-07-19T11:00:00Z",
     "root_cause_skill_id": "skill_ratio_proportion_basics"
@@ -431,10 +446,60 @@ Request:
 
 Success response (`200`): same shape as `POST /api/v1/remediation/sessions`.
 
+## `POST /api/v1/remediation/exit-tickets`
+
+Records the final transfer response after a completed remediation path. The answer key is resolved
+server-side from the synthetic demo fixture; a repeated `submission_id` returns the first result.
+The response records one of `transfer_passed`, `teacher_escalation`, or
+`diagnosis_reclassified`. The reclassification response includes the newly selected
+`StudentDiagnosticProfileV1` and a new in-memory remediation path.
+
+Request:
+
+```json
+{
+  "student_id": "stu_demo_transfer_01",
+  "ticket_id": "exit_inverse_relation",
+  "response_label": "Giảm xuống",
+  "submission_id": "exit_01"
+}
+```
+
+Success response (`200`):
+
+```json
+{
+  "outcome": {
+    "kind": "transfer_passed",
+    "recorded_at": "2026-07-18T11:00:00Z",
+    "message": "Em đã áp dụng được kiến thức vào một tình huống mới.",
+    "reclassified_profile": null
+  },
+  "remediation": { "is_complete": true, "transfer_outcome": true }
+}
+```
+
+Returns `409` when the remediation path is not complete and `422` for an unknown ticket or answer
+option.
+
 ## `GET /api/v1/remediation/sessions/{student_id}`
 
 Reads the current remediation session state. Success response (`200`): same shape as
 `POST /api/v1/remediation/sessions`. Unknown student (`404`) uses the same shape as `/attempts`.
+
+When a path is complete, the remediation response also includes an `exit_ticket` with `id`,
+`question`, and answer `options`, plus the nullable `transfer_outcome`. It never includes the
+answer key.
+
+## Demo endpoints
+
+`GET /api/v1/demo/personas` returns the six synthetic persona identifiers, labels, student ids, and
+display names used by the submission walkthrough. It does not expose profile evidence or answer
+keys.
+
+`POST /api/v1/demo/reset` accepts `{ "persona_id": "foundational-gap" }`, clears only the
+diagnostic and remediation in-memory session stores, and returns the selected synthetic profile to
+start a new path. It does not mutate Supabase, evidence events, or any production data.
 
 ## `GET /api/v1/students/{student_id}/diagnostic-profile`
 
