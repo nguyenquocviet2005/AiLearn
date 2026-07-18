@@ -1,0 +1,102 @@
+{
+  "schema_version": "1",
+  "planning_evidence_cutoff": "2026-07-18T21:19:00Z",
+  "events": [
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_001_post_001",
+      "student_id": "stu_g7_001",
+      "session_id": "sess_stu_g7_001_intervention_transfer",
+      "skill_id": "skill_word_problem_work_rate",
+      "item_id": "item_inv_prop_16",
+      "is_correct": true,
+      "recorded_at": "2026-07-18T22:00:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "8 ngày"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_001_post_002",
+      "student_id": "stu_g7_001",
+      "session_id": "sess_stu_g7_001_intervention_transfer",
+      "skill_id": "skill_word_problem_work_rate",
+      "item_id": "item_inv_prop_17",
+      "is_correct": true,
+      "recorded_at": "2026-07-18T22:01:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "15 máy"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_002_post_001",
+      "student_id": "stu_g7_002",
+      "session_id": "sess_stu_g7_002_intervention_transfer",
+      "skill_id": "skill_fraction_multiplication",
+      "item_id": "item_inv_prop_02",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T22:02:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "30/45"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_002_post_002",
+      "student_id": "stu_g7_002",
+      "session_id": "sess_stu_g7_002_intervention_transfer",
+      "skill_id": "skill_word_problem_work_rate",
+      "item_id": "item_inv_prop_16",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T22:03:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "4.5 ngày"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_003_post_001",
+      "student_id": "stu_g7_003",
+      "session_id": "sess_stu_g7_003_intervention_recheck",
+      "skill_id": "skill_distinguish_direct_inverse",
+      "item_id": "item_inv_prop_12",
+      "is_correct": true,
+      "recorded_at": "2026-07-18T22:04:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_003_post_002",
+      "student_id": "stu_g7_003",
+      "session_id": "sess_stu_g7_003_intervention_recheck",
+      "skill_id": "skill_inverse_proportion_definition",
+      "item_id": "item_inv_prop_04",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T22:05:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "y = kx (k ≠ 0)"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_004_post_001",
+      "student_id": "stu_g7_004",
+      "session_id": "sess_stu_g7_004_intervention_guided",
+      "skill_id": "skill_fraction_multiplication",
+      "item_id": "item_inv_prop_02",
+      "is_correct": true,
+      "recorded_at": "2026-07-18T22:06:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "2/3"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_stu_g7_004_post_002",
+      "student_id": "stu_g7_004",
+      "session_id": "sess_stu_g7_004_intervention_transfer",
+      "skill_id": "skill_fraction_multiplication",
+      "item_id": "item_inv_prop_02",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T22:07:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "13/14"
+    }
+  ]
+}

@@ -37,7 +37,7 @@ describe("PrintableTeacherReport", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Warm-up confirmation items · 5 min"),
+      screen.getByText("Readiness confirmation warm-up · 5 min"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("Immediate success is not transfer."),
@@ -69,7 +69,7 @@ describe("PrintableTeacherReport", () => {
         name: "Intervention report",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
+    expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
       "The matching lesson plan is unavailable",
     );
@@ -103,7 +103,7 @@ describe("PrintableTeacherReport", () => {
       screen.getByRole("heading", { name: "Intervention report" }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText("Warm-up confirmation items · 5 min"),
+      screen.queryByText("Readiness confirmation warm-up · 5 min"),
     ).not.toBeInTheDocument();
   });
 

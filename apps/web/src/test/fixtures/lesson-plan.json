@@ -1,47 +1,47 @@
 {
   "schema_version": "1",
-  "id": "plan_demo_fractions_01",
-  "class_id": "class_demo_6a",
-  "lesson_id": "lesson_demo_fractions_01",
+  "id": "plan_class_g7a_demo_lesson_g7_inverse_proportion_01",
+  "class_id": "class_g7a_demo",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
   "status": "draft",
   "total_duration_minutes": 45,
   "activities": [
     {
-      "id": "act_demo_warmup",
-      "title": "Warm-up confirmation items",
+      "id": "act_class_g7a_demo_lesson_g7_inverse_proportion_01_confirm",
+      "title": "Readiness confirmation warm-up",
       "duration_minutes": 5,
-      "root_cause_skill_id": "skill_fractions_equivalent",
-      "skill_id": "skill_fractions_equivalent",
-      "expected_evidence": "Correct identification of two equivalent fraction pairs",
-      "rationale": "Confirm prerequisite readiness before repair work."
+      "root_cause_skill_id": "skill_ratio_proportion_basics",
+      "skill_id": "skill_ratio_proportion_basics",
+      "expected_evidence": "One short response per intervention group confirming the diagnosed prerequisite need.",
+      "rationale": "Confirm priority 1 before instruction: score=0.5992; prevalence=0.1250 (5/40); downstream_impact=0.9167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
     },
     {
-      "id": "act_demo_repair",
-      "title": "Guided equivalent-fraction repair",
+      "id": "act_class_g7a_demo_lesson_g7_inverse_proportion_01_repair",
+      "title": "Guided prerequisite repair",
       "duration_minutes": 15,
-      "root_cause_skill_id": "skill_fractions_equivalent",
-      "skill_id": "skill_fractions_equivalent",
-      "expected_evidence": "Worked example plus guided problem completed with correct scaling",
-      "rationale": "Addresses the top teaching priority for the class."
+      "root_cause_skill_id": "skill_ratio_proportion_basics",
+      "skill_id": "skill_ratio_proportion_basics",
+      "expected_evidence": "A worked example and guided problem showing the prerequisite strategy.",
+      "rationale": "Allocate the longest guided block to priority 1 (skill_ratio_proportion_basics)."
     },
     {
-      "id": "act_demo_practice",
-      "title": "Independent unlike-fraction addition",
+      "id": "act_class_g7a_demo_lesson_g7_inverse_proportion_01_practice",
+      "title": "Intervention-group target practice",
       "duration_minutes": 15,
-      "root_cause_skill_id": "skill_common_denominator",
-      "skill_id": "skill_fractions_add_unlike",
-      "expected_evidence": "Two independent problems with correct common denominators",
-      "rationale": "Reconnect repaired prerequisites to the lesson target skill."
+      "root_cause_skill_id": "skill_fraction_multiplication",
+      "skill_id": "skill_word_problem_work_rate",
+      "expected_evidence": "Two target-skill responses per student, tagged to the assigned intervention group.",
+      "rationale": "Reconnect priority 2 (skill_fraction_multiplication) to the current lesson target."
     },
     {
-      "id": "act_demo_transfer",
-      "title": "Near-transfer exit ticket",
+      "id": "act_class_g7a_demo_lesson_g7_inverse_proportion_01_transfer",
+      "title": "Near-transfer exit evidence",
       "duration_minutes": 10,
-      "root_cause_skill_id": "skill_fractions_equivalent",
-      "skill_id": "skill_fractions_add_unlike",
-      "expected_evidence": "One near-transfer item distinguishing immediate success from transfer",
-      "rationale": "Capture transfer outcome evidence for the intervention report."
+      "root_cause_skill_id": "skill_ratio_proportion_basics",
+      "skill_id": "skill_word_problem_work_rate",
+      "expected_evidence": "One independent near-transfer response distinguishing immediate success from transfer.",
+      "rationale": "Capture comparable evidence for the next diagnostic and teacher review cycle."
     }
   ],
-  "generated_at": "2026-07-18T01:15:00Z"
+  "generated_at": "2026-07-18T21:19:00Z"
 }

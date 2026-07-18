@@ -60,7 +60,7 @@ describe("App", () => {
     const { unmount } = render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "A teaching plan starts with the evidence.",
+        name: "Choose the next teaching move with evidence.",
       }),
     ).toBeInTheDocument();
     unmount();
@@ -70,7 +70,7 @@ describe("App", () => {
     render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "A 45-minute path from evidence to action.",
+        name: "Shape a 45-minute path from evidence to action.",
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Approve plan" })).toBeEnabled();

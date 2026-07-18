@@ -1,8 +1,10 @@
 import json
+from datetime import datetime
 
+from ailearn_schemas import EvidenceEventV1
 from fastapi.testclient import TestClient
 
-from ailearn_api.config import API_PROJECT_ROOT
+from ailearn_api.config import API_PROJECT_ROOT, Settings, get_settings
 from ailearn_api.curriculum import CURRICULUM
 
 
@@ -55,6 +57,10 @@ def test_get_intervention_report_returns_404_for_unknown_id(
 def test_intervention_report_references_current_teacher_projection(
     client: TestClient,
 ) -> None:
+    client.app.dependency_overrides[get_settings] = lambda: Settings(
+        supabase_url=None,
+        supabase_secret_key=None,
+    )
     report_response = client.get("/api/v1/reports/report_demo_01")
     report = report_response.json()
 
@@ -79,21 +85,69 @@ def test_intervention_report_references_current_teacher_projection(
         plan["lesson_plan"]["class_id"],
         plan["lesson_plan"]["lesson_id"],
     )
+    assert datetime.fromisoformat(report["generated_at"]) >= datetime.fromisoformat(
+        plan["created_at"]
+    )
 
     snapshot_students = {student["student_id"] for student in snapshot["students"]}
     report_students = {outcome["student_id"] for outcome in report["student_outcomes"]}
     assert report_students <= snapshot_students
     assert {gap["skill_id"] for gap in report["remaining_gaps"]} <= CURRICULUM.skills.keys()
 
-    evidence_payload = json.loads(
-        (API_PROJECT_ROOT.parent.parent / "data/seeds/evidence-events.json").read_text(
+    intervention_evidence_payload = json.loads(
+        (API_PROJECT_ROOT.parent.parent / "data/fixtures/intervention-evidence.json").read_text(
             encoding="utf-8"
         )
     )
-    seeded_evidence_ids = {event["id"] for event in evidence_payload["events"]}
+    planning_cutoff = datetime.fromisoformat(
+        intervention_evidence_payload["planning_evidence_cutoff"]
+    )
+    assert planning_cutoff == datetime.fromisoformat(plan["created_at"])
+    intervention_events = {
+        event.id: event
+        for event in (
+            EvidenceEventV1.model_validate(raw_event)
+            for raw_event in intervention_evidence_payload["events"]
+        )
+    }
     report_evidence_ids = {
         evidence_id
         for outcome in report["student_outcomes"]
         for evidence_id in outcome["evidence_ids"]
     }
-    assert report_evidence_ids <= seeded_evidence_ids
+    assert report_evidence_ids == intervention_events.keys()
+
+    report_generated_at = datetime.fromisoformat(report["generated_at"])
+    outcomes_by_student = {outcome["student_id"]: outcome for outcome in report["student_outcomes"]}
+    for student_id, outcome in outcomes_by_student.items():
+        events = [intervention_events[event_id] for event_id in outcome["evidence_ids"]]
+        if outcome["outcome"] == "incomplete":
+            assert events == []
+            continue
+        assert events
+        assert all(event.student_id == student_id for event in events)
+        assert all(event.lesson_id == report["lesson_id"] for event in events)
+        assert all("intervention" in event.session_id for event in events)
+        assert all(planning_cutoff < event.recorded_at <= report_generated_at for event in events)
+
+    assert all(
+        intervention_events[event_id].is_correct
+        for event_id in outcomes_by_student["stu_g7_001"]["evidence_ids"]
+    )
+    assert not any(
+        intervention_events[event_id].is_correct
+        for event_id in outcomes_by_student["stu_g7_002"]["evidence_ids"]
+    )
+    reclassified_skills = {
+        intervention_events[event_id].skill_id
+        for event_id in outcomes_by_student["stu_g7_003"]["evidence_ids"]
+    }
+    assert reclassified_skills == {
+        "skill_distinguish_direct_inverse",
+        "skill_inverse_proportion_definition",
+    }
+    escalation_results = {
+        intervention_events[event_id].is_correct
+        for event_id in outcomes_by_student["stu_g7_004"]["evidence_ids"]
+    }
+    assert escalation_results == {True, False}

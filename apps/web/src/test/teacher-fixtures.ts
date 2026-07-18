@@ -8,7 +8,7 @@ import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspac
 import classSnapshotFixture from "./fixtures/class-snapshot.json";
 import lessonPlanFixture from "./fixtures/lesson-plan.json";
 
-// Test-only data mirrors the VAI-11 artifacts and remains typed by shared V1 contracts.
+// Test-only data is generated from the same deterministic G7 projection as the API fallback.
 const classSnapshot = classSnapshotFixture as ClassSnapshotV1;
 const lessonPlan = lessonPlanFixture as TeacherLessonPlanV1;
 
@@ -28,7 +28,7 @@ function versionFor(
       version === 1 ? null : `${lessonPlan.id}:v${version - 1}`,
     decision,
     published_at: publishedAt,
-    created_at: "2026-07-18T01:15:00Z",
+    created_at: lessonPlan.generated_at,
     snapshot: classSnapshot,
     lesson_plan: { ...lessonPlan, status },
   };

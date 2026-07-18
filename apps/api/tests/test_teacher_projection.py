@@ -1,8 +1,9 @@
+import json
 from datetime import UTC, datetime
 
 import pytest
 
-from ailearn_api.config import Settings
+from ailearn_api.config import API_PROJECT_ROOT, Settings
 from ailearn_api.models.evidence import EvidenceEventRecord
 from ailearn_api.models.student import StudentRecord
 from ailearn_api.teacher_projection import (
@@ -27,6 +28,22 @@ def test_seeded_g7_evidence_builds_the_teacher_snapshot_and_plan() -> None:
     assert plan_version.lesson_plan.class_id == DEMO_CLASS_ID
     assert plan_version.lesson_plan.lesson_id == snapshot.lesson_id
     assert sum(activity.duration_minutes for activity in plan_version.lesson_plan.activities) == 45
+
+
+def test_committed_teacher_demo_fixtures_match_the_deterministic_projection() -> None:
+    repo_root = API_PROJECT_ROOT.parent.parent
+    snapshot_fixture = json.loads(
+        (repo_root / "data/fixtures/class-snapshot.json").read_text(encoding="utf-8")
+    )
+    plan_fixture = json.loads(
+        (repo_root / "data/fixtures/lesson-plan.json").read_text(encoding="utf-8")
+    )
+
+    snapshot = initial_snapshot()
+    plan_version = initial_plan_version(snapshot)
+
+    assert snapshot_fixture == snapshot.model_dump(mode="json")
+    assert plan_fixture == plan_version.lesson_plan.model_dump(mode="json")
 
 
 @pytest.mark.anyio

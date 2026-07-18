@@ -1,77 +1,346 @@
 {
   "schema_version": "1",
-  "class_id": "class_demo_6a",
-  "lesson_id": "lesson_demo_fractions_01",
-  "generated_at": "2026-07-18T01:10:00Z",
+  "class_id": "class_g7a_demo",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
+  "generated_at": "2026-07-18T21:19:00Z",
   "students": [
     {
-      "student_id": "stu_demo_01",
-      "readiness_status": "needs_support",
-      "confidence": 0.78,
-      "primary_root_cause_skill_id": "skill_fractions_equivalent"
-    },
-    {
-      "student_id": "stu_demo_02",
-      "readiness_status": "needs_support",
-      "confidence": 0.71,
-      "primary_root_cause_skill_id": "skill_common_denominator"
-    },
-    {
-      "student_id": "stu_demo_03",
-      "readiness_status": "ready",
-      "confidence": 0.91,
-      "primary_root_cause_skill_id": null
-    },
-    {
-      "student_id": "stu_demo_04",
-      "readiness_status": "needs_support",
-      "confidence": 0.66,
-      "primary_root_cause_skill_id": "skill_fractions_equivalent"
-    },
-    {
-      "student_id": "stu_demo_05",
+      "student_id": "stu_g7_001",
       "readiness_status": "abstained",
-      "confidence": 0.2,
+      "confidence": 0.9553,
       "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_002",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_003",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_004",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+    },
+    {
+      "student_id": "stu_g7_005",
+      "readiness_status": "abstained",
+      "confidence": 0.96,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_006",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_007",
+      "readiness_status": "abstained",
+      "confidence": 0.9667,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_008",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_009",
+      "readiness_status": "abstained",
+      "confidence": 0.955,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_010",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+    },
+    {
+      "student_id": "stu_g7_011",
+      "readiness_status": "abstained",
+      "confidence": 0.9553,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_012",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+    },
+    {
+      "student_id": "stu_g7_013",
+      "readiness_status": "abstained",
+      "confidence": 0.9571,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_014",
+      "readiness_status": "abstained",
+      "confidence": 0.9577,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_015",
+      "readiness_status": "abstained",
+      "confidence": 0.9591,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_016",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_017",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_018",
+      "readiness_status": "abstained",
+      "confidence": 0.9559,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_019",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
+    },
+    {
+      "student_id": "stu_g7_020",
+      "readiness_status": "abstained",
+      "confidence": 0.9571,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_021",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_022",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_023",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_024",
+      "readiness_status": "abstained",
+      "confidence": 0.9567,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_025",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_026",
+      "readiness_status": "abstained",
+      "confidence": 0.9553,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_027",
+      "readiness_status": "abstained",
+      "confidence": 0.9577,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_028",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_029",
+      "readiness_status": "abstained",
+      "confidence": 0.95,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_030",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+    },
+    {
+      "student_id": "stu_g7_031",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_032",
+      "readiness_status": "abstained",
+      "confidence": 0.95,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_033",
+      "readiness_status": "abstained",
+      "confidence": 0.9553,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_034",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+    },
+    {
+      "student_id": "stu_g7_035",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+    },
+    {
+      "student_id": "stu_g7_036",
+      "readiness_status": "abstained",
+      "confidence": 0.9553,
+      "primary_root_cause_skill_id": null
+    },
+    {
+      "student_id": "stu_g7_037",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_038",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_039",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
+    },
+    {
+      "student_id": "stu_g7_040",
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
     }
   ],
-  "unknown_student_ids": ["stu_demo_06"],
+  "unknown_student_ids": [],
   "groups": [
     {
-      "id": "grp_demo_repair_equivalent",
-      "intervention_need": "repair_equivalent_fractions",
-      "student_ids": ["stu_demo_01", "stu_demo_04"],
-      "rationale": "Shared prerequisite gap on equivalent fractions with supporting evidence."
+      "id": "grp_01_skill_ratio_proportion_basics",
+      "intervention_need": "repair:skill_ratio_proportion_basics",
+      "student_ids": [
+        "stu_g7_004",
+        "stu_g7_010",
+        "stu_g7_012",
+        "stu_g7_034",
+        "stu_g7_035"
+      ],
+      "rationale": "Shared primary root-cause evidence for skill_ratio_proportion_basics; repair this prerequisite before target-skill practice."
     },
     {
-      "id": "grp_demo_repair_denominator",
-      "intervention_need": "repair_common_denominator",
-      "student_ids": ["stu_demo_02"],
-      "rationale": "Primary gap is finding a common denominator before adding unlike fractions."
+      "id": "grp_02_skill_fraction_multiplication",
+      "intervention_need": "repair:skill_fraction_multiplication",
+      "student_ids": [
+        "stu_g7_002",
+        "stu_g7_008",
+        "stu_g7_016",
+        "stu_g7_017",
+        "stu_g7_021",
+        "stu_g7_023",
+        "stu_g7_028",
+        "stu_g7_030"
+      ],
+      "rationale": "Shared primary root-cause evidence for skill_fraction_multiplication; repair this prerequisite before target-skill practice."
     },
     {
-      "id": "grp_demo_ready",
-      "intervention_need": "extension_transfer",
-      "student_ids": ["stu_demo_03"],
-      "rationale": "Ready for near-transfer practice on the lesson target skill."
+      "id": "grp_03_skill_distinguish_direct_inverse",
+      "intervention_need": "repair:skill_distinguish_direct_inverse",
+      "student_ids": [
+        "stu_g7_003",
+        "stu_g7_006",
+        "stu_g7_022",
+        "stu_g7_025",
+        "stu_g7_031",
+        "stu_g7_037",
+        "stu_g7_038",
+        "stu_g7_039",
+        "stu_g7_040"
+      ],
+      "rationale": "Shared primary root-cause evidence for skill_distinguish_direct_inverse; repair this prerequisite before target-skill practice."
     },
     {
-      "id": "grp_demo_confirmation",
-      "intervention_need": "confirmation_insufficient_evidence",
-      "student_ids": ["stu_demo_05"],
-      "rationale": "Diagnostic abstained; needs confirmation items before intervention labeling."
+      "id": "grp_04_skill_word_problem_work_rate",
+      "intervention_need": "repair:skill_word_problem_work_rate",
+      "student_ids": ["stu_g7_019"],
+      "rationale": "Shared primary root-cause evidence for skill_word_problem_work_rate; repair this prerequisite before target-skill practice."
+    },
+    {
+      "id": "grp_05_confirmation",
+      "intervention_need": "confirmation:insufficient_evidence",
+      "student_ids": [
+        "stu_g7_001",
+        "stu_g7_005",
+        "stu_g7_007",
+        "stu_g7_009",
+        "stu_g7_011",
+        "stu_g7_013",
+        "stu_g7_014",
+        "stu_g7_015",
+        "stu_g7_018",
+        "stu_g7_020",
+        "stu_g7_024",
+        "stu_g7_026",
+        "stu_g7_027",
+        "stu_g7_029",
+        "stu_g7_032",
+        "stu_g7_033",
+        "stu_g7_036"
+      ],
+      "rationale": "Evidence is insufficient or conflicting; confirm readiness before assigning an intervention."
     }
   ],
   "teaching_priorities": [
     {
-      "skill_id": "skill_fractions_equivalent",
+      "skill_id": "skill_ratio_proportion_basics",
       "rank": 1,
-      "rationale": "Highest prevalence among diagnosed students and blocks the lesson target."
+      "rationale": "score=0.5992; prevalence=0.1250 (5/40); downstream_impact=0.9167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
     },
     {
-      "skill_id": "skill_common_denominator",
+      "skill_id": "skill_fraction_multiplication",
       "rank": 2,
-      "rationale": "Secondary gap with clear intervention need for one student."
+      "rationale": "score=0.5042; prevalence=0.2000 (8/40); downstream_impact=0.4167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
+    },
+    {
+      "skill_id": "skill_distinguish_direct_inverse",
+      "rank": 3,
+      "rationale": "score=0.4933; prevalence=0.2250 (9/40); downstream_impact=0.3333; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
+    },
+    {
+      "skill_id": "skill_word_problem_work_rate",
+      "rank": 4,
+      "rationale": "score=0.4017; prevalence=0.0250 (1/40); downstream_impact=0.1667; lesson_urgency=1.0000; diagnostic_confidence=1.0000"
     }
   ]
 }
