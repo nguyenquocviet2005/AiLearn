@@ -73,6 +73,9 @@ data and workers, learning engines, and cross-cutting controls.
   for adaptation.
 - Redraw the running stack as a responsive layered architecture, retaining recognizable stack marks
   while explaining every device, local, edge, service, data, worker, AI, and control layer.
+- Correct the runtime-map motion so particles split and merge along the drawn routes, center every
+  particle on its connector, visibly connect layer four to layer five, remove all live-status tags,
+  and keep only the School Hub expansion tag.
 
 ## Approved Plan
 
@@ -143,10 +146,15 @@ was introduced.
   the browser application into a planned LAN School Hub and the live Vercel edge, merges both at the
   Railway FastAPI API, then fans out to Supabase/graph data and planned asynchronous workers before
   reaching the three learning engines and cross-cutting controls.
-- Added visible live-versus-scale-up states, explicit Vietnamese layer names, existing technology
-  marks, animated data pulses, a reduced-motion fallback, and single-column mobile routing. Workbox,
-  Dexie, Redis/RQ, School Hub, observability, and governance controls remain labeled as expansion work
-  rather than current repository dependencies.
+- Added explicit Vietnamese layer names, existing technology marks, animated data pulses, a
+  reduced-motion fallback, and single-column mobile routing. Supporting copy distinguishes the current
+  core from components that this presentation-only PR does not implement or deploy.
+- Replaced center-only branch particles with paired path animations that travel vertically, split
+  left/right, and merge back into the center. Layer four now uses a true two-to-one connector into the
+  AI layer, while mobile retains one centered vertical path for its stacked layout.
+- Removed every `Đang chạy` badge and removed expansion badges from Async Workers and cross-cutting
+  controls. School Hub remains the only node-level `Mở rộng` badge; the PWA card retains its scoped
+  `Mở rộng offline` label.
 - Replaced the abstract phase marks with a scanning CSS magnifier, a four-node chase-light graph, and
   a four-point curved path that visibly settles into a straight line. Renamed the middle phase to the
   more concrete `Truy vết` while retaining its root-cause purpose.
@@ -192,6 +200,8 @@ was introduced.
 - Modified: Separate the current React/Vite/FastAPI/Supabase/Railway/Vercel core from scale-up layers
   so planned PWA storage, School Hub, worker, observability, and governance components are not described
   as already deployed.
+- Accepted: Remove live-status badges, keep School Hub visibly marked as expansion work, and present
+  Async Workers and cross-cutting controls without expansion tags.
 - Accepted: Use the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.` in the hero and SEO title.
 - Accepted: Replace Phạm Tuấn Phong with Vũ Trung Quân in the published team list.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
@@ -276,6 +286,9 @@ was introduced.
 | Focused web tests and type-check after layered-stack redesign                 | PASS - 66/66 web tests and TypeScript project build                                                       |
 | Chrome 1440px, 900px, and 390px layered-stack inspection                      | PASS - route branches, stack marks, status labels, and mobile flow render without horizontal overflow     |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after stack redesign  | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
+| Focused web tests and type-check after connector corrections                  | PASS - 66/66 web tests and TypeScript project build                                                       |
+| Chrome 1440px and 390px connector inspection                                  | PASS - paired particles follow split/merge paths, remain line-centered, and layer 4 connects to layer 5   |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after connector fixes | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were

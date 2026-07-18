@@ -2904,11 +2904,6 @@
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
-  background: #8cebf8;
-  box-shadow: 0 0 12px rgba(140, 235, 248, 0.52);
-}
-
-.landing-runtime-legend span:last-child i {
   background: var(--landing-yellow);
   box-shadow: 0 0 12px rgba(241, 217, 79, 0.48);
 }
@@ -2949,15 +2944,14 @@
   content: "";
 }
 
-.landing-runtime-node::after,
-.landing-runtime-control::after {
+.landing-runtime-node--planned::after {
   position: absolute;
   top: 0;
   right: 0;
   padding: 0.45rem 0.65rem;
   color: #091215;
-  background: #8cebf8;
-  content: "Đang chạy";
+  background: var(--landing-yellow);
+  content: "Mở rộng";
   font-size: 0.56rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -2967,13 +2961,8 @@
   border-color: rgba(241, 217, 79, 0.34);
 }
 
-.landing-runtime-node--planned::before,
-.landing-runtime-node--planned::after {
+.landing-runtime-node--planned::before {
   background: var(--landing-yellow);
-}
-
-.landing-runtime-node--planned::after {
-  content: "Mở rộng";
 }
 
 .landing-runtime-node:hover,
@@ -3148,7 +3137,7 @@
 .landing-runtime-branch span,
 .landing-runtime-merge span {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   top: 50%;
   left: 50%;
   padding: 0.35rem 0.6rem;
@@ -3162,8 +3151,7 @@
   white-space: nowrap;
 }
 
-.landing-runtime-branch::after,
-.landing-runtime-merge::after,
+.landing-runtime-particle,
 .landing-runtime-flow::after {
   position: absolute;
   z-index: 2;
@@ -3175,7 +3163,26 @@
   background: var(--landing-yellow);
   box-shadow: 0 0 12px rgba(241, 217, 79, 0.8);
   content: "";
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+}
+
+.landing-runtime-branch .landing-runtime-particle--left {
+  animation: landing-runtime-branch-left 2.4s linear infinite;
+}
+
+.landing-runtime-branch .landing-runtime-particle--right {
+  animation: landing-runtime-branch-right 2.4s linear infinite;
+}
+
+.landing-runtime-merge .landing-runtime-particle--left {
+  animation: landing-runtime-merge-left 2.4s linear infinite;
+}
+
+.landing-runtime-merge .landing-runtime-particle--right {
+  animation: landing-runtime-merge-right 2.4s linear infinite;
+}
+
+.landing-runtime-flow::after {
   animation: landing-runtime-pulse 2.4s linear infinite;
 }
 
@@ -3255,9 +3262,101 @@
   line-height: 1.5;
 }
 
+@keyframes landing-runtime-branch-left {
+  0% {
+    top: 0;
+    left: 50%;
+  }
+
+  45% {
+    top: 50%;
+    left: 50%;
+  }
+
+  70% {
+    top: 50%;
+    left: 25%;
+  }
+
+  100% {
+    top: 100%;
+    left: 25%;
+  }
+}
+
+@keyframes landing-runtime-branch-right {
+  0% {
+    top: 0;
+    left: 50%;
+  }
+
+  45% {
+    top: 50%;
+    left: 50%;
+  }
+
+  70% {
+    top: 50%;
+    left: 75%;
+  }
+
+  100% {
+    top: 100%;
+    left: 75%;
+  }
+}
+
+@keyframes landing-runtime-merge-left {
+  0% {
+    top: 0;
+    left: 25%;
+  }
+
+  45% {
+    top: 50%;
+    left: 25%;
+  }
+
+  70% {
+    top: 50%;
+    left: 50%;
+  }
+
+  100% {
+    top: 100%;
+    left: 50%;
+  }
+}
+
+@keyframes landing-runtime-merge-right {
+  0% {
+    top: 0;
+    left: 75%;
+  }
+
+  45% {
+    top: 50%;
+    left: 75%;
+  }
+
+  70% {
+    top: 50%;
+    left: 50%;
+  }
+
+  100% {
+    top: 100%;
+    left: 50%;
+  }
+}
+
 @keyframes landing-runtime-pulse {
+  from {
+    top: 0;
+  }
+
   to {
-    top: calc(100% - 0.45rem);
+    top: 100%;
   }
 }
 
@@ -3360,16 +3459,18 @@
     grid-template-columns: 1fr;
   }
 
-  .landing-runtime-node::after,
-  .landing-runtime-control::after {
+  .landing-runtime-node--planned::after {
     padding: 0.35rem 0.5rem;
     font-size: 0.5rem;
   }
 
   .landing-runtime-copy h4,
   .landing-runtime-control h4 {
-    padding-right: 3.7rem;
     font-size: 1.08rem;
+  }
+
+  .landing-runtime-node--planned .landing-runtime-copy h4 {
+    padding-right: 3.7rem;
   }
 
   .landing-runtime-pair {
@@ -3395,6 +3496,16 @@
     text-overflow: ellipsis;
   }
 
+  .landing-runtime-branch .landing-runtime-particle--right,
+  .landing-runtime-merge .landing-runtime-particle--right {
+    display: none;
+  }
+
+  .landing-runtime-branch .landing-runtime-particle--left,
+  .landing-runtime-merge .landing-runtime-particle--left {
+    animation: landing-runtime-pulse 2.4s linear infinite;
+  }
+
   .landing-runtime-engines {
     grid-template-columns: 1fr;
   }
@@ -3409,8 +3520,7 @@
 @media (prefers-reduced-motion: reduce) {
   .landing-runtime-node,
   .landing-runtime-control,
-  .landing-runtime-branch::after,
-  .landing-runtime-merge::after,
+  .landing-runtime-particle,
   .landing-runtime-flow::after {
     animation: none;
     transition: none;

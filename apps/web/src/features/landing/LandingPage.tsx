@@ -406,9 +406,6 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 </p>
                 <div className="landing-runtime-legend" aria-label="Chú giải">
                   <span>
-                    <i aria-hidden="true" /> Lõi đang vận hành
-                  </span>
-                  <span>
                     <i aria-hidden="true" /> Mở rộng theo quy mô
                   </span>
                 </div>
@@ -419,7 +416,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               className="landing-runtime-map"
               aria-label="Sơ đồ kiến trúc AiLearn theo từng tầng"
             >
-              <article className="landing-runtime-node landing-runtime-node--wide landing-runtime-node--live">
+              <article className="landing-runtime-node landing-runtime-node--wide">
                 <div className="landing-runtime-copy">
                   <span className="landing-runtime-layer">
                     01 · Tầng thiết bị
@@ -446,6 +443,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
               <div className="landing-runtime-branch" aria-hidden="true">
                 <span>LAN khi offline · Edge khi online</span>
+                <i className="landing-runtime-particle landing-runtime-particle--left" />
+                <i className="landing-runtime-particle landing-runtime-particle--right" />
               </div>
 
               <div className="landing-runtime-pair">
@@ -465,7 +464,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   />
                 </article>
 
-                <article className="landing-runtime-node landing-runtime-node--live">
+                <article className="landing-runtime-node">
                   <div className="landing-runtime-copy">
                     <span className="landing-runtime-layer">
                       02B · Tầng phân phối web
@@ -484,9 +483,11 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
               <div className="landing-runtime-merge" aria-hidden="true">
                 <span>Đồng bộ khi có Internet</span>
+                <i className="landing-runtime-particle landing-runtime-particle--left" />
+                <i className="landing-runtime-particle landing-runtime-particle--right" />
               </div>
 
-              <article className="landing-runtime-node landing-runtime-node--cloud landing-runtime-node--live">
+              <article className="landing-runtime-node landing-runtime-node--cloud">
                 <div className="landing-runtime-copy">
                   <span className="landing-runtime-layer">
                     03 · Tầng dịch vụ
@@ -508,10 +509,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 aria-hidden="true"
               >
                 <span>Dữ liệu đồng bộ · Tác vụ bất đồng bộ</span>
+                <i className="landing-runtime-particle landing-runtime-particle--left" />
+                <i className="landing-runtime-particle landing-runtime-particle--right" />
               </div>
 
               <div className="landing-runtime-pair landing-runtime-pair--data">
-                <article className="landing-runtime-node landing-runtime-node--live">
+                <article className="landing-runtime-node">
                   <div className="landing-runtime-copy">
                     <span className="landing-runtime-layer">
                       04A · Tầng dữ liệu
@@ -528,7 +531,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   />
                 </article>
 
-                <article className="landing-runtime-node landing-runtime-node--planned">
+                <article className="landing-runtime-node">
                   <div className="landing-runtime-copy">
                     <span className="landing-runtime-layer">
                       04B · Tầng xử lý nền
@@ -548,9 +551,15 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 </article>
               </div>
 
-              <div className="landing-runtime-flow" aria-hidden="true" />
+              <div
+                className="landing-runtime-merge landing-runtime-merge--ai"
+                aria-hidden="true"
+              >
+                <i className="landing-runtime-particle landing-runtime-particle--left" />
+                <i className="landing-runtime-particle landing-runtime-particle--right" />
+              </div>
 
-              <article className="landing-runtime-node landing-runtime-node--ai landing-runtime-node--live">
+              <article className="landing-runtime-node landing-runtime-node--ai">
                 <div className="landing-runtime-copy">
                   <span className="landing-runtime-layer">
                     05 · Tầng trí tuệ học tập
@@ -583,7 +592,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
               <div className="landing-runtime-flow" aria-hidden="true" />
 
-              <article className="landing-runtime-control landing-runtime-node--planned">
+              <article className="landing-runtime-control">
                 <div>
                   <span className="landing-runtime-layer">
                     06 · Kiểm soát xuyên suốt
