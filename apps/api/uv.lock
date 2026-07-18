@@ -25,7 +25,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ailearn-diagnostic", editable = "../../ai/diagnostic" },
+    { name = "ailearn-diagnostic", editable = "../../packages/diagnostic" },
     { name = "ailearn-schemas", editable = "../../packages/schemas" },
     { name = "fastapi", specifier = ">=0.116.0,<1.0.0" },
     { name = "httpx", specifier = ">=0.28.1,<1.0.0" },
@@ -44,7 +44,7 @@ dev = [
 [[package]]
 name = "ailearn-diagnostic"
 version = "0.1.0"
-source = { editable = "../../ai/diagnostic" }
+source = { editable = "../../packages/diagnostic" }
 dependencies = [
     { name = "ailearn-schemas" },
 ]
