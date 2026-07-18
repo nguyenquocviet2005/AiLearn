@@ -32,6 +32,12 @@ describe("LandingPage", () => {
     expect(
       screen.getByAltText("Linh vật ánh sáng của AiLearn"),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Những người cùng thắp sáng AiLearn.",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByAltText(/^Chân dung /)).toHaveLength(6);
   });
 
   it("opens the requested workspace from the primary calls to action", async () => {

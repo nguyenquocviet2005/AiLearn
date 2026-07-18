@@ -25,6 +25,9 @@ In the final feedback pass, the human requested the dashboard headers be consoli
 rails, the landing header lose its white logo background while retaining blur, the hero copy move up,
 and the firefly mascot use its glowing tail as a recurring light source.
 
+The human then requested a homepage team section using the member information and portraits from page
+9 of `/home/h2n/h2n/AiLearn/mat/Bản sao của Vison.pdf`.
+
 ## Planning and Implementation Prompts
 
 - Create a new Linear issue assigned to the human owner and begin implementation.
@@ -34,6 +37,8 @@ and the firefly mascot use its glowing tail as a recurring light source.
   header, add purposeful motion, and make side navigation adaptive.
 - Remove redundant dashboard headers, stabilize rail dimensions, and strengthen the firefly light
   motif across the landing and student experience.
+- Add the six-person AiLearn team to the public homepage using the approved vision-deck portraits,
+  names, and roles.
 
 ## Approved Plan
 
@@ -70,6 +75,8 @@ was introduced.
   mascot's illuminated tail as the hero, transition, trust, rail, and student-progress light source.
 - Anchored the transition mascot to the `64%` teacher/student boundary at tablet widths after the final
   visual review exposed a breakpoint-specific horizontal offset.
+- Extracted the six source portraits from the vision PDF, converted them to compact WebP assets, and
+  added an editorial staggered team section with direct header and footer navigation.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
 - Localized teacher-facing interface copy to Vietnamese without changing API-provided evidence text.
 - Updated tests for the new observable labels, branding, navigation state, and asynchronous save guard.
@@ -86,6 +93,8 @@ was introduced.
   into the side rails.
 - Accepted: Use the firefly tail as a purposeful glowing-light motif instead of decorative mascot
   placement alone.
+- Accepted: Publish the six team members and portraits from the supplied product vision deck on the
+  homepage.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
   familiar system symbols and the approved mascot asset are used instead.
 - Rejected: None.
@@ -100,6 +109,7 @@ was introduced.
 - `apps/web/src/features/landing/LandingPage.tsx`
 - `apps/web/src/features/landing/LandingPage.test.tsx`
 - `apps/web/src/features/landing/landing.css`
+- `apps/web/public/team/*.webp`
 - `apps/web/src/features/teacher/TeacherShell.tsx`
 - `apps/web/src/features/teacher/TeacherWorkspace.tsx`
 - `apps/web/src/features/teacher/TeacherWorkspace.test.tsx`
@@ -135,6 +145,9 @@ was introduced.
 | Final Chrome desktop and 390px inspection                                     | PASS - rails remain 76/272px by 968px; mobile tap targets do not overlap; no horizontal overflow          |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after final feedback  | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
 | Chrome 967px transition alignment check                                       | PASS - mascot centered on the 64% boundary; no horizontal overflow                                        |
+| Web tests after team-section addition                                         | PASS - 58/58 web tests                                                                                    |
+| Chrome 1440px and 390px team-section inspection                               | PASS - all six portraits render; long names wrap; no horizontal overflow                                  |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after team addition   | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were

@@ -39,6 +39,39 @@ const learningLoop = [
   },
 ];
 
+const teamMembers = [
+  {
+    name: "Bạch Kim Anh",
+    role: "CMO",
+    image: "/team/bach-kim-anh.webp",
+  },
+  {
+    name: "Nguyễn Quốc Việt",
+    role: "Vibecoder Manager",
+    image: "/team/nguyen-quoc-viet.webp",
+  },
+  {
+    name: "Nguyễn Hồng Hải",
+    role: "CTO",
+    image: "/team/nguyen-hong-hai.webp",
+  },
+  {
+    name: "Phạm Tuấn Phong",
+    role: "CEO",
+    image: "/team/pham-tuan-phong.webp",
+  },
+  {
+    name: "Phạm Trọng Đông Hải",
+    role: "AI Engineer",
+    image: "/team/pham-trong-dong-hai.webp",
+  },
+  {
+    name: "Phạm Quang Huy",
+    role: "AI Researcher",
+    image: "/team/pham-quang-huy.webp",
+  },
+];
+
 function WorkspaceLink({
   children,
   className,
@@ -78,6 +111,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             <a href="#learning-loop">Cách hoạt động</a>
             <a href="#for-teachers">Giáo viên</a>
             <a href="#for-students">Học sinh</a>
+            <a href="#team">Đội ngũ</a>
           </nav>
         }
         actions={
@@ -335,6 +369,46 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           </figure>
         </section>
 
+        <section
+          className="landing-team"
+          id="team"
+          aria-labelledby="team-title"
+        >
+          <div className="landing-team-heading">
+            <div>
+              <p className="landing-kicker landing-kicker-dark">
+                Đội ngũ AiLearn
+              </p>
+              <h2 id="team-title">Những người cùng thắp sáng AiLearn.</h2>
+            </div>
+            <p>
+              Sáu thành viên kết hợp vận hành, công nghệ và nghiên cứu AI để đưa
+              một ý tưởng giáo dục thành trải nghiệm có thể dùng trong lớp học.
+            </p>
+          </div>
+
+          <div className="landing-team-list">
+            {teamMembers.map((member, index) => (
+              <figure key={member.name}>
+                <div className="landing-team-portrait">
+                  <img
+                    src={member.image}
+                    alt={`Chân dung ${member.name}`}
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3>{member.name}</h3>
+                    <p>{member.role}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         <section className="landing-trust" aria-labelledby="trust-title">
           <div className="landing-trust-firefly">
             <img
@@ -374,6 +448,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           <p>Trợ giảng thích ứng song hành cùng giáo viên Việt Nam.</p>
         </div>
         <div className="landing-footer-links">
+          <a className="landing-text-link" href="#team">
+            Đội ngũ
+          </a>
           <WorkspaceLink
             className="landing-text-link"
             onNavigate={onNavigate}

@@ -9,7 +9,8 @@ offline behavior, and broader curriculum coverage remain deferred to later issue
 
 The web application opens on a public Vietnamese product landing page at `/`. It introduces AiLearn's
 evidence-led learning loop and links into the existing teacher workspace at `/teacher` and student
-experience at `/student`.
+experience at `/student`. The public page also presents the six-person AiLearn team using the approved
+names, roles, and portraits from the product vision deck.
 
 ## Prerequisites
 
