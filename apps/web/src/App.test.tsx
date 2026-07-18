@@ -1,64 +1,45 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "./App";
 
+beforeEach(() => {
+  window.history.replaceState({}, "", "/");
+  vi.stubGlobal("scrollTo", vi.fn());
+});
+
 afterEach(() => {
   vi.unstubAllGlobals();
+  window.history.replaceState({}, "", "/");
 });
 
 describe("App", () => {
-  it("renders the Supabase-backed status", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          status: "ok",
-          database: {
-            status: "operational",
-            checked_at: "2026-07-17T00:00:00Z",
-          },
-        }),
-      }),
-    );
-
+  it("renders the AiLearn public landing page at the default route", () => {
     render(<App />);
 
     expect(
-      screen.getByText("Checking the API connection…"),
+      screen.getByRole("heading", { level: 1, name: "AiLearn" }),
     ).toBeInTheDocument();
-    expect(await screen.findByText(/Supabase is/i)).toHaveTextContent(
-      "operational",
-    );
+    expect(
+      screen.getByText("Thấy đúng chỗ vướng. Dạy đúng điều cần thiết."),
+    ).toBeInTheDocument();
   });
 
-  it("renders an actionable unavailable state and retries", async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({ ok: false })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          status: "ok",
-          database: {
-            status: "operational",
-            checked_at: "2026-07-17T00:00:00Z",
-          },
-        }),
-      });
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("navigates from the landing page into the teacher workspace", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     const user = userEvent.setup();
     render(<App />);
 
-    await screen.findByText("The platform status is currently unavailable.");
-    await user.click(screen.getByRole("button", { name: "Try again" }));
-
-    expect(await screen.findByText(/Supabase is/i)).toHaveTextContent(
-      "operational",
+    await user.click(
+      screen.getByRole("link", { name: "Mở không gian giáo viên" }),
     );
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+
+    expect(window.location.pathname).toBe("/teacher");
+    expect(
+      screen.getByRole("navigation", {
+        name: "Teacher workspace navigation",
+      }),
+    ).toBeInTheDocument();
   });
 });

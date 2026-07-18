@@ -7,6 +7,10 @@ write/read, and the VAI-10 infrastructure status path.
 Teacher planning now has deterministic domain policies; live teacher API/UI wiring, authentication,
 offline behavior, and broader curriculum coverage remain deferred to later issues.
 
+The web application opens on a public Vietnamese product landing page at `/`. It introduces AiLearn's
+evidence-led learning loop and links into the existing teacher workspace at `/teacher` and student
+experience at `/student`.
+
 ## Prerequisites
 
 - Node.js 22.x
