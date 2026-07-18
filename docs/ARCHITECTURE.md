@@ -4,7 +4,8 @@
 
 VAI-10 established the infrastructure walking skeleton. VAI-11 added shared V1 contracts,
 fixtures, and evidence persistence. VAI-13 added demo curriculum seeds and golden cases.
-VAI-14 adds a deterministic diagnostic engine in `packages/diagnostic/` (domain-only; no product HTTP):
+VAI-14 adds a deterministic diagnostic engine in `packages/diagnostic/` (domain-only; no product HTTP).
+VAI-15 adds deterministic class aggregation and lesson planning in `packages/planning/`:
 
 ```text
 React/Vite browser application
@@ -19,19 +20,20 @@ Curriculum / golden inputs:
   data/seeds + eval/golden
 Diagnostic engine (pure domain):
   packages/diagnostic  (MasteryEstimator, RootCauseRanker, diagnose)
+Planning engine (pure domain):
+  packages/planning    (DeterministicInterventionPolicy, snapshot + draft plan builders)
 ```
 
 The web application contains presentation and a typed API client. The API owns transport validation,
 CORS configuration, failure sanitization, and the server-side Supabase credential. The browser never
-calls Supabase directly. Evidence validation and diagnosis live in `ailearn_schemas` /
-`ailearn_diagnostic`; routes remain thin adapters. Product Diagnostic HTTP
+calls Supabase directly. Evidence validation, diagnosis, and planning live in `ailearn_schemas`,
+`ailearn_diagnostic`, and `ailearn_planning`; routes remain thin adapters. Product Diagnostic HTTP
 (`POST /diagnostics/start`, profile GET) remains deferred to VAI-17.
 
 ## Deferred Architecture
 
-Authentication roles, authorization, offline storage, synchronization, teacher planning engines,
-remediation state machines, AI orchestration, and a separate model service remain deferred to later
-issues.
+Authentication roles, authorization, offline storage, synchronization, teacher planning HTTP/UI
+wiring and persistence, AI orchestration, and a separate model service remain deferred to later issues.
 
 ## Operational Behavior
 
@@ -40,6 +42,10 @@ issues.
 - `/api/v1/evidence-events` supports write and read of `EvidenceEventV1` rows.
 - `diagnose(events, curriculum, items)` in `packages/diagnostic` produces `StudentDiagnosticProfileV1`
   deterministically without LLM calls.
+- `build_class_snapshot(...)` in `packages/planning` keeps unknown students separate, groups diagnosed
+  students by intervention need, and exposes deterministic priority-score components in each rationale.
+- `build_lesson_plan(...)` produces a 45-minute `TeacherLessonPlanV1` draft whose activities identify
+  a root cause, instructional skill, expected evidence, and rationale.
 - A missing configuration, timeout, malformed row, or Supabase HTTP failure returns a sanitized
   `503` (or `404` when an evidence id is missing).
 - Browser CORS access is restricted to the comma-separated exact origins in `CORS_ORIGINS`.
