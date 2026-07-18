@@ -47,6 +47,7 @@ describe("App", () => {
         name: "Điều hướng giáo viên",
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Lớp 7A · Mốc kiểm tra 2")).toBeInTheDocument();
   });
 
   it("renders the VAI-19 teacher routes on direct navigation", async () => {
@@ -60,7 +61,7 @@ describe("App", () => {
     const { unmount } = render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "Choose the next teaching move with evidence.",
+        name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
       }),
     ).toBeInTheDocument();
     unmount();
@@ -70,10 +71,12 @@ describe("App", () => {
     render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "Shape a 45-minute path from evidence to action.",
+        name: "Biến bằng chứng thành lộ trình dạy học 45 phút.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Approve plan" })).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
+    ).toBeEnabled();
   });
 
   it("renders the VAI-21 report routes on direct navigation", async () => {
@@ -89,7 +92,7 @@ describe("App", () => {
     const { unmount } = render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "See what changed—and what still needs teaching.",
+        name: "Nhìn rõ điều đã thay đổi và nội dung vẫn cần dạy.",
       }),
     ).toBeInTheDocument();
     unmount();
@@ -101,7 +104,7 @@ describe("App", () => {
     render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "Intervention report and lesson plan",
+        name: "Báo cáo can thiệp và kế hoạch bài dạy",
       }),
     ).toBeInTheDocument();
   });

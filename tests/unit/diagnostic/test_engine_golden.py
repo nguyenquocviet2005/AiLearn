@@ -65,6 +65,34 @@ def test_diagnose_is_deterministic() -> None:
     assert first.model_dump() == second.model_dump()
 
 
+def test_all_correct_evidence_is_ready_without_a_root_cause_conflict() -> None:
+    curriculum = load_curriculum()
+    items = load_items()
+    events = []
+    for index, item in enumerate(items.items.values(), start=1):
+        correct = next(option for option in item.options if option.is_correct)
+        events.append(
+            EvidenceEventV1(
+                schema_version="1",
+                id=f"ev_ready_{index:02d}",
+                student_id="stu_ready",
+                session_id="sess_ready",
+                skill_id=item.skill_ids[0],
+                item_id=item.item_id,
+                is_correct=True,
+                recorded_at=FIXED_NOW,
+                lesson_id=curriculum.lesson_id,
+                response_label=correct.label,
+            )
+        )
+
+    profile = diagnose(events, curriculum, items, now=FIXED_NOW)
+
+    assert profile.readiness_status == "ready"
+    assert profile.root_causes[0].skill_id == curriculum.target_skill_id
+    assert profile.root_causes[0].contradicting_evidence_ids == []
+
+
 def test_diagnostic_package_has_no_llm_imports() -> None:
     package_root = Path("packages/diagnostic/src/ailearn_diagnostic")
     forbidden = ("openai", "anthropic", "langchain", "litellm", "transformers")

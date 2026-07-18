@@ -76,21 +76,6 @@ def diagnose(
         )
 
     ranked = ranker.rank(events, curriculum, items, mastery)
-    if abstention.conflicting_top_skill(ranked):
-        ranked = ranker.rank_for_abstention(events, curriculum, items)
-        return StudentDiagnosticProfileV1(
-            schema_version="1",
-            student_id=student_id,
-            lesson_id=lesson_id,
-            target_skill_id=curriculum.target_skill_id,
-            readiness_status="abstained",
-            confidence=_confidence(
-                event_count=len(events), ranked=ranked, abstained=True
-            ),
-            root_causes=to_hypotheses(ranked),
-            generated_at=generated_at,
-        )
-
     observed_weak = {
         skill_id
         for skill_id, mean in mastery.items()
@@ -117,6 +102,21 @@ def diagnose(
                 event_count=len(events), ranked=ready_ranked, abstained=False
             ),
             root_causes=to_hypotheses(ready_ranked),
+            generated_at=generated_at,
+        )
+
+    if abstention.conflicting_top_skill(ranked):
+        ranked = ranker.rank_for_abstention(events, curriculum, items)
+        return StudentDiagnosticProfileV1(
+            schema_version="1",
+            student_id=student_id,
+            lesson_id=lesson_id,
+            target_skill_id=curriculum.target_skill_id,
+            readiness_status="abstained",
+            confidence=_confidence(
+                event_count=len(events), ranked=ranked, abstained=True
+            ),
+            root_causes=to_hypotheses(ranked),
             generated_at=generated_at,
         )
 

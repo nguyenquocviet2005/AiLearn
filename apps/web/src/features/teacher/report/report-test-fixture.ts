@@ -56,7 +56,7 @@ export const reportTestFixture: InterventionReportV1 = {
     },
   ],
   next_lesson_focus:
-    "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
+    "Củng cố cách lập quan hệ tỉ lệ nghịch và phép nhân phân số trước khi vận dụng vào bài toán năng suất.",
   printable_lesson_plan_id:
     "plan_class_g7a_demo_lesson_g7_inverse_proportion_01",
 };

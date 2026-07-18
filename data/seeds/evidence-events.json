@@ -68,10 +68,10 @@
       "session_id": "sess_stu_g7_001_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T01:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "10"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -248,10 +248,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "9"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -263,7 +263,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:01:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "13/14"
+      "response_label": "30/45"
     },
     {
       "schema_version": "1",
@@ -272,10 +272,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "7"
     },
     {
       "schema_version": "1",
@@ -284,10 +284,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T02:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = kx (k ≠ 0)"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -335,7 +335,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -347,7 +347,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "17"
     },
     {
       "schema_version": "1",
@@ -356,10 +356,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -380,10 +380,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T02:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Cạnh hình vuông và chu vi"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -452,10 +452,10 @@
       "session_id": "sess_stu_g7_002_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "3.75 giờ"
     },
     {
       "schema_version": "1",
@@ -467,7 +467,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "80 km/h"
+      "response_label": "70 km/h"
     },
     {
       "schema_version": "1",
@@ -524,10 +524,10 @@
       "session_id": "sess_stu_g7_003_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -551,7 +551,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -572,10 +572,10 @@
       "session_id": "sess_stu_g7_003_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_08",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:37:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3"
+      "response_label": "192"
     },
     {
       "schema_version": "1",
@@ -599,7 +599,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -623,7 +623,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T02:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Cạnh hình vuông và chu vi"
+      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
     },
     {
       "schema_version": "1",
@@ -644,10 +644,10 @@
       "session_id": "sess_stu_g7_003_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T02:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -755,7 +755,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T03:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "7"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -764,10 +764,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x − y = k"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -800,10 +800,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36x"
+      "response_label": "y = 36/x"
     },
     {
       "schema_version": "1",
@@ -812,10 +812,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_08",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "16"
+      "response_label": "3"
     },
     {
       "schema_version": "1",
@@ -836,10 +836,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -848,10 +848,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ nghịch với k = 12"
+      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
     },
     {
       "schema_version": "1",
@@ -860,10 +860,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -872,10 +872,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:12:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Vừa thuận vừa nghịch"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -884,10 +884,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 12, y = 20"
+      "response_label": "x = 20, y = 12"
     },
     {
       "schema_version": "1",
@@ -908,10 +908,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4.5 ngày"
+      "response_label": "8 ngày"
     },
     {
       "schema_version": "1",
@@ -944,10 +944,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "26.7 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -956,10 +956,10 @@
       "session_id": "sess_stu_g7_004_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -968,10 +968,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:30:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "9"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -980,10 +980,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:31:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "30/45"
     },
     {
       "schema_version": "1",
@@ -992,10 +992,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "7"
     },
     {
       "schema_version": "1",
@@ -1040,10 +1040,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = x/36"
     },
     {
       "schema_version": "1",
@@ -1076,10 +1076,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -1100,10 +1100,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -1112,10 +1112,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:42:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Vừa thuận vừa nghịch"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -1124,10 +1124,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 16, y = 16"
     },
     {
       "schema_version": "1",
@@ -1139,7 +1139,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T03:44:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "26"
     },
     {
       "schema_version": "1",
@@ -1148,10 +1148,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "3 ngày"
     },
     {
       "schema_version": "1",
@@ -1160,10 +1160,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T03:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -1196,10 +1196,10 @@
       "session_id": "sess_stu_g7_005_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T03:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "150 công nhân"
+      "response_label": "225 công nhân"
     },
     {
       "schema_version": "1",
@@ -1232,10 +1232,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -1244,10 +1244,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -1259,7 +1259,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T04:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không đổi"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -1271,7 +1271,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T04:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -1280,10 +1280,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -1304,10 +1304,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -1316,10 +1316,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -1328,10 +1328,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -1388,10 +1388,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -1424,10 +1424,10 @@
       "session_id": "sess_stu_g7_006_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
+      "response_label": "26.7 km/h"
     },
     {
       "schema_version": "1",
@@ -1472,10 +1472,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -1484,10 +1484,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -1496,10 +1496,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -1511,7 +1511,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T04:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -1571,7 +1571,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T04:40:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -1580,10 +1580,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
+      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
     },
     {
       "schema_version": "1",
@@ -1640,10 +1640,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -1652,10 +1652,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "2.25 giờ"
     },
     {
       "schema_version": "1",
@@ -1664,10 +1664,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
+      "response_label": "26.7 km/h"
     },
     {
       "schema_version": "1",
@@ -1676,10 +1676,10 @@
       "session_id": "sess_stu_g7_007_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T04:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "66 công nhân"
     },
     {
       "schema_version": "1",
@@ -1691,7 +1691,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "36"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -1736,10 +1736,10 @@
       "session_id": "sess_stu_g7_008_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T05:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không xác định được"
+      "response_label": "Giảm xuống"
     },
     {
       "schema_version": "1",
@@ -1748,10 +1748,10 @@
       "session_id": "sess_stu_g7_008_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T05:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "10"
     },
     {
       "schema_version": "1",
@@ -1775,7 +1775,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -1787,7 +1787,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "17"
     },
     {
       "schema_version": "1",
@@ -1796,10 +1796,10 @@
       "session_id": "sess_stu_g7_008_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T05:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -1808,10 +1808,10 @@
       "session_id": "sess_stu_g7_008_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T05:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch với k = 12"
     },
     {
       "schema_version": "1",
@@ -1847,7 +1847,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 15, y = 17"
+      "response_label": "x = 16, y = 16"
     },
     {
       "schema_version": "1",
@@ -1859,7 +1859,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "26"
     },
     {
       "schema_version": "1",
@@ -1883,7 +1883,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T05:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -1892,10 +1892,10 @@
       "session_id": "sess_stu_g7_008_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T05:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "3.75 giờ"
     },
     {
       "schema_version": "1",
@@ -1928,10 +1928,10 @@
       "session_id": "sess_stu_g7_009_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T05:30:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "9"
     },
     {
       "schema_version": "1",
@@ -2168,10 +2168,10 @@
       "session_id": "sess_stu_g7_010_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T06:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "9"
     },
     {
       "schema_version": "1",
@@ -2276,10 +2276,10 @@
       "session_id": "sess_stu_g7_010_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T06:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì x tăng thì y tăng"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -2312,10 +2312,10 @@
       "session_id": "sess_stu_g7_010_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T06:12:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -2516,10 +2516,10 @@
       "session_id": "sess_stu_g7_011_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T06:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -2651,7 +2651,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T07:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -2660,10 +2660,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:01:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "30/45"
+      "response_label": "2/3"
     },
     {
       "schema_version": "1",
@@ -2672,10 +2672,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T07:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -2684,10 +2684,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = kx (k ≠ 0)"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -2696,10 +2696,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không xác định được"
+      "response_label": "Giảm xuống"
     },
     {
       "schema_version": "1",
@@ -2708,10 +2708,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -2732,10 +2732,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_08",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "16"
+      "response_label": "3"
     },
     {
       "schema_version": "1",
@@ -2744,10 +2744,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "17"
+      "response_label": "6"
     },
     {
       "schema_version": "1",
@@ -2780,10 +2780,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Cạnh hình vuông và chu vi"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -2792,10 +2792,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:12:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -2816,10 +2816,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_15",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "36"
     },
     {
       "schema_version": "1",
@@ -2828,10 +2828,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4.5 ngày"
+      "response_label": "8 ngày"
     },
     {
       "schema_version": "1",
@@ -2852,10 +2852,10 @@
       "session_id": "sess_stu_g7_012_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3.75 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -2879,7 +2879,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T07:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "66 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -3020,10 +3020,10 @@
       "session_id": "sess_stu_g7_013_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -3092,10 +3092,10 @@
       "session_id": "sess_stu_g7_013_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -3104,10 +3104,10 @@
       "session_id": "sess_stu_g7_013_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T07:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "26.7 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -3119,7 +3119,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T07:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "150 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -3224,10 +3224,10 @@
       "session_id": "sess_stu_g7_014_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "6"
     },
     {
       "schema_version": "1",
@@ -3296,10 +3296,10 @@
       "session_id": "sess_stu_g7_014_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_15",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "36"
     },
     {
       "schema_version": "1",
@@ -3311,7 +3311,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T08:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -3323,7 +3323,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T08:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -3332,10 +3332,10 @@
       "session_id": "sess_stu_g7_014_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.25 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -3344,10 +3344,10 @@
       "session_id": "sess_stu_g7_014_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "70 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -3428,10 +3428,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -3476,10 +3476,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không, vì các tích khác nhau"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -3500,10 +3500,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -3536,10 +3536,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_15",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:44:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "26"
+      "response_label": "36"
     },
     {
       "schema_version": "1",
@@ -3572,10 +3572,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -3584,10 +3584,10 @@
       "session_id": "sess_stu_g7_015_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T08:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "70 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -3716,10 +3716,10 @@
       "session_id": "sess_stu_g7_016_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T09:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không, vì các tích khác nhau"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -3800,10 +3800,10 @@
       "session_id": "sess_stu_g7_016_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -3812,10 +3812,10 @@
       "session_id": "sess_stu_g7_016_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T09:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -3824,10 +3824,10 @@
       "session_id": "sess_stu_g7_016_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T09:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "80 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -3836,10 +3836,10 @@
       "session_id": "sess_stu_g7_016_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -3872,10 +3872,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "7"
     },
     {
       "schema_version": "1",
@@ -3920,10 +3920,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = x/36"
     },
     {
       "schema_version": "1",
@@ -3944,10 +3944,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:38:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
+      "response_label": "17"
     },
     {
       "schema_version": "1",
@@ -3956,10 +3956,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -3968,10 +3968,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:40:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch với k = 12"
     },
     {
       "schema_version": "1",
@@ -3980,10 +3980,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T09:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -3992,10 +3992,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T09:42:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -4004,10 +4004,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 16, y = 16"
     },
     {
       "schema_version": "1",
@@ -4040,10 +4040,10 @@
       "session_id": "sess_stu_g7_017_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T09:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -4055,7 +4055,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T09:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2 giờ"
+      "response_label": "3.75 giờ"
     },
     {
       "schema_version": "1",
@@ -4124,10 +4124,10 @@
       "session_id": "sess_stu_g7_018_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T10:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x + y = k"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -4148,10 +4148,10 @@
       "session_id": "sess_stu_g7_018_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T10:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "1.5"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -4232,10 +4232,10 @@
       "session_id": "sess_stu_g7_018_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T10:12:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Vừa thuận vừa nghịch"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -4523,7 +4523,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T10:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -4544,10 +4544,10 @@
       "session_id": "sess_stu_g7_019_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T10:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "70 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -4556,10 +4556,10 @@
       "session_id": "sess_stu_g7_019_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T10:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -4640,10 +4640,10 @@
       "session_id": "sess_stu_g7_020_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T11:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36x"
+      "response_label": "y = 36/x"
     },
     {
       "schema_version": "1",
@@ -4676,10 +4676,10 @@
       "session_id": "sess_stu_g7_020_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T11:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không, vì các tích khác nhau"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -4763,7 +4763,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -4772,10 +4772,10 @@
       "session_id": "sess_stu_g7_020_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T11:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3.75 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -4799,7 +4799,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "150 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -4811,7 +4811,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:30:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "36"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -4820,10 +4820,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:31:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "30/45"
     },
     {
       "schema_version": "1",
@@ -4832,10 +4832,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "7"
     },
     {
       "schema_version": "1",
@@ -4868,10 +4868,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "10"
     },
     {
       "schema_version": "1",
@@ -4880,10 +4880,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = x/36"
     },
     {
       "schema_version": "1",
@@ -4895,7 +4895,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:37:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -4907,7 +4907,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:38:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "17"
     },
     {
       "schema_version": "1",
@@ -4916,10 +4916,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -4988,10 +4988,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "3 ngày"
     },
     {
       "schema_version": "1",
@@ -5000,10 +5000,10 @@
       "session_id": "sess_stu_g7_021_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T11:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -5027,7 +5027,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T11:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "80 km/h"
+      "response_label": "70 km/h"
     },
     {
       "schema_version": "1",
@@ -5072,10 +5072,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -5087,7 +5087,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x − y = k"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -5099,7 +5099,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không đổi"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -5108,10 +5108,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -5123,7 +5123,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36 − x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -5132,10 +5132,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_08",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3"
+      "response_label": "192"
     },
     {
       "schema_version": "1",
@@ -5144,10 +5144,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -5159,7 +5159,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -5171,7 +5171,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -5204,10 +5204,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -5252,10 +5252,10 @@
       "session_id": "sess_stu_g7_022_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "2.25 giờ"
     },
     {
       "schema_version": "1",
@@ -5288,10 +5288,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:30:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "9"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -5312,10 +5312,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "7"
     },
     {
       "schema_version": "1",
@@ -5375,7 +5375,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:37:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -5387,7 +5387,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:38:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "17"
     },
     {
       "schema_version": "1",
@@ -5396,10 +5396,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Không, vì các tích khác nhau"
     },
     {
       "schema_version": "1",
@@ -5444,10 +5444,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 16, y = 16"
     },
     {
       "schema_version": "1",
@@ -5459,7 +5459,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T12:44:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "26"
     },
     {
       "schema_version": "1",
@@ -5468,10 +5468,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "3 ngày"
     },
     {
       "schema_version": "1",
@@ -5480,10 +5480,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -5504,10 +5504,10 @@
       "session_id": "sess_stu_g7_023_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T12:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
+      "response_label": "70 km/h"
     },
     {
       "schema_version": "1",
@@ -5648,10 +5648,10 @@
       "session_id": "sess_stu_g7_024_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T13:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
+      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
     },
     {
       "schema_version": "1",
@@ -5711,7 +5711,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T13:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "18 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -5723,7 +5723,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T13:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -5732,10 +5732,10 @@
       "session_id": "sess_stu_g7_024_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T13:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.25 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -5759,7 +5759,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T13:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "150 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -5792,10 +5792,10 @@
       "session_id": "sess_stu_g7_025_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T13:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -5804,10 +5804,10 @@
       "session_id": "sess_stu_g7_025_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T13:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -5819,7 +5819,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T13:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không đổi"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -5891,7 +5891,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T13:40:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -5996,10 +5996,10 @@
       "session_id": "sess_stu_g7_025_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T13:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "66 công nhân"
     },
     {
       "schema_version": "1",
@@ -6188,10 +6188,10 @@
       "session_id": "sess_stu_g7_026_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T14:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "18 ngày"
+      "response_label": "8 ngày"
     },
     {
       "schema_version": "1",
@@ -6308,10 +6308,10 @@
       "session_id": "sess_stu_g7_027_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T14:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -6356,10 +6356,10 @@
       "session_id": "sess_stu_g7_027_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T14:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không, vì các tích khác nhau"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -6443,7 +6443,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T14:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -6452,10 +6452,10 @@
       "session_id": "sess_stu_g7_027_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T14:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3.75 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -6464,10 +6464,10 @@
       "session_id": "sess_stu_g7_027_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T14:48:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "70 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -6479,7 +6479,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T14:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "150 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -6503,7 +6503,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T15:01:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "13/14"
+      "response_label": "30/45"
     },
     {
       "schema_version": "1",
@@ -6536,10 +6536,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T15:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tăng lên"
+      "response_label": "Giảm xuống"
     },
     {
       "schema_version": "1",
@@ -6548,10 +6548,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "10"
     },
     {
       "schema_version": "1",
@@ -6575,7 +6575,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T15:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -6608,10 +6608,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch với k = 12"
     },
     {
       "schema_version": "1",
@@ -6620,10 +6620,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T15:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Quãng đường đi được và thời gian (vận tốc không đổi)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -6644,10 +6644,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 16, y = 16"
     },
     {
       "schema_version": "1",
@@ -6659,7 +6659,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T15:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "26"
     },
     {
       "schema_version": "1",
@@ -6680,10 +6680,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "12 máy"
     },
     {
       "schema_version": "1",
@@ -6692,10 +6692,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "3.75 giờ"
     },
     {
       "schema_version": "1",
@@ -6704,10 +6704,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T15:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
+      "response_label": "70 km/h"
     },
     {
       "schema_version": "1",
@@ -6716,10 +6716,10 @@
       "session_id": "sess_stu_g7_028_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T15:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "100 công nhân"
+      "response_label": "225 công nhân"
     },
     {
       "schema_version": "1",
@@ -6980,10 +6980,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T16:01:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "30/45"
+      "response_label": "2/3"
     },
     {
       "schema_version": "1",
@@ -6992,10 +6992,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -7004,10 +7004,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -7016,10 +7016,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -7031,7 +7031,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "10"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -7040,10 +7040,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -7052,10 +7052,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_08",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:07:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3"
+      "response_label": "192"
     },
     {
       "schema_version": "1",
@@ -7067,7 +7067,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -7076,10 +7076,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -7088,10 +7088,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -7127,7 +7127,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 15, y = 17"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -7139,7 +7139,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "12"
     },
     {
       "schema_version": "1",
@@ -7151,7 +7151,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -7160,10 +7160,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -7175,7 +7175,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3.75 giờ"
+      "response_label": "2.25 giờ"
     },
     {
       "schema_version": "1",
@@ -7187,7 +7187,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "80 km/h"
+      "response_label": "26.7 km/h"
     },
     {
       "schema_version": "1",
@@ -7196,10 +7196,10 @@
       "session_id": "sess_stu_g7_030_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "66 công nhân"
     },
     {
       "schema_version": "1",
@@ -7220,10 +7220,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T16:31:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "13/14"
+      "response_label": "2/3"
     },
     {
       "schema_version": "1",
@@ -7232,10 +7232,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -7247,7 +7247,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x − y = k"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -7256,10 +7256,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -7271,7 +7271,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T16:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -7280,10 +7280,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -7316,10 +7316,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -7328,10 +7328,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:40:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -7364,10 +7364,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -7388,10 +7388,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -7400,10 +7400,10 @@
       "session_id": "sess_stu_g7_031_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T16:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
+      "response_label": "2.4 máy"
     },
     {
       "schema_version": "1",
@@ -7479,210 +7479,6 @@
     },
     {
       "schema_version": "1",
-      "id": "ev_stu_g7_032_004",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_inverse_proportion_definition",
-      "item_id": "item_inv_prop_04",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:03:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_005",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_inverse_proportion_definition",
-      "item_id": "item_inv_prop_05",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:04:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_006",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_find_constant_k",
-      "item_id": "item_inv_prop_06",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:05:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_007",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_find_constant_k",
-      "item_id": "item_inv_prop_07",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:06:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_008",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_solve_unknown_value",
-      "item_id": "item_inv_prop_08",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:07:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_009",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_solve_unknown_value",
-      "item_id": "item_inv_prop_09",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:08:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_010",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_verify_inverse_by_product",
-      "item_id": "item_inv_prop_10",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:09:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_011",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_verify_inverse_by_product",
-      "item_id": "item_inv_prop_11",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:10:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_012",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_distinguish_direct_inverse",
-      "item_id": "item_inv_prop_12",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:11:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_013",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_distinguish_direct_inverse",
-      "item_id": "item_inv_prop_13",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:12:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_014",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_equal_ratios_property",
-      "item_id": "item_inv_prop_14",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:13:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_015",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_equal_ratios_property",
-      "item_id": "item_inv_prop_15",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:14:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "36"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_016",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_word_problem_work_rate",
-      "item_id": "item_inv_prop_16",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:15:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_017",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_word_problem_work_rate",
-      "item_id": "item_inv_prop_17",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:16:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_018",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_word_problem_speed_distance",
-      "item_id": "item_inv_prop_18",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:17:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_019",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_word_problem_speed_distance",
-      "item_id": "item_inv_prop_19",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:18:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_032_020",
-      "student_id": "stu_g7_032",
-      "session_id": "sess_stu_g7_032_readiness",
-      "skill_id": "skill_multistep_reasoning",
-      "item_id": "item_inv_prop_20",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:19:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
-    },
-    {
-      "schema_version": "1",
       "id": "ev_stu_g7_033_001",
       "student_id": "stu_g7_033",
       "session_id": "sess_stu_g7_033_readiness",
@@ -7719,210 +7515,6 @@
     },
     {
       "schema_version": "1",
-      "id": "ev_stu_g7_033_004",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_inverse_proportion_definition",
-      "item_id": "item_inv_prop_04",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:33:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_005",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_inverse_proportion_definition",
-      "item_id": "item_inv_prop_05",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:34:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_006",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_find_constant_k",
-      "item_id": "item_inv_prop_06",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:35:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_007",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_find_constant_k",
-      "item_id": "item_inv_prop_07",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:36:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36/x"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_008",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_solve_unknown_value",
-      "item_id": "item_inv_prop_08",
-      "is_correct": false,
-      "recorded_at": "2026-07-18T17:37:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "32"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_009",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_solve_unknown_value",
-      "item_id": "item_inv_prop_09",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:38:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_010",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_verify_inverse_by_product",
-      "item_id": "item_inv_prop_10",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:39:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì tích x·y luôn bằng 36"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_011",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_verify_inverse_by_product",
-      "item_id": "item_inv_prop_11",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:40:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_012",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_distinguish_direct_inverse",
-      "item_id": "item_inv_prop_12",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:41:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_013",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_distinguish_direct_inverse",
-      "item_id": "item_inv_prop_13",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:42:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_014",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_equal_ratios_property",
-      "item_id": "item_inv_prop_14",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:43:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_015",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_equal_ratios_property",
-      "item_id": "item_inv_prop_15",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:44:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "36"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_016",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_word_problem_work_rate",
-      "item_id": "item_inv_prop_16",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:45:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_017",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_word_problem_work_rate",
-      "item_id": "item_inv_prop_17",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:46:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "15 máy"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_018",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_word_problem_speed_distance",
-      "item_id": "item_inv_prop_18",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:47:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_019",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_word_problem_speed_distance",
-      "item_id": "item_inv_prop_19",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:48:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "60 km/h"
-    },
-    {
-      "schema_version": "1",
-      "id": "ev_stu_g7_033_020",
-      "student_id": "stu_g7_033",
-      "session_id": "sess_stu_g7_033_readiness",
-      "skill_id": "skill_multistep_reasoning",
-      "item_id": "item_inv_prop_20",
-      "is_correct": true,
-      "recorded_at": "2026-07-18T17:49:00Z",
-      "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
-    },
-    {
-      "schema_version": "1",
       "id": "ev_stu_g7_034_001",
       "student_id": "stu_g7_034",
       "session_id": "sess_stu_g7_034_readiness",
@@ -7931,7 +7523,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T18:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "16"
     },
     {
       "schema_version": "1",
@@ -7940,10 +7532,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_fraction_multiplication",
       "item_id": "item_inv_prop_02",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:01:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "13/14"
+      "response_label": "2/3"
     },
     {
       "schema_version": "1",
@@ -7964,10 +7556,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = kx (k ≠ 0)"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -7976,10 +7568,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tăng lên"
+      "response_label": "Giảm xuống"
     },
     {
       "schema_version": "1",
@@ -7988,10 +7580,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "10"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -8000,10 +7592,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36 − x"
+      "response_label": "y = 36/x"
     },
     {
       "schema_version": "1",
@@ -8024,10 +7616,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:08:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "17"
+      "response_label": "6"
     },
     {
       "schema_version": "1",
@@ -8036,10 +7628,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì x tăng thì y tăng"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -8048,10 +7640,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ nghịch với k = 12"
+      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
     },
     {
       "schema_version": "1",
@@ -8060,10 +7652,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_12",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Quãng đường đi được và thời gian (vận tốc không đổi)"
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
     },
     {
       "schema_version": "1",
@@ -8084,10 +7676,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 12, y = 20"
+      "response_label": "x = 20, y = 12"
     },
     {
       "schema_version": "1",
@@ -8096,10 +7688,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_15",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:14:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "36"
     },
     {
       "schema_version": "1",
@@ -8108,10 +7700,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4.5 ngày"
+      "response_label": "8 ngày"
     },
     {
       "schema_version": "1",
@@ -8144,10 +7736,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_19",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:18:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "70 km/h"
+      "response_label": "60 km/h"
     },
     {
       "schema_version": "1",
@@ -8156,10 +7748,10 @@
       "session_id": "sess_stu_g7_034_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T18:19:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -8204,10 +7796,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x − y = k"
+      "response_label": "x · y = k (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -8216,10 +7808,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không xác định được"
+      "response_label": "Giảm xuống"
     },
     {
       "schema_version": "1",
@@ -8228,10 +7820,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "10"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -8240,10 +7832,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_07",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36 − x"
+      "response_label": "y = 36/x"
     },
     {
       "schema_version": "1",
@@ -8264,10 +7856,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:38:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2.4"
+      "response_label": "6"
     },
     {
       "schema_version": "1",
@@ -8276,10 +7868,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_10",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Có, vì x tăng thì y tăng"
+      "response_label": "Có, vì tích x·y luôn bằng 36"
     },
     {
       "schema_version": "1",
@@ -8312,10 +7904,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_distinguish_direct_inverse",
       "item_id": "item_inv_prop_13",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:42:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Vừa thuận vừa nghịch"
+      "response_label": "Tỉ lệ thuận"
     },
     {
       "schema_version": "1",
@@ -8324,10 +7916,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 16, y = 16"
+      "response_label": "x = 20, y = 12"
     },
     {
       "schema_version": "1",
@@ -8336,10 +7928,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_15",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:44:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "36"
     },
     {
       "schema_version": "1",
@@ -8348,10 +7940,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4.5 ngày"
+      "response_label": "8 ngày"
     },
     {
       "schema_version": "1",
@@ -8360,10 +7952,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:46:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12 máy"
+      "response_label": "15 máy"
     },
     {
       "schema_version": "1",
@@ -8372,10 +7964,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T18:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3.75 giờ"
+      "response_label": "4 giờ"
     },
     {
       "schema_version": "1",
@@ -8396,10 +7988,10 @@
       "session_id": "sess_stu_g7_035_readiness",
       "skill_id": "skill_multistep_reasoning",
       "item_id": "item_inv_prop_20",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T18:49:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "225 công nhân"
+      "response_label": "100 công nhân"
     },
     {
       "schema_version": "1",
@@ -8600,10 +8192,10 @@
       "session_id": "sess_stu_g7_036_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_17",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T19:16:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24 máy"
+      "response_label": "15 máy"
     },
     {
       "schema_version": "1",
@@ -8672,10 +8264,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -8684,10 +8276,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:33:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -8696,10 +8288,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_05",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Giảm xuống"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -8744,10 +8336,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_solve_unknown_value",
       "item_id": "item_inv_prop_09",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:38:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "6"
+      "response_label": "24"
     },
     {
       "schema_version": "1",
@@ -8768,10 +8360,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_verify_inverse_by_product",
       "item_id": "item_inv_prop_11",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:40:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không tỉ lệ nghịch, vì 4 × 4 = 16 ≠ 12"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -8783,7 +8375,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T19:41:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Cạnh hình vuông và chu vi"
+      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
     },
     {
       "schema_version": "1",
@@ -8804,10 +8396,10 @@
       "session_id": "sess_stu_g7_037_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T19:43:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -8888,10 +8480,10 @@
       "session_id": "sess_stu_g7_038_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T20:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "9"
     },
     {
       "schema_version": "1",
@@ -8912,10 +8504,10 @@
       "session_id": "sess_stu_g7_038_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -8924,10 +8516,10 @@
       "session_id": "sess_stu_g7_038_readiness",
       "skill_id": "skill_inverse_proportion_definition",
       "item_id": "item_inv_prop_04",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x · y = k (k ≠ 0)"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -8939,7 +8531,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:04:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không đổi"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -8951,7 +8543,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "2/3"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -8999,7 +8591,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -9044,10 +8636,10 @@
       "session_id": "sess_stu_g7_038_readiness",
       "skill_id": "skill_equal_ratios_property",
       "item_id": "item_inv_prop_14",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:13:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x = 20, y = 12"
+      "response_label": "x = 12, y = 20"
     },
     {
       "schema_version": "1",
@@ -9068,10 +8660,10 @@
       "session_id": "sess_stu_g7_038_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:15:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -9152,10 +8744,10 @@
       "session_id": "sess_stu_g7_039_readiness",
       "skill_id": "skill_direct_proportion",
       "item_id": "item_inv_prop_03",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:32:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "12"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -9179,7 +8771,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:34:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Không đổi"
+      "response_label": "Tăng lên"
     },
     {
       "schema_version": "1",
@@ -9188,10 +8780,10 @@
       "session_id": "sess_stu_g7_039_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:35:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -9203,7 +8795,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:36:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36 − x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -9239,7 +8831,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T20:39:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -9308,10 +8900,10 @@
       "session_id": "sess_stu_g7_039_readiness",
       "skill_id": "skill_word_problem_work_rate",
       "item_id": "item_inv_prop_16",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:45:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8 ngày"
+      "response_label": "4.5 ngày"
     },
     {
       "schema_version": "1",
@@ -9332,10 +8924,10 @@
       "session_id": "sess_stu_g7_039_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T20:47:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "2.25 giờ"
     },
     {
       "schema_version": "1",
@@ -9368,10 +8960,10 @@
       "session_id": "sess_stu_g7_040_readiness",
       "skill_id": "skill_ratio_proportion_basics",
       "item_id": "item_inv_prop_01",
-      "is_correct": false,
+      "is_correct": true,
       "recorded_at": "2026-07-18T21:00:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "8"
+      "response_label": "9"
     },
     {
       "schema_version": "1",
@@ -9395,7 +8987,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:02:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "3/4"
+      "response_label": "4/3"
     },
     {
       "schema_version": "1",
@@ -9407,7 +8999,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:03:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "x + y = k"
+      "response_label": "y = kx (k ≠ 0)"
     },
     {
       "schema_version": "1",
@@ -9428,10 +9020,10 @@
       "session_id": "sess_stu_g7_040_readiness",
       "skill_id": "skill_find_constant_k",
       "item_id": "item_inv_prop_06",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T21:05:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "24"
+      "response_label": "1.5"
     },
     {
       "schema_version": "1",
@@ -9443,7 +9035,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:06:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "y = 36 − x"
+      "response_label": "y = 36x"
     },
     {
       "schema_version": "1",
@@ -9479,7 +9071,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:09:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận với k = 9"
+      "response_label": "Có, vì x tăng thì y tăng"
     },
     {
       "schema_version": "1",
@@ -9491,7 +9083,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:10:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Tỉ lệ thuận"
+      "response_label": "Tỉ lệ nghịch, vì y giảm khi x tăng"
     },
     {
       "schema_version": "1",
@@ -9503,7 +9095,7 @@
       "is_correct": false,
       "recorded_at": "2026-07-18T21:11:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "Cạnh hình vuông và chu vi"
+      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
     },
     {
       "schema_version": "1",
@@ -9572,10 +9164,10 @@
       "session_id": "sess_stu_g7_040_readiness",
       "skill_id": "skill_word_problem_speed_distance",
       "item_id": "item_inv_prop_18",
-      "is_correct": true,
+      "is_correct": false,
       "recorded_at": "2026-07-18T21:17:00Z",
       "lesson_id": "lesson_g7_inverse_proportion_01",
-      "response_label": "4 giờ"
+      "response_label": "2.25 giờ"
     },
     {
       "schema_version": "1",

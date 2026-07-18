@@ -8,6 +8,15 @@ import {
 } from "@/lib/adapters/teacher-repository";
 import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 import { TeacherShell, type TeacherRoute } from "./TeacherShell";
+import {
+  interventionNeedLabel,
+  learnerLabel,
+  planStatusLabel,
+  priorityExplanation,
+  priorityMetrics,
+  skillLabel,
+  teacherFacingText,
+} from "./teacher-copy";
 
 type TeacherView = "overview" | "lesson-plan";
 type PlanAction = "save" | "approve" | "reject" | "publish";
@@ -28,67 +37,43 @@ type TeacherWorkspaceProps = {
   repository?: TeacherWorkspaceRepository;
 };
 
-function humanize(value: string) {
-  return value
-    .replace(/^(skill_|repair:|confirmation:)/, "")
-    .replaceAll("_", " ");
-}
-
-function formatStatus(value: string) {
-  return value.replaceAll("_", " ");
-}
-
-function learnerLabel(studentId: string) {
-  const sequence = studentId.match(/(\d+)$/)?.[1];
-  return sequence ? `Learner ${sequence}` : studentId;
-}
-
-function priorityExplanation(rationale: string) {
-  const prevalence = rationale.match(/prevalence=[\d.]+ \((\d+)\/(\d+)\)/);
-  const impact = rationale.match(/downstream_impact=([\d.]+)/);
-  const urgency = rationale.match(/lesson_urgency=([\d.]+)/);
-  if (!prevalence || !impact || !urgency) {
-    return rationale;
-  }
-  return `${prevalence[1]} of ${prevalence[2]} learners · ${Math.round(
-    Number(impact[1]) * 100,
-  )}% prerequisite impact · ${Math.round(Number(urgency[1]) * 100)}% lesson urgency`;
-}
-
 function teacherWorkspaceErrorMessage(error: unknown): string {
   if (error instanceof TeacherRepositoryError) {
     if (error.kind === "configuration") {
-      return "The teacher workspace API is not configured for this deployment.";
+      return "API không gian giáo viên chưa được cấu hình cho bản triển khai này.";
     }
     if (error.kind === "unavailable") {
-      return "The teacher workspace API is unavailable. Check the connection and try again.";
+      return "API không gian giáo viên đang không khả dụng. Hãy kiểm tra kết nối và thử lại.";
     }
   }
-  return "The teacher workspace data could not be loaded. Try again.";
+  return "Không thể tải dữ liệu không gian giáo viên. Vui lòng thử lại.";
 }
 
 function actionErrorMessage(error: unknown): string {
   if (error instanceof TeacherRepositoryError) {
     if (error.code === "stale_lesson_plan_version" || error.status === 409) {
-      return "This plan changed in another session. Reload the latest version before continuing.";
+      return "Kế hoạch đã thay đổi trong một phiên khác. Hãy tải phiên bản mới nhất trước khi tiếp tục.";
     }
     if (error.kind === "unavailable") {
-      return "The change could not reach the teacher API. Check the connection and try again.";
+      return "Không thể gửi thay đổi tới API giáo viên. Hãy kiểm tra kết nối và thử lại.";
     }
     if (error.kind === "configuration") {
-      return "This deployment is missing its teacher API configuration.";
+      return "Bản triển khai này đang thiếu cấu hình API giáo viên.";
     }
     if (error.kind === "response") {
-      return error.message;
+      if (error.status === 422) {
+        return "Thay đổi chưa hợp lệ với cấu trúc kế hoạch hiện tại. Hãy kiểm tra lại nhóm và thời lượng.";
+      }
+      return "API đã từ chối thay đổi. Vui lòng tải lại phiên bản mới nhất và thử lại.";
     }
   }
-  return "The teacher decision could not be updated. Try again.";
+  return "Không thể cập nhật quyết định của giáo viên. Vui lòng thử lại.";
 }
 
 function TeacherLoadingState() {
   return (
     <section className="teacher-loading" aria-live="polite" aria-busy="true">
-      <p className="teacher-kicker">Loading teacher evidence</p>
+      <p className="teacher-kicker">Đang tải bằng chứng của lớp</p>
       <div className="teacher-skeleton teacher-skeleton-title" />
       <div className="teacher-skeleton-grid" aria-hidden="true">
         <span />
@@ -110,15 +95,15 @@ function TeacherErrorState({
     <section className="teacher-state-card" role="alert">
       <img src="/brand/ailearn-mascot.webp" alt="" />
       <div>
-        <p className="teacher-kicker">Workspace unavailable</p>
-        <h1>We could not load this teacher view.</h1>
+        <p className="teacher-kicker">Không gian tạm thời gián đoạn</p>
+        <h1>Không thể tải màn hình giáo viên.</h1>
         <p>{message}</p>
         <button
           className="teacher-button teacher-button-primary"
           onClick={onRetry}
           type="button"
         >
-          Try again
+          Thử lại
         </button>
       </div>
     </section>
@@ -146,46 +131,89 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
     (readinessCounts.abstained ?? 0) + snapshot.unknown_student_ids.length;
   const totalLearners =
     snapshot.students.length + snapshot.unknown_student_ids.length;
+  const misconceptionPriority = snapshot.teaching_priorities.find(
+    (priority) => priority.skill_id === "skill_distinguish_direct_inverse",
+  );
+  const foundationPriority = snapshot.teaching_priorities.find(
+    (priority) => priority.skill_id === "skill_ratio_proportion_basics",
+  );
+  const misconceptionMetrics = misconceptionPriority
+    ? priorityMetrics(misconceptionPriority.rationale)
+    : null;
+  const foundationMetrics = foundationPriority
+    ? priorityMetrics(foundationPriority.rationale)
+    : null;
 
   return (
     <section className="teacher-content" aria-labelledby="teacher-page-title">
       <div className="teacher-page-heading">
         <div>
-          <p className="teacher-kicker">Class evidence · Grade 7 mathematics</p>
+          <p className="teacher-kicker">Bằng chứng lớp học · Toán 7</p>
           <h1 id="teacher-page-title">
-            Choose the next teaching move with evidence.
+            Chọn bước dạy tiếp theo bằng bằng chứng.
           </h1>
           <p className="teacher-lede">
-            Review readiness, keep uncertainty visible, and group learners by
-            the support they need now.
+            Xem mức sẵn sàng, giữ rõ phần chưa chắc chắn và chia nhóm theo đúng
+            hỗ trợ học sinh cần trong tiết học này.
           </p>
         </div>
         <p className="teacher-context">
-          <span>{snapshot.class_id}</span>
-          <span>{snapshot.lesson_id}</span>
+          <span>Lớp: {snapshot.class_id}</span>
+          <span>Bài học: {snapshot.lesson_id}</span>
         </p>
       </div>
 
-      <section className="teacher-summary" aria-label="Class readiness summary">
+      <section
+        className="teacher-summary"
+        aria-label="Tóm tắt mức sẵn sàng của lớp"
+      >
         <article>
-          <span>Total learners</span>
+          <span>Tổng số học sinh</span>
           <strong>{totalLearners}</strong>
-          <p>Included in this synthetic class demonstration.</p>
+          <p>Dữ liệu tổng hợp của lớp học mô phỏng.</p>
         </article>
         <article>
-          <span>Ready</span>
+          <span>Đã sẵn sàng</span>
           <strong>{readinessCounts.ready ?? 0}</strong>
-          <p>Can move into independent transfer practice.</p>
+          <p>Có thể chuyển sang bài vận dụng độc lập.</p>
         </article>
         <article>
-          <span>Needs support</span>
+          <span>Cần hỗ trợ</span>
           <strong>{readinessCounts.needs_support ?? 0}</strong>
-          <p>Have a diagnosed prerequisite or target-skill gap.</p>
+          <p>Đã xác định khoảng hổng tiên quyết hoặc kỹ năng mục tiêu.</p>
         </article>
         <article className="teacher-summary-attention">
-          <span>Needs confirmation</span>
+          <span>Cần xác nhận</span>
           <strong>{confirmationCount}</strong>
-          <p>Remain unlabelled until enough evidence is available.</p>
+          <p>Chưa gắn nhãn can thiệp khi bằng chứng chưa đủ.</p>
+        </article>
+      </section>
+
+      <section
+        className="teacher-showcases"
+        aria-label="Hai ca điển hình của động cơ phân nhóm"
+      >
+        <article>
+          <p className="teacher-kicker">Ca điển hình 01 · Sai lầm phổ biến</p>
+          <h2>Nhầm tỉ lệ thuận và tỉ lệ nghịch</h2>
+          <strong>{misconceptionMetrics?.affected ?? 0} học sinh</strong>
+          <p>
+            Đây là khoảng hổng có độ phổ biến cao nhất. Động cơ giữ nhóm này
+            riêng để giáo viên sửa mô hình “tăng–giảm” trước khi giải bài toán
+            năng suất.
+          </p>
+          <span>Ưu tiên số {misconceptionPriority?.rank ?? "—"}</span>
+        </article>
+        <article>
+          <p className="teacher-kicker">Ca điển hình 02 · Khoảng hổng gốc</p>
+          <h2>Tỉ số và tỉ lệ thức</h2>
+          <strong>{foundationMetrics?.affected ?? 0} học sinh</strong>
+          <p>
+            Dù ít học sinh hơn, kỹ năng này ảnh hưởng tới khoảng{" "}
+            {foundationMetrics?.impactPercent ?? 0}% chuỗi tiên quyết nên được
+            xếp trước để tránh sửa phần ngọn.
+          </p>
+          <span>Ưu tiên số {foundationPriority?.rank ?? "—"}</span>
         </article>
       </section>
 
@@ -195,8 +223,8 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
           aria-labelledby="priority-title"
         >
           <div className="teacher-panel-heading">
-            <p className="teacher-kicker">Teaching priorities</p>
-            <h2 id="priority-title">What needs attention first</h2>
+            <p className="teacher-kicker">Ưu tiên giảng dạy</p>
+            <h2 id="priority-title">Nội dung cần chú ý trước</h2>
           </div>
           {snapshot.teaching_priorities.length > 0 ? (
             <ol>
@@ -206,7 +234,7 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
                     {String(priority.rank).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3>{humanize(priority.skill_id)}</h3>
+                    <h3>{skillLabel(priority.skill_id)}</h3>
                     <p>{priorityExplanation(priority.rationale)}</p>
                   </div>
                 </li>
@@ -214,22 +242,24 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
             </ol>
           ) : (
             <p className="teacher-empty">
-              No teaching priority can be ranked until more evidence arrives.
+              Chưa thể xếp ưu tiên cho tới khi có thêm bằng chứng.
             </p>
           )}
           <div className="root-cause-distribution">
-            <h3>Root-cause distribution</h3>
+            <h3>Phân bố nguyên nhân gốc</h3>
             {Object.keys(rootCauseCounts).length > 0 ? (
               <ul>
                 {Object.entries(rootCauseCounts).map(([skillId, count]) => (
                   <li key={skillId}>
-                    <span>{humanize(skillId)}</span>
+                    <span>{skillLabel(skillId)}</span>
                     <strong>{count}</strong>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="teacher-empty">No confirmed root cause yet.</p>
+              <p className="teacher-empty">
+                Chưa có nguyên nhân gốc được xác nhận.
+              </p>
             )}
           </div>
         </section>
@@ -238,15 +268,15 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
           className="teacher-panel teacher-confirmation"
           aria-labelledby="confirmation-title"
         >
-          <p className="teacher-kicker">Evidence boundary</p>
-          <h2 id="confirmation-title">Uncertainty stays visible.</h2>
+          <p className="teacher-kicker">Ranh giới bằng chứng</p>
+          <h2 id="confirmation-title">Không che giấu phần chưa chắc chắn.</h2>
           <p>
             {confirmationCount > 0
-              ? `${confirmationCount} learners need confirmation before the system recommends targeted support.`
-              : "Every learner currently has enough evidence for a provisional recommendation."}
+              ? `${confirmationCount} học sinh cần được xác nhận trước khi hệ thống đề xuất hỗ trợ có mục tiêu.`
+              : "Tất cả học sinh hiện đã có đủ bằng chứng cho đề xuất ban đầu."}
           </p>
           {snapshot.unknown_student_ids.length > 0 && (
-            <ul aria-label="Learners without enough evidence">
+            <ul aria-label="Học sinh chưa có đủ bằng chứng">
               {snapshot.unknown_student_ids.map((studentId) => (
                 <li key={studentId}>{learnerLabel(studentId)}</li>
               ))}
@@ -260,9 +290,9 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
         aria-labelledby="groups-title"
       >
         <div className="teacher-panel-heading">
-          <p className="teacher-kicker">Intervention groups</p>
+          <p className="teacher-kicker">Nhóm can thiệp</p>
           <h2 id="groups-title">
-            Group by today’s learning need—not a fixed label.
+            Chia theo nhu cầu hôm nay, không gắn nhãn cố định.
           </h2>
         </div>
         {snapshot.groups.length > 0 ? (
@@ -270,13 +300,15 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
             {snapshot.groups.map((group) => (
               <article key={group.id}>
                 <p className="group-count">
-                  {group.student_ids.length} learners
+                  {group.student_ids.length} học sinh
                 </p>
-                <h3>{humanize(group.intervention_need)}</h3>
-                <p>{group.rationale}</p>
+                <h3>{interventionNeedLabel(group.intervention_need)}</h3>
+                <p>{teacherFacingText(group.rationale)}</p>
                 <details>
-                  <summary>View learner list</summary>
-                  <ul aria-label={`${group.id} students`}>
+                  <summary>Xem danh sách học sinh</summary>
+                  <ul
+                    aria-label={`Học sinh trong nhóm ${interventionNeedLabel(group.intervention_need)}`}
+                  >
                     {group.student_ids.map((studentId) => (
                       <li key={studentId}>{learnerLabel(studentId)}</li>
                     ))}
@@ -286,9 +318,7 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
             ))}
           </div>
         ) : (
-          <p className="teacher-empty">
-            No intervention groups are available yet.
-          </p>
+          <p className="teacher-empty">Chưa có nhóm can thiệp phù hợp.</p>
         )}
       </section>
     </section>
@@ -339,7 +369,9 @@ function LessonPlanView({
         planVersion.version,
       );
       onVersionChange(next);
-      setFeedback(`Teacher edit saved as version ${next.version}.`);
+      setFeedback(
+        `Đã lưu chỉnh sửa của giáo viên thành phiên bản ${next.version}.`,
+      );
     } catch (caught) {
       setError(actionErrorMessage(caught));
     } finally {
@@ -358,9 +390,9 @@ function LessonPlanView({
       );
       onVersionChange(next);
       const messages = {
-        approve: `Plan approved as version ${next.version}.`,
-        reject: `Plan rejected as version ${next.version}; it remains editable.`,
-        publish: `Plan published as version ${next.version}.`,
+        approve: `Đã phê duyệt kế hoạch ở phiên bản ${next.version}.`,
+        reject: `Đã từ chối kế hoạch ở phiên bản ${next.version}; vẫn có thể tiếp tục chỉnh sửa.`,
+        publish: `Đã xuất bản kế hoạch ở phiên bản ${next.version}.`,
       };
       setFeedback(messages[action]);
     } catch (caught) {
@@ -420,38 +452,43 @@ function LessonPlanView({
     <section className="teacher-content" aria-labelledby="teacher-page-title">
       <div className="teacher-page-heading">
         <div>
-          <p className="teacher-kicker">Teacher-reviewed lesson plan</p>
+          <p className="teacher-kicker">
+            Kế hoạch bài dạy do giáo viên rà soát
+          </p>
           <h1 id="teacher-page-title">
-            Shape a 45-minute path from evidence to action.
+            Biến bằng chứng thành lộ trình dạy học 45 phút.
           </h1>
           <p className="teacher-lede">
-            Adjust timing and temporary intervention groups, then approve the
-            version you want to teach.
+            Điều chỉnh thời lượng và nhóm can thiệp tạm thời, sau đó phê duyệt
+            phiên bản giáo viên muốn sử dụng.
           </p>
         </div>
         <p className="teacher-context">
-          <span>{lessonPlan.class_id}</span>
-          <span>{lessonPlan.lesson_id}</span>
+          <span>Lớp: {lessonPlan.class_id}</span>
+          <span>Bài học: {lessonPlan.lesson_id}</span>
         </p>
       </div>
 
-      <section className="lesson-plan-meta" aria-label="Lesson plan status">
+      <section
+        className="lesson-plan-meta"
+        aria-label="Trạng thái kế hoạch bài dạy"
+      >
         <div>
-          <span>Plan status</span>
-          <strong>{formatStatus(lessonPlan.status)}</strong>
+          <span>Trạng thái</span>
+          <strong>{planStatusLabel(lessonPlan.status)}</strong>
         </div>
         <div>
-          <span>Total time</span>
-          <strong>{lessonPlan.total_duration_minutes} min</strong>
+          <span>Tổng thời lượng</span>
+          <strong>{lessonPlan.total_duration_minutes} phút</strong>
         </div>
         <div>
-          <span>Version</span>
+          <span>Phiên bản</span>
           <strong>{planVersion.version}</strong>
         </div>
         <div>
-          <span>Teacher decision</span>
+          <span>Quyết định giáo viên</span>
           <strong>
-            {published ? "published" : formatStatus(planVersion.decision)}
+            {planStatusLabel(published ? "published" : planVersion.decision)}
           </strong>
         </div>
       </section>
@@ -461,18 +498,18 @@ function LessonPlanView({
         aria-labelledby="decision-title"
       >
         <div>
-          <p className="teacher-kicker">Decision checkpoint</p>
+          <p className="teacher-kicker">Điểm kiểm tra quyết định</p>
           <h2 id="decision-title">
             {dirty
-              ? "Save this edit before deciding."
-              : "This version is ready for a teacher decision."}
+              ? "Hãy lưu chỉnh sửa trước khi quyết định."
+              : "Phiên bản này đã sẵn sàng để giáo viên quyết định."}
           </h2>
           <p>
             {dirty
-              ? "Your changes are local until a new immutable version is saved."
+              ? "Các thay đổi chỉ ở máy hiện tại cho tới khi một phiên bản bất biến mới được lưu."
               : published
-                ? "This approved version is published and preserved in the audit trail."
-                : "Approval and publication create separate auditable versions."}
+                ? "Phiên bản đã phê duyệt được xuất bản và lưu trong lịch sử kiểm tra."
+                : "Phê duyệt và xuất bản tạo thành các phiên bản có thể kiểm tra riêng biệt."}
           </p>
         </div>
         <div className="teacher-actions">
@@ -482,7 +519,7 @@ function LessonPlanView({
             onClick={() => void saveVersion()}
             type="button"
           >
-            {pendingAction === "save" ? "Saving…" : "Save teacher edit"}
+            {pendingAction === "save" ? "Đang lưu…" : "Lưu chỉnh sửa"}
           </button>
           <button
             className="teacher-button teacher-button-primary"
@@ -490,7 +527,9 @@ function LessonPlanView({
             onClick={() => void decide("approve")}
             type="button"
           >
-            {pendingAction === "approve" ? "Approving…" : "Approve plan"}
+            {pendingAction === "approve"
+              ? "Đang phê duyệt…"
+              : "Phê duyệt kế hoạch"}
           </button>
           <button
             className="teacher-button teacher-button-secondary teacher-button-danger"
@@ -500,7 +539,7 @@ function LessonPlanView({
             onClick={() => void decide("reject")}
             type="button"
           >
-            {pendingAction === "reject" ? "Rejecting…" : "Reject draft"}
+            {pendingAction === "reject" ? "Đang từ chối…" : "Từ chối bản nháp"}
           </button>
           <button
             className="teacher-button teacher-button-secondary"
@@ -510,13 +549,15 @@ function LessonPlanView({
             onClick={() => void decide("publish")}
             type="button"
           >
-            {pendingAction === "publish" ? "Publishing…" : "Publish plan"}
+            {pendingAction === "publish"
+              ? "Đang xuất bản…"
+              : "Xuất bản kế hoạch"}
           </button>
         </div>
         {durationInvalid && (
           <p className="teacher-inline-error" role="alert">
-            Each activity needs a whole number of minutes and the plan total
-            must be between 1 and 45 minutes.
+            Mỗi hoạt động cần số phút nguyên và tổng thời lượng kế hoạch phải từ
+            1 đến 45 phút.
           </p>
         )}
         {error && (
@@ -534,12 +575,15 @@ function LessonPlanView({
       <section aria-labelledby="activities-title">
         <div className="teacher-section-heading">
           <div>
-            <p className="teacher-kicker">Teaching sequence</p>
-            <h2 id="activities-title">Four evidence-led activities</h2>
+            <p className="teacher-kicker">Tiến trình dạy học</p>
+            <h2 id="activities-title">Bốn hoạt động dựa trên bằng chứng</h2>
           </div>
-          <p>Change minutes directly. The total updates automatically.</p>
+          <p>Thay đổi số phút trực tiếp; tổng thời lượng sẽ tự cập nhật.</p>
         </div>
-        <ol className="lesson-timeline" aria-label="Lesson activities">
+        <ol
+          className="lesson-timeline"
+          aria-label="Các hoạt động trong bài dạy"
+        >
           {lessonPlan.activities.map((activity, index) => (
             <li key={activity.id}>
               <span className="timeline-index">
@@ -552,10 +596,10 @@ function LessonPlanView({
                       className="teacher-duration-label"
                       htmlFor={`duration-${activity.id}`}
                     >
-                      Minutes
+                      Phút
                       <input
                         id={`duration-${activity.id}`}
-                        aria-label={`${activity.title} duration`}
+                        aria-label={`Thời lượng ${activity.title}`}
                         inputMode="numeric"
                         min="1"
                         max="45"
@@ -571,11 +615,11 @@ function LessonPlanView({
                     </label>
                     <h3>{activity.title}</h3>
                   </div>
-                  <span>{humanize(activity.skill_id)}</span>
+                  <span>{skillLabel(activity.skill_id)}</span>
                 </div>
-                <p>{activity.rationale}</p>
+                <p>{teacherFacingText(activity.rationale)}</p>
                 <div className="activity-evidence">
-                  <strong>Expected evidence</strong>
+                  <strong>Bằng chứng mong đợi</strong>
                   <span>{activity.expected_evidence}</span>
                 </div>
               </article>
@@ -589,28 +633,29 @@ function LessonPlanView({
         aria-labelledby="group-editor-title"
       >
         <div className="teacher-panel-heading">
-          <p className="teacher-kicker">Teacher edit</p>
-          <h2 id="group-editor-title">Adjust temporary intervention groups</h2>
+          <p className="teacher-kicker">Giáo viên điều chỉnh</p>
+          <h2 id="group-editor-title">Điều chỉnh nhóm can thiệp tạm thời</h2>
           <p>
-            Move learners when classroom knowledge adds context. A group’s final
-            learner stays in place so every diagnosed learner remains assigned.
+            Chuyển học sinh khi quan sát trên lớp bổ sung thêm bối cảnh. Học
+            sinh cuối cùng của mỗi nhóm được giữ lại để không ai bị mất phân
+            nhóm.
           </p>
         </div>
         {snapshot.groups.map((group) => (
           <details key={group.id}>
             <summary>
-              <span>{humanize(group.intervention_need)}</span>
-              <small>{group.student_ids.length} learners</small>
+              <span>{interventionNeedLabel(group.intervention_need)}</span>
+              <small>{group.student_ids.length} học sinh</small>
             </summary>
             <div className="teacher-group-list">
               {group.student_ids.map((studentId) => (
                 <label key={studentId}>
                   <span>
                     <strong>{learnerLabel(studentId)}</strong>
-                    <small>{studentId}</small>
+                    <small>Mã: {studentId}</small>
                   </span>
                   <select
-                    aria-label={`Move ${studentId}`}
+                    aria-label={`Chuyển ${learnerLabel(studentId)}`}
                     disabled={group.student_ids.length === 1}
                     value={group.id}
                     onChange={(event) =>
@@ -619,7 +664,7 @@ function LessonPlanView({
                   >
                     {snapshot.groups.map((target) => (
                       <option key={target.id} value={target.id}>
-                        {humanize(target.intervention_need)}
+                        {interventionNeedLabel(target.intervention_need)}
                       </option>
                     ))}
                   </select>

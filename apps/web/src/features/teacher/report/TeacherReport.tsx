@@ -9,14 +9,11 @@ import {
   TeacherShell,
   type TeacherRoute,
 } from "@/features/teacher/TeacherShell";
-
-const outcomeLabels: Record<OutcomeKind, string> = {
-  passed_transfer: "Passed independent transfer",
-  still_struggling: "Still struggling",
-  root_cause_reclassified: "Root cause reclassified",
-  incomplete: "Incomplete",
-  teacher_escalation: "Teacher escalation",
-};
+import {
+  learnerLabel,
+  outcomeLabels,
+  skillLabel,
+} from "@/features/teacher/teacher-copy";
 
 const outcomeOrder: OutcomeKind[] = [
   "passed_transfer",
@@ -38,7 +35,7 @@ export function InterventionReportDetails({
 }) {
   return (
     <>
-      <section className="report-outcome-grid" aria-label="Outcome counts">
+      <section className="report-outcome-grid" aria-label="Tổng hợp kết quả">
         {outcomeOrder.map((outcome) => (
           <article key={outcome}>
             <strong>{report.outcome_counts[outcome]}</strong>
@@ -48,10 +45,11 @@ export function InterventionReportDetails({
       </section>
 
       <aside className="report-evidence-boundary">
-        <strong>Immediate success is not transfer.</strong>
+        <strong>Làm đúng khi có hỗ trợ chưa phải là vận dụng.</strong>
         <p>
-          Passed transfer requires independent evidence on a new, related
-          task—not only a correct answer during supported practice.
+          Kết quả vận dụng chỉ được xác nhận bằng bài làm độc lập ở một tình
+          huống mới có liên quan, không chỉ bằng câu trả lời đúng khi đang được
+          hướng dẫn.
         </p>
       </aside>
 
@@ -59,29 +57,29 @@ export function InterventionReportDetails({
         className="teacher-panel report-evidence"
         aria-labelledby="report-evidence-title"
       >
-        <p className="teacher-kicker">Individual evidence</p>
-        <h2 id="report-evidence-title">What happened after intervention</h2>
+        <p className="teacher-kicker">Bằng chứng từng học sinh</p>
+        <h2 id="report-evidence-title">Điều gì thay đổi sau can thiệp</h2>
         <div className="report-table-wrap">
           <table>
             <caption>
-              Evidence recorded for each representative learner outcome
+              Bằng chứng được ghi nhận cho từng kết quả đại diện
             </caption>
             <thead>
               <tr>
-                <th scope="col">Learner</th>
-                <th scope="col">Outcome</th>
-                <th scope="col">Evidence</th>
+                <th scope="col">Học sinh</th>
+                <th scope="col">Kết quả</th>
+                <th scope="col">Bằng chứng</th>
               </tr>
             </thead>
             <tbody>
               {report.student_outcomes.map((student) => (
                 <tr key={student.student_id}>
-                  <th scope="row">{student.student_id}</th>
+                  <th scope="row">{learnerLabel(student.student_id)}</th>
                   <td>{outcomeLabels[student.outcome]}</td>
                   <td>
                     {student.evidence_ids.length > 0
                       ? student.evidence_ids.join(", ")
-                      : "No evidence recorded"}
+                      : "Chưa ghi nhận bằng chứng"}
                   </td>
                 </tr>
               ))}
@@ -95,22 +93,20 @@ export function InterventionReportDetails({
           className="teacher-panel"
           aria-labelledby="remaining-gaps-title"
         >
-          <p className="teacher-kicker">Remaining gaps</p>
-          <h2 id="remaining-gaps-title">Skills that still need attention</h2>
+          <p className="teacher-kicker">Khoảng hổng còn lại</p>
+          <h2 id="remaining-gaps-title">Kỹ năng vẫn cần được chú ý</h2>
           {report.remaining_gaps.length > 0 ? (
             <ul>
               {report.remaining_gaps.map((gap) => (
                 <li key={gap.skill_id}>
-                  <strong>
-                    {gap.skill_id.replace(/^skill_/, "").replaceAll("_", " ")}
-                  </strong>
-                  <span>{gap.student_ids.join(", ")}</span>
+                  <strong>{skillLabel(gap.skill_id)}</strong>
+                  <span>{gap.student_ids.map(learnerLabel).join(", ")}</span>
                 </li>
               ))}
             </ul>
           ) : (
             <p className="teacher-empty">
-              No remaining gap is recorded for this intervention.
+              Không còn khoảng hổng nào được ghi nhận sau can thiệp này.
             </p>
           )}
         </section>
@@ -118,8 +114,8 @@ export function InterventionReportDetails({
           className="teacher-panel report-next-focus"
           aria-labelledby="next-focus-title"
         >
-          <p className="teacher-kicker">Next lesson</p>
-          <h2 id="next-focus-title">Recommended focus</h2>
+          <p className="teacher-kicker">Bài học tiếp theo</p>
+          <h2 id="next-focus-title">Trọng tâm được đề xuất</h2>
           <p>{report.next_lesson_focus}</p>
         </section>
       </div>
@@ -159,7 +155,7 @@ export function TeacherReport({
           aria-live="polite"
           aria-busy="true"
         >
-          <p className="teacher-kicker">Loading intervention outcomes</p>
+          <p className="teacher-kicker">Đang tải kết quả can thiệp</p>
           <div className="teacher-skeleton teacher-skeleton-title" />
           <div className="teacher-skeleton-grid" aria-hidden="true">
             <span />
@@ -172,15 +168,15 @@ export function TeacherReport({
         <section className="teacher-state-card" role="alert">
           <img src="/brand/ailearn-mascot.webp" alt="" />
           <div>
-            <p className="teacher-kicker">Report unavailable</p>
-            <h1>We could not load the intervention report.</h1>
+            <p className="teacher-kicker">Báo cáo tạm thời gián đoạn</p>
+            <h1>Không thể tải báo cáo can thiệp.</h1>
             <p>{state.message}</p>
             <button
               className="teacher-button teacher-button-primary"
               onClick={() => setRequestKey((key) => key + 1)}
               type="button"
             >
-              Try again
+              Thử lại
             </button>
           </div>
         </section>
@@ -193,14 +189,14 @@ export function TeacherReport({
           <div className="teacher-page-heading">
             <div>
               <p className="teacher-kicker">
-                Intervention report · Evidence review
+                Báo cáo can thiệp · Rà soát bằng chứng
               </p>
               <h1 id="report-title">
-                See what changed—and what still needs teaching.
+                Nhìn rõ điều đã thay đổi và nội dung vẫn cần dạy.
               </h1>
               <p className="teacher-lede">
-                Separate supported success from independent transfer, then carry
-                remaining gaps into the next lesson.
+                Phân biệt thành công khi có hỗ trợ với khả năng vận dụng độc
+                lập, rồi đưa khoảng hổng còn lại vào bài học tiếp theo.
               </p>
             </div>
             <a
@@ -211,11 +207,11 @@ export function TeacherReport({
                 onNavigate("/teacher/report/print");
               }}
             >
-              Open printable view
+              Mở bản in
             </a>
           </div>
           <p className="teacher-context">
-            {state.report.class_id} / {state.report.lesson_id}
+            Lớp: {state.report.class_id} / Bài học: {state.report.lesson_id}
           </p>
           <InterventionReportDetails report={state.report} />
         </section>

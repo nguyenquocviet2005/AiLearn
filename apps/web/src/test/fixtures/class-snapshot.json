@@ -6,8 +6,8 @@
   "students": [
     {
       "student_id": "stu_g7_001",
-      "readiness_status": "abstained",
-      "confidence": 0.9553,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -30,9 +30,9 @@
     },
     {
       "student_id": "stu_g7_005",
-      "readiness_status": "abstained",
-      "confidence": 0.96,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_fraction_multiplication"
     },
     {
       "student_id": "stu_g7_006",
@@ -42,9 +42,9 @@
     },
     {
       "student_id": "stu_g7_007",
-      "readiness_status": "abstained",
-      "confidence": 0.9667,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
     },
     {
       "student_id": "stu_g7_008",
@@ -54,20 +54,20 @@
     },
     {
       "student_id": "stu_g7_009",
-      "readiness_status": "abstained",
-      "confidence": 0.955,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
       "student_id": "stu_g7_010",
-      "readiness_status": "needs_support",
+      "readiness_status": "ready",
       "confidence": 1.0,
-      "primary_root_cause_skill_id": "skill_ratio_proportion_basics"
+      "primary_root_cause_skill_id": null
     },
     {
       "student_id": "stu_g7_011",
-      "readiness_status": "abstained",
-      "confidence": 0.9553,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -78,27 +78,27 @@
     },
     {
       "student_id": "stu_g7_013",
-      "readiness_status": "abstained",
-      "confidence": 0.9571,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_014",
-      "readiness_status": "abstained",
-      "confidence": 0.9577,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_015",
-      "readiness_status": "abstained",
-      "confidence": 0.9591,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_016",
       "readiness_status": "needs_support",
       "confidence": 1.0,
-      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_017",
@@ -108,8 +108,8 @@
     },
     {
       "student_id": "stu_g7_018",
-      "readiness_status": "abstained",
-      "confidence": 0.9559,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -120,9 +120,9 @@
     },
     {
       "student_id": "stu_g7_020",
-      "readiness_status": "abstained",
-      "confidence": 0.9571,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_021",
@@ -144,9 +144,9 @@
     },
     {
       "student_id": "stu_g7_024",
-      "readiness_status": "abstained",
-      "confidence": 0.9567,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_025",
@@ -156,15 +156,15 @@
     },
     {
       "student_id": "stu_g7_026",
-      "readiness_status": "abstained",
-      "confidence": 0.9553,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
       "student_id": "stu_g7_027",
-      "readiness_status": "abstained",
-      "confidence": 0.9577,
-      "primary_root_cause_skill_id": null
+      "readiness_status": "needs_support",
+      "confidence": 1.0,
+      "primary_root_cause_skill_id": "skill_word_problem_work_rate"
     },
     {
       "student_id": "stu_g7_028",
@@ -174,15 +174,15 @@
     },
     {
       "student_id": "stu_g7_029",
-      "readiness_status": "abstained",
-      "confidence": 0.95,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
       "student_id": "stu_g7_030",
       "readiness_status": "needs_support",
       "confidence": 1.0,
-      "primary_root_cause_skill_id": "skill_fraction_multiplication"
+      "primary_root_cause_skill_id": "skill_distinguish_direct_inverse"
     },
     {
       "student_id": "stu_g7_031",
@@ -193,13 +193,13 @@
     {
       "student_id": "stu_g7_032",
       "readiness_status": "abstained",
-      "confidence": 0.95,
+      "confidence": 0.27,
       "primary_root_cause_skill_id": null
     },
     {
       "student_id": "stu_g7_033",
       "readiness_status": "abstained",
-      "confidence": 0.9553,
+      "confidence": 0.27,
       "primary_root_cause_skill_id": null
     },
     {
@@ -216,8 +216,8 @@
     },
     {
       "student_id": "stu_g7_036",
-      "readiness_status": "abstained",
-      "confidence": 0.9553,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -250,97 +250,91 @@
     {
       "id": "grp_01_skill_ratio_proportion_basics",
       "intervention_need": "repair:skill_ratio_proportion_basics",
-      "student_ids": [
-        "stu_g7_004",
-        "stu_g7_010",
-        "stu_g7_012",
-        "stu_g7_034",
-        "stu_g7_035"
-      ],
-      "rationale": "Shared primary root-cause evidence for skill_ratio_proportion_basics; repair this prerequisite before target-skill practice."
+      "student_ids": ["stu_g7_004", "stu_g7_012", "stu_g7_034", "stu_g7_035"],
+      "rationale": "Nhóm có chung bằng chứng về nguyên nhân gốc skill_ratio_proportion_basics; cần củng cố tiên quyết này trước khi luyện kỹ năng mục tiêu."
     },
     {
-      "id": "grp_02_skill_fraction_multiplication",
-      "intervention_need": "repair:skill_fraction_multiplication",
-      "student_ids": [
-        "stu_g7_002",
-        "stu_g7_008",
-        "stu_g7_016",
-        "stu_g7_017",
-        "stu_g7_021",
-        "stu_g7_023",
-        "stu_g7_028",
-        "stu_g7_030"
-      ],
-      "rationale": "Shared primary root-cause evidence for skill_fraction_multiplication; repair this prerequisite before target-skill practice."
-    },
-    {
-      "id": "grp_03_skill_distinguish_direct_inverse",
+      "id": "grp_02_skill_distinguish_direct_inverse",
       "intervention_need": "repair:skill_distinguish_direct_inverse",
       "student_ids": [
         "stu_g7_003",
         "stu_g7_006",
+        "stu_g7_007",
         "stu_g7_022",
         "stu_g7_025",
+        "stu_g7_030",
         "stu_g7_031",
         "stu_g7_037",
         "stu_g7_038",
         "stu_g7_039",
         "stu_g7_040"
       ],
-      "rationale": "Shared primary root-cause evidence for skill_distinguish_direct_inverse; repair this prerequisite before target-skill practice."
+      "rationale": "Nhóm có chung bằng chứng về nguyên nhân gốc skill_distinguish_direct_inverse; cần củng cố tiên quyết này trước khi luyện kỹ năng mục tiêu."
     },
     {
-      "id": "grp_04_skill_word_problem_work_rate",
-      "intervention_need": "repair:skill_word_problem_work_rate",
-      "student_ids": ["stu_g7_019"],
-      "rationale": "Shared primary root-cause evidence for skill_word_problem_work_rate; repair this prerequisite before target-skill practice."
+      "id": "grp_03_skill_fraction_multiplication_skill_word_problem_work_rate",
+      "intervention_need": "mixed_repair:teacher_station",
+      "student_ids": [
+        "stu_g7_002",
+        "stu_g7_005",
+        "stu_g7_008",
+        "stu_g7_013",
+        "stu_g7_014",
+        "stu_g7_015",
+        "stu_g7_016",
+        "stu_g7_017",
+        "stu_g7_019",
+        "stu_g7_020",
+        "stu_g7_021",
+        "stu_g7_023",
+        "stu_g7_024",
+        "stu_g7_027",
+        "stu_g7_028"
+      ],
+      "rationale": "Các nhu cầu tiên quyết ít phổ biến hơn được ghép vào trạm do giáo viên hướng dẫn; kỹ năng trọng tâm: skill_fraction_multiplication+skill_word_problem_work_rate."
+    },
+    {
+      "id": "grp_04_ready_transfer",
+      "intervention_need": "extension:target_transfer",
+      "student_ids": [
+        "stu_g7_001",
+        "stu_g7_009",
+        "stu_g7_010",
+        "stu_g7_011",
+        "stu_g7_018",
+        "stu_g7_026",
+        "stu_g7_029",
+        "stu_g7_036"
+      ],
+      "rationale": "Bằng chứng chẩn đoán cho thấy học sinh đã sẵn sàng; giao bài vận dụng và mở rộng."
     },
     {
       "id": "grp_05_confirmation",
       "intervention_need": "confirmation:insufficient_evidence",
-      "student_ids": [
-        "stu_g7_001",
-        "stu_g7_005",
-        "stu_g7_007",
-        "stu_g7_009",
-        "stu_g7_011",
-        "stu_g7_013",
-        "stu_g7_014",
-        "stu_g7_015",
-        "stu_g7_018",
-        "stu_g7_020",
-        "stu_g7_024",
-        "stu_g7_026",
-        "stu_g7_027",
-        "stu_g7_029",
-        "stu_g7_032",
-        "stu_g7_033",
-        "stu_g7_036"
-      ],
-      "rationale": "Evidence is insufficient or conflicting; confirm readiness before assigning an intervention."
+      "student_ids": ["stu_g7_032", "stu_g7_033"],
+      "rationale": "Bằng chứng còn thiếu hoặc mâu thuẫn; cần xác nhận mức sẵn sàng trước khi giao can thiệp."
     }
   ],
   "teaching_priorities": [
     {
       "skill_id": "skill_ratio_proportion_basics",
       "rank": 1,
-      "rationale": "score=0.5992; prevalence=0.1250 (5/40); downstream_impact=0.9167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
-    },
-    {
-      "skill_id": "skill_fraction_multiplication",
-      "rank": 2,
-      "rationale": "score=0.5042; prevalence=0.2000 (8/40); downstream_impact=0.4167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
+      "rationale": "score=0.5892; prevalence=0.1000 (4/40); downstream_impact=0.9167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
     },
     {
       "skill_id": "skill_distinguish_direct_inverse",
+      "rank": 2,
+      "rationale": "score=0.5133; prevalence=0.2750 (11/40); downstream_impact=0.3333; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
+    },
+    {
+      "skill_id": "skill_fraction_multiplication",
       "rank": 3,
-      "rationale": "score=0.4933; prevalence=0.2250 (9/40); downstream_impact=0.3333; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
+      "rationale": "score=0.4942; prevalence=0.1750 (7/40); downstream_impact=0.4167; lesson_urgency=0.8500; diagnostic_confidence=1.0000"
     },
     {
       "skill_id": "skill_word_problem_work_rate",
       "rank": 4,
-      "rationale": "score=0.4017; prevalence=0.0250 (1/40); downstream_impact=0.1667; lesson_urgency=1.0000; diagnostic_confidence=1.0000"
+      "rationale": "score=0.4717; prevalence=0.2000 (8/40); downstream_impact=0.1667; lesson_urgency=1.0000; diagnostic_confidence=1.0000"
     }
   ]
 }

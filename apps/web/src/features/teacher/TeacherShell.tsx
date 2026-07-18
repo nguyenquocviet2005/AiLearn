@@ -48,7 +48,7 @@ export function TeacherShell({
           </span>
           <div>
             <strong>Không gian giáo viên</strong>
-            <small>Lớp 7A · Checkpoint 2</small>
+            <small>Lớp 7A · Mốc kiểm tra 2</small>
           </div>
         </div>
 
