@@ -1,0 +1,203 @@
+.admin-app {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 250px minmax(0, 1fr);
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.admin-skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  color: var(--brand-white);
+  background: var(--brand-black);
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+  transform: translateY(-180%);
+}
+
+.admin-skip-link:focus {
+  transform: translateY(0);
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.75rem 1.5rem;
+  border-right: 1px solid var(--brand-line);
+  background: var(--brand-white);
+}
+
+.admin-role {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-role-avatar {
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  flex: none;
+  border-radius: 50%;
+  place-items: center;
+  color: var(--brand-white);
+  background: var(--brand-purple);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.admin-role strong {
+  display: block;
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
+.admin-role small {
+  display: block;
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+.admin-navigation {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.35rem;
+  margin: 1rem 0;
+}
+
+.admin-navigation a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.35rem;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.admin-navigation a[aria-current="page"] {
+  color: var(--brand-deep);
+  background: var(--brand-lilac);
+}
+
+.admin-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  background: transparent;
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.admin-logout:hover {
+  background: var(--brand-lilac);
+}
+
+.admin-main {
+  min-width: 0;
+  padding: 2.5rem 3rem;
+}
+
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 42rem;
+}
+
+.admin-kicker {
+  margin: 0;
+  color: var(--muted);
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-lede {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.admin-loading {
+  padding: 2.5rem 3rem;
+  color: var(--muted);
+}
+
+.admin-login-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 2rem 1rem;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.admin-login-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(24rem, 100%);
+  padding: 2rem;
+}
+
+.admin-login-card h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.admin-login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-login-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--ink-soft);
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.admin-login-card input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  color: var(--ink);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.admin-inline-error {
+  margin: 0;
+  color: #b3261e;
+  font-family: Inter, Aptos, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}

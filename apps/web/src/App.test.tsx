@@ -18,6 +18,7 @@ afterEach(() => {
   window.history.pushState({}, "", "/");
   vi.unstubAllGlobals();
   window.history.replaceState({}, "", "/");
+  sessionStorage.clear();
 });
 
 describe("App", () => {
@@ -126,5 +127,96 @@ describe("App", () => {
         name: "Chuẩn bị để tiết Toán dễ hiểu hơn",
       }),
     ).toBeInTheDocument();
+  });
+
+  it("logs in at /admin/login and redirects into the admin workspace", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+
+    window.history.pushState({}, "", "/admin/login");
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        token: "test-token",
+        expires_at: new Date(Date.now() + 60_000).toISOString(),
+        email: "admin@example.com",
+        role: "admin",
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ email: "admin@example.com", role: "admin" }),
+    });
+
+    render(<App />);
+
+    await user.type(screen.getByLabelText("Email"), "admin@example.com");
+    await user.type(screen.getByLabelText("Mật khẩu"), "correct-password");
+    await user.click(screen.getByRole("button", { name: "Đăng nhập" }));
+
+    expect(
+      await screen.findByRole("navigation", { name: "Điều hướng quản trị" }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/admin");
+    expect(screen.getByText("admin@example.com")).toBeInTheDocument();
+  });
+
+  it("redirects /admin to /admin/login when there is no stored admin session", async () => {
+    vi.stubGlobal("fetch", vi.fn());
+    window.history.pushState({}, "", "/admin");
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole("heading", { name: "Đăng nhập quản trị viên" }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/admin/login");
+  });
+
+  it("renders the admin shell directly at /admin with a valid stored session", async () => {
+    sessionStorage.setItem(
+      "ailearn_admin_session",
+      JSON.stringify({
+        token: "test-token",
+        expiresAt: new Date(Date.now() + 60_000).toISOString(),
+      }),
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ email: "admin@example.com", role: "admin" }),
+      }),
+    );
+    window.history.pushState({}, "", "/admin");
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole("navigation", { name: "Điều hướng quản trị" }),
+    ).toBeInTheDocument();
+  });
+
+  it("redirects /admin to /admin/login when the stored session is expired", async () => {
+    sessionStorage.setItem(
+      "ailearn_admin_session",
+      JSON.stringify({
+        token: "stale-token",
+        expiresAt: new Date(Date.now() - 60_000).toISOString(),
+      }),
+    );
+    vi.stubGlobal("fetch", vi.fn());
+    window.history.pushState({}, "", "/admin");
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole("heading", { name: "Đăng nhập quản trị viên" }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/admin/login");
   });
 });

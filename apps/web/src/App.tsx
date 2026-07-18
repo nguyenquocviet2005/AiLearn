@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { AdminLoginPage } from "@/features/admin/AdminLoginPage";
+import { AdminWorkspace } from "@/features/admin/AdminWorkspace";
 import { LandingPage } from "@/features/landing/LandingPage";
 import { StudentWorkspace } from "@/features/student/StudentWorkspace";
 import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
@@ -15,7 +17,9 @@ type Route =
   | "/teacher/lesson-plan"
   | "/teacher/report"
   | "/teacher/report/print"
-  | "/student";
+  | "/student"
+  | "/admin/login"
+  | "/admin";
 
 export default function App() {
   const [pathname, setPathname] = useState(currentPathname);
@@ -54,6 +58,14 @@ export default function App() {
 
   if (pathname === "/student") {
     return <StudentWorkspace />;
+  }
+
+  if (pathname === "/admin/login") {
+    return <AdminLoginPage onNavigate={navigate} />;
+  }
+
+  if (pathname === "/admin") {
+    return <AdminWorkspace onNavigate={navigate} />;
   }
 
   return <LandingPage onNavigate={navigate} />;
