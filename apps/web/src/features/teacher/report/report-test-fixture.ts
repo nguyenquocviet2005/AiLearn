@@ -1,10 +1,15 @@
-import type { InterventionReportV1 } from "@ailearn/schemas";
+import type {
+  InterventionReportV1,
+  TeacherPlanVersionV1,
+} from "@ailearn/schemas";
+
+import { fixtureTeacherWorkspaceRepository } from "@/test/teacher-fixtures";
 
 export const reportTestFixture: InterventionReportV1 = {
   schema_version: "1",
   id: "report_demo_01",
-  class_id: "class_demo_6a",
-  lesson_id: "lesson_demo_fractions_01",
+  class_id: "class_g7a_demo",
+  lesson_id: "lesson_g7_inverse_proportion_01",
   generated_at: "2026-07-18T01:30:00Z",
   outcome_counts: {
     passed_transfer: 1,
@@ -15,44 +20,45 @@ export const reportTestFixture: InterventionReportV1 = {
   },
   student_outcomes: [
     {
-      student_id: "stu_demo_01",
-      outcome: "still_struggling",
-      evidence_ids: ["ev_demo_001", "ev_demo_010"],
-    },
-    {
-      student_id: "stu_demo_02",
-      outcome: "root_cause_reclassified",
-      evidence_ids: ["ev_demo_011"],
-    },
-    {
-      student_id: "stu_demo_03",
+      student_id: "stu_g7_001",
       outcome: "passed_transfer",
-      evidence_ids: ["ev_demo_012"],
+      evidence_ids: ["ev_stu_g7_001_001", "ev_stu_g7_001_002"],
     },
     {
-      student_id: "stu_demo_04",
+      student_id: "stu_g7_002",
+      outcome: "still_struggling",
+      evidence_ids: ["ev_stu_g7_002_001"],
+    },
+    {
+      student_id: "stu_g7_003",
+      outcome: "root_cause_reclassified",
+      evidence_ids: ["ev_stu_g7_003_001"],
+    },
+    {
+      student_id: "stu_g7_004",
       outcome: "teacher_escalation",
-      evidence_ids: ["ev_demo_013", "ev_demo_014"],
+      evidence_ids: ["ev_stu_g7_004_001", "ev_stu_g7_004_002"],
     },
     {
-      student_id: "stu_demo_05",
+      student_id: "stu_g7_005",
       outcome: "incomplete",
       evidence_ids: [],
     },
   ],
   remaining_gaps: [
     {
-      skill_id: "skill_fractions_equivalent",
-      student_ids: ["stu_demo_01", "stu_demo_04"],
+      skill_id: "skill_fraction_multiplication",
+      student_ids: ["stu_g7_002", "stu_g7_004"],
     },
     {
-      skill_id: "skill_common_denominator",
-      student_ids: ["stu_demo_02"],
+      skill_id: "skill_inverse_proportion_definition",
+      student_ids: ["stu_g7_003"],
     },
   ],
   next_lesson_focus:
-    "Re-teach equivalent fractions before unlike-fraction addition.",
-  printable_lesson_plan_id: "plan_demo_fractions_01",
+    "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
+  printable_lesson_plan_id:
+    "plan_class_g7a_demo_lesson_g7_inverse_proportion_01",
 };
 
 export const reportTestRepository = {
@@ -60,3 +66,22 @@ export const reportTestRepository = {
     return reportTestFixture;
   },
 };
+
+export async function reportTestPlan(): Promise<TeacherPlanVersionV1> {
+  const plan = await fixtureTeacherWorkspaceRepository.getLessonPlan();
+  return {
+    ...plan,
+    plan_id: reportTestFixture.printable_lesson_plan_id,
+    snapshot: {
+      ...plan.snapshot,
+      class_id: reportTestFixture.class_id,
+      lesson_id: reportTestFixture.lesson_id,
+    },
+    lesson_plan: {
+      ...plan.lesson_plan,
+      id: reportTestFixture.printable_lesson_plan_id,
+      class_id: reportTestFixture.class_id,
+      lesson_id: reportTestFixture.lesson_id,
+    },
+  };
+}

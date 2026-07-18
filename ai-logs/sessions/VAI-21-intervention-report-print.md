@@ -6,6 +6,7 @@
 - Branch: `VAI-21-intervention-report-print`
 - Original baseline: `fe77783c8e68326895338c11ab05306840bb2823`
 - Adaptation baseline: `c36ea9641c03470e2861dfa012ba732c3cb50343`
+- Final integration baseline: `b9a3be926a4b2d12ac0e55db2a43176075aa863a`
 - Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/19
 
 ## Objective and context
@@ -35,6 +36,13 @@ of defining its own localhost fallback, and its report and print surfaces distin
 configuration, API availability, and application-data errors. Direct-route regression coverage
 now includes the VAI-19 and VAI-21 teacher routes.
 
+While the updated branch was being checked, VAI-20 merged to `origin/main`. Codex merged that new
+tip normally as a second merge rather than rewriting VAI-21 history. The only conflict was the
+teacher compatibility module: VAI-20's evidence-derived class snapshot and lesson-plan exports are
+preserved, while VAI-21's validated intervention-report fixture loader remains an additional export.
+This keeps VAI-20's durable evidence pipeline intact without pretending that VAI-21's frozen report
+fixture is live aggregation.
+
 ## Files and verification
 
 - API: `ailearn_api.routes.reports`, fixture loading, router registration, and endpoint tests.
@@ -56,6 +64,10 @@ now includes the VAI-19 and VAI-21 teacher routes.
   local test run inherited Supabase values from the developer `.env` and failed two tests that
   explicitly require an unconfigured service; rerunning with those settings unset, matching CI,
   passed without code changes or secret inspection.
+- PASS after final VAI-20 integration: 29 focused VAI-19/VAI-21 web tests, seven focused report and
+  durable-projection API tests, all 55 web tests, and 161 CI-scope Python tests with the same two
+  schema skips. Web format/lint/typecheck/build, Ruff format/lint, mypy, API build, schema validation,
+  and diff checks also pass.
 
 ## Independent review
 
@@ -75,6 +87,14 @@ validated report is ready, with loading/error regression coverage. A LOW suggest
 runtime contract parsing in the web adapter was not adopted because the repository has no existing
 browser runtime validator and duplicating `InterventionReportV1` validation would expand contract
 architecture; malformed payloads remain a documented limitation for the shared-contract follow-up.
+
+The second and final review, triggered after VAI-20 merged, found one HIGH scenario-collision issue
+and one MEDIUM test gap. Both were resolved. The report persona fixture now uses VAI-20's current G7
+class, inverse-proportion lesson, generated plan identifier, synthetic roster, curriculum skills, and
+seeded evidence identifiers. A cross-route API regression proves the report's class and plan resolve,
+their identities match, every report learner is in the class snapshot, every remaining gap belongs
+to the current curriculum, and every referenced evidence ID exists. Web print tests now use a plan
+whose identity matches that current production projection.
 
 ## Risks and limitations
 

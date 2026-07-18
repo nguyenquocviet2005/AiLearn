@@ -41,3 +41,35 @@ async def fetch_student(
     finally:
         if owns_client:
             await http_client.aclose()
+
+
+async def fetch_students_for_class(
+    settings: Settings,
+    class_id: str,
+    client: httpx.AsyncClient | None = None,
+) -> list[StudentRecord]:
+    if not settings.supabase_url or not settings.supabase_secret_key:
+        raise SupabaseUnavailableError("Supabase is not configured")
+
+    owns_client = client is None
+    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    try:
+        response = await http_client.get(
+            f"{settings.supabase_url.rstrip('/')}/rest/v1/students",
+            headers={"apikey": settings.supabase_secret_key},
+            params={
+                "select": "id,display_name,class_id,created_at",
+                "class_id": f"eq.{class_id}",
+                "order": "id.asc",
+            },
+        )
+        response.raise_for_status()
+        payload: Any = response.json()
+        if not isinstance(payload, list):
+            raise SupabaseUnavailableError("Student response is invalid")
+        return [StudentRecord.model_validate(record) for record in payload]
+    except (httpx.HTTPError, ValueError) as exc:
+        raise SupabaseUnavailableError("Supabase request failed") from exc
+    finally:
+        if owns_client:
+            await http_client.aclose()

@@ -7,9 +7,17 @@ from pydantic import ValidationError
 
 from ailearn_api.config import Settings, get_settings
 from ailearn_api.curriculum import CURRICULUM, ITEMS
-from ailearn_api.diagnostic_session_store import create_session, get_session
+from ailearn_api.diagnostic_session_store import create_session, get_session, new_session
+from ailearn_api.durable_session_store import (
+    fetch_diagnostic_session,
+    save_diagnostic_session,
+)
+from ailearn_api.durable_session_store import (
+    is_configured as durable_sessions_configured,
+)
 from ailearn_api.evidence_client import (
     fetch_evidence_event,
+    fetch_evidence_item_ids_for_session,
     insert_evidence_event,
     parse_evidence_event_payload,
 )
@@ -120,7 +128,10 @@ async def get_evidence_event(
         422: {"description": "A readiness session could not be built for this lesson"},
     },
 )
-async def start_diagnostic_session(body: StartSessionRequest) -> StartSessionResponse:
+async def start_diagnostic_session(
+    body: StartSessionRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> StartSessionResponse:
     if body.lesson_id != CURRICULUM.lesson_id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -137,12 +148,30 @@ async def start_diagnostic_session(body: StartSessionRequest) -> StartSessionRes
             },
         ) from exc
 
-    session = create_session(
-        student_id=body.student_id,
-        lesson_id=CURRICULUM.lesson_id,
-        target_skill_id=CURRICULUM.target_skill_id,
-        items=items,
-    )
+    if durable_sessions_configured(settings):
+        session = new_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=items,
+        )
+        try:
+            await save_diagnostic_session(settings, session)
+        except SupabaseUnavailableError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail={
+                    "code": "supabase_unavailable",
+                    "message": "Diagnostic session storage is unavailable.",
+                },
+            ) from exc
+    else:
+        session = create_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=items,
+        )
     return StartSessionResponse(
         session_id=session.session_id,
         student_id=session.student_id,
@@ -166,7 +195,27 @@ async def submit_diagnostic_response(
     body: SubmitResponseRequest,
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> SubmitResponseResponse:
-    session = get_session(session_id)
+    if durable_sessions_configured(settings):
+        try:
+            session = await fetch_diagnostic_session(
+                settings,
+                session_id,
+                ITEMS.items,
+            )
+            if session is not None:
+                session.answered_item_ids = await fetch_evidence_item_ids_for_session(
+                    settings, session_id
+                )
+        except SupabaseUnavailableError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail={
+                    "code": "supabase_unavailable",
+                    "message": "Diagnostic session storage is unavailable.",
+                },
+            ) from exc
+    else:
+        session = get_session(session_id)
     if session is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

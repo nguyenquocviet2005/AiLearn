@@ -72,6 +72,8 @@ Teacher routes include `/teacher`, `/teacher/lesson-plan`, `/teacher/report`, an
 
 - `20260717000000_create_system_status.sql` — infrastructure singleton for system-status.
 - `20260718000000_create_evidence_events.sql` — product table for `EvidenceEventV1` persistence.
+- `20260722000000_create_learning_sessions.sql` — durable diagnostic/remediation sessions and
+  idempotency results.
 
 Shared V1 contracts and fixtures live in `packages/schemas/` and `data/fixtures/`.
 

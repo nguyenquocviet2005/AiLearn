@@ -19,6 +19,8 @@ React/Vite browser application
       -> system_status infrastructure row
       -> evidence_events product table
       -> students product table
+      -> diagnostic_sessions resumable readiness selections
+      -> remediation_sessions remediation state and idempotency results
 
 Shared contracts:
   packages/schemas + data/fixtures
@@ -36,9 +38,11 @@ Remediation engine (pure domain):
 VAI-19 adds the teacher planning HTTP/UI boundary. `lesson_plan_versions` is append-only through
 the service-role API: each teacher edit, approval/rejection decision, and publication creates a new
 `TeacherPlanVersionV1` row. The original deterministic proposal remains intact. Publication is
-allowed only when the latest version is teacher-approved. The initial demo proposal remains a
-synthetic fixture until the first persisted version, so the teacher can inspect the plan when
-Supabase configuration is absent; writes correctly return a sanitized `503` without storage.
+allowed only when the latest version is teacher-approved. VAI-20 derives the initial proposal for
+`class_g7a_demo` directly from its roster and evidence, rather than a hand-maintained teacher
+fixture. A persisted teacher version takes precedence so edits are never overwritten. The committed
+G7 seed projection remains inspectable when Supabase configuration is absent; writes correctly
+return a sanitized `503` without storage.
 
 VAI-21 adds the teacher intervention-report boundary. The API validates and serves the frozen
 `InterventionReportV1` fixture, while `/teacher/report` presents outcome counts, individual evidence,
@@ -58,15 +62,13 @@ Product Diagnostic HTTP (`POST /diagnostics/start`, `POST /diagnostics/{id}/resp
 registered into `create_app()` in VAI-18. VAI-22 adds a final exit-ticket response above the
 existing near-transfer check. It records a passing transfer, teacher escalation, or a deterministic
 reclassification for the designated synthetic demo persona; the answer key stays server-side.
-Both routers hold session state in an **in-memory, per-process dict**
-(`ailearn_api.diagnostic_session_store`, `ailearn_api.routes.remediation._sessions`). Neither
-survives an API process restart; VAI-20 owns swapping both routers to durable Supabase-backed
-session storage as part of the full evidence-pipeline integration. Submitted diagnostic responses
-are persisted immediately as `EvidenceEventV1` rows in `evidence_events`, so no student evidence is
-lost on a restart — only an in-progress, unsubmitted session's item selection would need to be
-re-started. Remediation attempts are not separately persisted (the path is re-derivable from
-`RemediationEngine.start()` given the profile, but the step-by-step history within a session is
-in-memory only until VAI-20).
+VAI-20 persists a readiness session's selected item ids in `diagnostic_sessions` and rehydrates the
+items from the current curriculum. Its answered state is derived from immutable `evidence_events`,
+so a configured API can resume safely after a process restart. Remediation state plus the processed
+attempt/exit-ticket idempotency maps live in `remediation_sessions`. The existing local dictionaries
+remain only as an unconfigured local-development fallback. Completed exit tickets add a validated,
+server-derived `EvidenceEventV1` to the same evidence stream, making the outcome visible to a live
+student diagnostic profile and teacher class projection.
 
 `GET /students/{id}/diagnostic-profile` does not read from a persisted profile table: it fetches
 the student's `evidence_events` and calls `diagnose()` live on every request, keeping the engine as
@@ -99,10 +101,10 @@ develop-against-fixtures note in the original issue text is superseded — VAI-1
 `data/seeds/demo-personas.json` defines six synthetic, anonymized walkthrough personas: foundational
 gap, misconception, root-cause reclassification after new evidence, insufficient evidence, passing
 transfer, and teacher escalation. `GET /api/v1/demo/personas` exposes only their display metadata.
-`POST /api/v1/demo/reset` clears the diagnostic/remediation in-memory session stores and returns the
-selected seeded profile; it never deletes or rewrites Supabase evidence. The browser clears its own
-content cache and pending-write queue only after that reset succeeds, then starts the returned
-remediation profile.
+`POST /api/v1/demo/reset` clears only local fallback diagnostic/remediation dictionaries and returns
+the selected seeded profile. It never deletes or rewrites Supabase rows, including durable sessions
+or evidence. The browser clears its own content cache and pending-write queue only after that reset
+succeeds, then starts the returned remediation profile.
 
 Exit-ticket submissions use the existing FIFO local write queue with a client `submission_id` and
 route-level idempotency. This preserves the outcome during a temporary network interruption and
@@ -111,9 +113,8 @@ avoids duplicating a recorded transfer/escalation result after reconnection.
 ## Deferred Architecture
 
 Authentication roles, authorization, synchronization across devices, AI orchestration, and a
-separate model service remain deferred to later issues. Durable (Supabase-backed)
-diagnostic/remediation session storage is deferred to VAI-20. A
-teacher-facing inbox to receive the student "Nhờ cô giải thích" (ask teacher) help action does not
+separate model service remain deferred to later issues. A teacher-facing inbox to receive the
+student "Nhờ cô giải thích" (ask teacher) help action does not
 exist yet — it is captured client-side only (see Operational Behavior).
 
 ## Operational Behavior
@@ -122,13 +123,17 @@ exist yet — it is captured client-side only (see Operational Behavior).
 - `/api/v1/system-status` is a bounded Supabase read from a singleton infrastructure table.
 - `/api/v1/evidence-events` supports write and read of `EvidenceEventV1` rows.
 - `/api/v1/diagnostics/start` builds a 3–7 item readiness session via `build_readiness_session()`
-  and returns items with their answer key stripped.
+  and returns items with their answer key stripped. When Supabase is configured, the selected item
+  ids are persisted in `diagnostic_sessions` before the response is returned.
 - `/api/v1/diagnostics/{id}/responses` derives correctness server-side and writes an
   `EvidenceEventV1`. The evidence id is deterministic per (session, item), so retried submissions
   are idempotent: `insert_evidence_event` treats a primary-key conflict on `evidence_events.id` as
   "already recorded" and replays the existing row instead of erroring or duplicating it.
 - `/api/v1/students/{id}/diagnostic-profile` computes a `StudentDiagnosticProfileV1` live via
   `diagnose()` from that student's `evidence_events`.
+- `GET /api/v1/classes/class_g7a_demo/snapshot` derives the snapshot from the G7 roster in
+  `students` and lesson evidence. It returns an existing `lesson_plan_versions` snapshot first to
+  preserve teacher changes; otherwise it builds a fresh deterministic projection.
 - `diagnose(events, curriculum, items)` in `packages/diagnostic` produces `StudentDiagnosticProfileV1`
   deterministically without LLM calls.
 - `build_class_snapshot(...)` in `packages/planning` keeps unknown students separate, groups diagnosed
@@ -139,7 +144,11 @@ exist yet — it is captured client-side only (see Operational Behavior).
   `RemediationEngine`/`ContentGenerator`. `/attempts` requires a client-supplied `attempt_id`; a
   repeated `attempt_id` for the same student replays the first recorded response instead of calling
   `RemediationEngine.advance()` again (route-level idempotency, since the engine itself has none).
+  In configured environments the state and idempotency results are stored in
+  `remediation_sessions`.
   `confirm` is naturally idempotent — it only acts while the session is in `CONFIRMATION`.
+- `/api/v1/remediation/exit-tickets` validates the answer server-side and persists its transfer
+  result as an `EvidenceEventV1` before saving the resulting remediation state.
 - A missing configuration, timeout, malformed row, or Supabase HTTP failure returns a sanitized
   `503` (or `404` when a student, evidence id, or diagnostic profile is missing).
 - Browser CORS access is restricted to the comma-separated exact origins in `CORS_ORIGINS`.

@@ -2,7 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { reportTestFixture } from "@/features/teacher/report/report-test-fixture";
+import {
+  reportTestFixture,
+  reportTestPlan,
+} from "@/features/teacher/report/report-test-fixture";
 import { fixtureTeacherWorkspaceRepository } from "@/test/teacher-fixtures";
 import App from "./App";
 
@@ -67,7 +70,7 @@ describe("App", () => {
 
   it("renders the VAI-19 teacher routes on direct navigation", async () => {
     const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
-    const plan = await fixtureTeacherWorkspaceRepository.getLessonPlan();
+    const plan = await reportTestPlan();
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
@@ -93,7 +96,7 @@ describe("App", () => {
   });
 
   it("renders the VAI-21 report routes on direct navigation", async () => {
-    const plan = await fixtureTeacherWorkspaceRepository.getLessonPlan();
+    const plan = await reportTestPlan();
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 

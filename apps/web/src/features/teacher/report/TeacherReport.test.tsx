@@ -28,11 +28,11 @@ describe("TeacherReport", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("Passed independent transfer")).toHaveLength(2);
     expect(screen.getAllByText("Teacher escalation")).toHaveLength(2);
-    expect(screen.getByText("ev_demo_012")).toBeInTheDocument();
+    expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
     expect(screen.getByText("No evidence recorded")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Re-teach equivalent fractions before unlike-fraction addition.",
+        "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
       ),
     ).toBeInTheDocument();
 

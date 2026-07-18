@@ -4,8 +4,8 @@ import { ApiConfigurationError, getApiBaseUrl } from "@/lib/api-base-url";
 
 import type { TeacherWorkspaceRepository } from "./teacher-workspace-repository";
 
-const planId = "plan_demo_fractions_01";
-const classId = "class_demo_6a";
+const planId = "plan_class_g7a_demo_lesson_g7_inverse_proportion_01";
+const classId = "class_g7a_demo";
 
 export type TeacherRepositoryErrorKind =
   "configuration" | "unavailable" | "response";

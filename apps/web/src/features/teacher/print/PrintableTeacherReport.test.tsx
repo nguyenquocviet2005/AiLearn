@@ -2,7 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { reportTestRepository } from "@/features/teacher/report/report-test-fixture";
+import {
+  reportTestPlan,
+  reportTestRepository,
+} from "@/features/teacher/report/report-test-fixture";
 import { fixtureTeacherWorkspaceRepository } from "@/test/teacher-fixtures";
 import { PrintableTeacherReport } from "./PrintableTeacherReport";
 
@@ -16,11 +19,10 @@ describe("PrintableTeacherReport", () => {
     vi.stubGlobal("print", print);
     const user = userEvent.setup();
 
+    const plan = await reportTestPlan();
     const planRepository = {
       ...fixtureTeacherWorkspaceRepository,
-      getLessonPlan: vi.fn(() =>
-        fixtureTeacherWorkspaceRepository.getLessonPlan(),
-      ),
+      getLessonPlan: vi.fn().mockResolvedValue(plan),
     };
     const { container } = render(
       <PrintableTeacherReport
@@ -42,7 +44,7 @@ describe("PrintableTeacherReport", () => {
     ).toBeInTheDocument();
     expect(container.querySelector("img")).not.toBeInTheDocument();
     expect(planRepository.getLessonPlan).toHaveBeenCalledWith(
-      "plan_demo_fractions_01",
+      "plan_class_g7a_demo_lesson_g7_inverse_proportion_01",
     );
 
     await user.click(
@@ -67,7 +69,7 @@ describe("PrintableTeacherReport", () => {
         name: "Intervention report",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("ev_demo_012")).toBeInTheDocument();
+    expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
       "The matching lesson plan is unavailable",
     );
@@ -80,8 +82,7 @@ describe("PrintableTeacherReport", () => {
   });
 
   it("does not combine the report with a mismatched lesson plan", async () => {
-    const mismatchedPlan =
-      await fixtureTeacherWorkspaceRepository.getLessonPlan();
+    const mismatchedPlan = await reportTestPlan();
     render(
       <PrintableTeacherReport
         planRepository={{
