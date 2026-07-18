@@ -45,6 +45,16 @@ describe("LandingPage", () => {
       screen.getByText("Neo4j · pgvector · LangGraph"),
     ).toBeInTheDocument();
     expect(
+      screen.getByText("Một phương án sai đi qua hệ thống như thế nào?"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Từ lựa chọn sai đến kỹ năng gốc",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Cần hỏi thêm")).toBeInTheDocument();
+    expect(screen.getByText("Vũ Trung Quân")).toBeInTheDocument();
+    expect(
       screen.getByAltText("Linh vật ánh sáng của AiLearn"),
     ).toBeInTheDocument();
     expect(
