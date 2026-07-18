@@ -477,6 +477,32 @@ Test observable behavior rather than implementation details. Do not rely only on
 
 ## 13. Git Workflow
 
+### Integration branch policy
+
+`dev` is the mandatory integration branch for routine development.
+
+Before starting any code or documentation change:
+
+1. Fetch and prune the remote branches.
+2. Confirm the worktree is clean.
+3. Refresh from the current `origin/dev` baseline.
+4. Create a new issue or change branch from `origin/dev` before editing.
+
+Use this worktree-safe sequence:
+
+```bash
+git fetch origin --prune
+git switch -c <linear-id>-<short-description> origin/dev
+```
+
+This sequence is the linked-worktree equivalent of pulling `dev`: it uses the current remote
+`dev` commit without requiring the shared local `dev` branch to be checked out. Never develop or
+commit directly on `dev`, and never start routine work from `main` or an unmerged feature branch.
+
+Routine pull requests must target `dev`, not `main`. `main` is release-only. Opening a release or
+emergency hotfix pull request to `main` requires an explicit human instruction for that specific
+pull request.
+
 ### Branches
 
 ```text
@@ -499,7 +525,7 @@ git fetch origin
 git worktree add \
   ../worktrees/ail-42-diagnose-prerequisite-gap \
   -b ail-42-diagnose-prerequisite-gap \
-  origin/main
+  origin/dev
 ```
 
 ### Commits
@@ -518,7 +544,9 @@ docs(api): document diagnosis response [AIL-42]
 
 ### AI must not
 
+- Push directly to `dev`.
 - Push directly to `main`.
+- Base routine development on `main`.
 - Force-push protected branches.
 - Rewrite shared history.
 - Delete protected branches.
@@ -536,6 +564,9 @@ AI may create a **Draft Pull Request** after:
 - The diff has been inspected.
 - Documentation is updated.
 - The AI collaboration log exists.
+
+The base branch for every routine pull request is `dev`. Do not target `main` unless a human has
+explicitly requested a release or emergency hotfix pull request to `main`.
 
 The PR must include:
 
