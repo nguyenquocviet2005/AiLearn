@@ -8,8 +8,7 @@
 - Linear issue: VAI-17
 - Branch: `vai-17-expose-diagnostic-api-and-golden-case-evaluation`
 - Worktree: `/home/viet2005/workspace/AiLearn`
-- Pull request: (created after this log was committed — see PR link in the Linear comment / PR
-  description)
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/14 (Draft)
 
 ## Objective
 
