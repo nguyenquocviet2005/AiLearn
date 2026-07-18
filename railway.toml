@@ -1,6 +1,6 @@
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "apps/api/Dockerfile"
 
 [deploy]
 startCommand = "sh -c 'exec uv run --no-sync uvicorn ailearn_api.main:app --host 0.0.0.0 --port \"$PORT\"'"

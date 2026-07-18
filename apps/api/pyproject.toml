@@ -29,7 +29,7 @@ packages = ["src/ailearn_api"]
 
 [tool.uv.sources]
 ailearn-schemas = { path = "../../packages/schemas", editable = true }
-ailearn-diagnostic = { path = "../../ai/diagnostic", editable = true }
+ailearn-diagnostic = { path = "../../packages/diagnostic", editable = true }
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers --cov=ailearn_api --cov-report=term-missing"
