@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -33,9 +33,10 @@ describe("TeacherWorkspace", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "A teaching plan starts with the evidence.",
+        name: "Bắt đầu kế hoạch dạy học từ bằng chứng.",
       }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "AiLearn" })).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",
       expect.any(Object),
@@ -65,11 +66,10 @@ describe("TeacherWorkspace", () => {
       />,
     );
 
-    await screen.findByText("Version 1 · pending decision");
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
-    expect(
-      await screen.findByText("Version 2 · approved decision"),
-    ).toBeInTheDocument();
+    await screen.findByText("V1");
+    await user.click(screen.getByRole("button", { name: /Duyệt kế hoạch/ }));
+    expect(await screen.findByText("V2")).toBeInTheDocument();
+    expect(screen.getAllByText("Đã duyệt")).toHaveLength(2);
     expect(fetchMock).toHaveBeenLastCalledWith(
       "https://api.example.test/api/v1/lesson-plans/plan_demo_fractions_01/approve",
       expect.objectContaining({ method: "POST" }),
@@ -93,7 +93,7 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The teacher workspace API is unavailable. Try again later.",
+      "Không thể kết nối dữ liệu lớp học. Vui lòng thử lại sau.",
     );
   });
 
@@ -109,7 +109,7 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The teacher workspace API is not configured for this deployment.",
+      "Không gian giáo viên chưa được cấu hình cho bản triển khai này.",
     );
   });
 
@@ -126,11 +126,11 @@ describe("TeacherWorkspace", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "A teaching plan starts with the evidence.",
+        name: "Bắt đầu kế hoạch dạy học từ bằng chứng.",
       }),
     ).toBeInTheDocument();
     expect(screen.getByText("repair equivalent fractions")).toBeInTheDocument();
-    expect(screen.getByText("Root-cause distribution")).toBeInTheDocument();
+    expect(screen.getByText("Phân bố nguyên nhân gốc")).toBeInTheDocument();
     expect(screen.queryByText("Unconfirmed")).not.toBeInTheDocument();
     expect(screen.getByText("stu_demo_06")).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
@@ -158,15 +158,15 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(
-      await screen.findByText("class_demo_6a / lesson_demo_fractions_01"),
+      await screen.findByText("lesson_demo_fractions_01"),
     ).toBeInTheDocument();
     expect(repository.getClassSnapshot).toHaveBeenCalledOnce();
     expect(repository.getLessonPlan).not.toHaveBeenCalled();
 
-    await user.click(screen.getByRole("link", { name: "Lesson plan" }));
+    await user.click(screen.getByRole("link", { name: "Kế hoạch bài dạy" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
 
-    await user.click(screen.getByRole("link", { name: "Intervention report" }));
+    await user.click(screen.getByRole("link", { name: "Báo cáo can thiệp" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
 
     rerender(
@@ -180,7 +180,7 @@ describe("TeacherWorkspace", () => {
     expect(repository.getLessonPlan).toHaveBeenCalledOnce();
     expect(
       await screen.findByRole("heading", {
-        name: "A 45-minute path from evidence to action.",
+        name: "45 phút từ bằng chứng đến hành động.",
       }),
     ).toBeInTheDocument();
     expect(screen.getByText("Warm-up confirmation items")).toBeInTheDocument();
@@ -209,7 +209,7 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(
-      await screen.findByText("class_demo_6a / lesson_demo_fractions_01"),
+      await screen.findByText("lesson_demo_fractions_01"),
     ).toBeInTheDocument();
     expect(repository.getLessonPlan).not.toHaveBeenCalled();
   });
@@ -233,7 +233,7 @@ describe("TeacherWorkspace", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "A 45-minute path from evidence to action.",
+        name: "45 phút từ bằng chứng đến hành động.",
       }),
     ).toBeInTheDocument();
     expect(repository.getClassSnapshot).not.toHaveBeenCalled();
@@ -272,16 +272,16 @@ describe("TeacherWorkspace", () => {
       screen.getByLabelText("Move stu_demo_01"),
       "grp_demo_repair_denominator",
     );
-    await user.click(screen.getByRole("button", { name: "Save teacher edit" }));
+    const saveButton = screen.getByRole("button", { name: /Lưu chỉnh sửa/ });
+    await waitFor(() => expect(saveButton).toBeEnabled());
+    await user.click(saveButton);
 
     expect(repository.createVersion).toHaveBeenCalledOnce();
     const [snapshot, plan] = repository.createVersion.mock.calls[0];
     expect(plan.total_duration_minutes).toBe(44);
     expect(snapshot.groups[0].student_ids).not.toContain("stu_demo_01");
     expect(snapshot.groups[1].student_ids).toContain("stu_demo_01");
-    expect(
-      await screen.findByText("Version 2 · pending decision"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("V2")).toBeInTheDocument();
   });
 
   it("requires approval before publishing", async () => {
@@ -295,12 +295,10 @@ describe("TeacherWorkspace", () => {
       />,
     );
 
-    await screen.findByText("Version 1 · pending decision");
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeDisabled();
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
-    expect(
-      await screen.findByText("Version 2 · approved decision"),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeEnabled();
+    await screen.findByText("V1");
+    expect(screen.getByRole("button", { name: "Xuất bản" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: /Duyệt kế hoạch/ }));
+    expect(await screen.findByText("V2")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Xuất bản" })).toBeEnabled();
   });
 });

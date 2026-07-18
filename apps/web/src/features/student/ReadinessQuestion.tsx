@@ -55,12 +55,18 @@ export function ReadinessQuestion({
   }
 
   return (
-    <article className="student-card" aria-label="Câu hỏi">
-      <span className="student-pill teal">
-        {variant === "probe"
-          ? "Một câu để hiểu rõ hơn"
-          : `Câu ${index + 1} / ${total}`}
-      </span>
+    <article
+      className="student-card student-question-card"
+      aria-label="Câu hỏi"
+    >
+      <div className="student-question-meta">
+        <span className="student-pill teal">
+          {variant === "probe"
+            ? "Một câu để hiểu rõ hơn"
+            : `Câu ${index + 1} / ${total}`}
+        </span>
+        <span>{Math.round(((index + 1) / total) * 100)}% hoàn thành</span>
+      </div>
       {variant === "probe" && (
         <p>Hệ thống cần thêm một câu để hiểu em đang vướng ở đâu.</p>
       )}
@@ -70,7 +76,7 @@ export function ReadinessQuestion({
           style={{ width: `${Math.round(((index + 1) / total) * 100)}%` }}
         />
       </div>
-      <h1>{item.stem}</h1>
+      <h1 className="student-question-title">{item.stem}</h1>
       <div
         className="student-options"
         role="radiogroup"
@@ -93,7 +99,7 @@ export function ReadinessQuestion({
         ))}
       </div>
 
-      <p style={{ fontWeight: 700 }}>
+      <p className="student-field-label">
         Em chọn như vậy vì… (có thể viết rất ngắn)
       </p>
       <textarea
@@ -104,7 +110,7 @@ export function ReadinessQuestion({
         aria-label="Giải thích của em"
       />
 
-      <p style={{ fontWeight: 700, marginTop: "0.75rem" }}>
+      <p className="student-field-label student-field-label-spaced">
         Em thấy câu này thế nào?
       </p>
       <div className="student-confidence">
@@ -127,18 +133,20 @@ export function ReadinessQuestion({
           className="student-text-btn"
           onClick={handleReadAloud}
         >
-          🔊 Đọc câu hỏi
+          <span aria-hidden="true">◖</span>
+          Đọc câu hỏi
         </button>
         <button
           type="button"
           className="student-text-btn"
           onClick={onSaveAndExit}
         >
+          <span aria-hidden="true">↓</span>
           Lưu và làm sau
         </button>
       </div>
 
-      <p style={{ color: "var(--student-muted)", fontSize: "0.8rem" }}>
+      <p className="student-question-note">
         Không báo đúng/sai ngay; hệ thống sẽ hỏi thêm nếu cần phân biệt nguyên
         nhân.
       </p>
@@ -148,7 +156,7 @@ export function ReadinessQuestion({
         disabled={!canSubmit}
         onClick={handleSubmit}
       >
-        Gửi câu trả lời →
+        Gửi câu trả lời <span aria-hidden="true">→</span>
       </button>
     </article>
   );

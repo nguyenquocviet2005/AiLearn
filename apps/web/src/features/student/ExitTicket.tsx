@@ -16,7 +16,7 @@ export function ExitTicket({ ticket, busy, onSubmit }: ExitTicketProps) {
   }, [ticket.id]);
 
   return (
-    <article className="student-card">
+    <article className="student-card student-question-card">
       <span className="student-pill teal">Bài cuối</span>
       <h1>Thử một tình huống mới</h1>
       <p>{ticket.question}</p>
@@ -46,7 +46,7 @@ export function ExitTicket({ ticket, busy, onSubmit }: ExitTicketProps) {
         disabled={busy || responseLabel === null}
         onClick={() => responseLabel && onSubmit(ticket.id, responseLabel)}
       >
-        Gửi bài cuối →
+        Gửi bài cuối <span aria-hidden="true">→</span>
       </button>
     </article>
   );

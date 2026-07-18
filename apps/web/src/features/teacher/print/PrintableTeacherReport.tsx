@@ -67,25 +67,30 @@ export function PrintableTeacherReport({
   return (
     <main className="print-shell">
       <div className="print-actions">
-        <a href="/teacher/report">Back to report</a>
+        <a href="/teacher/report">← Quay lại báo cáo</a>
         {state.kind === "ready" && (
           <button type="button" onClick={() => window.print()}>
-            {state.plan ? "Print report and lesson plan" : "Print report"}
+            {state.plan ? "In báo cáo và kế hoạch" : "In báo cáo"}
           </button>
         )}
       </div>
       {state.kind === "loading" && (
-        <p aria-live="polite">Preparing a low-bandwidth printable view...</p>
+        <p aria-live="polite">Đang chuẩn bị bản in tiết kiệm dữ liệu...</p>
       )}
       {state.kind === "error" && <p role="alert">{state.message}</p>}
       {state.kind === "ready" && (
         <article className="print-sheet">
           <header>
-            <p className="eyebrow">AiLearn / teacher record</p>
+            <img
+              className="print-brand"
+              src="/brand/ailearn-logo.webp"
+              alt="AiLearn"
+            />
+            <p className="eyebrow">Hồ sơ giáo viên</p>
             <h1>
               {state.plan
-                ? "Intervention report and lesson plan"
-                : "Intervention report"}
+                ? "Báo cáo can thiệp và kế hoạch bài dạy"
+                : "Báo cáo can thiệp"}
             </h1>
             <p>
               {state.report.class_id} / {state.report.lesson_id}
@@ -97,27 +102,28 @@ export function PrintableTeacherReport({
               className="print-lesson-plan"
               aria-labelledby="print-plan-title"
             >
-              <p className="eyebrow">Printable lesson plan</p>
+              <p className="eyebrow">Kế hoạch bài dạy</p>
               <h2 id="print-plan-title">
-                {state.plan.lesson_plan.total_duration_minutes}-minute teaching
-                sequence
+                Tiến trình dạy học{" "}
+                {state.plan.lesson_plan.total_duration_minutes}
+                phút
               </h2>
               <ol>
                 {state.plan.lesson_plan.activities.map((activity) => (
                   <li key={activity.id}>
                     <strong>
-                      {activity.title} · {activity.duration_minutes} min
+                      {activity.title} · {activity.duration_minutes} phút
                     </strong>
                     <p>{activity.rationale}</p>
-                    <span>Evidence: {activity.expected_evidence}</span>
+                    <span>Bằng chứng: {activity.expected_evidence}</span>
                   </li>
                 ))}
               </ol>
             </section>
           ) : (
             <p className="print-plan-warning" role="status">
-              The matching lesson plan is unavailable. The intervention report
-              remains ready to print.
+              Chưa thể tải kế hoạch bài dạy tương ứng. Báo cáo can thiệp vẫn sẵn
+              sàng để in.
             </p>
           )}
         </article>

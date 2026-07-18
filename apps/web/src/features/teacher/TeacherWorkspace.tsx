@@ -8,6 +8,8 @@ import {
 } from "@/lib/adapters/teacher-repository";
 import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 
+import { TeacherShell, type TeacherRoute } from "./TeacherShell";
+
 type TeacherView = "overview" | "lesson-plan";
 
 type WorkspaceState =
@@ -26,9 +28,7 @@ type WorkspaceState =
 
 type TeacherWorkspaceProps = {
   view: TeacherView;
-  onNavigate: (
-    path: "/teacher" | "/teacher/lesson-plan" | "/teacher/report",
-  ) => void;
+  onNavigate: (path: TeacherRoute) => void;
   repository?: TeacherWorkspaceRepository;
 };
 
@@ -37,19 +37,26 @@ function humanize(value: string) {
 }
 
 function formatStatus(value: string) {
-  return value.replaceAll("_", " ");
+  const labels: Record<string, string> = {
+    approved: "Đã duyệt",
+    draft: "Bản nháp",
+    pending: "Chờ duyệt",
+    published: "Đã xuất bản",
+    rejected: "Cần chỉnh sửa",
+  };
+  return labels[value] ?? value.replaceAll("_", " ");
 }
 
 function teacherWorkspaceErrorMessage(error: unknown): string {
   if (error instanceof TeacherRepositoryError) {
     if (error.kind === "configuration") {
-      return "The teacher workspace API is not configured for this deployment.";
+      return "Không gian giáo viên chưa được cấu hình cho bản triển khai này.";
     }
     if (error.kind === "unavailable") {
-      return "The teacher workspace API is unavailable. Try again later.";
+      return "Không thể kết nối dữ liệu lớp học. Vui lòng thử lại sau.";
     }
   }
-  return "The teacher workspace data could not be loaded.";
+  return "Không thể tải dữ liệu không gian giáo viên.";
 }
 
 function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
@@ -76,34 +83,49 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
     <section className="teacher-content" aria-labelledby="teacher-page-title">
       <div className="teacher-page-heading">
         <div>
-          <p className="eyebrow">Class snapshot / fixture preview</p>
+          <p className="eyebrow">Tổng quan bằng chứng</p>
           <h1 id="teacher-page-title">
-            A teaching plan starts with the evidence.
+            Bắt đầu kế hoạch dạy học từ bằng chứng.
           </h1>
+          <p className="teacher-page-intro">
+            Nhìn nhanh mức độ sẵn sàng, khoảng trống kiến thức và nhóm cần ưu
+            tiên trước tiết học tiếp theo.
+          </p>
         </div>
-        <p className="teacher-context">
-          {snapshot.class_id} / {snapshot.lesson_id}
-        </p>
+        <div className="teacher-context">
+          <span>Lớp đang xem</span>
+          <strong>Toán 7A</strong>
+          <small>{snapshot.lesson_id}</small>
+        </div>
       </div>
 
       <section className="teacher-summary" aria-label="Class readiness summary">
-        <article>
-          <span>Ready</span>
+        <article className="summary-ready">
+          <div className="teacher-summary-label">
+            <span>Sẵn sàng</span>
+            <i aria-hidden="true">✓</i>
+          </div>
           <strong>{readinessCounts.ready ?? 0}</strong>
-          <p>Can move into transfer practice.</p>
+          <p>Có thể chuyển sang luyện tập vận dụng.</p>
         </article>
-        <article>
-          <span>Needs support</span>
+        <article className="summary-support">
+          <div className="teacher-summary-label">
+            <span>Cần hỗ trợ</span>
+            <i aria-hidden="true">↗</i>
+          </div>
           <strong>{readinessCounts.needs_support ?? 0}</strong>
-          <p>Have a supported intervention path.</p>
+          <p>Đã có lộ trình can thiệp phù hợp.</p>
         </article>
-        <article>
-          <span>Needs confirmation</span>
+        <article className="summary-confirm">
+          <div className="teacher-summary-label">
+            <span>Cần xác nhận</span>
+            <i aria-hidden="true">?</i>
+          </div>
           <strong>
             {(readinessCounts.abstained ?? 0) +
               snapshot.unknown_student_ids.length}
           </strong>
-          <p>Stay separate until more evidence is available.</p>
+          <p>Tạm tách riêng cho đến khi có thêm bằng chứng.</p>
         </article>
       </section>
 
@@ -113,8 +135,13 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
           aria-labelledby="priority-title"
         >
           <div className="teacher-panel-heading">
-            <p className="eyebrow">Teaching priorities</p>
-            <h2 id="priority-title">What needs attention first</h2>
+            <div>
+              <p className="eyebrow">Ưu tiên giảng dạy</p>
+              <h2 id="priority-title">Nội dung cần chú ý trước</h2>
+            </div>
+            <span className="teacher-panel-count">
+              {snapshot.teaching_priorities.length} ưu tiên
+            </span>
           </div>
           <ol>
             {snapshot.teaching_priorities.map((priority) => (
@@ -128,7 +155,7 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
             ))}
           </ol>
           <div className="root-cause-distribution">
-            <h3>Root-cause distribution</h3>
+            <h3>Phân bố nguyên nhân gốc</h3>
             <ul>
               {Object.entries(rootCauseCounts).map(([skillId, count]) => (
                 <li key={skillId}>
@@ -144,12 +171,14 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
           className="teacher-panel teacher-confirmation"
           aria-labelledby="confirmation-title"
         >
-          <p className="eyebrow">Evidence boundary</p>
-          <h2 id="confirmation-title">Keep uncertainty visible</h2>
+          <span className="teacher-boundary-icon" aria-hidden="true">
+            ?
+          </span>
+          <p className="eyebrow">Ranh giới bằng chứng</p>
+          <h2 id="confirmation-title">Luôn hiển thị điều chưa chắc chắn</h2>
           <p>
-            {snapshot.unknown_student_ids.length} student
-            {snapshot.unknown_student_ids.length === 1 ? " is" : "s are"} not
-            classified because the snapshot has insufficient evidence.
+            {snapshot.unknown_student_ids.length} học sinh chưa được phân loại
+            vì dữ liệu hiện tại chưa đủ bằng chứng.
           </p>
           <ul>
             {snapshot.unknown_student_ids.map((studentId) => (
@@ -164,13 +193,18 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
         aria-labelledby="groups-title"
       >
         <div className="teacher-panel-heading">
-          <p className="eyebrow">Intervention groups</p>
-          <h2 id="groups-title">Group by the help each learner needs</h2>
+          <div>
+            <p className="eyebrow">Nhóm can thiệp</p>
+            <h2 id="groups-title">Nhóm theo hỗ trợ mỗi em thực sự cần</h2>
+          </div>
+          <span className="teacher-panel-count">
+            {snapshot.groups.length} nhóm
+          </span>
         </div>
         <div className="group-grid">
           {snapshot.groups.map((group) => (
             <article key={group.id}>
-              <p className="group-count">{group.student_ids.length} learners</p>
+              <p className="group-count">{group.student_ids.length} học sinh</p>
               <h3>{humanize(group.intervention_need)}</h3>
               <p>{group.rationale}</p>
               <ul aria-label={`${group.id} students`}>
@@ -295,26 +329,33 @@ function LessonPlanView({
     <section className="teacher-content" aria-labelledby="teacher-page-title">
       <div className="teacher-page-heading">
         <div>
-          <p className="eyebrow">Lesson plan / fixture preview</p>
-          <h1 id="teacher-page-title">
-            A 45-minute path from evidence to action.
-          </h1>
+          <p className="eyebrow">Kế hoạch bài dạy</p>
+          <h1 id="teacher-page-title">45 phút từ bằng chứng đến hành động.</h1>
+          <p className="teacher-page-intro">
+            Điều chỉnh thời lượng và nhóm học sinh trước khi duyệt kế hoạch. Mọi
+            thay đổi đều được lưu thành một phiên bản mới.
+          </p>
         </div>
-        <p className="teacher-context">{lessonPlan.lesson_id}</p>
+        <div className="teacher-context">
+          <span>Bài học</span>
+          <strong>Toán 7A</strong>
+          <small>{lessonPlan.lesson_id}</small>
+        </div>
       </div>
 
       <section className="lesson-plan-meta" aria-label="Lesson plan status">
         <div>
-          <span>Plan status</span>
+          <span>Trạng thái</span>
           <strong>{formatStatus(lessonPlan.status)}</strong>
         </div>
         <div>
-          <span>Total time</span>
-          <strong>{lessonPlan.total_duration_minutes} minutes</strong>
+          <span>Tổng thời lượng</span>
+          <strong>{lessonPlan.total_duration_minutes} phút</strong>
         </div>
         <p>
-          Version {planVersion.version} · {formatStatus(planVersion.decision)}{" "}
-          decision
+          <span>Phiên bản hiện tại</span>
+          <strong>V{planVersion.version}</strong>
+          {formatStatus(planVersion.decision)}
         </p>
       </section>
 
@@ -331,7 +372,7 @@ function LessonPlanView({
                     className="eyebrow"
                     htmlFor={`duration-${activity.id}`}
                   >
-                    Minutes
+                    Số phút
                     <input
                       id={`duration-${activity.id}`}
                       aria-label={`${activity.title} duration`}
@@ -350,7 +391,7 @@ function LessonPlanView({
               </div>
               <p>{activity.rationale}</p>
               <div className="activity-evidence">
-                <strong>Expected evidence</strong>
+                <strong>Bằng chứng mong đợi</strong>
                 <span>{activity.expected_evidence}</span>
               </div>
             </article>
@@ -359,62 +400,84 @@ function LessonPlanView({
       </ol>
 
       <section className="teacher-panel" aria-labelledby="group-editor-title">
-        <p className="eyebrow">Teacher edit</p>
-        <h2 id="group-editor-title">Adjust intervention groups</h2>
-        {snapshot.groups.map((group) => (
-          <div key={group.id}>
-            <h3>{humanize(group.intervention_need)}</h3>
-            {group.student_ids.map((studentId) => (
-              <label key={studentId}>
-                {studentId}
-                <select
-                  aria-label={`Move ${studentId}`}
-                  disabled={group.student_ids.length === 1}
-                  value={group.id}
-                  onChange={(event) =>
-                    moveStudent(studentId, group.id, event.target.value)
-                  }
-                >
-                  {snapshot.groups.map((target) => (
-                    <option key={target.id} value={target.id}>
-                      {humanize(target.intervention_need)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ))}
+        <div className="teacher-panel-heading">
+          <div>
+            <p className="eyebrow">Giáo viên điều chỉnh</p>
+            <h2 id="group-editor-title">Điều chỉnh nhóm can thiệp</h2>
           </div>
-        ))}
+          <span className="teacher-panel-count">Kéo theo bằng chứng</span>
+        </div>
+        <div className="teacher-group-editor">
+          {snapshot.groups.map((group) => (
+            <div key={group.id}>
+              <h3>{humanize(group.intervention_need)}</h3>
+              {group.student_ids.map((studentId) => (
+                <label key={studentId}>
+                  <span>{studentId}</span>
+                  <select
+                    aria-label={`Move ${studentId}`}
+                    disabled={group.student_ids.length === 1}
+                    value={group.id}
+                    onChange={(event) =>
+                      moveStudent(studentId, group.id, event.target.value)
+                    }
+                  >
+                    {snapshot.groups.map((target) => (
+                      <option key={target.id} value={target.id}>
+                        {humanize(target.intervention_need)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+            </div>
+          ))}
+        </div>
       </section>
 
-      <section className="teacher-panel" aria-label="Teacher approval controls">
+      <section
+        className="teacher-action-bar"
+        aria-label="Teacher approval controls"
+      >
+        <div>
+          <strong>
+            {dirty ? "Có thay đổi chưa lưu" : "Kế hoạch đã đồng bộ"}
+          </strong>
+          <span>Giáo viên là người phê duyệt cuối cùng.</span>
+        </div>
         <button
+          className="teacher-button secondary"
           disabled={saving || durationInvalid}
           onClick={() => void saveVersion()}
           type="button"
         >
-          Save teacher edit
+          <span aria-hidden="true">↓</span>
+          Lưu chỉnh sửa
         </button>
         <button
+          className="teacher-button primary"
           disabled={saving || dirty}
           onClick={() => void decide("approve")}
           type="button"
         >
-          Approve plan
+          <span aria-hidden="true">✓</span>
+          Duyệt kế hoạch
         </button>
         <button
+          className="teacher-button quiet"
           disabled={saving || dirty}
           onClick={() => void decide("reject")}
           type="button"
         >
-          Reject plan
+          Yêu cầu sửa
         </button>
         <button
+          className="teacher-button primary"
           disabled={saving || dirty || planVersion.decision !== "approved"}
           onClick={() => void decide("publish")}
           type="button"
         >
-          Publish plan
+          Xuất bản
         </button>
         {error && <p role="alert">{error}</p>}
         {durationInvalid && (
@@ -484,61 +547,30 @@ export function TeacherWorkspace({
   const isCurrentView = workspace.view === view;
 
   return (
-    <main className="teacher-shell">
-      <header className="teacher-header">
-        <a
-          className="teacher-wordmark"
-          href="/teacher"
-          onClick={(event) => {
-            event.preventDefault();
-            onNavigate("/teacher");
-          }}
-        >
-          AiLearn <span>Teacher workspace</span>
-        </a>
-        <nav aria-label="Teacher workspace navigation">
-          <a
-            aria-current={view === "overview" ? "page" : undefined}
-            href="/teacher"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher");
-            }}
-          >
-            Class overview
-          </a>
-          <a
-            aria-current={view === "lesson-plan" ? "page" : undefined}
-            href="/teacher/lesson-plan"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher/lesson-plan");
-            }}
-          >
-            Lesson plan
-          </a>
-          <a
-            href="/teacher/report"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher/report");
-            }}
-          >
-            Intervention report
-          </a>
-        </nav>
-      </header>
-
+    <TeacherShell
+      current={view === "overview" ? "overview" : "lesson-plan"}
+      onNavigate={onNavigate}
+    >
       {(!isCurrentView || workspace.kind === "loading") && (
-        <p className="teacher-state" aria-live="polite">
-          Preparing the teacher workspace...
-        </p>
+        <div className="teacher-state" aria-live="polite">
+          <span className="teacher-state-spinner" aria-hidden="true" />
+          <div>
+            <strong>Đang chuẩn bị không gian giáo viên</strong>
+            <p>AiLearn đang tổng hợp bằng chứng mới nhất của lớp.</p>
+          </div>
+        </div>
       )}
 
       {isCurrentView && workspace.kind === "error" && (
-        <p className="teacher-state" role="alert">
-          {workspace.message}
-        </p>
+        <div className="teacher-state error" role="alert">
+          <span className="teacher-state-symbol" aria-hidden="true">
+            !
+          </span>
+          <div>
+            <strong>Chưa thể tải dữ liệu</strong>
+            <p>{workspace.message}</p>
+          </div>
+        </div>
       )}
 
       {isCurrentView &&
@@ -558,6 +590,6 @@ export function TeacherWorkspace({
             repository={repository}
           />
         )}
-    </main>
+    </TeacherShell>
   );
 }

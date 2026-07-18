@@ -70,6 +70,11 @@ The API exposes:
 Teacher routes include `/teacher`, `/teacher/lesson-plan`, `/teacher/report`, and the compact
 `/teacher/report/print` fallback.
 
+The teacher and student workspaces share the AiLearn purple, white, and black brand system introduced
+by the public landing page. Both dashboards reuse the approved logo and mascot assets, provide
+role-specific responsive navigation, and preserve the existing evidence, planning, remediation, and
+offline flows.
+
 ## Supabase Migration
 
 `supabase/migrations/` currently includes:

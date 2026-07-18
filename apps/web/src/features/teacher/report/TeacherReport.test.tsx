@@ -20,23 +20,23 @@ describe("TeacherReport", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "See what changed—and what still needs teaching.",
+        name: "Thấy rõ điều đã đổi và điều cần dạy tiếp.",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Immediate success is not transfer."),
+      screen.getByText("Một lần làm đúng chưa phải là vận dụng."),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Passed independent transfer")).toHaveLength(2);
-    expect(screen.getAllByText("Teacher escalation")).toHaveLength(2);
+    expect(screen.getAllByText("Đã vận dụng độc lập")).toHaveLength(2);
+    expect(screen.getAllByText("Cần giáo viên hỗ trợ")).toHaveLength(2);
     expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
-    expect(screen.getByText("No evidence recorded")).toBeInTheDocument();
+    expect(screen.getByText("Chưa có bằng chứng")).toBeInTheDocument();
     expect(
       screen.getByText(
         "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
       ),
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("link", { name: "Open printable view" }));
+    await user.click(screen.getByRole("link", { name: /Mở bản in/ }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report/print");
   });
 

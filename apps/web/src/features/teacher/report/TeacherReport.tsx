@@ -5,13 +5,17 @@ import type { InterventionReportV1, OutcomeKind } from "@ailearn/schemas";
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
+import {
+  TeacherShell,
+  type TeacherRoute,
+} from "@/features/teacher/TeacherShell";
 
 const outcomeLabels: Record<OutcomeKind, string> = {
-  passed_transfer: "Passed independent transfer",
-  still_struggling: "Still struggling",
-  root_cause_reclassified: "Root cause reclassified",
-  incomplete: "Incomplete",
-  teacher_escalation: "Teacher escalation",
+  passed_transfer: "Đã vận dụng độc lập",
+  still_struggling: "Vẫn cần hỗ trợ",
+  root_cause_reclassified: "Đã phân loại lại",
+  incomplete: "Chưa hoàn thành",
+  teacher_escalation: "Cần giáo viên hỗ trợ",
 };
 
 const outcomeOrder: OutcomeKind[] = [
@@ -34,7 +38,7 @@ export function InterventionReportDetails({
 }) {
   return (
     <>
-      <section className="report-outcome-grid" aria-label="Outcome counts">
+      <section className="report-outcome-grid" aria-label="Tổng hợp kết quả">
         {outcomeOrder.map((outcome) => (
           <article key={outcome}>
             <strong>{report.outcome_counts[outcome]}</strong>
@@ -44,10 +48,14 @@ export function InterventionReportDetails({
       </section>
 
       <aside className="report-evidence-boundary">
-        <strong>Immediate success is not transfer.</strong>
+        <span className="report-boundary-icon" aria-hidden="true">
+          i
+        </span>
+        <strong>Một lần làm đúng chưa phải là vận dụng.</strong>
         <p>
-          Passed transfer requires independent evidence on a new, related
-          task—not only a correct answer during supported practice.
+          Học sinh chỉ được ghi nhận đã vận dụng khi có bằng chứng độc lập ở một
+          nhiệm vụ mới có liên quan, không chỉ là trả lời đúng trong lúc được hỗ
+          trợ.
         </p>
       </aside>
 
@@ -55,15 +63,15 @@ export function InterventionReportDetails({
         className="teacher-panel report-evidence"
         aria-labelledby="report-evidence-title"
       >
-        <p className="eyebrow">Individual evidence</p>
-        <h2 id="report-evidence-title">What happened after intervention</h2>
+        <p className="eyebrow">Bằng chứng từng học sinh</p>
+        <h2 id="report-evidence-title">Điều gì thay đổi sau can thiệp</h2>
         <div className="report-table-wrap">
           <table>
             <thead>
               <tr>
-                <th scope="col">Learner</th>
-                <th scope="col">Outcome</th>
-                <th scope="col">Evidence</th>
+                <th scope="col">Học sinh</th>
+                <th scope="col">Kết quả</th>
+                <th scope="col">Bằng chứng</th>
               </tr>
             </thead>
             <tbody>
@@ -74,7 +82,7 @@ export function InterventionReportDetails({
                   <td>
                     {student.evidence_ids.length > 0
                       ? student.evidence_ids.join(", ")
-                      : "No evidence recorded"}
+                      : "Chưa có bằng chứng"}
                   </td>
                 </tr>
               ))}
@@ -88,8 +96,8 @@ export function InterventionReportDetails({
           className="teacher-panel"
           aria-labelledby="remaining-gaps-title"
         >
-          <p className="eyebrow">Remaining gaps</p>
-          <h2 id="remaining-gaps-title">Skills that still need attention</h2>
+          <p className="eyebrow">Khoảng trống còn lại</p>
+          <h2 id="remaining-gaps-title">Kỹ năng vẫn cần được chú ý</h2>
           <ul>
             {report.remaining_gaps.map((gap) => (
               <li key={gap.skill_id}>
@@ -103,8 +111,8 @@ export function InterventionReportDetails({
           className="teacher-panel report-next-focus"
           aria-labelledby="next-focus-title"
         >
-          <p className="eyebrow">Next lesson</p>
-          <h2 id="next-focus-title">Recommended focus</h2>
+          <p className="eyebrow">Tiết học tiếp theo</p>
+          <h2 id="next-focus-title">Trọng tâm được đề xuất</h2>
           <p>{report.next_lesson_focus}</p>
         </section>
       </div>
@@ -116,13 +124,7 @@ export function TeacherReport({
   onNavigate,
   repository = httpTeacherReportRepository,
 }: {
-  onNavigate: (
-    path:
-      | "/teacher"
-      | "/teacher/lesson-plan"
-      | "/teacher/report"
-      | "/teacher/report/print",
-  ) => void;
+  onNavigate: (path: TeacherRoute) => void;
   repository?: TeacherReportRepository;
 }) {
   const [state, setState] = useState<ReportState>({ kind: "loading" });
@@ -141,50 +143,26 @@ export function TeacherReport({
   }, [repository]);
 
   return (
-    <main className="teacher-shell">
-      <header className="teacher-header">
-        <a
-          href="/teacher"
-          className="teacher-wordmark"
-          onClick={(event) => {
-            event.preventDefault();
-            onNavigate("/teacher");
-          }}
-        >
-          AiLearn <span>Teacher workspace</span>
-        </a>
-        <nav aria-label="Teacher workspace navigation">
-          <a
-            href="/teacher"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher");
-            }}
-          >
-            Class overview
-          </a>
-          <a
-            href="/teacher/lesson-plan"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher/lesson-plan");
-            }}
-          >
-            Lesson plan
-          </a>
-          <a aria-current="page" href="/teacher/report">
-            Intervention report
-          </a>
-        </nav>
-      </header>
-
+    <TeacherShell current="report" onNavigate={onNavigate}>
       {state.kind === "loading" && (
-        <p className="teacher-state">Preparing the intervention report...</p>
+        <div className="teacher-state" aria-live="polite">
+          <span className="teacher-state-spinner" aria-hidden="true" />
+          <div>
+            <strong>Đang chuẩn bị báo cáo can thiệp</strong>
+            <p>AiLearn đang đối chiếu kết quả với bằng chứng đã ghi nhận.</p>
+          </div>
+        </div>
       )}
       {state.kind === "error" && (
-        <p className="teacher-state" role="alert">
-          {state.message}
-        </p>
+        <div className="teacher-state error" role="alert">
+          <span className="teacher-state-symbol" aria-hidden="true">
+            !
+          </span>
+          <div>
+            <strong>Chưa thể tải báo cáo</strong>
+            <p>{state.message}</p>
+          </div>
+        </div>
       )}
       {state.kind === "ready" && (
         <section
@@ -193,10 +171,14 @@ export function TeacherReport({
         >
           <div className="teacher-page-heading">
             <div>
-              <p className="eyebrow">Intervention report / evidence review</p>
+              <p className="eyebrow">Báo cáo can thiệp</p>
               <h1 id="report-title">
-                See what changed—and what still needs teaching.
+                Thấy rõ điều đã đổi và điều cần dạy tiếp.
               </h1>
+              <p className="teacher-page-intro">
+                Kết quả được tách khỏi phán đoán: mỗi đề xuất đều đi cùng bằng
+                chứng và phần còn chưa chắc chắn.
+              </p>
             </div>
             <a
               className="report-print-link"
@@ -206,15 +188,17 @@ export function TeacherReport({
                 onNavigate("/teacher/report/print");
               }}
             >
-              Open printable view
+              <span aria-hidden="true">↗</span>
+              Mở bản in
             </a>
           </div>
-          <p className="teacher-context">
-            {state.report.class_id} / {state.report.lesson_id}
-          </p>
+          <div className="teacher-report-context">
+            <span>{state.report.class_id}</span>
+            <span>{state.report.lesson_id}</span>
+          </div>
           <InterventionReportDetails report={state.report} />
         </section>
       )}
-    </main>
+    </TeacherShell>
   );
 }

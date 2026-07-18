@@ -41,6 +41,28 @@ export const DEMO_STUDENT_NAME = "Học sinh 001";
 
 type TabId = "home" | "readiness" | "path" | "help";
 
+const studentNavigation: Array<{
+  id: TabId;
+  icon: string;
+  label: string;
+  shortLabel: string;
+}> = [
+  { id: "home", icon: "⌂", label: "Hôm nay", shortLabel: "Việc cần làm" },
+  {
+    id: "readiness",
+    icon: "◷",
+    label: "Bài của em",
+    shortLabel: "Khoảng 5 phút",
+  },
+  {
+    id: "path",
+    icon: "↗",
+    label: "Lộ trình của em",
+    shortLabel: "Học từng bước",
+  },
+  { id: "help", icon: "?", label: "Trợ giúp", shortLabel: "Luôn sẵn sàng" },
+];
+
 export type Stage =
   | { kind: "idle" }
   | { kind: "readiness"; session: StartSessionResponse; currentIndex: number }
@@ -571,84 +593,131 @@ export function StudentWorkspace({
 
   return (
     <div className="student-shell">
+      <a className="dashboard-skip-link" href="#student-main">
+        Đi tới nội dung chính
+      </a>
       <header className="student-header">
-        <div className="student-identity">
-          <b>{currentStudent.displayName}</b>
-          <small>Toán 7A · Tiến từng bước, không xếp hạng</small>
-        </div>
-        <DemoReset
-          personas={personas}
-          selectedPersonaId={selectedPersonaId}
-          busy={busy}
-          onSelect={setSelectedPersonaId}
-          onReset={() => void resetDemo()}
-        />
-        <button
-          type="button"
-          className={`student-sync${pendingCount === 0 ? " online" : ""}`}
-          onClick={() => void flush(repository)}
+        <a
+          className="dashboard-brand"
+          href="/"
+          aria-label="AiLearn - trang chủ"
         >
-          <span>
-            {pendingCount === 0
-              ? "Đã đồng bộ"
-              : `Đang chờ đồng bộ · ${pendingCount}`}
+          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
+        </a>
+        <div className="student-profile">
+          <span className="student-avatar" aria-hidden="true">
+            HS
           </span>
-        </button>
+          <div className="student-identity">
+            <b>{currentStudent.displayName}</b>
+            <small>Toán 7A · Tiến từng bước, không xếp hạng</small>
+          </div>
+        </div>
+        <div className="student-header-actions">
+          <DemoReset
+            personas={personas}
+            selectedPersonaId={selectedPersonaId}
+            busy={busy}
+            onSelect={setSelectedPersonaId}
+            onReset={() => void resetDemo()}
+          />
+          <button
+            type="button"
+            className={`student-sync${pendingCount === 0 ? " online" : ""}`}
+            title={
+              pendingCount === 0
+                ? "Đã đồng bộ - nhấn để kiểm tra lại"
+                : `${pendingCount} thay đổi đang chờ đồng bộ`
+            }
+            onClick={() => void flush(repository)}
+          >
+            <span className="student-sync-icon" aria-hidden="true">
+              ↻
+            </span>
+            <span className="student-sync-dot" aria-hidden="true" />
+            <span>
+              {pendingCount === 0
+                ? "Đã đồng bộ"
+                : `Đang chờ đồng bộ · ${pendingCount}`}
+            </span>
+          </button>
+        </div>
       </header>
 
-      <nav className="student-nav" aria-label="Điều hướng học sinh">
-        {(
-          [
-            ["home", "Hôm nay"],
-            ["readiness", "Bài của em"],
-            ["path", "Lộ trình của em"],
-            ["help", "Trợ giúp"],
-          ] as [TabId, string][]
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            className={activeTab === id ? "active" : ""}
-            aria-current={activeTab === id ? "page" : undefined}
-            onClick={() => setActiveTab(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </nav>
+      <div className="student-layout">
+        <aside className="student-sidebar">
+          <nav className="student-nav" aria-label="Điều hướng học sinh">
+            {studentNavigation.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={activeTab === item.id ? "active" : ""}
+                aria-current={activeTab === item.id ? "page" : undefined}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <span className="dashboard-nav-icon" aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span>
+                  <b>{item.label}</b>
+                  <small>{item.shortLabel}</small>
+                </span>
+              </button>
+            ))}
+          </nav>
 
-      <main className="student-main">
-        {activeTab === "home" && (
-          <StudentHome
-            stage={stage}
-            busy={busy}
-            onStart={() => void startReadiness()}
-            onContinue={(tab) => setActiveTab(tab)}
-          />
-        )}
+          <div className="student-companion">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <div>
+              <strong>Em không học một mình</strong>
+              <p>AiLearn sẽ đổi cách giải thích khi em cần.</p>
+            </div>
+          </div>
+        </aside>
 
-        {activeTab === "readiness" && (
-          <ReadinessSection
-            stage={stage}
-            onAnswer={submitReadinessAnswer}
-            onProbeAnswer={submitProbeAnswer}
-            onSaveAndExit={() => setActiveTab("home")}
-          />
-        )}
+        <main id="student-main" className="student-main">
+          <div className="student-page-context">
+            <div>
+              <span className="student-kicker">Không gian học tập</span>
+              <strong>
+                {studentNavigation.find((item) => item.id === activeTab)?.label}
+              </strong>
+            </div>
+            <span>Toán 7A</span>
+          </div>
 
-        {activeTab === "path" && (
-          <RemediationSection
-            stage={stage}
-            initialRepresentation={initialRepresentation}
-            onAttempt={submitRemediationAttempt}
-            onExitTicket={submitExitTicket}
-            onContinueReclassifiedPath={continueReclassifiedPath}
-            busy={busy}
-          />
-        )}
+          {activeTab === "home" && (
+            <StudentHome
+              stage={stage}
+              busy={busy}
+              onStart={() => void startReadiness()}
+              onContinue={(tab) => setActiveTab(tab)}
+            />
+          )}
 
-        {activeTab === "help" && <StudentHelp stage={stage} />}
-      </main>
+          {activeTab === "readiness" && (
+            <ReadinessSection
+              stage={stage}
+              onAnswer={submitReadinessAnswer}
+              onProbeAnswer={submitProbeAnswer}
+              onSaveAndExit={() => setActiveTab("home")}
+            />
+          )}
+
+          {activeTab === "path" && (
+            <RemediationSection
+              stage={stage}
+              initialRepresentation={initialRepresentation}
+              onAttempt={submitRemediationAttempt}
+              onExitTicket={submitExitTicket}
+              onContinueReclassifiedPath={continueReclassifiedPath}
+              busy={busy}
+            />
+          )}
+
+          {activeTab === "help" && <StudentHelp stage={stage} />}
+        </main>
+      </div>
     </div>
   );
 }
