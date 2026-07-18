@@ -44,7 +44,7 @@ describe("App", () => {
     expect(window.location.pathname).toBe("/teacher");
     expect(
       screen.getByRole("navigation", {
-        name: "Teacher workspace navigation",
+        name: "Điều hướng giáo viên",
       }),
     ).toBeInTheDocument();
   });

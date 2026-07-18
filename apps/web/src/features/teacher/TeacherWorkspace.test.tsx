@@ -105,7 +105,7 @@ describe("TeacherWorkspace", () => {
     );
   });
 
-  it("uses the landing-page brand asset, skip link, and persistent navigation", async () => {
+  it("uses the shared brand link, skip link, and persistent navigation", async () => {
     const onNavigate = vi.fn();
     const user = userEvent.setup();
     render(
@@ -119,20 +119,28 @@ describe("TeacherWorkspace", () => {
     await screen.findByRole("heading", {
       name: "Choose the next teaching move with evidence.",
     });
-    expect(screen.getByRole("img", { name: "AiLearn" })).toHaveAttribute(
+    const rail = screen.getByRole("complementary", {
+      name: "Không gian giáo viên",
+    });
+    const brandLink = within(rail).getByRole("link", {
+      name: "AiLearn - trang chủ",
+    });
+    expect(brandLink).toHaveAttribute("href", "/");
+    expect(brandLink.querySelector("img")).toHaveAttribute(
       "src",
-      "/brand/ailearn-logo.webp",
+      "/brand/ailearn-mascot.webp",
     );
     expect(
-      screen.getByRole("link", { name: "Skip to teacher content" }),
+      screen.getByRole("link", { name: "Đi tới nội dung chính" }),
     ).toHaveAttribute("href", "#teacher-main");
-    expect(
-      screen.getByRole("link", { name: "Class overview" }),
-    ).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Tổng quan lớp" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
 
-    await user.click(screen.getByRole("link", { name: "Lesson plan" }));
+    await user.click(screen.getByRole("link", { name: "Kế hoạch bài dạy" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
-    await user.click(screen.getByRole("link", { name: "Intervention report" }));
+    await user.click(screen.getByRole("link", { name: "Báo cáo can thiệp" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
   });
 

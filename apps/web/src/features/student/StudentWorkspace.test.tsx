@@ -170,7 +170,7 @@ async function answerReadinessItem(
     screen.getByRole("radio", { name: new RegExp(optionLabel) }),
   );
   await user.click(screen.getByRole("button", { name: "Em giải thích được" }));
-  await user.click(screen.getByRole("button", { name: "Gửi câu trả lời →" }));
+  await user.click(screen.getByRole("button", { name: "Gửi câu trả lời" }));
 }
 
 beforeEach(() => {
@@ -178,6 +178,34 @@ beforeEach(() => {
 });
 
 describe("StudentWorkspace", () => {
+  it("renders the AiLearn brand shell and updates primary navigation state", async () => {
+    const user = userEvent.setup();
+    render(<StudentWorkspace repository={fakeRepository()} />);
+
+    expect(
+      within(
+        screen.getByRole("complementary", {
+          name: "Đồng hành học tập",
+        }),
+      ).getByRole("link", { name: "AiLearn - trang chủ" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Hôm nay/ })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+
+    await user.click(screen.getByRole("button", { name: /Lộ trình của em/ }));
+
+    expect(
+      screen.getByRole("button", { name: /Lộ trình của em/ }),
+    ).toHaveAttribute("aria-current", "page");
+    expect(
+      screen.getByText(
+        "Lộ trình sẽ xuất hiện sau khi em hoàn thành bài chuẩn bị.",
+      ),
+    ).toBeInTheDocument();
+  });
+
   it("completes readiness and remediation without ever rendering a raw skill id", async () => {
     const repository = fakeRepository();
     const user = userEvent.setup();
@@ -188,7 +216,7 @@ describe("StudentWorkspace", () => {
 
     expect(await screen.findByText("Question one?")).toBeInTheDocument();
     const submitButton = screen.getByRole("button", {
-      name: "Gửi câu trả lời →",
+      name: "Gửi câu trả lời",
     });
     expect(submitButton).toBeDisabled();
 
@@ -216,7 +244,7 @@ describe("StudentWorkspace", () => {
     // Grade the checkpoint against the (server-only) checkpoint_answer.
     const answerInput = screen.getByLabelText("Câu trả lời của em");
     await user.type(answerInput, "4");
-    await user.click(screen.getByRole("button", { name: "Kiểm tra →" }));
+    await user.click(screen.getByRole("button", { name: "Kiểm tra" }));
 
     await waitFor(() => {
       expect(repository.submitRemediationAttempt).toHaveBeenCalledWith(
@@ -237,7 +265,7 @@ describe("StudentWorkspace", () => {
     await screen.findByText("Question one?");
 
     const submitButton = screen.getByRole("button", {
-      name: "Gửi câu trả lời →",
+      name: "Gửi câu trả lời",
     });
     expect(submitButton).toBeDisabled();
 
@@ -279,7 +307,7 @@ describe("StudentWorkspace", () => {
     await screen.findByRole("heading", { name: "Ví dụ mẫu" });
     const answerInput = screen.getByLabelText("Câu trả lời của em");
     await user.type(answerInput, "wrong");
-    await user.click(screen.getByRole("button", { name: "Kiểm tra →" }));
+    await user.click(screen.getByRole("button", { name: "Kiểm tra" }));
 
     expect(await screen.findByText(/Đã đổi sang/)).toBeInTheDocument();
   });
@@ -418,7 +446,7 @@ describe("StudentWorkspace", () => {
     await user.click(screen.getByRole("button", { name: /Bắt đầu bài ngắn/ }));
     await screen.findByText("Question one?");
 
-    await user.click(screen.getByRole("button", { name: "Trợ giúp" }));
+    await user.click(screen.getByRole("button", { name: /Trợ giúp/ }));
     await user.click(
       screen.getByRole("button", { name: /Kiểm tra bài đã lưu/ }),
     );
@@ -458,7 +486,7 @@ describe("StudentWorkspace", () => {
 
     render(<StudentWorkspace repository={repository} />);
     await user.click(
-      screen.getByRole("button", { name: "Xem lộ trình của em →" }),
+      screen.getByRole("button", { name: "Xem lộ trình của em" }),
     );
 
     expect(
@@ -467,7 +495,7 @@ describe("StudentWorkspace", () => {
       ),
     ).toBeInTheDocument();
     await user.click(screen.getByRole("radio", { name: "Giảm xuống" }));
-    await user.click(screen.getByRole("button", { name: "Gửi bài cuối →" }));
+    await user.click(screen.getByRole("button", { name: "Gửi bài cuối" }));
 
     await waitFor(() => {
       expect(submitExitTicket).toHaveBeenCalledWith(
@@ -511,7 +539,7 @@ describe("StudentWorkspace", () => {
     expect(repository.startRemediationSession).toHaveBeenCalledWith(
       persona.profile,
     );
-    expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+    expect(await screen.findAllByText("Bạn An")).toHaveLength(2);
   });
 
   it("resumes the selected seeded learner and path after a reload", async () => {
@@ -585,10 +613,10 @@ describe("StudentWorkspace", () => {
 
     render(<StudentWorkspace repository={repository} />);
     await user.click(
-      screen.getByRole("button", { name: "Xem lộ trình của em →" }),
+      screen.getByRole("button", { name: "Xem lộ trình của em" }),
     );
     await user.click(screen.getByRole("radio", { name: "Giảm xuống" }));
-    await user.click(screen.getByRole("button", { name: "Gửi bài cuối →" }));
+    await user.click(screen.getByRole("button", { name: "Gửi bài cuối" }));
 
     expect(
       await screen.findByText(
@@ -605,7 +633,7 @@ describe("StudentWorkspace", () => {
       await screen.findByText("Đã ghi nhận bài cuối."),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Gửi bài cuối →" }),
+      screen.queryByRole("button", { name: "Gửi bài cuối" }),
     ).not.toBeInTheDocument();
   });
 });

@@ -1,5 +1,7 @@
 import "./landing.css";
 
+import { AppHeader } from "@/components/navigation/AppHeader";
+
 type WorkspaceRoute = "/teacher" | "/student";
 
 type LandingPageProps = {
@@ -37,6 +39,39 @@ const learningLoop = [
   },
 ];
 
+const teamMembers = [
+  {
+    name: "Bạch Kim Anh",
+    role: "CMO",
+    image: "/team/bach-kim-anh.webp",
+  },
+  {
+    name: "Nguyễn Quốc Việt",
+    role: "Vibecoder Manager",
+    image: "/team/nguyen-quoc-viet.webp",
+  },
+  {
+    name: "Nguyễn Hồng Hải",
+    role: "CTO",
+    image: "/team/nguyen-hong-hai.webp",
+  },
+  {
+    name: "Phạm Tuấn Phong",
+    role: "CEO",
+    image: "/team/pham-tuan-phong.webp",
+  },
+  {
+    name: "Phạm Trọng Đông Hải",
+    role: "AI Engineer",
+    image: "/team/pham-trong-dong-hai.webp",
+  },
+  {
+    name: "Phạm Quang Huy",
+    role: "AI Researcher",
+    image: "/team/pham-quang-huy.webp",
+  },
+];
+
 function WorkspaceLink({
   children,
   className,
@@ -69,34 +104,35 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         Bỏ qua điều hướng
       </a>
 
-      <header className="landing-header">
-        <a className="landing-brand" href="/" aria-label="AiLearn - Trang chủ">
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
-        </a>
-
-        <nav className="landing-nav" aria-label="Điều hướng trang giới thiệu">
-          <a href="#learning-loop">Cách hoạt động</a>
-          <a href="#for-teachers">Giáo viên</a>
-          <a href="#for-students">Học sinh</a>
-        </nav>
-
-        <div className="landing-header-actions">
-          <WorkspaceLink
-            className="landing-header-link"
-            onNavigate={onNavigate}
-            route="/student"
-          >
-            Học sinh
-          </WorkspaceLink>
-          <WorkspaceLink
-            className="landing-button landing-button-primary landing-header-button"
-            onNavigate={onNavigate}
-            route="/teacher"
-          >
-            Giáo viên
-          </WorkspaceLink>
-        </div>
-      </header>
+      <AppHeader
+        className="landing-island"
+        context={
+          <nav className="landing-nav" aria-label="Điều hướng trang giới thiệu">
+            <a href="#learning-loop">Cách hoạt động</a>
+            <a href="#for-teachers">Giáo viên</a>
+            <a href="#for-students">Học sinh</a>
+            <a href="#team">Đội ngũ</a>
+          </nav>
+        }
+        actions={
+          <>
+            <WorkspaceLink
+              className="landing-header-link"
+              onNavigate={onNavigate}
+              route="/student"
+            >
+              Học sinh
+            </WorkspaceLink>
+            <WorkspaceLink
+              className="landing-button landing-button-primary landing-header-button"
+              onNavigate={onNavigate}
+              route="/teacher"
+            >
+              Giáo viên
+            </WorkspaceLink>
+          </>
+        }
+      />
 
       <main id="landing-main">
         <section className="landing-hero" aria-labelledby="landing-title">
@@ -129,6 +165,16 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 Xem trải nghiệm học sinh
               </WorkspaceLink>
             </div>
+          </div>
+
+          <div className="landing-hero-signal" aria-hidden="true">
+            <span className="landing-signal-core">
+              <img src="/brand/ailearn-mascot.webp" alt="" />
+              <i className="firefly-tail-light" />
+            </span>
+            <span className="landing-signal-label signal-one">Quan sát</span>
+            <span className="landing-signal-label signal-two">Giải thích</span>
+            <span className="landing-signal-label signal-three">Thích ứng</span>
           </div>
 
           <ul
@@ -200,6 +246,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               Vào dashboard giáo viên
             </WorkspaceLink>
           </article>
+
+          <div className="landing-audience-firefly" aria-hidden="true">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="firefly-tail-light" />
+            <span className="firefly-light-beam" />
+          </div>
 
           <article id="for-students">
             <p className="landing-kicker">Dành cho học sinh</p>
@@ -317,11 +369,54 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           </figure>
         </section>
 
+        <section
+          className="landing-team"
+          id="team"
+          aria-labelledby="team-title"
+        >
+          <div className="landing-team-heading">
+            <div>
+              <p className="landing-kicker landing-kicker-dark">
+                Đội ngũ AiLearn
+              </p>
+              <h2 id="team-title">Những người cùng thắp sáng AiLearn.</h2>
+            </div>
+            <p>
+              Sáu thành viên kết hợp vận hành, công nghệ và nghiên cứu AI để đưa
+              một ý tưởng giáo dục thành trải nghiệm có thể dùng trong lớp học.
+            </p>
+          </div>
+
+          <div className="landing-team-list">
+            {teamMembers.map((member, index) => (
+              <figure key={member.name}>
+                <div className="landing-team-portrait">
+                  <img
+                    src={member.image}
+                    alt={`Chân dung ${member.name}`}
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3>{member.name}</h3>
+                    <p>{member.role}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         <section className="landing-trust" aria-labelledby="trust-title">
-          <img
-            src="/brand/ailearn-mascot.webp"
-            alt="Linh vật ánh sáng của AiLearn"
-          />
+          <div className="landing-trust-firefly">
+            <img
+              src="/brand/ailearn-mascot.webp"
+              alt="Linh vật ánh sáng của AiLearn"
+            />
+            <span className="firefly-tail-light" aria-hidden="true" />
+          </div>
           <div>
             <p className="landing-kicker landing-kicker-dark">
               Học được cả khi mạng yếu
@@ -346,10 +441,16 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
       <footer className="landing-footer">
         <div>
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
+          <div className="landing-footer-brand">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <strong>AiLearn</strong>
+          </div>
           <p>Trợ giảng thích ứng song hành cùng giáo viên Việt Nam.</p>
         </div>
         <div className="landing-footer-links">
+          <a className="landing-text-link" href="#team">
+            Đội ngũ
+          </a>
           <WorkspaceLink
             className="landing-text-link"
             onNavigate={onNavigate}
