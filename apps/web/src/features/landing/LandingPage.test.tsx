@@ -19,8 +19,21 @@ describe("LandingPage", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Từ một câu trả lời đến một quyết định dạy học.",
+        name: /Mỗi đầu vào đều đi\sra bằng một thay đổi có thể kiểm chứng\./,
       }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Video & bài giảng")).toBeInTheDocument();
+    expect(screen.getByText("Tài liệu học tập")).toBeInTheDocument();
+    expect(screen.getByText("Bài kiểm tra đã có")).toBeInTheDocument();
+    expect(screen.getByText("Soạn bài trước giờ")).toBeInTheDocument();
+    expect(screen.getByText("Hồ sơ minh chứng")).toBeInTheDocument();
+    expect(screen.getByText("Lỗ hổng gốc + độ tin cậy")).toBeInTheDocument();
+    expect(screen.getByText("Giáo án đã duyệt")).toBeInTheDocument();
+    expect(screen.getByText("Tiến bộ có bằng chứng")).toBeInTheDocument();
+    expect(screen.getByText("Tăng đúng kỹ năng")).toBeInTheDocument();
+    expect(screen.getByText("Được thu hẹp")).toBeInTheDocument();
+    expect(
+      screen.getByText("Kết quả trở thành minh chứng mới."),
     ).toBeInTheDocument();
     expect(screen.getByText("Quét dấu vết")).toBeInTheDocument();
     expect(screen.getByText("Truy vết")).toBeInTheDocument();
@@ -40,6 +53,29 @@ describe("LandingPage", () => {
       screen.getByRole("heading", {
         name: "Không đoán mò. AiLearn lần theo từng dấu vết học tập.",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Ba engine AI ra quyết định như thế nào?",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "P(thành thạo) = (1 + số câu đúng) / (2 + tổng lần thử)",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Điểm ưu tiên = 0,40P + 0,25G + 0,20U + 0,15C"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("3–5 nhóm nhu cầu")).toBeInTheDocument();
+    expect(screen.getByText("Làm có hướng dẫn")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Vá đúng lỗ hổng, đổi cách biểu diễn và kiểm chứng chuyển giao.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Ghi lại EvidenceEventV1 và chẩn đoán lại"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
@@ -62,17 +98,19 @@ describe("LandingPage", () => {
       screen.getByText("Một lớp bảo vệ cho toàn hệ thống").closest("article"),
     ).not.toHaveClass("landing-runtime-node--planned");
     expect(
-      screen.getByText("Một phương án sai đi qua hệ thống như thế nào?"),
+      screen.getByText("Một dấu vết. Nhiều giả thuyết. Nhiều đường hành động."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", {
-        name: "Từ lựa chọn sai đến kỹ năng gốc",
-      }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Đồ thị kỹ năng GDPT 2018/)).toBeInTheDocument();
-    expect(screen.getByText("Đại lượng tỉ lệ thuận")).toBeInTheDocument();
-    expect(screen.getByText("Tỉ số và tỉ lệ thức")).toBeInTheDocument();
-    expect(screen.getByText("Cần hỏi thêm")).toBeInTheDocument();
+      screen.queryByText("Một phương án sai đi qua hệ thống như thế nào?"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Nhóm nhu cầu")).toBeInTheDocument();
+    expect(screen.getByText("Chuỗi lần thử")).toBeInTheDocument();
+    expect(screen.getByText("Nhầm khái niệm")).toBeInTheDocument();
+    expect(screen.getByText("Lỗi biểu diễn")).toBeInTheDocument();
+    expect(screen.getByText("Truy kỹ năng nền")).toBeInTheDocument();
+    expect(screen.getByText("Hỏi phân biệt")).toBeInTheDocument();
+    expect(screen.getByText("Dạy lại đúng chỗ")).toBeInTheDocument();
+    expect(screen.getByText("Lộ trình cá nhân")).toBeInTheDocument();
     expect(screen.getByText("Vũ Trung Quân")).toBeInTheDocument();
     expect(
       screen.getByAltText("Linh vật ánh sáng của AiLearn"),
