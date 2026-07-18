@@ -18,3 +18,6 @@ __pycache__/
 supabase/.branches/
 supabase/.temp/
 .vercel/
+
+# Local product and branding reference materials
+mat/
