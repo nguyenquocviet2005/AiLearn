@@ -48,6 +48,7 @@ not change backend or product contracts.
 
 ## Files changed
 
+- `.gitignore`
 - `apps/web/index.html`
 - `apps/web/public/brand/ailearn-hero.webp`
 - `apps/web/public/brand/ailearn-logo.webp`
@@ -77,6 +78,14 @@ not change backend or product contracts.
 - `./scripts/verify.sh` — PASS; format, lint, type-check, 44 web tests, web build, Ruff, mypy, 117 API
   and domain tests, and API package build all completed successfully. Three existing Starlette
   deprecation warnings were reported by the API test suite.
+- `git fetch origin --prune` plus `git merge --no-ff origin/main` — PASS; integrated `origin/main` at
+  `51012be` after VAI-21 merged, preserving the new teacher report and print routes alongside the
+  AiLearn landing page.
+- `git check-ignore -v --no-index mat/...` — PASS; local product and branding source materials under
+  `mat/` are ignored, while the three optimized WebP assets required by the landing page remain
+  tracked under `apps/web/public/brand/`.
+- Post-merge `./scripts/verify.sh` — PASS; format, lint, type-check, 57 web tests, web build, Ruff,
+  mypy, 120 API and domain tests, and API package build all completed successfully.
 
 ## Remaining risks and limitations
 
