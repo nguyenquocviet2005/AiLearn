@@ -68,6 +68,8 @@ was introduced.
   to reduce repetitive rectangular surfaces.
 - Lifted the hero copy, changed the teacher/student transition to a curved composition, and reused the
   mascot's illuminated tail as the hero, transition, trust, rail, and student-progress light source.
+- Anchored the transition mascot to the `64%` teacher/student boundary at tablet widths after the final
+  visual review exposed a breakpoint-specific horizontal offset.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
 - Localized teacher-facing interface copy to Vietnamese without changing API-provided evidence text.
 - Updated tests for the new observable labels, branding, navigation state, and asynchronous save guard.
@@ -132,6 +134,7 @@ was introduced.
 | Focused web tests after final feedback                                        | PASS - 58/58 web tests                                                                                    |
 | Final Chrome desktop and 390px inspection                                     | PASS - rails remain 76/272px by 968px; mobile tap targets do not overlap; no horizontal overflow          |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after final feedback  | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
+| Chrome 967px transition alignment check                                       | PASS - mascot centered on the 64% boundary; no horizontal overflow                                        |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
