@@ -15,24 +15,40 @@ export function StudentHome({
 }: StudentHomeProps) {
   if (stage.kind === "idle") {
     return (
-      <article className="student-card">
-        <span className="student-pill">Hôm nay · 1 việc · khoảng 5 phút</span>
-        <h1>Chuẩn bị để tiết Toán dễ hiểu hơn</h1>
-        <p>
-          Em làm một bài ngắn. Cô sẽ dùng câu trả lời để biết nên giải thích
-          phần nào kỹ hơn — không tính điểm và không xếp hạng.
-        </p>
+      <article className="student-card student-home-card">
+        <div className="student-home-heading">
+          <div>
+            <span className="student-pill">Hôm nay · khoảng 5 phút</span>
+            <h1>Chuẩn bị để tiết Toán dễ hiểu hơn</h1>
+            <p>
+              Em làm một bài ngắn. Cô sẽ dùng câu trả lời để biết nên giải thích
+              phần nào kỹ hơn — không tính điểm và không xếp hạng.
+            </p>
+          </div>
+          <div className="student-home-visual" aria-label="Một việc cần làm">
+            <span className="student-home-orbit" aria-hidden="true" />
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="student-firefly-tail" aria-hidden="true" />
+            <span className="student-home-task">
+              <strong>01</strong>
+              <span>việc cần làm</span>
+            </span>
+          </div>
+        </div>
         <div className="student-day-rail">
           <div className="student-day-stage current">
-            <small>TRƯỚC LỚP · BÂY GIỜ</small>
+            <span className="student-day-index">01</span>
+            <small>Trước lớp · Bây giờ</small>
             <b>Cho cô biết chỗ vướng</b>
           </div>
           <div className="student-day-stage">
-            <small>TRONG LỚP</small>
+            <span className="student-day-index">02</span>
+            <small>Trong lớp</small>
             <b>Học theo lộ trình phù hợp</b>
           </div>
           <div className="student-day-stage">
-            <small>SAU LỚP</small>
+            <span className="student-day-index">03</span>
+            <small>Sau lớp</small>
             <b>Luyện đúng một bước cần thiết</b>
           </div>
         </div>
@@ -41,9 +57,8 @@ export function StudentHome({
           className="student-btn teal"
           onClick={onStart}
           disabled={busy}
-          style={{ marginTop: "1rem" }}
         >
-          Bắt đầu bài ngắn →
+          Bắt đầu bài ngắn <span aria-hidden="true">→</span>
         </button>
       </article>
     );
@@ -56,14 +71,18 @@ export function StudentHome({
     stage.kind === "probe-waiting-to-sync"
   ) {
     return (
-      <article className="student-card">
+      <article className="student-card student-status-card">
+        <span className="student-status-icon" aria-hidden="true">
+          ◷
+        </span>
+        <h1>Tiếp tục nơi em đang học</h1>
         <p>Em đang làm dở bài chuẩn bị.</p>
         <button
           type="button"
           className="student-btn primary"
           onClick={() => onContinue("readiness")}
         >
-          Tiếp tục bài của em →
+          Tiếp tục bài của em <span aria-hidden="true">→</span>
         </button>
       </article>
     );
@@ -71,7 +90,9 @@ export function StudentHome({
 
   if (stage.kind === "diagnosing") {
     return (
-      <article className="student-card" aria-live="polite">
+      <article className="student-card student-status-card" aria-live="polite">
+        <span className="student-status-loader" aria-hidden="true" />
+        <h1>AiLearn đang xem lại câu trả lời</h1>
         <p>Đang xem xét câu trả lời của em...</p>
       </article>
     );
@@ -85,7 +106,11 @@ export function StudentHome({
     stage.kind === "exit-ticket-result"
   ) {
     return (
-      <article className="student-card">
+      <article className="student-card student-status-card">
+        <span className="student-status-icon" aria-hidden="true">
+          ↗
+        </span>
+        <h1>Lộ trình hôm nay đang chờ em</h1>
         <p>
           {stage.kind === "exit-ticket"
             ? "Em có một bài cuối để thử sức."
@@ -102,7 +127,7 @@ export function StudentHome({
           className="student-btn primary"
           onClick={() => onContinue("path")}
         >
-          Xem lộ trình của em →
+          Xem lộ trình của em <span aria-hidden="true">→</span>
         </button>
       </article>
     );
@@ -110,7 +135,11 @@ export function StudentHome({
 
   if (stage.kind === "error") {
     return (
-      <article className="student-card" role="alert">
+      <article className="student-card student-status-card error" role="alert">
+        <span className="student-status-icon" aria-hidden="true">
+          !
+        </span>
+        <h1>Chưa thể bắt đầu bài học</h1>
         <p>{stage.message}</p>
         <button type="button" className="student-btn" onClick={onStart}>
           Thử lại

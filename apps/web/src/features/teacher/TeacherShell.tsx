@@ -5,10 +5,14 @@ import "./teacher.css";
 export type TeacherRoute =
   "/teacher" | "/teacher/lesson-plan" | "/teacher/report";
 
-const navigation: Array<{ href: TeacherRoute; label: string }> = [
-  { href: "/teacher", label: "Class overview" },
-  { href: "/teacher/lesson-plan", label: "Lesson plan" },
-  { href: "/teacher/report", label: "Intervention report" },
+const navigation: Array<{
+  href: TeacherRoute;
+  icon: string;
+  label: string;
+}> = [
+  { href: "/teacher", icon: "▦", label: "Tổng quan lớp" },
+  { href: "/teacher/lesson-plan", icon: "≡", label: "Kế hoạch bài dạy" },
+  { href: "/teacher/report", icon: "◫", label: "Báo cáo can thiệp" },
 ];
 
 export function TeacherShell({
@@ -23,17 +27,32 @@ export function TeacherShell({
   return (
     <div className="teacher-app">
       <a className="teacher-skip-link" href="#teacher-main">
-        Skip to teacher content
+        Đi tới nội dung chính
       </a>
-      <header className="teacher-header">
-        <a className="teacher-brand" href="/" aria-label="AiLearn home">
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
+
+      <aside className="teacher-sidebar" aria-label="Không gian giáo viên">
+        <a
+          className="dashboard-rail-brand"
+          href="/"
+          aria-label="AiLearn - trang chủ"
+        >
+          <span className="rail-firefly" aria-hidden="true">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+          </span>
+          <span>AiLearn</span>
         </a>
-        <div className="teacher-product-label">
-          <span>Teacher workspace</span>
-          <small>Checkpoint 2 demo</small>
+
+        <div className="teacher-role dashboard-rail-identity">
+          <span className="teacher-role-avatar" aria-hidden="true">
+            GV
+          </span>
+          <div>
+            <strong>Không gian giáo viên</strong>
+            <small>Lớp 7A · Checkpoint 2</small>
+          </div>
         </div>
-        <nav aria-label="Teacher workspace navigation">
+
+        <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
           {navigation.map((item) => (
             <a
               aria-current={currentRoute === item.href ? "page" : undefined}
@@ -44,12 +63,35 @@ export function TeacherShell({
                 onNavigate(item.href);
               }}
             >
-              {item.label}
+              <span className="dashboard-nav-icon" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span>{item.label}</span>
             </a>
           ))}
         </nav>
-      </header>
-      <main className="teacher-shell" id="teacher-main" tabIndex={-1}>
+
+        <div className="teacher-sidebar-note">
+          <span className="companion-presence">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+          </span>
+          <div>
+            <strong>Quyết định thuộc về giáo viên</strong>
+            <p>AiLearn chỉ đề xuất từ bằng chứng học tập đã ghi nhận.</p>
+          </div>
+        </div>
+
+        <a className="teacher-switch-workspace" href="/student">
+          <span aria-hidden="true">↗</span>
+          Mở trải nghiệm học sinh
+        </a>
+      </aside>
+
+      <main
+        className="teacher-shell teacher-main"
+        id="teacher-main"
+        tabIndex={-1}
+      >
         {children}
       </main>
     </div>

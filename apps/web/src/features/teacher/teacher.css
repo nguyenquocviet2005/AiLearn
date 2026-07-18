@@ -1253,3 +1253,253 @@
     break-inside: avoid;
   }
 }
+
+/* VAI-41 companion rail, adapted to the VAI-25 teacher workspace contract. */
+.teacher-app .teacher-sidebar {
+  position: fixed;
+  top: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 30;
+  display: flex;
+  width: 76px;
+  min-height: 0;
+  padding: 0.65rem;
+  overflow: hidden;
+  border: 1px solid rgba(84, 40, 207, 0.14);
+  border-radius: 26px;
+  flex-direction: column;
+  color: var(--teacher-deep);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 70px rgba(22, 11, 53, 0.12);
+  backdrop-filter: blur(22px) saturate(145%);
+  transition:
+    width 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms ease;
+}
+
+.teacher-app .teacher-sidebar:hover,
+.teacher-app .teacher-sidebar:focus-within {
+  width: 272px;
+  box-shadow: 0 28px 80px rgba(22, 11, 53, 0.18);
+}
+
+.teacher-sidebar:hover .dashboard-rail-brand > span:last-child,
+.teacher-sidebar:focus-within .dashboard-rail-brand > span:last-child,
+.teacher-sidebar:hover .dashboard-rail-identity > div,
+.teacher-sidebar:focus-within .dashboard-rail-identity > div {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.teacher-role {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.teacher-role-avatar {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 50%;
+  place-items: center;
+  color: var(--teacher-white);
+  background: var(--teacher-deep);
+  font-size: 0.67rem;
+  font-weight: 900;
+}
+
+.teacher-role strong,
+.teacher-role small {
+  display: block;
+  white-space: nowrap;
+}
+
+.teacher-role strong {
+  font-size: 0.82rem;
+}
+
+.teacher-role small {
+  margin-top: 0.2rem;
+  color: var(--teacher-muted);
+  font-size: 0.68rem;
+}
+
+.teacher-navigation {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.teacher-navigation a {
+  display: flex;
+  width: 250px;
+  min-height: 52px;
+  padding: 0.4rem 0.55rem;
+  border-radius: 18px;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--teacher-muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.teacher-navigation a > span:last-child {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 180ms ease 40ms,
+    transform 260ms ease;
+}
+
+.teacher-sidebar:hover .teacher-navigation a > span:last-child,
+.teacher-sidebar:focus-within .teacher-navigation a > span:last-child {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.teacher-navigation a[aria-current="page"] {
+  color: var(--teacher-white);
+  background: var(--teacher-deep);
+}
+
+.teacher-navigation a[aria-current="page"] .dashboard-nav-icon {
+  color: var(--teacher-deep);
+  background: var(--teacher-yellow);
+}
+
+.teacher-sidebar-note {
+  display: flex;
+  width: 250px;
+  min-height: 60px;
+  margin: auto 0 0;
+  padding: 0.3rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.teacher-sidebar-note img {
+  width: 2.75rem;
+  height: 2.75rem;
+  clip-path: circle(47% at 50% 50%);
+  object-fit: cover;
+}
+
+.teacher-sidebar-note > div,
+.teacher-switch-workspace {
+  opacity: 0;
+  transition: opacity 180ms ease 80ms;
+}
+
+.teacher-sidebar:hover .teacher-sidebar-note > div,
+.teacher-sidebar:focus-within .teacher-sidebar-note > div,
+.teacher-sidebar:hover .teacher-switch-workspace,
+.teacher-sidebar:focus-within .teacher-switch-workspace {
+  opacity: 1;
+}
+
+.teacher-sidebar-note strong,
+.teacher-sidebar-note p {
+  display: block;
+  margin: 0;
+}
+
+.teacher-sidebar-note strong {
+  font-size: 0.75rem;
+}
+
+.teacher-sidebar-note p {
+  margin-top: 0.25rem;
+  color: var(--teacher-muted);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.teacher-switch-workspace {
+  display: flex;
+  width: 250px;
+  min-height: 38px;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.8rem;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--teacher-purple);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .teacher-app {
+    padding-bottom: 6rem;
+  }
+
+  .teacher-app .teacher-sidebar,
+  .teacher-app .teacher-sidebar:hover,
+  .teacher-app .teacher-sidebar:focus-within {
+    top: auto;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    height: 70px;
+    padding: 0.4rem;
+    border-radius: 24px;
+    flex-direction: row;
+  }
+
+  .teacher-sidebar .dashboard-rail-brand,
+  .teacher-sidebar .dashboard-rail-identity,
+  .teacher-sidebar-note,
+  .teacher-switch-workspace {
+    display: none;
+  }
+
+  .teacher-navigation {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  .teacher-navigation a {
+    width: auto;
+    min-width: 0;
+    min-height: 60px;
+    padding: 0.35rem;
+    border-radius: 19px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+  }
+
+  .teacher-navigation a > span:last-child {
+    overflow: hidden;
+    opacity: 1;
+    font-size: 0.58rem;
+    text-overflow: ellipsis;
+    transform: none;
+    white-space: nowrap;
+  }
+
+  .teacher-navigation .dashboard-nav-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-app .teacher-sidebar,
+  .teacher-navigation a > span:last-child {
+    transition: none;
+  }
+}
+
+@media print {
+  .teacher-sidebar {
+    display: none !important;
+  }
+}

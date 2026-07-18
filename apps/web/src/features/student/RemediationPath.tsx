@@ -60,7 +60,10 @@ export function RemediationPath({
 
   if (remediation.is_complete) {
     return (
-      <article className="student-card">
+      <article className="student-card student-status-card complete">
+        <span className="student-status-icon" aria-hidden="true">
+          ✓
+        </span>
         <span className="student-pill teal">Hoàn thành</span>
         <h1>Em đã hoàn thành lộ trình hôm nay!</h1>
         <p>Cô sẽ xem lại cùng em ở buổi học tiếp theo. Làm tốt lắm!</p>
@@ -71,7 +74,10 @@ export function RemediationPath({
 
   if (path.current_state === "TEACHER_ESCALATION") {
     return (
-      <article className="student-card">
+      <article className="student-card student-status-card support">
+        <span className="student-status-icon" aria-hidden="true">
+          ?
+        </span>
         <span className="student-pill">{stateCopy.title}</span>
         <h1>{escalationReasonCopy(escalationReason)}</h1>
         <p>{stateCopy.description}</p>
@@ -80,14 +86,15 @@ export function RemediationPath({
   }
 
   return (
-    <div>
-      <article className="student-card">
+    <div className="student-path-layout">
+      <aside className="student-path-progress">
         <span className="student-pill indigo">{stateCopy.title}</span>
+        <h2>Lộ trình từng bước</h2>
         <p>{stateCopy.description}</p>
         <StepList steps={path.steps} currentKind={currentStepKind} />
-      </article>
+      </aside>
 
-      <article className="student-card">
+      <article className="student-card student-learning-card">
         {representationChanged && (
           <div className="student-representation-note">
             Đã đổi sang{" "}
@@ -102,7 +109,7 @@ export function RemediationPath({
 
         {content.checkpoint_question && (
           <>
-            <p style={{ fontWeight: 700, marginTop: "1rem" }}>
+            <p className="student-field-label student-field-label-spaced">
               {content.checkpoint_question}
             </p>
             {hasGradableCheckpoint ? (
@@ -119,9 +126,8 @@ export function RemediationPath({
                   className="student-btn teal"
                   disabled={answer.trim().length === 0}
                   onClick={handleGradedSubmit}
-                  style={{ marginTop: "0.75rem" }}
                 >
-                  Kiểm tra →
+                  Kiểm tra <span aria-hidden="true">→</span>
                 </button>
               </>
             ) : (

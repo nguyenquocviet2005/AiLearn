@@ -9,7 +9,8 @@ offline behavior, and broader curriculum coverage remain deferred to later issue
 
 The web application opens on a public Vietnamese product landing page at `/`. It introduces AiLearn's
 evidence-led learning loop and links into the existing teacher workspace at `/teacher` and student
-experience at `/student`.
+experience at `/student`. The public page also presents the six-person AiLearn team using the approved
+names, roles, and portraits from the product vision deck.
 
 ## Prerequisites
 
@@ -69,6 +70,12 @@ The API exposes:
 
 Teacher routes include `/teacher`, `/teacher/lesson-plan`, `/teacher/report`, and the compact
 `/teacher/report/print` fallback.
+
+The public landing page uses a transparent, blurred AiLearn island over the approved purple, white, and
+black brand system. Teacher and student identity, navigation, and workspace actions live in
+context-aware companion rails on desktop; the rails keep stable collapsed and expanded dimensions and
+become compact bottom docks on mobile. The existing evidence, planning, remediation, and offline flows
+remain unchanged.
 
 ## Supabase Migration
 
