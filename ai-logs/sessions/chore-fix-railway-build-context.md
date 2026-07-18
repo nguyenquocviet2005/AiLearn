@@ -8,7 +8,7 @@
 - Linear issue: none (ad hoc maintenance/deploy-fix task, no ticket assigned)
 - Branch: `chore/fix-railway-build-context`
 - Worktree: `/home/viet2005/workspace/worktrees/chore-fix-railway-build-context`
-- Pull request: (recorded after creation)
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/12 (Draft)
 
 ## Objective
 
