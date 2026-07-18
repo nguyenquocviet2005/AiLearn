@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { StudentRepository } from "@/lib/adapters/student-repository";
 
-import { clearAll, enqueue, listAll } from "./queue";
-import { flush, onSyncChange } from "./sync";
+import { clearAll, enqueue, listAll, updateStatus } from "./queue";
+import { flush, onSyncChange, setupAutoSync } from "./sync";
 
 function fakeRepository(
   overrides: Partial<StudentRepository> = {},
@@ -167,5 +167,29 @@ describe("sync", () => {
       "exit_submission_1",
     );
     expect(listAll()[0].status).toBe("SYNCED");
+  });
+
+  it("recovers one request interrupted by refresh and does not resend it", async () => {
+    const repository = fakeRepository();
+    const write = enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_1",
+      itemId: "item_1",
+      responseLabel: "A",
+      confidence: 0.9,
+    });
+    updateStatus(write.clientEventId, "SYNCING");
+
+    const teardown = setupAutoSync(repository);
+    await vi.waitFor(() => {
+      expect(repository.submitReadinessResponse).toHaveBeenCalledOnce();
+      expect(listAll()[0]).toMatchObject({ status: "SYNCED", retryCount: 1 });
+    });
+    teardown();
+
+    const secondTeardown = setupAutoSync(repository);
+    await flush(repository);
+    secondTeardown();
+
+    expect(repository.submitReadinessResponse).toHaveBeenCalledOnce();
   });
 });

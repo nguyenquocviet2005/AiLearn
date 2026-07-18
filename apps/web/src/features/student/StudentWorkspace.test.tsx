@@ -14,6 +14,7 @@ import type {
 
 import { StudentWorkspace } from "./StudentWorkspace";
 import { saveToCache } from "@/lib/offline/content-cache";
+import { listAll } from "@/lib/offline/queue";
 
 const ITEMS: AssessmentItemPublic[] = [
   {
@@ -355,6 +356,38 @@ describe("StudentWorkspace", () => {
     expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
   });
 
+  it("retries one failed queued response after reload without duplicating it", async () => {
+    const submitReadinessResponse = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValue({
+        evidence_event: {},
+        remaining_item_ids: [],
+        session_complete: false,
+      });
+    const repository = fakeRepository({ submitReadinessResponse });
+    const user = userEvent.setup();
+    const firstRender = render(<StudentWorkspace repository={repository} />);
+
+    await user.click(screen.getByRole("button", { name: /Bắt đầu bài ngắn/ }));
+    await answerReadinessItem(user, "A");
+    await waitFor(() => {
+      expect(submitReadinessResponse).toHaveBeenCalledOnce();
+      expect(listAll()).toHaveLength(1);
+      expect(listAll()[0].status).toBe("FAILED");
+    });
+    firstRender.unmount();
+
+    render(<StudentWorkspace repository={repository} />);
+
+    await waitFor(() => {
+      expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
+      expect(listAll()[0].status).toBe("SYNCED");
+    });
+    await user.click(screen.getByRole("button", { name: "Đã đồng bộ" }));
+    expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
+  });
+
   it("resumes readiness progress from the cache after a simulated reload", async () => {
     const repository = fakeRepository();
     const user = userEvent.setup();
@@ -479,6 +512,44 @@ describe("StudentWorkspace", () => {
       persona.profile,
     );
     expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+  });
+
+  it("resumes the selected seeded learner and path after a reload", async () => {
+    const persona = {
+      id: "foundational-gap",
+      label: "Củng cố nền tảng",
+      student_id: "stu_demo_foundation_01",
+      display_name: "Bạn An",
+      profile: {
+        ...NEEDS_SUPPORT_PROFILE,
+        student_id: "stu_demo_foundation_01",
+      },
+    };
+    const repository = fakeRepository({
+      listDemoPersonas: vi.fn().mockResolvedValue([persona]),
+      resetDemo: vi.fn().mockResolvedValue({ persona }),
+    });
+    const user = userEvent.setup();
+    const firstRender = render(<StudentWorkspace repository={repository} />);
+
+    await screen.findByRole("combobox", { name: "Tình huống demo" });
+    await user.click(screen.getByRole("button", { name: "Đặt lại" }));
+    expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+    firstRender.unmount();
+
+    render(<StudentWorkspace repository={repository} />);
+
+    expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "Xem lộ trình của em →" }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: "Ví dụ mẫu" }),
+    ).toBeInTheDocument();
+    expect(repository.startRemediationSession).toHaveBeenCalledOnce();
+    expect(
+      screen.getByRole("combobox", { name: "Tình huống demo" }),
+    ).toHaveValue("foundational-gap");
   });
 
   it("keeps an offline exit ticket pending and resolves its original submission", async () => {

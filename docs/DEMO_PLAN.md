@@ -42,6 +42,30 @@ The committed class and lesson fixtures are generated from the same deterministi
 
 ## Five-minute presenter script
 
+### Student recovery preflight
+
+Before presenting the teacher loop, open `/student` in a clean browser profile and use the
+**Tình huống demo** selector. The six committed personas are synthetic and deterministic:
+
+| Persona                        | Expected checkpoint                                                  |
+| ------------------------------ | -------------------------------------------------------------------- |
+| Củng cố nền tảng               | Starts from the ratio/proportion prerequisite gap                    |
+| Gỡ một hiểu nhầm               | Starts from direct-versus-inverse misconception evidence             |
+| Điều chỉnh theo bằng chứng mới | Choosing the contradictory exit response reclassifies the root cause |
+| Cần thêm bằng chứng            | Enters confirmation without claiming a root cause                    |
+| Áp dụng được tình huống mới    | A correct exit response records independent transfer                 |
+| Cần cô hỗ trợ                  | An incorrect exit response records teacher escalation                |
+
+For each persona, select it and press **Đặt lại**. Confirm the displayed synthetic learner changes
+and a matching path opens. For the offline recovery checkpoint, reset **Củng cố nền tảng**, turn the
+browser offline, submit one checkpoint, and refresh `/student`. The same learner and cached path must
+remain visible with exactly one pending write. Restore the network and press the sync badge once; the
+pending count must return to zero and must not increase when the badge is pressed again.
+
+Do not use the demo reset to inspect or delete production database rows. The endpoint restores a
+selected synthetic profile and clears only transient local fallback state; the browser clears its own
+queue/cache after a successful reset.
+
 ### 1. Start from class evidence — 60 seconds
 
 Open `/teacher`.

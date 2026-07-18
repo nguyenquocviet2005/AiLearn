@@ -17,6 +17,7 @@ import type {
 import {
   countPending,
   listPending,
+  recoverInterruptedWrites,
   updateStatus,
   type DiagnosticResponsePayload,
   type ExitTicketPayload,
@@ -27,6 +28,7 @@ import {
 export type SyncListener = (pendingCount: number) => void;
 
 let listeners: SyncListener[] = [];
+let recoveredInterruptedWrites = false;
 
 export function onSyncChange(listener: SyncListener): () => void {
   listeners.push(listener);
@@ -105,6 +107,13 @@ export async function flush(
 }
 
 export function setupAutoSync(repository: StudentRepository): () => void {
+  // A real refresh creates a new JS runtime. Recover requests interrupted by
+  // that refresh exactly once so React Strict Mode cannot revive a currently
+  // in-flight request during its development-only effect replay.
+  if (!recoveredInterruptedWrites) {
+    recoverInterruptedWrites();
+    recoveredInterruptedWrites = true;
+  }
   const handleOnline = (): void => {
     void flush(repository);
   };

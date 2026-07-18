@@ -1,0 +1,89 @@
+{
+  "schema_version": "1",
+  "events": [
+    {
+      "schema_version": "1",
+      "id": "ev_demo_foundation_01",
+      "student_id": "stu_demo_foundation_01",
+      "session_id": "sess_demo_foundation_readiness",
+      "skill_id": "skill_ratio_proportion_basics",
+      "item_id": "item_inv_prop_01",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T09:00:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "36"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_misconception_01",
+      "student_id": "stu_demo_misconception_01",
+      "session_id": "sess_demo_misconception_readiness",
+      "skill_id": "skill_distinguish_direct_inverse",
+      "item_id": "item_inv_prop_12",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T09:01:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "Số sản phẩm và tổng tiền phải trả (giá cố định)"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_reclassified_ratio_initial",
+      "student_id": "stu_demo_reclassified_01",
+      "session_id": "sess_demo_reclassified_readiness",
+      "skill_id": "skill_ratio_proportion_basics",
+      "item_id": "item_inv_prop_01",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T09:02:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "36"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_reclassified_distinguish_prior",
+      "student_id": "stu_demo_reclassified_01",
+      "session_id": "sess_demo_reclassified_readiness",
+      "skill_id": "skill_distinguish_direct_inverse",
+      "item_id": "item_inv_prop_12",
+      "is_correct": true,
+      "recorded_at": "2026-07-18T09:03:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "Số công nhân và số ngày hoàn thành cùng một công việc"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_reclassified_exit_ticket",
+      "student_id": "stu_demo_reclassified_01",
+      "session_id": "sess_demo_reclassified_remediation",
+      "skill_id": "skill_distinguish_direct_inverse",
+      "item_id": "exit_inverse_relation",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T10:05:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "Tăng lên"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_transfer_01",
+      "student_id": "stu_demo_transfer_01",
+      "session_id": "sess_demo_transfer_readiness",
+      "skill_id": "skill_inverse_proportion_definition",
+      "item_id": "item_inv_prop_04",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T09:04:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "y = kx (k ≠ 0)"
+    },
+    {
+      "schema_version": "1",
+      "id": "ev_demo_escalation_01",
+      "student_id": "stu_demo_escalation_01",
+      "session_id": "sess_demo_escalation_readiness",
+      "skill_id": "skill_direct_proportion",
+      "item_id": "item_inv_prop_03",
+      "is_correct": false,
+      "recorded_at": "2026-07-18T09:05:00Z",
+      "lesson_id": "lesson_g7_inverse_proportion_01",
+      "response_label": "4/3"
+    }
+  ]
+}

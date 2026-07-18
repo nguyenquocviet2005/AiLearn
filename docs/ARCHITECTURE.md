@@ -91,7 +91,15 @@ own last-fetched readiness/remediation data — this is what backs "cached conte
 offline" and the "Trợ giúp → Kiểm tra bài đã lưu" action, not the static `data/fixtures/` seed JSON
 (which covers a different demo student/lesson). Every diagnostics-response and remediation-attempt
 submission goes through this queue first, whether online or offline, so autosave, reload-resume,
-and non-duplicated sync all share one code path.
+and non-duplicated sync all share one code path. A new browser runtime converts writes left in
+`SYNCING` by an interrupted page into retryable failures exactly once before auto-sync. The API's
+deterministic evidence ids, attempt ids, and exit-ticket submission ids make that recovery
+idempotent, while the once-per-runtime guard prevents duplicate recovery during React effect replay.
+
+`active-learner.ts` stores only the selected synthetic learner id, display name, and persona id.
+On reload, the workspace restores that identity only when matching readiness or remediation content
+is still cached; otherwise it safely returns to the default demo learner. This keeps a reset persona
+and its path aligned across an offline refresh without storing answers or private classroom data.
 
 `apps/web/src/lib/adapters/student-repository.ts` is the real HTTP adapter (`data/fixtures/`
 develop-against-fixtures note in the original issue text is superseded — VAI-17's real API is live).

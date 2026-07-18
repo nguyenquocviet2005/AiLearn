@@ -7,6 +7,7 @@ import {
   generateAttemptId,
   listAll,
   listPending,
+  recoverInterruptedWrites,
   updateStatus,
 } from "./queue";
 
@@ -90,5 +91,20 @@ describe("queue", () => {
 
     // A second "read" (new listAll call) should see the same persisted state.
     expect(listAll()).toHaveLength(1);
+  });
+
+  it("makes an interrupted in-flight write retryable after a new runtime starts", () => {
+    const write = enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_1",
+      itemId: "item_1",
+      responseLabel: "A",
+      confidence: null,
+    });
+    updateStatus(write.clientEventId, "SYNCING");
+
+    recoverInterruptedWrites();
+
+    expect(listPending()).toHaveLength(1);
+    expect(listAll()[0]).toMatchObject({ status: "FAILED", retryCount: 1 });
   });
 });
