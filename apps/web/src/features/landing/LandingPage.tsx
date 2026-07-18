@@ -69,41 +69,48 @@ const technologyStages = [
   },
 ];
 
-const runningTechnologyStack = [
-  { name: "React", role: "Giao diện tương tác", logo: "/technology/react.svg" },
-  {
-    name: "TypeScript",
-    role: "Kiểu dữ liệu xuyên suốt",
-    logo: "/technology/typescript.svg",
-  },
-  { name: "Vite", role: "Build web tốc độ cao", logo: "/technology/vite.svg" },
-  {
-    name: "Python",
-    role: "Các engine học tập",
-    logo: "/technology/python.svg",
-  },
-  {
-    name: "FastAPI",
-    role: "API và kiểm tra Pydantic",
-    logo: "/technology/fastapi.svg",
-  },
-  {
-    name: "Supabase",
-    role: "Dịch vụ dữ liệu",
-    logo: "/technology/supabase.svg",
-  },
-  {
-    name: "PostgreSQL",
-    role: "Nguồn dữ liệu tin cậy",
-    logo: "/technology/postgresql.svg",
-  },
-  { name: "Railway", role: "Vận hành API", logo: "/technology/railway.svg" },
-  {
-    name: "Vercel",
-    role: "Phân phối ứng dụng web",
-    logo: "/technology/vercel.svg",
-  },
-];
+const runtimeTechnology = {
+  pwa: [
+    { name: "React", logo: "/technology/react.svg" },
+    { name: "TypeScript", logo: "/technology/typescript.svg" },
+    { name: "Vite", logo: "/technology/vite.svg" },
+  ],
+  localHub: [
+    { name: "FastAPI", logo: "/technology/fastapi.svg" },
+    { name: "Python", logo: "/technology/python.svg" },
+  ],
+  edge: [{ name: "Vercel", logo: "/technology/vercel.svg" }],
+  cloudApi: [
+    { name: "FastAPI", logo: "/technology/fastapi.svg" },
+    { name: "Railway", logo: "/technology/railway.svg" },
+    { name: "Python", logo: "/technology/python.svg" },
+  ],
+  data: [
+    { name: "Supabase", logo: "/technology/supabase.svg" },
+    { name: "PostgreSQL", logo: "/technology/postgresql.svg" },
+    { name: "Neo4j", logo: "/technology/neo4j.svg" },
+  ],
+};
+
+type RuntimeTechnology =
+  (typeof runtimeTechnology)[keyof typeof runtimeTechnology];
+
+function RuntimeTechnologyMarks({
+  technologies,
+}: {
+  technologies: RuntimeTechnology;
+}) {
+  return (
+    <ul className="landing-runtime-marks" aria-label="Công nghệ sử dụng">
+      {technologies.map((technology) => (
+        <li key={technology.name}>
+          <img src={technology.logo} alt="" loading="lazy" />
+          <span>{technology.name}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 const teamMembers = [
   {
@@ -392,43 +399,216 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 <span>Stack đang chạy</span>
                 <h3>Từ trình duyệt đến hạ tầng triển khai.</h3>
               </div>
-              <p>
-                Mỗi lớp có một trách nhiệm rõ ràng, chạy được cả khi chưa kết
-                nối model tạo sinh.
-              </p>
+              <div>
+                <p>
+                  Kiến trúc hybrid giữ việc học tiếp diễn khi mạng yếu, rồi mở
+                  rộng từng lớp độc lập khi số trường và lượng dữ liệu tăng.
+                </p>
+                <div className="landing-runtime-legend" aria-label="Chú giải">
+                  <span>
+                    <i aria-hidden="true" /> Lõi đang vận hành
+                  </span>
+                  <span>
+                    <i aria-hidden="true" /> Mở rộng theo quy mô
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <ul className="landing-tech-stack-list">
-              {runningTechnologyStack.map((technology) => (
-                <li key={technology.name}>
-                  <img src={technology.logo} alt="" loading="lazy" />
-                  <span>
-                    <strong>{technology.name}</strong>
-                    <small>{technology.role}</small>
+            <div
+              className="landing-runtime-map"
+              aria-label="Sơ đồ kiến trúc AiLearn theo từng tầng"
+            >
+              <article className="landing-runtime-node landing-runtime-node--wide landing-runtime-node--live">
+                <div className="landing-runtime-copy">
+                  <span className="landing-runtime-layer">
+                    01 · Tầng thiết bị
                   </span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="landing-tech-operations">
-              <p>
-                <strong>Học tiếp khi mạng yếu</strong>
-                Câu trả lời được xếp hàng trên thiết bị, đồng bộ đúng thứ tự và
-                chống ghi trùng khi kết nối trở lại.
-              </p>
-
-              <aside aria-label="Hướng mở rộng đồ thị và truy xuất">
-                <img src="/technology/neo4j.svg" alt="" loading="lazy" />
-                <div>
-                  <span>Hướng mở rộng</span>
-                  <strong>Neo4j · pgvector · LangGraph</strong>
+                  <h4>Ứng dụng giáo viên và học sinh</h4>
                   <p>
-                    Skill Graph hiện chạy bằng dữ liệu có cấu trúc trong engine
-                    Python. Lớp graph chuyên biệt, tìm kiếm ngữ nghĩa và điều
-                    phối workflow chỉ được thêm khi quy mô thực sự cần.
+                    Ứng dụng React chạy ngay trên trình duyệt. Lớp offline mở
+                    rộng giữ Lesson Pack và mô hình BKT-lite cục bộ luôn sẵn
+                    sàng.
                   </p>
                 </div>
-              </aside>
+                <RuntimeTechnologyMarks technologies={runtimeTechnology.pwa} />
+                <div className="landing-runtime-offline">
+                  <span>Mở rộng offline</span>
+                  <ul className="landing-runtime-details">
+                    <li>Workbox</li>
+                    <li>IndexedDB / Dexie</li>
+                    <li>Outbox đồng bộ</li>
+                    <li>Lesson Pack</li>
+                    <li>BKT-lite cục bộ</li>
+                  </ul>
+                </div>
+              </article>
+
+              <div className="landing-runtime-branch" aria-hidden="true">
+                <span>LAN khi offline · Edge khi online</span>
+              </div>
+
+              <div className="landing-runtime-pair">
+                <article className="landing-runtime-node landing-runtime-node--planned">
+                  <div className="landing-runtime-copy">
+                    <span className="landing-runtime-layer">
+                      02A · Tầng trường học
+                    </span>
+                    <h4>School Hub cục bộ</h4>
+                    <p>
+                      FastAPI, SQLite WAL, Caddy và Sync Worker chạy trong LAN;
+                      lớp học không cần Internet để tiếp tục.
+                    </p>
+                  </div>
+                  <RuntimeTechnologyMarks
+                    technologies={runtimeTechnology.localHub}
+                  />
+                </article>
+
+                <article className="landing-runtime-node landing-runtime-node--live">
+                  <div className="landing-runtime-copy">
+                    <span className="landing-runtime-layer">
+                      02B · Tầng phân phối web
+                    </span>
+                    <h4>Vercel Edge</h4>
+                    <p>
+                      CDN đưa ứng dụng tới gần người dùng; tường lửa ứng dụng và
+                      giới hạn tần suất bảo vệ lối vào công khai.
+                    </p>
+                  </div>
+                  <RuntimeTechnologyMarks
+                    technologies={runtimeTechnology.edge}
+                  />
+                </article>
+              </div>
+
+              <div className="landing-runtime-merge" aria-hidden="true">
+                <span>Đồng bộ khi có Internet</span>
+              </div>
+
+              <article className="landing-runtime-node landing-runtime-node--cloud landing-runtime-node--live">
+                <div className="landing-runtime-copy">
+                  <span className="landing-runtime-layer">
+                    03 · Tầng dịch vụ
+                  </span>
+                  <h4>FastAPI Cloud API</h4>
+                  <p>
+                    Hợp đồng Pydantic và khóa chống ghi trùng giữ mỗi lần đồng
+                    bộ nhất quán; Railway có thể mở rộng thành 2 bản chạy, cân
+                    bằng tải, retry và circuit breaker.
+                  </p>
+                </div>
+                <RuntimeTechnologyMarks
+                  technologies={runtimeTechnology.cloudApi}
+                />
+              </article>
+
+              <div
+                className="landing-runtime-branch landing-runtime-branch--data"
+                aria-hidden="true"
+              >
+                <span>Dữ liệu đồng bộ · Tác vụ bất đồng bộ</span>
+              </div>
+
+              <div className="landing-runtime-pair landing-runtime-pair--data">
+                <article className="landing-runtime-node landing-runtime-node--live">
+                  <div className="landing-runtime-copy">
+                    <span className="landing-runtime-layer">
+                      04A · Tầng dữ liệu
+                    </span>
+                    <h4>Supabase PostgreSQL</h4>
+                    <p>
+                      Auth, phân quyền theo hàng, Storage, pgvector và bảng
+                      Skill Graph lưu dấu vết học tập bền vững. Neo4j là nhánh
+                      graph chuyên biệt khi quy mô cần đến.
+                    </p>
+                  </div>
+                  <RuntimeTechnologyMarks
+                    technologies={runtimeTechnology.data}
+                  />
+                </article>
+
+                <article className="landing-runtime-node landing-runtime-node--planned">
+                  <div className="landing-runtime-copy">
+                    <span className="landing-runtime-layer">
+                      04B · Tầng xử lý nền
+                    </span>
+                    <h4>Async Workers</h4>
+                    <p>
+                      Redis hoặc Valkey, RQ và Python Workers xử lý lịch chạy,
+                      retry cùng hàng đợi lỗi mà không chặn luồng học chính.
+                    </p>
+                  </div>
+                  <ul className="landing-runtime-details landing-runtime-details--strong">
+                    <li>Redis / Valkey</li>
+                    <li>RQ</li>
+                    <li>Scheduler</li>
+                    <li>Hàng đợi lỗi</li>
+                  </ul>
+                </article>
+              </div>
+
+              <div className="landing-runtime-flow" aria-hidden="true" />
+
+              <article className="landing-runtime-node landing-runtime-node--ai landing-runtime-node--live">
+                <div className="landing-runtime-copy">
+                  <span className="landing-runtime-layer">
+                    05 · Tầng trí tuệ học tập
+                  </span>
+                  <h4>AI Control Plane</h4>
+                  <p>
+                    Ba engine giữ chẩn đoán và quyết định học tập có thể kiểm
+                    tra; Hybrid RAG và LLM có guardrail là lớp làm giàu nội dung
+                    có thể bật độc lập.
+                  </p>
+                </div>
+                <ol className="landing-runtime-engines">
+                  <li>
+                    <span>01</span>
+                    <strong>Diagnostic Intelligence</strong>
+                    <small>Chẩn đoán nguyên nhân gốc</small>
+                  </li>
+                  <li>
+                    <span>02</span>
+                    <strong>Teacher Orchestration</strong>
+                    <small>Điều phối quyết định của giáo viên</small>
+                  </li>
+                  <li>
+                    <span>03</span>
+                    <strong>Personalized Remediation</strong>
+                    <small>Cá nhân hóa lộ trình vá gap</small>
+                  </li>
+                </ol>
+              </article>
+
+              <div className="landing-runtime-flow" aria-hidden="true" />
+
+              <article className="landing-runtime-control landing-runtime-node--planned">
+                <div>
+                  <span className="landing-runtime-layer">
+                    06 · Kiểm soát xuyên suốt
+                  </span>
+                  <h4>Một lớp bảo vệ cho toàn hệ thống</h4>
+                </div>
+                <ul>
+                  <li>
+                    <strong>Guardrail</strong>
+                    <span>
+                      Kiểm tra schema · chính sách · SymPy · giáo viên duyệt
+                    </span>
+                  </li>
+                  <li>
+                    <strong>Quan sát hệ thống</strong>
+                    <span>OpenTelemetry · Grafana Cloud · Sentry</span>
+                  </li>
+                  <li>
+                    <strong>Quản trị vận hành</strong>
+                    <span>
+                      Nhật ký kiểm toán · phiên bản · sao lưu · CI/CD · k6
+                    </span>
+                  </li>
+                </ul>
+              </article>
             </div>
           </div>
 

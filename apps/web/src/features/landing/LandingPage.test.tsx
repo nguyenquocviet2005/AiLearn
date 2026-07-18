@@ -44,9 +44,16 @@ describe("LandingPage", () => {
     expect(
       screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
     ).toBeInTheDocument();
-    expect(screen.getByText("Railway")).toBeInTheDocument();
     expect(
-      screen.getByText("Neo4j · pgvector · LangGraph"),
+      screen.getByText("Ứng dụng giáo viên và học sinh"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Mở rộng offline")).toBeInTheDocument();
+    expect(screen.getByText("School Hub cục bộ")).toBeInTheDocument();
+    expect(screen.getByText("FastAPI Cloud API")).toBeInTheDocument();
+    expect(screen.getByText("Async Workers")).toBeInTheDocument();
+    expect(screen.getByText("AI Control Plane")).toBeInTheDocument();
+    expect(
+      screen.getByText("Một lớp bảo vệ cho toàn hệ thống"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("Một phương án sai đi qua hệ thống như thế nào?"),

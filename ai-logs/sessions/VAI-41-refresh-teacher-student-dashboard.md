@@ -42,6 +42,10 @@ case, the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.`,
 The post-merge review then checked the complete PR #29/#30 change set for content accuracy,
 accessibility, dead CSS, asset consistency, and verification evidence.
 
+The human later supplied the intended hybrid deployment diagram and requested the flat running-stack
+logo grid be redrawn as a layered architecture from the browser through local/edge routing, cloud API,
+data and workers, learning engines, and cross-cutting controls.
+
 ## Planning and Implementation Prompts
 
 - Create a new Linear issue assigned to the human owner and begin implementation.
@@ -67,6 +71,8 @@ accessibility, dead CSS, asset consistency, and verification evidence.
 - Enlarge the hero process, remove the phase lag, and make each phase literal: a moving magnifier for
   observation, sequentially illuminated graph nodes for tracing, and a curved path that straightens
   for adaptation.
+- Redraw the running stack as a responsive layered architecture, retaining recognizable stack marks
+  while explaining every device, local, edge, service, data, worker, AI, and control layer.
 
 ## Approved Plan
 
@@ -133,6 +139,14 @@ was introduced.
 - Enlarged the desktop process orbit from 320px to 380px and shortened its loop from 12 to 9 seconds.
   A shared phase timeline now moves the marker and activates each label at the same keyframe, removing
   the previous transition gap.
+- Replaced the flat nine-logo runtime grid with a connected hybrid architecture map. The map branches
+  the browser application into a planned LAN School Hub and the live Vercel edge, merges both at the
+  Railway FastAPI API, then fans out to Supabase/graph data and planned asynchronous workers before
+  reaching the three learning engines and cross-cutting controls.
+- Added visible live-versus-scale-up states, explicit Vietnamese layer names, existing technology
+  marks, animated data pulses, a reduced-motion fallback, and single-column mobile routing. Workbox,
+  Dexie, Redis/RQ, School Hub, observability, and governance controls remain labeled as expansion work
+  rather than current repository dependencies.
 - Replaced the abstract phase marks with a scanning CSS magnifier, a four-node chase-light graph, and
   a four-point curved path that visibly settles into a straight line. Renamed the middle phase to the
   more concrete `Truy vết` while retaining its root-cause purpose.
@@ -173,6 +187,11 @@ was introduced.
 - Accepted: Place the teacher and student entry links in branded frames that invite a clear click.
 - Accepted: Use literal moving illustrations for observation, graph tracing, and path adaptation, and
   make the full process larger and faster.
+- Accepted: Present the supplied hybrid system design as a readable layered stack rather than a flat
+  collection of logos.
+- Modified: Separate the current React/Vite/FastAPI/Supabase/Railway/Vercel core from scale-up layers
+  so planned PWA storage, School Hub, worker, observability, and governance components are not described
+  as already deployed.
 - Accepted: Use the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.` in the hero and SEO title.
 - Accepted: Replace Phạm Tuấn Phong with Vũ Trung Quân in the published team list.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
@@ -252,8 +271,11 @@ was introduced.
 | Review-fix draft pull request publication                                     | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/32                                              |
 | Chrome 1440px and 390px audience CTA inspection                               | PASS - both framed actions remain readable, balanced, and within the viewport                             |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after audience CTAs   | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
-| Chrome 1440px and 900px literal phase-motion inspection                       | PASS - magnifier, node chase, straightening path, and synchronized marker remain in frame                  |
+| Chrome 1440px and 900px literal phase-motion inspection                       | PASS - magnifier, node chase, straightening path, and synchronized marker remain in frame                 |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after motion revision | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
+| Focused web tests and type-check after layered-stack redesign                 | PASS - 66/66 web tests and TypeScript project build                                                       |
+| Chrome 1440px, 900px, and 390px layered-stack inspection                      | PASS - route branches, stack marks, status labels, and mobile flow render without horizontal overflow     |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after stack redesign  | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
