@@ -8,7 +8,7 @@
 - Linear issue: VAI-25
 - Branch: `VAI-25-demo-and-teacher-flow`
 - Worktree: `/Users/haipham/Documents/AiLearn`
-- Pull request: pending
+- Pull request: <https://github.com/nguyenquocviet2005/AiLearn/pull/25>
 - Baseline: `7d986367914fa91b22183637a0e7732119083bf4`
 
 ## Objective and supplied context
