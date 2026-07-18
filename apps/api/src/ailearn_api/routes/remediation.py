@@ -7,7 +7,7 @@ packages/remediation + packages/content -> serialize. No business logic lives he
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import Any
+from typing import Annotated, Any
 
 from ailearn_content import ContentGenerator
 from ailearn_remediation import (
@@ -16,20 +16,31 @@ from ailearn_remediation import (
     RemediationEngine,
     SessionState,
 )
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
+from ailearn_api.config import Settings, get_settings
 from ailearn_api.demo_data import (
     exit_ticket_definition,
     public_exit_ticket,
 )
+from ailearn_api.durable_session_store import (
+    RemediationSessionRecord,
+    fetch_remediation_session,
+    save_remediation_session,
+)
+from ailearn_api.durable_session_store import (
+    is_configured as durable_sessions_configured,
+)
+from ailearn_api.evidence_client import insert_evidence_event, parse_evidence_event_payload
+from ailearn_api.supabase_client import SupabaseUnavailableError
 
 router = APIRouter(prefix="/api/v1/remediation", tags=["remediation"])
 
 _engine = RemediationEngine()
 _content = ContentGenerator()
 
-# In-memory session store. Swapped for Supabase during integration (VAI-20).
+# Local-development fallback when Supabase is deliberately not configured.
 _sessions: dict[str, SessionState] = {}
 
 # Per-student processed attempt_ids -> the response returned the first time.
@@ -37,8 +48,7 @@ _sessions: dict[str, SessionState] = {}
 # since RemediationEngine.advance() has no idempotency of its own (VAI-18).
 _processed_attempts: dict[str, dict[str, dict[str, Any]]] = {}
 
-# Per-student idempotency store for exit-ticket submissions. This follows the
-# same transient-store boundary as remediation attempts until VAI-20.
+# Per-student exit-ticket idempotency fallback for local development.
 _processed_exit_tickets: dict[str, dict[str, dict[str, Any]]] = {}
 
 
@@ -101,11 +111,81 @@ def _response(session: SessionState) -> dict[str, Any]:
     return result
 
 
-def _get(student_id: str) -> SessionState:
+def _storage_error(exc: SupabaseUnavailableError) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail={
+            "code": "supabase_unavailable",
+            "message": "Remediation session storage is unavailable.",
+        },
+    )
+
+
+async def _get(settings: Settings, student_id: str) -> RemediationSessionRecord:
+    if durable_sessions_configured(settings):
+        try:
+            record = await fetch_remediation_session(settings, student_id)
+        except SupabaseUnavailableError as exc:
+            raise _storage_error(exc) from exc
+        if record is None:
+            raise HTTPException(status_code=404, detail=f"No session for {student_id}")
+        return record
+
     session = _sessions.get(student_id)
     if session is None:
         raise HTTPException(status_code=404, detail=f"No session for {student_id}")
-    return session
+    return RemediationSessionRecord(
+        session=session,
+        processed_attempts=_processed_attempts.setdefault(student_id, {}),
+        processed_exit_tickets=_processed_exit_tickets.setdefault(student_id, {}),
+    )
+
+
+async def _save(settings: Settings, record: RemediationSessionRecord) -> None:
+    if durable_sessions_configured(settings):
+        try:
+            await save_remediation_session(settings, record)
+        except SupabaseUnavailableError as exc:
+            raise _storage_error(exc) from exc
+        return
+    _sessions[record.session.student_id] = record.session
+    _processed_attempts[record.session.student_id] = record.processed_attempts
+    _processed_exit_tickets[record.session.student_id] = record.processed_exit_tickets
+
+
+async def _record_exit_ticket_evidence(
+    settings: Settings,
+    request: ExitTicketRequest,
+    session: SessionState,
+    recorded_at: str,
+    is_correct: bool,
+) -> None:
+    """Make transfer evidence visible to the live diagnostic/class projection."""
+    if not durable_sessions_configured(settings):
+        return
+    payload = {
+        "schema_version": "1",
+        "id": f"ev_{request.student_id}_exit_{request.submission_id}",
+        "student_id": request.student_id,
+        "session_id": f"remediation_{request.student_id}",
+        "skill_id": session.target_skill_id,
+        "item_id": request.ticket_id,
+        "is_correct": is_correct,
+        "recorded_at": recorded_at,
+        "lesson_id": session.lesson_id,
+        "response_label": request.response_label,
+    }
+    try:
+        event = parse_evidence_event_payload(payload)
+        await insert_evidence_event(settings, event)
+    except (ValueError, SupabaseUnavailableError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "code": "supabase_unavailable",
+                "message": "Transfer evidence storage is unavailable.",
+            },
+        ) from exc
 
 
 def reset_remediation_state() -> None:
@@ -116,60 +196,75 @@ def reset_remediation_state() -> None:
 
 
 @router.post("/sessions")
-def start_session(req: StartRequest) -> dict[str, Any]:
+async def start_session(
+    req: StartRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
     """Start a remediation session from a diagnostic profile."""
     try:
         profile = DiagnosticProfile.from_dict(req.profile)
     except (KeyError, ValueError) as exc:
         raise HTTPException(status_code=422, detail=f"Invalid profile: {exc}") from exc
     session = _engine.start(profile)
-    _sessions[profile.student_id] = session
+    await _save(
+        settings,
+        RemediationSessionRecord(session=session, processed_attempts={}, processed_exit_tickets={}),
+    )
     return _response(session)
 
 
 @router.post("/attempts")
-def submit_attempt(req: AttemptRequest) -> dict[str, Any]:
+async def submit_attempt(
+    req: AttemptRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
     """Record one attempt and advance the path.
 
     Idempotent on attempt_id: a retried request for the same attempt_id replays
     the response recorded the first time instead of advancing the state machine
     again (VAI-18 — RemediationEngine.advance() has no idempotency of its own).
     """
-    session = _get(req.student_id)
+    record = await _get(settings, req.student_id)
 
-    student_attempts = _processed_attempts.setdefault(req.student_id, {})
-    if req.attempt_id in student_attempts:
-        return student_attempts[req.attempt_id]
+    if req.attempt_id in record.processed_attempts:
+        return record.processed_attempts[req.attempt_id]
 
-    session = _engine.advance(session, AttemptOutcome(req.step_id, req.is_correct, _now()))
-    _sessions[req.student_id] = session
-    result = _response(session)
-    student_attempts[req.attempt_id] = result
+    record.session = _engine.advance(
+        record.session, AttemptOutcome(req.step_id, req.is_correct, _now())
+    )
+    result = _response(record.session)
+    record.processed_attempts[req.attempt_id] = result
+    await _save(settings, record)
     return result
 
 
 @router.post("/confirm")
-def confirm_evidence(req: ConfirmRequest) -> dict[str, Any]:
+async def confirm_evidence(
+    req: ConfirmRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
     """Resolve CONFIRMATION once more evidence is available."""
-    session = _get(req.student_id)
-    session = _engine.confirm(session, req.evidence_sufficient)
-    _sessions[req.student_id] = session
-    return _response(session)
+    record = await _get(settings, req.student_id)
+    record.session = _engine.confirm(record.session, req.evidence_sufficient)
+    await _save(settings, record)
+    return _response(record.session)
 
 
 @router.post("/exit-tickets")
-def submit_exit_ticket(req: ExitTicketRequest) -> dict[str, Any]:
+async def submit_exit_ticket(
+    req: ExitTicketRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
     """Record a final transfer response and select the safe next action.
 
     The answer key lives in the synthetic demo fixture and is never returned to
     the browser. A deliberately contradictory answer in the reclassification
     persona restarts remediation from the fixture's evidence-backed profile.
     """
-    session = _get(req.student_id)
-    processed = _processed_exit_tickets.setdefault(req.student_id, {})
-    if req.submission_id in processed:
-        return processed[req.submission_id]
-    if not _engine.is_complete(session):
+    record = await _get(settings, req.student_id)
+    if req.submission_id in record.processed_exit_tickets:
+        return record.processed_exit_tickets[req.submission_id]
+    if not _engine.is_complete(record.session):
         raise HTTPException(
             status_code=409,
             detail="Complete the remediation path before submitting an exit ticket.",
@@ -186,8 +281,7 @@ def submit_exit_ticket(req: ExitTicketRequest) -> dict[str, Any]:
     reclassified_profile = None
     if req.response_label == ticket.get("reclassify_on_response_label"):
         reclassified_profile = ticket["reclassified_profile"]
-        session = _engine.start(DiagnosticProfile.from_dict(reclassified_profile))
-        _sessions[req.student_id] = session
+        record.session = _engine.start(DiagnosticProfile.from_dict(reclassified_profile))
         outcome = {
             "kind": "diagnosis_reclassified",
             "recorded_at": recorded_at,
@@ -202,8 +296,7 @@ def submit_exit_ticket(req: ExitTicketRequest) -> dict[str, Any]:
             "reclassified_profile": None,
         }
     else:
-        session = _engine.escalate(session, "esc_exit_ticket")
-        _sessions[req.student_id] = session
+        record.session = _engine.escalate(record.session, "esc_exit_ticket")
         outcome = {
             "kind": "teacher_escalation",
             "recorded_at": recorded_at,
@@ -211,11 +304,22 @@ def submit_exit_ticket(req: ExitTicketRequest) -> dict[str, Any]:
             "reclassified_profile": None,
         }
 
-    result = {"outcome": outcome, "remediation": _response(session)}
-    processed[req.submission_id] = result
+    await _record_exit_ticket_evidence(
+        settings,
+        req,
+        record.session,
+        recorded_at,
+        req.response_label == ticket["correct_response_label"],
+    )
+    result = {"outcome": outcome, "remediation": _response(record.session)}
+    record.processed_exit_tickets[req.submission_id] = result
+    await _save(settings, record)
     return result
 
 
 @router.get("/sessions/{student_id}")
-def get_session(student_id: str) -> dict[str, Any]:
-    return _response(_get(student_id))
+async def get_session(
+    student_id: str,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, Any]:
+    return _response((await _get(settings, student_id)).session)

@@ -11,8 +11,8 @@ from ailearn_api.models.evidence import EvidenceEventRecord
 
 def _configure(client: TestClient) -> None:
     client.app.dependency_overrides[get_settings] = lambda: Settings(
-        supabase_url="https://example.supabase.co",
-        supabase_secret_key="test-secret",
+        supabase_url=None,
+        supabase_secret_key=None,
     )
 
 
