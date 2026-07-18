@@ -1,3 +1,5 @@
+from collections import Counter
+
 import httpx
 import pytest
 
@@ -18,7 +20,10 @@ def test_student_rows_loads_all_demo_students() -> None:
 def test_evidence_event_rows_loads_and_validates_all_events() -> None:
     rows = _evidence_event_rows()
 
-    assert len(rows) == 800
+    event_counts = Counter(row["student_id"] for row in rows)
+
+    assert len(rows) == 766
+    assert Counter(event_counts.values()) == {20: 38, 3: 2}
     assert rows[0]["id"] == "ev_stu_g7_001_001"
     assert rows[0]["schema_version"] == "1"
     assert all(row["schema_version"] == "1" for row in rows)

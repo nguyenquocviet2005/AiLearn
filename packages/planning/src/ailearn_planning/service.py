@@ -155,42 +155,42 @@ def build_lesson_plan(
     activities = [
         LessonActivity(
             id=f"act_{prefix}_confirm",
-            title="Readiness confirmation warm-up",
+            title="Khởi động xác nhận mức sẵn sàng",
             duration_minutes=5,
             root_cause_skill_id=top_priority.skill_id,
             skill_id=top_priority.skill_id,
-            expected_evidence="One short response per intervention group confirming the diagnosed prerequisite need.",
-            rationale=f"Confirm priority 1 before instruction: {top_priority.rationale}",
+            expected_evidence="Mỗi nhóm can thiệp hoàn thành một câu ngắn để xác nhận nhu cầu tiên quyết đã chẩn đoán.",
+            rationale=f"Xác nhận ưu tiên số 1 trước khi dạy: {top_priority.rationale}",
         ),
         LessonActivity(
             id=f"act_{prefix}_repair",
-            title="Guided prerequisite repair",
+            title="Củng cố tiên quyết có hướng dẫn",
             duration_minutes=15,
             root_cause_skill_id=top_priority.skill_id,
             skill_id=top_priority.skill_id,
-            expected_evidence="A worked example and guided problem showing the prerequisite strategy.",
-            rationale=f"Allocate the longest guided block to priority 1 ({top_priority.skill_id}).",
+            expected_evidence="Một ví dụ mẫu và một bài có hướng dẫn thể hiện đúng chiến lược tiên quyết.",
+            rationale=f"Dành thời lượng hướng dẫn dài nhất cho ưu tiên số 1 ({top_priority.skill_id}).",
         ),
         LessonActivity(
             id=f"act_{prefix}_practice",
-            title="Intervention-group target practice",
+            title="Luyện kỹ năng mục tiêu theo nhóm",
             duration_minutes=15,
             root_cause_skill_id=secondary_priority.skill_id,
             skill_id=target_skill_id,
-            expected_evidence="Two target-skill responses per student, tagged to the assigned intervention group.",
+            expected_evidence="Mỗi học sinh hoàn thành hai câu kỹ năng mục tiêu, gắn với nhóm can thiệp được giao.",
             rationale=(
-                f"Reconnect priority {secondary_priority.rank} ({secondary_priority.skill_id}) "
-                "to the current lesson target."
+                f"Kết nối lại ưu tiên số {secondary_priority.rank} ({secondary_priority.skill_id}) "
+                "với mục tiêu của bài học hiện tại."
             ),
         ),
         LessonActivity(
             id=f"act_{prefix}_transfer",
-            title="Near-transfer exit evidence",
+            title="Phiếu cuối giờ vận dụng gần",
             duration_minutes=10,
             root_cause_skill_id=top_priority.skill_id,
             skill_id=target_skill_id,
-            expected_evidence="One independent near-transfer response distinguishing immediate success from transfer.",
-            rationale="Capture comparable evidence for the next diagnostic and teacher review cycle.",
+            expected_evidence="Một câu vận dụng gần làm độc lập để phân biệt thành công tức thời với khả năng vận dụng.",
+            rationale="Thu thập bằng chứng có thể so sánh cho chu kỳ chẩn đoán và rà soát tiếp theo.",
         ),
     ]
 

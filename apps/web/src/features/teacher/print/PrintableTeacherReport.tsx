@@ -7,6 +7,7 @@ import type {
 
 import { InterventionReportDetails } from "@/features/teacher/report/TeacherReport";
 import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
+import { teacherFacingText } from "@/features/teacher/teacher-copy";
 import { httpTeacherWorkspaceRepository } from "@/lib/adapters/teacher-repository";
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
@@ -69,20 +70,20 @@ export function PrintableTeacherReport({
   return (
     <main className="print-shell teacher-print">
       <div className="print-actions">
-        <a href="/teacher/report">Back to report</a>
+        <a href="/teacher/report">Quay lại báo cáo</a>
         {state.kind === "ready" && (
           <button
             className="teacher-button teacher-button-primary"
             type="button"
             onClick={() => window.print()}
           >
-            {state.plan ? "Print report and lesson plan" : "Print report"}
+            {state.plan ? "In báo cáo và kế hoạch bài dạy" : "In báo cáo"}
           </button>
         )}
       </div>
       {state.kind === "loading" && (
         <p className="teacher-print-state" aria-live="polite">
-          Preparing a low-bandwidth printable view...
+          Đang chuẩn bị bản in dùng được khi mạng yếu...
         </p>
       )}
       {state.kind === "error" && (
@@ -93,14 +94,14 @@ export function PrintableTeacherReport({
       {state.kind === "ready" && (
         <article className="print-sheet">
           <header>
-            <p className="teacher-print-kicker">AiLearn / teacher record</p>
+            <p className="teacher-print-kicker">AiLearn / hồ sơ giáo viên</p>
             <h1>
               {state.plan
-                ? "Intervention report and lesson plan"
-                : "Intervention report"}
+                ? "Báo cáo can thiệp và kế hoạch bài dạy"
+                : "Báo cáo can thiệp"}
             </h1>
             <p>
-              {state.report.class_id} / {state.report.lesson_id}
+              Lớp: {state.report.class_id} / Bài học: {state.report.lesson_id}
             </p>
           </header>
           <InterventionReportDetails report={state.report} />
@@ -109,27 +110,28 @@ export function PrintableTeacherReport({
               className="print-lesson-plan"
               aria-labelledby="print-plan-title"
             >
-              <p className="teacher-print-kicker">Printable lesson plan</p>
+              <p className="teacher-print-kicker">Kế hoạch bài dạy bản in</p>
               <h2 id="print-plan-title">
-                {state.plan.lesson_plan.total_duration_minutes}-minute teaching
-                sequence
+                Tiến trình dạy học{" "}
+                {state.plan.lesson_plan.total_duration_minutes}
+                phút
               </h2>
               <ol>
                 {state.plan.lesson_plan.activities.map((activity) => (
                   <li key={activity.id}>
                     <strong>
-                      {activity.title} · {activity.duration_minutes} min
+                      {activity.title} · {activity.duration_minutes} phút
                     </strong>
-                    <p>{activity.rationale}</p>
-                    <span>Evidence: {activity.expected_evidence}</span>
+                    <p>{teacherFacingText(activity.rationale)}</p>
+                    <span>Bằng chứng: {activity.expected_evidence}</span>
                   </li>
                 ))}
               </ol>
             </section>
           ) : (
             <p className="print-plan-warning" role="status">
-              The matching lesson plan is unavailable. The intervention report
-              remains ready to print.
+              Không tìm thấy kế hoạch bài dạy tương ứng. Báo cáo can thiệp vẫn
+              sẵn sàng để in.
             </p>
           )}
         </article>

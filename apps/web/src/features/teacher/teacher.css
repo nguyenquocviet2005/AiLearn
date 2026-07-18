@@ -270,6 +270,67 @@
   margin-bottom: 0;
 }
 
+.teacher-showcases {
+  display: grid;
+  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.teacher-showcases article {
+  position: relative;
+  min-height: 17rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid #cfc5f5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, var(--teacher-lilac) 100%);
+}
+
+.teacher-showcases article::after {
+  position: absolute;
+  right: -2.5rem;
+  bottom: -3.5rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: rgba(84, 40, 207, 0.08);
+  content: "";
+}
+
+.teacher-showcases h2 {
+  max-width: 22ch;
+  margin-bottom: 1rem;
+  color: var(--teacher-deep);
+  font-size: clamp(1.55rem, 3vw, 2.3rem);
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.teacher-showcases strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--teacher-purple);
+  font-size: 1.3rem;
+}
+
+.teacher-showcases p:not(.teacher-kicker) {
+  max-width: 58ch;
+  color: var(--teacher-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.teacher-showcases article > span {
+  display: inline-flex;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  color: var(--teacher-white);
+  background: var(--teacher-purple);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
 .teacher-layout {
   display: grid;
   margin-bottom: 1.25rem;
@@ -1155,6 +1216,7 @@
   }
 
   .teacher-summary,
+  .teacher-showcases,
   .teacher-layout,
   .lesson-plan-meta,
   .report-evidence-boundary,

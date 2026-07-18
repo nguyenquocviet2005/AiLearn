@@ -181,7 +181,7 @@
       "student_id": "stu_g7_030",
       "display_name": "Học sinh 030",
       "class_id": "class_g7a_demo",
-      "profile_type": "m2_calc"
+      "profile_type": "m1_confusion"
     },
     {
       "student_id": "stu_g7_031",
@@ -193,13 +193,13 @@
       "student_id": "stu_g7_032",
       "display_name": "Học sinh 032",
       "class_id": "class_g7a_demo",
-      "profile_type": "strong"
+      "profile_type": "insufficient"
     },
     {
       "student_id": "stu_g7_033",
       "display_name": "Học sinh 033",
       "class_id": "class_g7a_demo",
-      "profile_type": "strong"
+      "profile_type": "insufficient"
     },
     {
       "student_id": "stu_g7_034",

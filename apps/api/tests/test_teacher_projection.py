@@ -19,15 +19,63 @@ def test_seeded_g7_evidence_builds_the_teacher_snapshot_and_plan() -> None:
     snapshot = initial_snapshot()
     plan_version = initial_plan_version(snapshot)
 
+    readiness_counts = {
+        status: sum(student.readiness_status == status for student in snapshot.students)
+        for status in ("ready", "needs_support", "abstained")
+    }
+    root_cause_counts = {
+        skill_id: sum(
+            student.primary_root_cause_skill_id == skill_id for student in snapshot.students
+        )
+        for skill_id in {
+            student.primary_root_cause_skill_id
+            for student in snapshot.students
+            if student.primary_root_cause_skill_id is not None
+        }
+    }
+
     assert snapshot.class_id == DEMO_CLASS_ID
     assert snapshot.lesson_id == "lesson_g7_inverse_proportion_01"
     assert len(snapshot.students) == 40
     assert snapshot.unknown_student_ids == []
-    assert 3 <= len(snapshot.groups) <= 5
+    assert readiness_counts == {"ready": 8, "needs_support": 30, "abstained": 2}
+    assert root_cause_counts == {
+        "skill_ratio_proportion_basics": 4,
+        "skill_fraction_multiplication": 7,
+        "skill_distinguish_direct_inverse": 11,
+        "skill_word_problem_work_rate": 8,
+    }
+    assert [priority.skill_id for priority in snapshot.teaching_priorities] == [
+        "skill_ratio_proportion_basics",
+        "skill_distinguish_direct_inverse",
+        "skill_fraction_multiplication",
+        "skill_word_problem_work_rate",
+    ]
+    assert len(snapshot.groups) == 5
+    assert {group.intervention_need for group in snapshot.groups} == {
+        "repair:skill_ratio_proportion_basics",
+        "repair:skill_distinguish_direct_inverse",
+        "mixed_repair:teacher_station",
+        "extension:target_transfer",
+        "confirmation:insufficient_evidence",
+    }
+    grouped_student_ids = [
+        student_id for group in snapshot.groups for student_id in group.student_ids
+    ]
+    assert len(grouped_student_ids) == len(set(grouped_student_ids)) == 40
+    assert sorted(grouped_student_ids) == sorted(
+        student.student_id for student in snapshot.students
+    )
     assert plan_version.plan_id == DEMO_PLAN_ID
     assert plan_version.lesson_plan.class_id == DEMO_CLASS_ID
     assert plan_version.lesson_plan.lesson_id == snapshot.lesson_id
     assert sum(activity.duration_minutes for activity in plan_version.lesson_plan.activities) == 45
+    assert [activity.title for activity in plan_version.lesson_plan.activities] == [
+        "Khởi động xác nhận mức sẵn sàng",
+        "Củng cố tiên quyết có hướng dẫn",
+        "Luyện kỹ năng mục tiêu theo nhóm",
+        "Phiếu cuối giờ vận dụng gần",
+    ]
 
 
 def test_committed_teacher_demo_fixtures_match_the_deterministic_projection() -> None:

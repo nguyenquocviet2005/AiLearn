@@ -185,14 +185,14 @@ class DeterministicInterventionPolicy:
             if is_merged:
                 intervention_need = "mixed_repair:teacher_station"
                 rationale = (
-                    "Lower-prevalence prerequisite needs share a teacher-facilitated repair "
-                    f"station; targeted skills: {skill_id}."
+                    "Các nhu cầu tiên quyết ít phổ biến hơn được ghép vào trạm do giáo viên "
+                    f"hướng dẫn; kỹ năng trọng tâm: {skill_id}."
                 )
             else:
                 intervention_need = f"repair:{skill_id}"
                 rationale = (
-                    f"Shared primary root-cause evidence for {skill_id}; repair this "
-                    "prerequisite before target-skill practice."
+                    f"Nhóm có chung bằng chứng về nguyên nhân gốc {skill_id}; cần củng cố "
+                    "tiên quyết này trước khi luyện kỹ năng mục tiêu."
                 )
             group_specs.append((skill_id, intervention_need, student_ids, rationale))
 
@@ -202,7 +202,7 @@ class DeterministicInterventionPolicy:
                     "ready_transfer",
                     "extension:target_transfer",
                     ready_members,
-                    "Diagnostic evidence indicates target readiness; use transfer and extension practice.",
+                    "Bằng chứng chẩn đoán cho thấy học sinh đã sẵn sàng; giao bài vận dụng và mở rộng.",
                 )
             )
         if confirmation_members:
@@ -211,7 +211,7 @@ class DeterministicInterventionPolicy:
                     "confirmation",
                     "confirmation:insufficient_evidence",
                     confirmation_members,
-                    "Evidence is insufficient or conflicting; confirm readiness before assigning an intervention.",
+                    "Bằng chứng còn thiếu hoặc mâu thuẫn; cần xác nhận mức sẵn sàng trước khi giao can thiệp.",
                 )
             )
 
@@ -236,13 +236,13 @@ class DeterministicInterventionPolicy:
                     f"{key}_cohort_a",
                     intervention_need,
                     first_students,
-                    f"{rationale} Parallel cohort A keeps teacher support manageable.",
+                    f"{rationale} Nhóm song song A giúp giáo viên hỗ trợ trong quy mô phù hợp.",
                 ),
                 (
                     f"{key}_cohort_b",
                     intervention_need,
                     second_students,
-                    f"{rationale} Parallel cohort B keeps teacher support manageable.",
+                    f"{rationale} Nhóm song song B giúp giáo viên hỗ trợ trong quy mô phù hợp.",
                 ),
             ]
             group_specs[split_index : split_index + 1] = split_specs

@@ -20,23 +20,23 @@ describe("TeacherReport", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "See what changed—and what still needs teaching.",
+        name: "Nhìn rõ điều đã thay đổi và nội dung vẫn cần dạy.",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Immediate success is not transfer."),
+      screen.getByText("Làm đúng khi có hỗ trợ chưa phải là vận dụng."),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Passed independent transfer")).toHaveLength(2);
-    expect(screen.getAllByText("Teacher escalation")).toHaveLength(2);
+    expect(screen.getAllByText("Đã vận dụng độc lập")).toHaveLength(2);
+    expect(screen.getAllByText("Cần giáo viên can thiệp")).toHaveLength(2);
     expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
-    expect(screen.getByText("No evidence recorded")).toBeInTheDocument();
+    expect(screen.getByText("Chưa ghi nhận bằng chứng")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
+        "Củng cố cách lập quan hệ tỉ lệ nghịch và phép nhân phân số trước khi vận dụng vào bài toán năng suất.",
       ),
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("link", { name: "Open printable view" }));
+    await user.click(screen.getByRole("link", { name: "Mở bản in" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report/print");
   });
 
@@ -49,7 +49,7 @@ describe("TeacherReport", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The intervention report data could not be loaded.",
+      "Không thể tải dữ liệu báo cáo can thiệp.",
     );
   });
 
@@ -69,17 +69,15 @@ describe("TeacherReport", () => {
     render(<TeacherReport onNavigate={vi.fn()} repository={repository} />);
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The intervention report data could not be loaded.",
+      "Không thể tải dữ liệu báo cáo can thiệp.",
     );
-    await user.click(screen.getByRole("button", { name: "Try again" }));
-    expect(
-      screen.getByText("Loading intervention outcomes"),
-    ).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(screen.getByText("Đang tải kết quả can thiệp")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Thử lại" })).toBeNull();
     resolveRetry(reportTestFixture);
     expect(
       await screen.findByRole("heading", {
-        name: "See what changed—and what still needs teaching.",
+        name: "Nhìn rõ điều đã thay đổi và nội dung vẫn cần dạy.",
       }),
     ).toBeInTheDocument();
     expect(repository.getReport).toHaveBeenCalledTimes(2);
@@ -99,7 +97,7 @@ describe("TeacherReport", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The intervention report API is not configured for this deployment.",
+      "API báo cáo can thiệp chưa được cấu hình cho bản triển khai này.",
     );
 
     rerender(
@@ -115,7 +113,7 @@ describe("TeacherReport", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The intervention report API is unavailable. Try again later.",
+      "API báo cáo can thiệp đang không khả dụng. Vui lòng thử lại sau.",
     );
   });
 });

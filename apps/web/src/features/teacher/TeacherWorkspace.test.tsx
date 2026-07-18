@@ -68,7 +68,9 @@ async function statefulTeacherRepository(): Promise<TeacherWorkspaceRepository> 
 }
 
 function lessonPlanStatus() {
-  return screen.getByRole("region", { name: "Lesson plan status" });
+  return screen.getByRole("region", {
+    name: "Trạng thái kế hoạch bài dạy",
+  });
 }
 
 describe("TeacherWorkspace", () => {
@@ -92,12 +94,12 @@ describe("TeacherWorkspace", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Choose the next teaching move with evidence.",
+        name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("class_g7a_demo")).toBeInTheDocument();
+    expect(screen.getByText("Lớp: class_g7a_demo")).toBeInTheDocument();
     expect(
-      screen.getByText("lesson_g7_inverse_proportion_01"),
+      screen.getByText("Bài học: lesson_g7_inverse_proportion_01"),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",
@@ -117,7 +119,7 @@ describe("TeacherWorkspace", () => {
     );
 
     await screen.findByRole("heading", {
-      name: "Choose the next teaching move with evidence.",
+      name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
     });
     const rail = screen.getByRole("complementary", {
       name: "Không gian giáo viên",
@@ -156,19 +158,33 @@ describe("TeacherWorkspace", () => {
     );
 
     await screen.findByRole("heading", {
-      name: "Choose the next teaching move with evidence.",
+      name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
     });
     const summary = screen.getByRole("region", {
-      name: "Class readiness summary",
+      name: "Tóm tắt mức sẵn sàng của lớp",
     });
     expect(within(summary).getByText("40")).toBeInTheDocument();
+    expect(screen.getAllByText("Tỉ số và tỉ lệ thức").length).toBeGreaterThan(
+      0,
+    );
+    expect(screen.getByText("Phân bố nguyên nhân gốc")).toBeInTheDocument();
     expect(
-      screen.getAllByText("ratio proportion basics").length,
-    ).toBeGreaterThan(0);
-    expect(screen.getByText("Root-cause distribution")).toBeInTheDocument();
-    expect(
-      screen.getByText(/17 learners need confirmation/),
+      screen.getByText(/2 học sinh cần được xác nhận/),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Nhầm tỉ lệ thuận và tỉ lệ nghịch",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Tỉ số và tỉ lệ thức",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("11 học sinh")).not.toHaveLength(0);
+    expect(screen.getAllByText("4 học sinh")).not.toHaveLength(0);
+    expect(screen.queryByText(/skill_/)).not.toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -193,12 +209,12 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The teacher workspace data could not be loaded. Try again.",
+      "Không thể tải dữ liệu không gian giáo viên. Vui lòng thử lại.",
     );
-    await user.click(screen.getByRole("button", { name: "Try again" }));
+    await user.click(screen.getByRole("button", { name: "Thử lại" }));
     expect(
       await screen.findByRole("heading", {
-        name: "Choose the next teaching move with evidence.",
+        name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
       }),
     ).toBeInTheDocument();
     expect(repository.getClassSnapshot).toHaveBeenCalledTimes(2);
@@ -216,7 +232,7 @@ describe("TeacherWorkspace", () => {
     );
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The teacher workspace API is not configured for this deployment.",
+      "API không gian giáo viên chưa được cấu hình cho bản triển khai này.",
     );
 
     vi.stubGlobal(
@@ -233,7 +249,7 @@ describe("TeacherWorkspace", () => {
       />,
     );
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The teacher workspace API is unavailable. Check the connection and try again.",
+      "API không gian giáo viên đang không khả dụng. Hãy kiểm tra kết nối và thử lại.",
     );
   });
 
@@ -261,13 +277,17 @@ describe("TeacherWorkspace", () => {
     );
 
     await screen.findByRole("heading", {
-      name: "Shape a 45-minute path from evidence to action.",
+      name: "Biến bằng chứng thành lộ trình dạy học 45 phút.",
     });
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan approved as version 2.",
+    await user.click(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
     );
-    expect(within(lessonPlanStatus()).getAllByText("approved")).toHaveLength(2);
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Đã phê duyệt kế hoạch ở phiên bản 2.",
+    );
+    expect(
+      within(lessonPlanStatus()).getAllByText("Đã phê duyệt"),
+    ).toHaveLength(2);
     expect(fetchMock).toHaveBeenLastCalledWith(
       "https://api.example.test/api/v1/lesson-plans/plan_class_g7a_demo_lesson_g7_inverse_proportion_01/approve",
       expect.objectContaining({ method: "POST" }),
@@ -285,67 +305,71 @@ describe("TeacherWorkspace", () => {
       />,
     );
 
-    await screen.findByText("Readiness confirmation warm-up");
+    await screen.findByText("Khởi động xác nhận mức sẵn sàng");
     await user.clear(
-      screen.getByLabelText("Readiness confirmation warm-up duration"),
+      screen.getByLabelText("Thời lượng Khởi động xác nhận mức sẵn sàng"),
     );
     await user.type(
-      screen.getByLabelText("Readiness confirmation warm-up duration"),
+      screen.getByLabelText("Thời lượng Khởi động xác nhận mức sẵn sàng"),
       "4",
     );
     await user.selectOptions(
-      screen.getByLabelText("Move stu_g7_004"),
-      "grp_02_skill_fraction_multiplication",
+      screen.getByLabelText("Chuyển Học sinh 004"),
+      "grp_02_skill_distinguish_direct_inverse",
+    );
+    expect(screen.getByRole("button", { name: "Lưu chỉnh sửa" })).toBeEnabled();
+    await user.click(screen.getByRole("button", { name: "Lưu chỉnh sửa" }));
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Đã lưu chỉnh sửa của giáo viên thành phiên bản 2.",
+    );
+    expect(within(lessonPlanStatus()).getByText("2")).toBeInTheDocument();
+
+    view.unmount();
+    view = render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={repository}
+        view="lesson-plan"
+      />,
+    );
+    expect(await screen.findByDisplayValue("4")).toHaveAttribute(
+      "aria-label",
+      "Thời lượng Khởi động xác nhận mức sẵn sàng",
+    );
+    expect(within(lessonPlanStatus()).getByText("2")).toBeInTheDocument();
+    expect(screen.getByLabelText("Chuyển Học sinh 004")).toHaveValue(
+      "grp_02_skill_distinguish_direct_inverse",
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
+    );
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Đã phê duyệt kế hoạch ở phiên bản 3.",
+    );
+
+    view.unmount();
+    view = render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={repository}
+        view="lesson-plan"
+      />,
+    );
+    expect(await screen.findByDisplayValue("4")).toHaveAttribute(
+      "aria-label",
+      "Thời lượng Khởi động xác nhận mức sẵn sàng",
     );
     expect(
-      screen.getByRole("button", { name: "Save teacher edit" }),
+      within(lessonPlanStatus()).getAllByText("Đã phê duyệt"),
+    ).toHaveLength(2);
+    expect(
+      screen.getByRole("button", { name: "Xuất bản kế hoạch" }),
     ).toBeEnabled();
-    await user.click(screen.getByRole("button", { name: "Save teacher edit" }));
+
+    await user.click(screen.getByRole("button", { name: "Xuất bản kế hoạch" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
-      "Teacher edit saved as version 2.",
-    );
-    expect(within(lessonPlanStatus()).getByText("2")).toBeInTheDocument();
-
-    view.unmount();
-    view = render(
-      <TeacherWorkspace
-        onNavigate={vi.fn()}
-        repository={repository}
-        view="lesson-plan"
-      />,
-    );
-    expect(await screen.findByDisplayValue("4")).toHaveAttribute(
-      "aria-label",
-      "Readiness confirmation warm-up duration",
-    );
-    expect(within(lessonPlanStatus()).getByText("2")).toBeInTheDocument();
-    expect(screen.getByLabelText("Move stu_g7_004")).toHaveValue(
-      "grp_02_skill_fraction_multiplication",
-    );
-
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan approved as version 3.",
-    );
-
-    view.unmount();
-    view = render(
-      <TeacherWorkspace
-        onNavigate={vi.fn()}
-        repository={repository}
-        view="lesson-plan"
-      />,
-    );
-    expect(await screen.findByDisplayValue("4")).toHaveAttribute(
-      "aria-label",
-      "Readiness confirmation warm-up duration",
-    );
-    expect(within(lessonPlanStatus()).getAllByText("approved")).toHaveLength(2);
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeEnabled();
-
-    await user.click(screen.getByRole("button", { name: "Publish plan" }));
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan published as version 4.",
+      "Đã xuất bản kế hoạch ở phiên bản 4.",
     );
 
     view.unmount();
@@ -358,15 +382,17 @@ describe("TeacherWorkspace", () => {
     );
     expect(await screen.findByDisplayValue("4")).toHaveAttribute(
       "aria-label",
-      "Readiness confirmation warm-up duration",
+      "Thời lượng Khởi động xác nhận mức sẵn sàng",
     );
     expect(
-      within(lessonPlanStatus()).getByText("published"),
+      within(lessonPlanStatus()).getByText("Đã xuất bản"),
     ).toBeInTheDocument();
     expect(
-      within(lessonPlanStatus()).getByText("approved"),
+      within(lessonPlanStatus()).getByText("Đã phê duyệt"),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Xuất bản kế hoạch" }),
+    ).toBeDisabled();
   });
 
   it("preserves a rejected decision after reload and prevents a duplicate rejection", async () => {
@@ -381,13 +407,15 @@ describe("TeacherWorkspace", () => {
     );
 
     await screen.findByRole("heading", {
-      name: "Shape a 45-minute path from evidence to action.",
+      name: "Biến bằng chứng thành lộ trình dạy học 45 phút.",
     });
-    await user.click(screen.getByRole("button", { name: "Reject draft" }));
+    await user.click(screen.getByRole("button", { name: "Từ chối bản nháp" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan rejected as version 2",
+      "Đã từ chối kế hoạch ở phiên bản 2",
     );
-    expect(screen.getByRole("button", { name: "Reject draft" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Từ chối bản nháp" }),
+    ).toBeDisabled();
 
     view.unmount();
     render(
@@ -399,10 +427,14 @@ describe("TeacherWorkspace", () => {
     );
     expect(
       within(
-        await screen.findByRole("region", { name: "Lesson plan status" }),
-      ).getByText("rejected"),
+        await screen.findByRole("region", {
+          name: "Trạng thái kế hoạch bài dạy",
+        }),
+      ).getByText("Đã từ chối"),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Reject draft" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Từ chối bản nháp" }),
+    ).toBeDisabled();
   });
 
   it("enforces approval before one-time publication", async () => {
@@ -417,26 +449,38 @@ describe("TeacherWorkspace", () => {
     );
 
     await screen.findByRole("heading", {
-      name: "Shape a 45-minute path from evidence to action.",
+      name: "Biến bằng chứng thành lộ trình dạy học 45 phút.",
     });
     expect(
-      screen.getByRole("button", { name: "Save teacher edit" }),
+      screen.getByRole("button", { name: "Lưu chỉnh sửa" }),
     ).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Xuất bản kế hoạch" }),
+    ).toBeDisabled();
 
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan approved as version 2.",
+    await user.click(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
     );
-    expect(screen.getByRole("button", { name: "Approve plan" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeEnabled();
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Đã phê duyệt kế hoạch ở phiên bản 2.",
+    );
+    expect(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Xuất bản kế hoạch" }),
+    ).toBeEnabled();
 
-    await user.click(screen.getByRole("button", { name: "Publish plan" }));
+    await user.click(screen.getByRole("button", { name: "Xuất bản kế hoạch" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
-      "Plan published as version 3.",
+      "Đã xuất bản kế hoạch ở phiên bản 3.",
     );
-    expect(screen.getByRole("button", { name: "Publish plan" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Reject draft" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Xuất bản kế hoạch" }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Từ chối bản nháp" }),
+    ).toBeDisabled();
   });
 
   it("explains invalid duration and stale-version failures", async () => {
@@ -469,24 +513,26 @@ describe("TeacherWorkspace", () => {
       />,
     );
 
-    await screen.findByText("Readiness confirmation warm-up");
-    await user.click(screen.getByRole("button", { name: "Approve plan" }));
+    await screen.findByText("Khởi động xác nhận mức sẵn sàng");
+    await user.click(
+      screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
+    );
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "This plan changed in another session. Reload the latest version before continuing.",
+      "Kế hoạch đã thay đổi trong một phiên khác. Hãy tải phiên bản mới nhất trước khi tiếp tục.",
     );
 
     await user.clear(
-      screen.getByLabelText("Readiness confirmation warm-up duration"),
+      screen.getByLabelText("Thời lượng Khởi động xác nhận mức sẵn sàng"),
     );
     await user.type(
-      screen.getByLabelText("Readiness confirmation warm-up duration"),
+      screen.getByLabelText("Thời lượng Khởi động xác nhận mức sẵn sàng"),
       "46",
     );
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Each activity needs a whole number of minutes",
+      "Mỗi hoạt động cần số phút nguyên",
     );
     expect(
-      screen.getByRole("button", { name: "Save teacher edit" }),
+      screen.getByRole("button", { name: "Lưu chỉnh sửa" }),
     ).toBeDisabled();
   });
 });
