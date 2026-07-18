@@ -5,10 +5,14 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-COPY pyproject.toml uv.lock ./
+COPY apps/api/pyproject.toml apps/api/uv.lock apps/api/
+COPY packages/schemas packages/schemas
+COPY packages/diagnostic packages/diagnostic
+
+WORKDIR /app/apps/api
 RUN uv sync --frozen --no-dev --no-install-project
 
-COPY src ./src
+COPY apps/api/src ./src
 RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
