@@ -368,6 +368,13 @@ When a check is not run, state the reason.
   repo-root `railway.toml` (`dockerfilePath = "apps/api/Dockerfile"`), which `COPY`s
   `apps/api`, `packages/schemas`, and `packages/diagnostic` explicitly. See
   `docs/decisions/0002-relocate-diagnostic-package-and-fix-railway-build.md`.
+- **Supabase migrations**: a migration committed to `supabase/migrations/` is not automatically
+  applied to the hosted database. Before declaring a schema-dependent deployment ready, run
+  `supabase migration list` and `supabase db push --dry-run`, review every pending migration, obtain
+  explicit environment-specific approval, then run `supabase db push`. Verify migration history and
+  the affected live endpoint afterward. A healthy Railway `/health` response does not prove required
+  Supabase tables exist; missing migrations may surface as `503 supabase_unavailable`. Hosted Supabase
+  runs independently of local `supabase start` and does not require a developer machine to stay on.
 
 ---
 
