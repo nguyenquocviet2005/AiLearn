@@ -240,12 +240,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             </span>
 
             <span className="landing-signal-scene signal-scene-observe">
-              <i />
-              <i />
-              <i />
-              <i />
+              <i className="landing-search-glass" />
+              <i className="landing-search-target target-one" />
+              <i className="landing-search-target target-two" />
+              <i className="landing-search-target target-three" />
             </span>
-            <span className="landing-signal-scene signal-scene-explain">
+            <span className="landing-signal-scene signal-scene-trace">
+              <i />
               <i />
               <i />
               <i />
@@ -263,15 +264,15 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             </span>
             <span className="landing-signal-label signal-one">
               <b>Quan sát</b>
-              <small>Thu dấu vết</small>
+              <small>Quét dấu vết</small>
             </span>
             <span className="landing-signal-label signal-two">
-              <b>Giải thích</b>
-              <small>Tìm nguyên nhân</small>
+              <b>Truy vết</b>
+              <small>Lần theo nguyên nhân</small>
             </span>
             <span className="landing-signal-label signal-three">
               <b>Thích ứng</b>
-              <small>Đổi đường học</small>
+              <small>Nắn lại đường học</small>
             </span>
           </div>
 

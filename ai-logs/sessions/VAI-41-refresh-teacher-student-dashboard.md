@@ -64,6 +64,9 @@ accessibility, dead CSS, asset consistency, and verification evidence.
 - Turn the hero's Observe, Explain, and Adapt orbit into a vivid looping process illustration.
 - Make the teacher-dashboard and student-experience links in the audience section visually prominent
   framed calls to action.
+- Enlarge the hero process, remove the phase lag, and make each phase literal: a moving magnifier for
+  observation, sequentially illuminated graph nodes for tracing, and a curved path that straightens
+  for adaptation.
 
 ## Approved Plan
 
@@ -127,6 +130,12 @@ was introduced.
 - Promoted the two audience links into distinct 56px calls to action: white with a purple direction
   control for teachers, and yellow with a black direction control for students. Both include keyboard
   focus, hover feedback, reduced-motion behavior, and mobile-safe wrapping.
+- Enlarged the desktop process orbit from 320px to 380px and shortened its loop from 12 to 9 seconds.
+  A shared phase timeline now moves the marker and activates each label at the same keyframe, removing
+  the previous transition gap.
+- Replaced the abstract phase marks with a scanning CSS magnifier, a four-node chase-light graph, and
+  a four-point curved path that visibly settles into a straight line. Renamed the middle phase to the
+  more concrete `Truy vết` while retaining its root-cause purpose.
 - Fetched merged VAI-25 work from `origin/main` at `0b8c9a1`, preserved its expanded teacher demo flow,
   and adapted the VAI-41 companion rail to the new `TeacherShell` contract and `teacher.css` ownership.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
@@ -162,6 +171,8 @@ was introduced.
 - Accepted: Present Observe, Explain, and Adapt as a continuously looping hero illustration rather
   than shipping a heavier prerecorded video asset.
 - Accepted: Place the teacher and student entry links in branded frames that invite a clear click.
+- Accepted: Use literal moving illustrations for observation, graph tracing, and path adaptation, and
+  make the full process larger and faster.
 - Accepted: Use the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.` in the hero and SEO title.
 - Accepted: Replace Phạm Tuấn Phong with Vũ Trung Quân in the published team list.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
@@ -241,6 +252,8 @@ was introduced.
 | Review-fix draft pull request publication                                     | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/32                                              |
 | Chrome 1440px and 390px audience CTA inspection                               | PASS - both framed actions remain readable, balanced, and within the viewport                             |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after audience CTAs   | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
+| Chrome 1440px and 900px literal phase-motion inspection                       | PASS - magnifier, node chase, straightening path, and synchronized marker remain in frame                  |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after motion revision | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were

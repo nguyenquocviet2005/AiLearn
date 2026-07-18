@@ -1308,8 +1308,8 @@
   top: 47%;
   right: max(7vw, calc((100vw - 1180px) / 2));
   z-index: 1;
-  width: 320px;
-  height: 320px;
+  width: 380px;
+  height: 380px;
   transform: translateY(-50%);
   animation: landing-signal-in 900ms cubic-bezier(0.22, 1, 0.36, 1) 320ms both;
 }
@@ -1320,8 +1320,8 @@
   left: 50%;
   z-index: 3;
   display: grid;
-  width: 112px;
-  height: 112px;
+  width: 126px;
+  height: 126px;
   border: 1px solid rgba(255, 255, 255, 0.62);
   border-radius: 50%;
   place-items: center;
@@ -1344,7 +1344,7 @@
 }
 
 .landing-hero-signal::before {
-  inset: 34px;
+  inset: 40px;
   animation: landing-orbit 18s linear infinite;
 }
 
@@ -1357,14 +1357,14 @@
 .landing-signal-label {
   position: absolute;
   z-index: 4;
-  min-width: 88px;
-  padding: 0.5rem 0.7rem;
+  min-width: 108px;
+  padding: 0.58rem 0.78rem;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.86);
   background: rgba(13, 13, 17, 0.52);
   backdrop-filter: blur(10px);
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   font-weight: 800;
   opacity: 0.58;
   transform: scale(0.94);
@@ -1381,26 +1381,26 @@
 .landing-signal-label small {
   margin-top: 0.18rem;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 0.52rem;
+  font-size: 0.56rem;
   font-weight: 650;
 }
 
 .signal-one {
-  top: 20px;
-  left: 21px;
-  animation: landing-phase-observe 12s ease-in-out infinite;
+  top: 23px;
+  left: 18px;
+  animation: landing-phase-observe 9s linear infinite;
 }
 
 .signal-two {
-  top: 136px;
-  right: -20px;
-  animation: landing-phase-explain 12s ease-in-out infinite;
+  top: 162px;
+  right: -28px;
+  animation: landing-phase-trace 9s linear infinite;
 }
 
 .signal-three {
-  bottom: 20px;
-  left: 21px;
-  animation: landing-phase-adapt 12s ease-in-out infinite;
+  bottom: 23px;
+  left: 18px;
+  animation: landing-phase-adapt 9s linear infinite;
 }
 
 .landing-signal-runner {
@@ -1408,21 +1408,21 @@
   z-index: 5;
   inset: 0;
   border-radius: 50%;
-  animation: landing-orbit 12s linear infinite;
+  animation: landing-journey-runner 9s linear infinite;
 }
 
 .landing-signal-runner i {
   position: absolute;
-  top: -4px;
-  left: calc(50% - 5px);
-  width: 10px;
-  height: 10px;
+  top: -5px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--landing-cyan);
   box-shadow:
     0 0 12px rgba(140, 235, 248, 1),
     0 0 30px rgba(140, 235, 248, 0.62);
-  animation: landing-runner-color 12s ease-in-out infinite;
+  animation: landing-runner-color 9s linear infinite;
 }
 
 .landing-signal-scene {
@@ -1434,159 +1434,203 @@
 }
 
 .signal-scene-observe {
-  top: 54px;
-  left: 50%;
-  display: flex;
-  width: 94px;
-  height: 34px;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 7px;
-  transform: translateX(-50%);
-  animation: landing-scene-observe 12s ease-in-out infinite;
+  inset: 61px;
+  animation: landing-scene-observe 9s linear infinite;
 }
 
-.signal-scene-observe i {
-  display: block;
-  width: 7px;
-  border-radius: 4px 4px 1px 1px;
-  background: #8cebf8;
-  box-shadow: 0 0 10px rgba(140, 235, 248, 0.45);
-  animation: landing-evidence-bars 1.1s ease-in-out infinite alternate;
-}
-
-.signal-scene-observe i:nth-child(1) {
-  height: 12px;
-}
-
-.signal-scene-observe i:nth-child(2) {
-  height: 25px;
-  animation-delay: -0.55s;
-}
-
-.signal-scene-observe i:nth-child(3) {
-  height: 18px;
-  background: var(--landing-yellow);
-  animation-delay: -0.25s;
-}
-
-.signal-scene-observe i:nth-child(4) {
-  height: 29px;
-  animation-delay: -0.8s;
-}
-
-.signal-scene-explain {
-  top: 50%;
-  right: 34px;
-  width: 64px;
-  height: 82px;
-  transform: translateY(-50%);
-  animation: landing-scene-explain 12s ease-in-out infinite;
-}
-
-.signal-scene-explain::before,
-.signal-scene-explain::after {
+.landing-search-glass {
   position: absolute;
-  background: rgba(140, 235, 248, 0.72);
+  top: 10%;
+  left: 10%;
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--landing-cyan);
+  border-radius: 50%;
+  background: rgba(11, 7, 35, 0.62);
+  box-shadow:
+    inset 0 0 14px rgba(140, 235, 248, 0.2),
+    0 0 20px rgba(140, 235, 248, 0.45);
+  animation: landing-search-scan 3s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.landing-search-glass::after {
+  position: absolute;
+  right: -13px;
+  bottom: -8px;
+  width: 18px;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--landing-cyan);
+  box-shadow: 0 0 10px rgba(140, 235, 248, 0.8);
   content: "";
+  transform: rotate(45deg);
   transform-origin: left center;
 }
 
-.signal-scene-explain::before {
-  top: 31px;
-  left: 16px;
-  width: 38px;
-  height: 1px;
-  transform: rotate(-35deg);
+.landing-search-target {
+  position: absolute;
+  display: block;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(140, 235, 248, 0.9);
+  border-radius: 50%;
+  background: var(--landing-deep);
+  animation: landing-search-target 1.5s ease-in-out infinite;
 }
 
-.signal-scene-explain::after {
-  top: 35px;
-  left: 17px;
-  width: 36px;
-  height: 1px;
-  transform: rotate(38deg);
+.landing-search-target.target-one {
+  top: 15px;
+  left: 48%;
 }
 
-.signal-scene-explain i {
+.landing-search-target.target-two {
+  top: 48%;
+  right: 7px;
+  animation-delay: -0.5s;
+}
+
+.landing-search-target.target-three {
+  bottom: 14px;
+  left: 25%;
+  animation-delay: -1s;
+}
+
+.signal-scene-trace {
+  top: 62px;
+  left: 50%;
+  width: 176px;
+  height: 104px;
+  transform: translateX(-50%);
+  animation: landing-scene-trace 9s linear infinite;
+}
+
+.signal-scene-trace i {
   position: absolute;
   z-index: 1;
   display: block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid #8cebf8;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentcolor;
   border-radius: 50%;
+  color: rgba(140, 235, 248, 0.34);
   background: var(--landing-deep);
-  box-shadow: 0 0 12px rgba(140, 235, 248, 0.35);
+  animation: landing-trace-node 3s linear infinite;
 }
 
-.signal-scene-explain i:first-child {
-  top: 28px;
-  left: 7px;
-  border-color: var(--landing-yellow);
+.signal-scene-trace i::after {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  z-index: -1;
+  width: 68px;
+  height: 1px;
+  background: currentcolor;
+  box-shadow: 0 0 8px currentcolor;
+  content: "";
+  transform: rotate(-40deg);
+  transform-origin: left center;
 }
 
-.signal-scene-explain i:nth-child(2) {
-  top: 5px;
-  right: 2px;
+.signal-scene-trace i:first-child {
+  top: 66px;
+  left: 2px;
 }
 
-.signal-scene-explain i:nth-child(3) {
-  right: 2px;
-  bottom: 5px;
+.signal-scene-trace i:nth-child(2) {
+  top: 20px;
+  left: 54px;
+  animation-delay: -2.45s;
+}
+
+.signal-scene-trace i:nth-child(2)::after {
+  width: 68px;
+  transform: rotate(40deg);
+}
+
+.signal-scene-trace i:nth-child(3) {
+  top: 66px;
+  left: 106px;
+  animation-delay: -1.9s;
+}
+
+.signal-scene-trace i:nth-child(3)::after {
+  width: 67px;
+  transform: rotate(-43deg);
+}
+
+.signal-scene-trace i:nth-child(4) {
+  top: 19px;
+  right: 0;
+  animation-delay: -1.35s;
+}
+
+.signal-scene-trace i:nth-child(4)::after {
+  display: none;
 }
 
 .signal-scene-adapt {
-  bottom: 51px;
+  bottom: 55px;
   left: 50%;
-  width: 104px;
-  height: 42px;
+  width: 154px;
+  height: 72px;
   transform: translateX(-50%);
-  animation: landing-scene-adapt 12s ease-in-out infinite;
+  animation: landing-scene-adapt 9s linear infinite;
 }
 
 .signal-scene-adapt::before {
   position: absolute;
-  right: 5px;
-  bottom: 8px;
-  left: 5px;
-  height: 25px;
-  border-top: 1px dashed rgba(241, 217, 79, 0.8);
+  top: 8px;
+  right: 7px;
+  left: 7px;
+  height: 46px;
+  border-top: 2px dashed rgba(241, 217, 79, 0.9);
   border-radius: 50%;
   content: "";
-  transform: rotate(-8deg);
+  transform: rotate(-7deg);
+  animation: landing-path-straighten 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .signal-scene-adapt i {
   position: absolute;
   z-index: 1;
   display: block;
-  width: 9px;
-  height: 9px;
+  width: 11px;
+  height: 11px;
   border: 2px solid var(--landing-yellow);
   border-radius: 50%;
   background: var(--landing-deep);
   box-shadow: 0 0 10px rgba(241, 217, 79, 0.5);
+  animation: landing-path-node-straighten 3s cubic-bezier(0.22, 1, 0.36, 1)
+    infinite;
 }
 
 .signal-scene-adapt i:first-child {
-  bottom: 4px;
-  left: 5px;
+  --curve-position: 48px;
+
+  top: var(--curve-position);
+  left: 6px;
 }
 
 .signal-scene-adapt i:nth-child(2) {
-  bottom: 14px;
-  left: 34px;
+  --curve-position: 35px;
+
+  top: var(--curve-position);
+  left: 48px;
 }
 
 .signal-scene-adapt i:nth-child(3) {
-  right: 34px;
-  bottom: 21px;
+  --curve-position: 20px;
+
+  top: var(--curve-position);
+  right: 48px;
 }
 
 .signal-scene-adapt i:nth-child(4) {
-  right: 5px;
-  bottom: 28px;
+  --curve-position: 7px;
+
+  top: var(--curve-position);
+  right: 6px;
   background: var(--landing-yellow);
 }
 
@@ -1871,9 +1915,30 @@
   }
 }
 
+@keyframes landing-journey-runner {
+  0%,
+  31% {
+    transform: rotate(-45deg);
+  }
+
+  33%,
+  64% {
+    transform: rotate(90deg);
+  }
+
+  66%,
+  97% {
+    transform: rotate(225deg);
+  }
+
+  100% {
+    transform: rotate(315deg);
+  }
+}
+
 @keyframes landing-phase-observe {
   0%,
-  27%,
+  31%,
   100% {
     border-color: rgba(140, 235, 248, 0.9);
     color: #fff;
@@ -1883,8 +1948,8 @@
     transform: scale(1);
   }
 
-  34%,
-  93% {
+  33%,
+  98% {
     border-color: rgba(255, 255, 255, 0.25);
     color: rgba(255, 255, 255, 0.86);
     background: rgba(13, 13, 17, 0.52);
@@ -1894,10 +1959,10 @@
   }
 }
 
-@keyframes landing-phase-explain {
+@keyframes landing-phase-trace {
   0%,
-  27%,
-  67%,
+  31%,
+  66%,
   100% {
     border-color: rgba(255, 255, 255, 0.25);
     color: rgba(255, 255, 255, 0.86);
@@ -1907,8 +1972,8 @@
     transform: scale(0.94);
   }
 
-  34%,
-  60% {
+  33%,
+  64% {
     border-color: rgba(190, 125, 255, 0.9);
     color: #fff;
     background: rgba(25, 14, 52, 0.88);
@@ -1920,7 +1985,7 @@
 
 @keyframes landing-phase-adapt {
   0%,
-  60%,
+  64%,
   100% {
     border-color: rgba(255, 255, 255, 0.25);
     color: rgba(255, 255, 255, 0.86);
@@ -1930,8 +1995,8 @@
     transform: scale(0.94);
   }
 
-  67%,
-  93% {
+  66%,
+  97% {
     border-color: rgba(241, 217, 79, 0.92);
     color: #fff;
     background: rgba(34, 29, 8, 0.86);
@@ -1943,7 +2008,7 @@
 
 @keyframes landing-runner-color {
   0%,
-  28%,
+  31%,
   100% {
     background: var(--landing-cyan);
     box-shadow:
@@ -1951,16 +2016,16 @@
       0 0 30px rgba(140, 235, 248, 0.62);
   }
 
-  35%,
-  61% {
+  33%,
+  64% {
     background: #be7dff;
     box-shadow:
       0 0 12px rgba(190, 125, 255, 1),
       0 0 30px rgba(190, 125, 255, 0.65);
   }
 
-  68%,
-  94% {
+  66%,
+  97% {
     background: var(--landing-yellow);
     box-shadow:
       0 0 12px rgba(241, 217, 79, 1),
@@ -1970,53 +2035,141 @@
 
 @keyframes landing-scene-observe {
   0%,
-  27%,
+  31%,
   100% {
     filter: none;
     opacity: 1;
   }
 
-  34%,
-  93% {
+  33%,
+  98% {
     filter: blur(3px);
     opacity: 0;
   }
 }
 
-@keyframes landing-evidence-bars {
-  to {
-    transform: scaleY(0.56);
-  }
-}
-
-@keyframes landing-scene-explain {
+@keyframes landing-search-scan {
   0%,
-  28%,
-  67%,
+  8% {
+    top: 10%;
+    left: 10%;
+    transform: rotate(-12deg);
+  }
+
+  31% {
+    top: 5%;
+    left: 69%;
+    transform: rotate(8deg);
+  }
+
+  57% {
+    top: 65%;
+    left: 66%;
+    transform: rotate(18deg);
+  }
+
+  82% {
+    top: 69%;
+    left: 12%;
+    transform: rotate(-18deg);
+  }
+
+  100% {
+    top: 10%;
+    left: 10%;
+    transform: rotate(-12deg);
+  }
+}
+
+@keyframes landing-search-target {
+  50% {
+    border-color: var(--landing-yellow);
+    background: var(--landing-yellow);
+    box-shadow: 0 0 16px rgba(241, 217, 79, 0.8);
+    transform: scale(1.45);
+  }
+}
+
+@keyframes landing-scene-trace {
+  0%,
+  31%,
+  66%,
   100% {
     filter: blur(3px);
     opacity: 0;
   }
 
-  35%,
-  60% {
+  33%,
+  64% {
     filter: none;
     opacity: 1;
+  }
+}
+
+@keyframes landing-trace-node {
+  0%,
+  17% {
+    color: var(--landing-yellow);
+    background: var(--landing-yellow);
+    box-shadow:
+      0 0 14px rgba(241, 217, 79, 0.95),
+      0 0 28px rgba(241, 217, 79, 0.42);
+    opacity: 1;
+    transform: scale(1.22);
+  }
+
+  26%,
+  100% {
+    color: rgba(140, 235, 248, 0.42);
+    background: var(--landing-deep);
+    box-shadow: none;
+    opacity: 0.66;
+    transform: scale(1);
   }
 }
 
 @keyframes landing-scene-adapt {
   0%,
-  61%,
+  64%,
   100% {
     filter: blur(3px);
     opacity: 0;
   }
 
-  68%,
-  94% {
+  66%,
+  97% {
     filter: none;
     opacity: 1;
+  }
+}
+
+@keyframes landing-path-straighten {
+  0%,
+  18% {
+    top: 8px;
+    height: 46px;
+    border-radius: 50%;
+    transform: rotate(-7deg);
+  }
+
+  68%,
+  100% {
+    top: 29px;
+    height: 0;
+    border-radius: 0;
+    transform: rotate(0);
+  }
+}
+
+@keyframes landing-path-node-straighten {
+  0%,
+  18% {
+    top: var(--curve-position);
+  }
+
+  68%,
+  100% {
+    top: 24px;
   }
 }
 
@@ -2037,9 +2190,11 @@
 
   .landing-hero-signal {
     right: 1rem;
-    width: 260px;
-    height: 260px;
-    opacity: 0.72;
+    width: 380px;
+    height: 380px;
+    opacity: 0.82;
+    transform: translateY(-50%) scale(0.78);
+    transform-origin: right center;
   }
 
   .signal-two {
@@ -2158,6 +2313,7 @@
   .landing-signal-runner i,
   .landing-signal-scene,
   .landing-signal-scene i,
+  .signal-scene-adapt::before,
   .landing-audience-cta,
   .landing-audience-cta::before,
   .landing-audience-cta i,

@@ -22,9 +22,10 @@ describe("LandingPage", () => {
         name: "Từ một câu trả lời đến một quyết định dạy học.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Thu dấu vết")).toBeInTheDocument();
-    expect(screen.getByText("Tìm nguyên nhân")).toBeInTheDocument();
-    expect(screen.getByText("Đổi đường học")).toBeInTheDocument();
+    expect(screen.getByText("Quét dấu vết")).toBeInTheDocument();
+    expect(screen.getByText("Truy vết")).toBeInTheDocument();
+    expect(screen.getByText("Lần theo nguyên nhân")).toBeInTheDocument();
+    expect(screen.getByText("Nắn lại đường học")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
         name: "Ba quyết định rõ ràng trước giờ lên lớp.",
