@@ -85,12 +85,13 @@ Fixture: `data/fixtures/diagnostic-profile.json`.
 
 ### Domain diagnostic engine (VAI-14)
 
-Pure Python surface in `packages/diagnostic` (no new HTTP routes in VAI-14):
+Pure Python surface in `packages/diagnostic` (no HTTP or LLM calls in the engine itself):
 
 - `diagnose(events, curriculum, items, *, now=None) -> StudentDiagnosticProfileV1`
 - Inputs: `EvidenceEventV1` list + curriculum/items loaded from `data/seeds/`
 - Deterministic: same events + fixed `now` → identical profile
-- No LLM calls; product Diagnostic HTTP remains VAI-17
+- No LLM calls. The product Diagnostic HTTP surface that calls this engine is documented below
+  (VAI-17).
 
 ### `ClassSnapshotV1`
 
@@ -156,6 +157,154 @@ Not found (`404`):
   "detail": {
     "code": "evidence_event_not_found",
     "message": "Evidence event was not found."
+  }
+}
+```
+
+Unavailable response (`503`) uses the same sanitized shape as other Supabase failures.
+
+## `POST /api/v1/diagnostics/start`
+
+Starts a readiness session for one student against the (single, demo) lesson curriculum, using
+`build_readiness_session()` from `packages/diagnostic`. Session state is held in an in-memory
+store scoped to the running API process — see "Operational behavior" in
+`docs/ARCHITECTURE.md`. Returned items never include the answer key (`is_correct`,
+`misconception_id` are stripped from each option).
+
+Request:
+
+```json
+{
+  "student_id": "stu_demo_01",
+  "lesson_id": "lesson_g7_inverse_proportion_01"
+}
+```
+
+Success response (`201`):
+
+```json
+{
+  "session_id": "sess_stu_demo_01_readiness_1a2b3c4d",
+  "student_id": "stu_demo_01",
+  "lesson_id": "lesson_g7_inverse_proportion_01",
+  "target_skill_id": "skill_word_problem_work_rate",
+  "items": [
+    {
+      "item_id": "item_inv_prop_01",
+      "skill_ids": ["skill_ratio_proportion_basics"],
+      "form": "Dạng 1.1",
+      "stem": "Từ tỉ lệ thức 3/4 = x/12, giá trị của x là:",
+      "options": [{ "label": "9" }, { "label": "16" }, { "label": "8" }, { "label": "36" }]
+    }
+  ]
+}
+```
+
+Unknown lesson (`404`):
+
+```json
+{
+  "detail": { "code": "lesson_not_found", "message": "Unknown lesson_id." }
+}
+```
+
+Readiness session could not be built (`422`):
+
+```json
+{
+  "detail": {
+    "code": "readiness_session_unavailable",
+    "message": "Could not build a readiness session for this lesson."
+  }
+}
+```
+
+## `POST /api/v1/diagnostics/{session_id}/responses`
+
+Records one student answer as an `EvidenceEventV1`. Correctness is always derived server-side
+from the session's assessment item — the client only sends which option label the student picked,
+never `is_correct`. The evidence event id is deterministic (`ev_{session_id}_{item_id}`), so a
+retried request for the same session and item is idempotent: it replays the first recorded answer
+instead of creating a duplicate or erroring.
+
+Request:
+
+```json
+{
+  "item_id": "item_inv_prop_01",
+  "response_label": "9"
+}
+```
+
+Success response (`200`):
+
+```json
+{
+  "evidence_event": {
+    "schema_version": "1",
+    "id": "ev_sess_stu_demo_01_readiness_1a2b3c4d_item_inv_prop_01",
+    "student_id": "stu_demo_01",
+    "session_id": "sess_stu_demo_01_readiness_1a2b3c4d",
+    "skill_id": "skill_ratio_proportion_basics",
+    "item_id": "item_inv_prop_01",
+    "is_correct": true,
+    "recorded_at": "2026-07-19T10:20:00Z",
+    "lesson_id": "lesson_g7_inverse_proportion_01",
+    "response_label": "9"
+  },
+  "remaining_item_ids": ["item_inv_prop_02", "item_inv_prop_03"],
+  "session_complete": false
+}
+```
+
+Unknown session or item not in the session (`404`):
+
+```json
+{
+  "detail": {
+    "code": "diagnostic_session_not_found",
+    "message": "Diagnostic session was not found."
+  }
+}
+```
+
+Unrecognized option label (`422`):
+
+```json
+{
+  "detail": {
+    "code": "invalid_response_label",
+    "message": "response_label does not match any option for this item."
+  }
+}
+```
+
+Unavailable response (`503`) uses the same sanitized shape as other Supabase failures.
+
+## `GET /api/v1/students/{student_id}/diagnostic-profile`
+
+Computes a student's `StudentDiagnosticProfileV1` **live** by fetching that student's recorded
+`evidence_events` (optionally filtered by the `lesson_id` query parameter, which defaults to the
+single demo lesson) and calling `diagnose()`. No profile is persisted — the engine's evidence
+input is always the source of truth.
+
+Success response (`200`): a `StudentDiagnosticProfileV1` (see contract above).
+
+Unknown student (`404`):
+
+```json
+{
+  "detail": { "code": "student_not_found", "message": "Student was not found." }
+}
+```
+
+No evidence recorded yet (`404`):
+
+```json
+{
+  "detail": {
+    "code": "diagnostic_profile_not_found",
+    "message": "No readiness evidence has been recorded for this student yet."
   }
 }
 ```
