@@ -8,9 +8,11 @@
 - Linear issue: https://linear.app/vaic-workspace/issue/VAI-41/refresh-teacher-and-student-dashboard-frontend
 - Primary branch: `honghainguyen2003/vai-41-refresh-teacher-and-student-dashboard-frontend`
 - Follow-up branch: `vai-41-homepage-technology`
+- Review branch: `vai-41-landing-review-fixes`
 - Worktree: `/home/h2n/h2n/worktrees/vai-41-refresh-dashboard-frontend`
 - Primary pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26 (merged)
-- Follow-up pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/29
+- Technology pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/29 (merged)
+- Classification pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/30 (merged)
 
 ## Objective and Context
 
@@ -34,6 +36,11 @@ After the first draft pull request was published, the human requested a prominen
 section grounded in the repository documentation and running implementation. The human also selected
 `/home/h2n/h2n/AiLearn/mat/KAWAII]_Final - LOGO - 1 – Đã sửa (1).png` as the public header logo.
 
+After the technology pull request merged, the human requested a concrete misconception-classification
+case, the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.`, and the member name Vũ Trung Quân.
+The post-merge review then checked the complete PR #29/#30 change set for content accuracy,
+accessibility, dead CSS, asset consistency, and verification evidence.
+
 ## Planning and Implementation Prompts
 
 - Create a new Linear issue assigned to the human owner and begin implementation.
@@ -49,6 +56,11 @@ section grounded in the repository documentation and running implementation. The
 - Replace the public-header identity with the selected final AiLearn logo asset.
 - Replace the dense formula-led technology composition with three Vietnamese product pillars, make
   Personalized Remediation the third pillar, and present the runtime as a recognizable logo stack.
+- Explain how a wrong response maps to a misconception, related skills, competing evidence, a next
+  probe, and a teacher action.
+- Standardize the public slogan and replace the fourth team member's displayed name with Vũ Trung Quân.
+- Review every technology and classification commit after merge and correct confirmed findings.
+- Turn the hero's Observe, Explain, and Adapt orbit into a vivid looping process illustration.
 
 ## Approved Plan
 
@@ -97,6 +109,18 @@ was introduced.
   explicit.
 - Derived a 508px transparent PNG from the human-selected final logo and aligned it within the shared
   Dynamic Island header at desktop and mobile widths.
+- Replaced the generic decision preview with the four seeded misconception groups and an inspectable
+  response-to-action graph grounded in the curriculum and item fixtures. The graph follows the wrong
+  option through its mapped misconception, related skills, shared prerequisite, and deeper foundation.
+- Standardized the hero and SEO title slogan, updated the fourth team member to Vũ Trung Quân, and
+  aligned the portrait asset filename with the displayed identity.
+- Reviewed PR #29 and PR #30 after merge, corrected the low-contrast diagnosis labels, and removed
+  preview/runtime selectors that no longer had a source reference.
+- Rebuilt the static hero orbit as a 12-second browser-native motion loop. The active phase now moves
+  from collected evidence bars, through a small causal graph, to a new learning path while a colored
+  light completes the circular journey around the mascot.
+- Kept the motion loop dependency-free, paused it on interaction, supplied a static reduced-motion
+  state, and removed it at the narrow mobile breakpoint where it would compete with the primary copy.
 - Fetched merged VAI-25 work from `origin/main` at `0b8c9a1`, preserved its expanded teacher demo flow,
   and adapted the VAI-41 companion rail to the new `TeacherShell` contract and `teacher.css` ownership.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
@@ -126,6 +150,13 @@ was introduced.
   a gap instead of foregrounding mathematical formulas.
 - Accepted: Show Railway and the wider running stack through recognizable logos; show Neo4j only as a
   graph-database expansion option because it is not a current repository dependency.
+- Accepted: Show the seeded error taxonomy and how AiLearn locates a misconception before suggesting
+  an intervention.
+- Accepted: Render the location process as a visible skill graph instead of a linear text trace.
+- Accepted: Present Observe, Explain, and Adapt as a continuously looping hero illustration rather
+  than shipping a heavier prerecorded video asset.
+- Accepted: Use the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.` in the hero and SEO title.
+- Accepted: Replace Phạm Tuấn Phong with Vũ Trung Quân in the published team list.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
   familiar system symbols and the approved mascot asset are used instead.
 - Rejected: None.
@@ -194,6 +225,12 @@ was introduced.
 | Chrome 1440px, 900px, and 390px technology inspection                         | PASS - clean lanes, readable stack logos, and no horizontal overflow                                      |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after feedback pass   | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
 | Follow-up draft pull request publication                                      | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/29                                              |
+| PR #29 and PR #30 merged-state and CI audit                                   | PASS - both merged; web, API, and Vercel checks passed                                                    |
+| Post-merge desktop and 390px diagnosis inspection                             | PASS_WITH_NOTES - no overflow; found low-contrast cyan labels on white                                    |
+| Desktop and 390px graph inspection after review fixes                         | PASS - graph relations remain readable; labels reach 11.4:1 contrast; no overlap or horizontal overflow   |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after graph fixes     | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
+| Chrome 1440px, 900px, and 390px hero motion inspection                        | PASS - all three phases render; tablet labels stay in frame; no horizontal overflow                       |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after hero motion     | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
@@ -224,5 +261,5 @@ verification.
   this frontend-only issue.
 - No third-party icon dependency was approved or added.
 - Full verification reports three existing Starlette/FastAPI deprecation warnings; no test fails.
-- PR #26 merged before the follow-up technology commit; focused Draft PR #29 now carries the
-  technology and logo changes. Its GitHub CI evidence remains pending.
+- The diagnosis preview uses synthetic counts and labels itself as aggregated sample data; it does not
+  read live student records.

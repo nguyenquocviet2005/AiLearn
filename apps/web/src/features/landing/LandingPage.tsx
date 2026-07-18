@@ -124,7 +124,7 @@ const teamMembers = [
   {
     name: "Vũ Trung Quân",
     role: "CEO",
-    image: "/team/pham-tuan-phong.webp",
+    image: "/team/vu-trung-quan.webp",
   },
   {
     name: "Phạm Trọng Đông Hải",
@@ -235,13 +235,44 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           <div className="landing-hero-signal" aria-hidden="true">
+            <span className="landing-signal-runner">
+              <i />
+            </span>
+
+            <span className="landing-signal-scene signal-scene-observe">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="landing-signal-scene signal-scene-explain">
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="landing-signal-scene signal-scene-adapt">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+
             <span className="landing-signal-core">
               <img src="/brand/ailearn-mascot.webp" alt="" />
               <i className="firefly-tail-light" />
             </span>
-            <span className="landing-signal-label signal-one">Quan sát</span>
-            <span className="landing-signal-label signal-two">Giải thích</span>
-            <span className="landing-signal-label signal-three">Thích ứng</span>
+            <span className="landing-signal-label signal-one">
+              <b>Quan sát</b>
+              <small>Thu dấu vết</small>
+            </span>
+            <span className="landing-signal-label signal-two">
+              <b>Giải thích</b>
+              <small>Tìm nguyên nhân</small>
+            </span>
+            <span className="landing-signal-label signal-three">
+              <b>Thích ứng</b>
+              <small>Đổi đường học</small>
+            </span>
           </div>
 
           <ul
@@ -525,31 +556,58 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               >
                 <span className="landing-lab-label">Cách định vị</span>
                 <h3 id="location-title">Từ lựa chọn sai đến kỹ năng gốc</h3>
-                <ol>
-                  <li>
-                    <span>01</span>
-                    <div>
-                      <small>Phương án học sinh chọn</small>
-                      <strong>“y = kx (k ≠ 0)”</strong>
+                <div
+                  className="landing-skill-graph"
+                  aria-label="Đồ thị định vị từ phương án sai, qua lỗi quan niệm, đến kỹ năng liên quan và kỹ năng tiền đề"
+                >
+                  <div className="landing-graph-node landing-graph-response">
+                    <small>Phương án sai</small>
+                    <strong>y = kx (k ≠ 0)</strong>
+                  </div>
+
+                  <div className="landing-graph-edge">
+                    <span>Ánh xạ phương án</span>
+                  </div>
+
+                  <div className="landing-graph-node landing-graph-misconception">
+                    <small>Lỗi quan niệm</small>
+                    <strong>Nhầm tỉ lệ nghịch thành tỉ lệ thuận</strong>
+                  </div>
+
+                  <div className="landing-graph-branch">
+                    <span>Liên kết tới 2 kỹ năng</span>
+                  </div>
+
+                  <div className="landing-graph-related">
+                    <div className="landing-graph-node landing-graph-skill">
+                      <small>Kỹ năng liên quan</small>
+                      <strong>Phân biệt tỉ lệ thuận và tỉ lệ nghịch</strong>
                     </div>
-                  </li>
-                  <li>
-                    <span>02</span>
-                    <div>
-                      <small>Mã lỗi gắn với phương án</small>
-                      <strong>Nhầm tỉ lệ thuận với tỉ lệ nghịch</strong>
+                    <div className="landing-graph-node landing-graph-skill">
+                      <small>Kỹ năng liên quan</small>
+                      <strong>Định nghĩa đại lượng tỉ lệ nghịch</strong>
                     </div>
-                  </li>
-                  <li>
-                    <span>03</span>
-                    <div>
-                      <small>Đồ thị kỹ năng liên quan</small>
-                      <strong>
-                        Phân biệt hai quan hệ → Định nghĩa tỉ lệ nghịch
-                      </strong>
+                  </div>
+
+                  <div className="landing-graph-prerequisite-edge">
+                    <span>Đi ngược quan hệ tiền đề</span>
+                  </div>
+
+                  <div className="landing-graph-prerequisites">
+                    <div className="landing-graph-common-prerequisite">
+                      <small>Tiền đề chung của cả hai</small>
+                      <strong>Đại lượng tỉ lệ thuận</strong>
                     </div>
-                  </li>
-                </ol>
+                    <div className="landing-graph-foundation">
+                      <small>Tiền đề sâu hơn</small>
+                      <strong>Tỉ số và tỉ lệ thức</strong>
+                    </div>
+                  </div>
+                </div>
+                <p className="landing-graph-note">
+                  Đồ thị kỹ năng GDPT 2018 giúp AiLearn tìm điểm nên kiểm tra
+                  trước, thay vì dừng ở câu vừa làm sai.
+                </p>
               </section>
 
               <section

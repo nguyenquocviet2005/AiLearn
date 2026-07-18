@@ -22,6 +22,9 @@ describe("LandingPage", () => {
         name: "Từ một câu trả lời đến một quyết định dạy học.",
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Thu dấu vết")).toBeInTheDocument();
+    expect(screen.getByText("Tìm nguyên nhân")).toBeInTheDocument();
+    expect(screen.getByText("Đổi đường học")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
         name: "Ba quyết định rõ ràng trước giờ lên lớp.",
@@ -52,6 +55,9 @@ describe("LandingPage", () => {
         name: "Từ lựa chọn sai đến kỹ năng gốc",
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/Đồ thị kỹ năng GDPT 2018/)).toBeInTheDocument();
+    expect(screen.getByText("Đại lượng tỉ lệ thuận")).toBeInTheDocument();
+    expect(screen.getByText("Tỉ số và tỉ lệ thức")).toBeInTheDocument();
     expect(screen.getByText("Cần hỏi thêm")).toBeInTheDocument();
     expect(screen.getByText("Vũ Trung Quân")).toBeInTheDocument();
     expect(
