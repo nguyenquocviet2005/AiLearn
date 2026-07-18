@@ -1553,6 +1553,14 @@
   }
 }
 
+@media (min-width: 901px) and (max-width: 1324px) {
+  .teacher-app .teacher-shell {
+    width: auto;
+    margin-right: 1.5rem;
+    margin-left: 7.25rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .teacher-app .teacher-sidebar,
   .teacher-navigation a > span:last-child {

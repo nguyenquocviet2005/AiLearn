@@ -7,6 +7,7 @@ import {
   TeacherRepositoryError,
 } from "@/lib/adapters/teacher-repository";
 import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
+import { WorkflowStrip } from "./product/TeacherProductWorkspace";
 import { TeacherShell, type TeacherRoute } from "./TeacherShell";
 import {
   interventionNeedLabel,
@@ -158,8 +159,8 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
           </p>
         </div>
         <p className="teacher-context">
-          <span>Lớp: {snapshot.class_id}</span>
-          <span>Bài học: {snapshot.lesson_id}</span>
+          <span>Lớp: Lớp 7A</span>
+          <span>Bài học: Đại lượng tỉ lệ nghịch</span>
         </p>
       </div>
 
@@ -464,8 +465,8 @@ function LessonPlanView({
           </p>
         </div>
         <p className="teacher-context">
-          <span>Lớp: {lessonPlan.class_id}</span>
-          <span>Bài học: {lessonPlan.lesson_id}</span>
+          <span>Lớp: Lớp 7A</span>
+          <span>Bài học: Đại lượng tỉ lệ nghịch</span>
         </p>
       </div>
 
@@ -732,7 +733,20 @@ export function TeacherWorkspace({
   const isCurrentView = workspace.view === view;
 
   return (
-    <TeacherShell currentRoute={currentRoute} onNavigate={onNavigate}>
+    <TeacherShell
+      connectionStatus={
+        workspace.kind === "loading"
+          ? "loading"
+          : workspace.kind === "error"
+            ? "error"
+            : "connected"
+      }
+      currentRoute={currentRoute}
+      onNavigate={onNavigate}
+    >
+      <div className="teacher-product teacher-product-embedded-flow">
+        <WorkflowStrip current={currentRoute} onNavigate={onNavigate} />
+      </div>
       {(!isCurrentView || workspace.kind === "loading") && (
         <TeacherLoadingState />
       )}

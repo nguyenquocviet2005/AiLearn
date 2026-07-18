@@ -5,6 +5,7 @@ import type { InterventionReportV1, OutcomeKind } from "@ailearn/schemas";
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
+import { WorkflowStrip } from "@/features/teacher/product/TeacherProductWorkspace";
 import {
   TeacherShell,
   type TeacherRoute,
@@ -78,7 +79,7 @@ export function InterventionReportDetails({
                   <td>{outcomeLabels[student.outcome]}</td>
                   <td>
                     {student.evidence_ids.length > 0
-                      ? student.evidence_ids.join(", ")
+                      ? `${student.evidence_ids.length} minh chứng sau can thiệp`
                       : "Chưa ghi nhận bằng chứng"}
                   </td>
                 </tr>
@@ -148,7 +149,20 @@ export function TeacherReport({
   }, [repository, requestKey]);
 
   return (
-    <TeacherShell currentRoute="/teacher/report" onNavigate={onNavigate}>
+    <TeacherShell
+      connectionStatus={
+        state.kind === "loading"
+          ? "loading"
+          : state.kind === "error"
+            ? "error"
+            : "connected"
+      }
+      currentRoute="/teacher/report"
+      onNavigate={onNavigate}
+    >
+      <div className="teacher-product teacher-product-embedded-flow">
+        <WorkflowStrip current="/teacher/report" onNavigate={onNavigate} />
+      </div>
       {state.kind === "loading" && (
         <section
           className="teacher-loading"
@@ -211,7 +225,7 @@ export function TeacherReport({
             </a>
           </div>
           <p className="teacher-context">
-            Lớp: {state.report.class_id} / Bài học: {state.report.lesson_id}
+            Lớp: Lớp 7A / Bài học: Đại lượng tỉ lệ nghịch
           </p>
           <InterventionReportDetails report={state.report} />
         </section>

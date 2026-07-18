@@ -50,18 +50,20 @@ describe("App", () => {
     expect(screen.getByText("Lớp 7A · Mốc kiểm tra 2")).toBeInTheDocument();
   });
 
-  it("renders the VAI-19 teacher routes on direct navigation", async () => {
+  it("renders the teacher product and lesson-plan routes on direct navigation", async () => {
     const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
     const plan = await reportTestPlan();
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
     window.history.pushState({}, "", "/teacher");
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => snapshot });
+    fetchMock
+      .mockResolvedValueOnce({ ok: true, json: async () => snapshot })
+      .mockResolvedValueOnce({ ok: true, json: async () => plan });
     const { unmount } = render(<App />);
     expect(
       await screen.findByRole("heading", {
-        name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
+        name: "Chào buổi sáng, cô Hà.",
       }),
     ).toBeInTheDocument();
     unmount();
@@ -77,6 +79,40 @@ describe("App", () => {
     expect(
       screen.getByRole("button", { name: "Phê duyệt kế hoạch" }),
     ).toBeEnabled();
+  });
+
+  it.each([
+    ["/teacher/classes", "Một nơi để theo dõi cả lớp và từng bài học."],
+    ["/teacher/prepare", "Chuẩn bị bài dạy từ mục tiêu đến minh chứng."],
+    ["/teacher/insights", "Hiểu nguyên nhân trước khi chọn cách dạy."],
+    ["/teacher/students", "Không để số liệu trung bình che mất một học sinh."],
+    ["/teacher/teaching", "Tập trung vào lớp học, không phải bảng điều khiển."],
+    ["/teacher/after-class", "Khép vòng lặp bằng minh chứng sau tiết học."],
+    [
+      "/teacher/interventions",
+      "Củng cố đến khi học sinh thực sự vận dụng được.",
+    ],
+    [
+      "/teacher/resources",
+      "Học liệu được tạo theo đúng nhu cầu của từng nhóm.",
+    ],
+  ])("supports direct navigation to %s", async (route, heading) => {
+    const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
+    const plan = await reportTestPlan();
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce({ ok: true, json: async () => snapshot })
+        .mockResolvedValueOnce({ ok: true, json: async () => plan }),
+    );
+    window.history.pushState({}, "", route);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: heading }),
+    ).toBeInTheDocument();
   });
 
   it("renders the VAI-21 report routes on direct navigation", async () => {
