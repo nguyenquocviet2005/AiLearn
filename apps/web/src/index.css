@@ -214,6 +214,224 @@ h2 {
   padding-top: clamp(2.5rem, 7vw, 5.5rem);
 }
 
+.report-content {
+  padding-bottom: 4rem;
+}
+
+.report-print-link,
+.print-actions a {
+  color: var(--ink);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.3rem;
+  text-transform: uppercase;
+}
+
+.report-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 2rem 0;
+}
+
+.report-outcome-grid article {
+  display: grid;
+  min-height: 8.5rem;
+  padding: 1.1rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.48);
+  align-content: space-between;
+}
+
+.report-outcome-grid strong {
+  color: var(--accent);
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
+.report-outcome-grid span,
+.report-table-wrap th,
+.report-table-wrap td {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.report-evidence-boundary {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.45fr) 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem;
+  border-left: 0.3rem solid var(--accent);
+  background: #fff8ef;
+}
+
+.report-evidence-boundary p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.report-table-wrap {
+  overflow-x: auto;
+}
+
+.report-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.report-table-wrap th,
+.report-table-wrap td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.report-follow-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.report-follow-up ul {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0;
+  list-style: none;
+}
+
+.report-follow-up li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.report-follow-up li strong {
+  font-weight: 400;
+}
+
+.report-follow-up li span,
+.print-lesson-plan span {
+  color: var(--muted);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.report-next-focus p:last-child {
+  font-size: 1.35rem;
+  line-height: 1.5;
+}
+
+.print-shell {
+  width: min(900px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 4rem;
+}
+
+.print-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.print-actions button {
+  padding: 0.7rem 1rem;
+  border: 0;
+  color: white;
+  background: var(--ink);
+  cursor: pointer;
+}
+
+.print-sheet {
+  padding: clamp(1.25rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  background: white;
+}
+
+.print-sheet > header h1 {
+  max-width: 15ch;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.print-lesson-plan {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--ink);
+}
+
+.print-lesson-plan ol {
+  display: grid;
+  gap: 1rem;
+  padding-left: 1.25rem;
+}
+
+.print-lesson-plan li {
+  padding: 0 0 1rem 0.5rem;
+  break-inside: avoid;
+}
+
+.print-lesson-plan p {
+  margin: 0.4rem 0;
+  line-height: 1.5;
+}
+
+.print-plan-warning {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .report-outcome-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-evidence-boundary,
+  .report-follow-up {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  :root,
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  .print-actions {
+    display: none;
+  }
+
+  .print-shell,
+  .print-sheet {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .teacher-panel,
+  .report-outcome-grid article,
+  .report-evidence-boundary,
+  .print-lesson-plan li {
+    break-inside: avoid;
+  }
+}
+
 .teacher-page-heading {
   display: flex;
   align-items: end;

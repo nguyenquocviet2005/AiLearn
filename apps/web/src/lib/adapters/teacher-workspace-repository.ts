@@ -6,7 +6,7 @@ import type {
 
 export interface TeacherWorkspaceRepository {
   getClassSnapshot(): Promise<ClassSnapshotV1>;
-  getLessonPlan(): Promise<TeacherPlanVersionV1>;
+  getLessonPlan(planId?: string): Promise<TeacherPlanVersionV1>;
   createVersion(
     snapshot: ClassSnapshotV1,
     lessonPlan: TeacherLessonPlanV1,
