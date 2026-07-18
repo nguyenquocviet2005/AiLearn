@@ -12,6 +12,8 @@ import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repo
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 
+import "@/features/teacher/teacher.css";
+
 type PrintState =
   | { kind: "loading" }
   | {
@@ -65,23 +67,33 @@ export function PrintableTeacherReport({
   }, [planRepository, reportRepository]);
 
   return (
-    <main className="print-shell">
+    <main className="print-shell teacher-print">
       <div className="print-actions">
         <a href="/teacher/report">Back to report</a>
         {state.kind === "ready" && (
-          <button type="button" onClick={() => window.print()}>
+          <button
+            className="teacher-button teacher-button-primary"
+            type="button"
+            onClick={() => window.print()}
+          >
             {state.plan ? "Print report and lesson plan" : "Print report"}
           </button>
         )}
       </div>
       {state.kind === "loading" && (
-        <p aria-live="polite">Preparing a low-bandwidth printable view...</p>
+        <p className="teacher-print-state" aria-live="polite">
+          Preparing a low-bandwidth printable view...
+        </p>
       )}
-      {state.kind === "error" && <p role="alert">{state.message}</p>}
+      {state.kind === "error" && (
+        <p className="teacher-print-state" role="alert">
+          {state.message}
+        </p>
+      )}
       {state.kind === "ready" && (
         <article className="print-sheet">
           <header>
-            <p className="eyebrow">AiLearn / teacher record</p>
+            <p className="teacher-print-kicker">AiLearn / teacher record</p>
             <h1>
               {state.plan
                 ? "Intervention report and lesson plan"
@@ -97,7 +109,7 @@ export function PrintableTeacherReport({
               className="print-lesson-plan"
               aria-labelledby="print-plan-title"
             >
-              <p className="eyebrow">Printable lesson plan</p>
+              <p className="teacher-print-kicker">Printable lesson plan</p>
               <h2 id="print-plan-title">
                 {state.plan.lesson_plan.total_duration_minutes}-minute teaching
                 sequence

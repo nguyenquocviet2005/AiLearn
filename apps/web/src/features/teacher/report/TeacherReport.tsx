@@ -5,6 +5,10 @@ import type { InterventionReportV1, OutcomeKind } from "@ailearn/schemas";
 import type { TeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { httpTeacherReportRepository } from "@/lib/adapters/teacher-report-repository";
 import { teacherReportErrorMessage } from "@/features/teacher/report/report-errors";
+import {
+  TeacherShell,
+  type TeacherRoute,
+} from "@/features/teacher/TeacherShell";
 
 const outcomeLabels: Record<OutcomeKind, string> = {
   passed_transfer: "Passed independent transfer",
@@ -55,10 +59,13 @@ export function InterventionReportDetails({
         className="teacher-panel report-evidence"
         aria-labelledby="report-evidence-title"
       >
-        <p className="eyebrow">Individual evidence</p>
+        <p className="teacher-kicker">Individual evidence</p>
         <h2 id="report-evidence-title">What happened after intervention</h2>
         <div className="report-table-wrap">
           <table>
+            <caption>
+              Evidence recorded for each representative learner outcome
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Learner</th>
@@ -88,22 +95,30 @@ export function InterventionReportDetails({
           className="teacher-panel"
           aria-labelledby="remaining-gaps-title"
         >
-          <p className="eyebrow">Remaining gaps</p>
+          <p className="teacher-kicker">Remaining gaps</p>
           <h2 id="remaining-gaps-title">Skills that still need attention</h2>
-          <ul>
-            {report.remaining_gaps.map((gap) => (
-              <li key={gap.skill_id}>
-                <strong>{gap.skill_id.replaceAll("_", " ")}</strong>
-                <span>{gap.student_ids.join(", ")}</span>
-              </li>
-            ))}
-          </ul>
+          {report.remaining_gaps.length > 0 ? (
+            <ul>
+              {report.remaining_gaps.map((gap) => (
+                <li key={gap.skill_id}>
+                  <strong>
+                    {gap.skill_id.replace(/^skill_/, "").replaceAll("_", " ")}
+                  </strong>
+                  <span>{gap.student_ids.join(", ")}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="teacher-empty">
+              No remaining gap is recorded for this intervention.
+            </p>
+          )}
         </section>
         <section
           className="teacher-panel report-next-focus"
           aria-labelledby="next-focus-title"
         >
-          <p className="eyebrow">Next lesson</p>
+          <p className="teacher-kicker">Next lesson</p>
           <h2 id="next-focus-title">Recommended focus</h2>
           <p>{report.next_lesson_focus}</p>
         </section>
@@ -116,19 +131,15 @@ export function TeacherReport({
   onNavigate,
   repository = httpTeacherReportRepository,
 }: {
-  onNavigate: (
-    path:
-      | "/teacher"
-      | "/teacher/lesson-plan"
-      | "/teacher/report"
-      | "/teacher/report/print",
-  ) => void;
+  onNavigate: (path: TeacherRoute | "/teacher/report/print") => void;
   repository?: TeacherReportRepository;
 }) {
   const [state, setState] = useState<ReportState>({ kind: "loading" });
+  const [requestKey, setRequestKey] = useState(0);
 
   useEffect(() => {
     let active = true;
+    setState({ kind: "loading" });
     void repository.getReport().then(
       (report) => active && setState({ kind: "ready", report }),
       (error) =>
@@ -138,53 +149,41 @@ export function TeacherReport({
     return () => {
       active = false;
     };
-  }, [repository]);
+  }, [repository, requestKey]);
 
   return (
-    <main className="teacher-shell">
-      <header className="teacher-header">
-        <a
-          href="/teacher"
-          className="teacher-wordmark"
-          onClick={(event) => {
-            event.preventDefault();
-            onNavigate("/teacher");
-          }}
-        >
-          AiLearn <span>Teacher workspace</span>
-        </a>
-        <nav aria-label="Teacher workspace navigation">
-          <a
-            href="/teacher"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher");
-            }}
-          >
-            Class overview
-          </a>
-          <a
-            href="/teacher/lesson-plan"
-            onClick={(event) => {
-              event.preventDefault();
-              onNavigate("/teacher/lesson-plan");
-            }}
-          >
-            Lesson plan
-          </a>
-          <a aria-current="page" href="/teacher/report">
-            Intervention report
-          </a>
-        </nav>
-      </header>
-
+    <TeacherShell currentRoute="/teacher/report" onNavigate={onNavigate}>
       {state.kind === "loading" && (
-        <p className="teacher-state">Preparing the intervention report...</p>
+        <section
+          className="teacher-loading"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <p className="teacher-kicker">Loading intervention outcomes</p>
+          <div className="teacher-skeleton teacher-skeleton-title" />
+          <div className="teacher-skeleton-grid" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+        </section>
       )}
       {state.kind === "error" && (
-        <p className="teacher-state" role="alert">
-          {state.message}
-        </p>
+        <section className="teacher-state-card" role="alert">
+          <img src="/brand/ailearn-mascot.webp" alt="" />
+          <div>
+            <p className="teacher-kicker">Report unavailable</p>
+            <h1>We could not load the intervention report.</h1>
+            <p>{state.message}</p>
+            <button
+              className="teacher-button teacher-button-primary"
+              onClick={() => setRequestKey((key) => key + 1)}
+              type="button"
+            >
+              Try again
+            </button>
+          </div>
+        </section>
       )}
       {state.kind === "ready" && (
         <section
@@ -193,10 +192,16 @@ export function TeacherReport({
         >
           <div className="teacher-page-heading">
             <div>
-              <p className="eyebrow">Intervention report / evidence review</p>
+              <p className="teacher-kicker">
+                Intervention report · Evidence review
+              </p>
               <h1 id="report-title">
                 See what changed—and what still needs teaching.
               </h1>
+              <p className="teacher-lede">
+                Separate supported success from independent transfer, then carry
+                remaining gaps into the next lesson.
+              </p>
             </div>
             <a
               className="report-print-link"
@@ -215,6 +220,6 @@ export function TeacherReport({
           <InterventionReportDetails report={state.report} />
         </section>
       )}
-    </main>
+    </TeacherShell>
   );
 }
