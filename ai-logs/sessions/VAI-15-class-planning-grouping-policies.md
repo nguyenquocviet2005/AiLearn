@@ -9,7 +9,8 @@
 - Branch: `VAI-15-class-planning-grouping-policies`
 - Worktree: `/Users/haipham/Documents/AiLearn`
 - Baseline: `23e48142d4d6ba2692919702a00e90a2dbdc625e`
-- Pull request: pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/17 (Draft)
+- Implementation commit: `a1db7b85b250680a7c59cb26f646ab178d501a0e`
 
 ## Objective and supplied context
 
