@@ -10,7 +10,7 @@
 - Follow-up branch: `vai-41-homepage-technology`
 - Worktree: `/home/h2n/h2n/worktrees/vai-41-refresh-dashboard-frontend`
 - Primary pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26 (merged)
-- Follow-up pull request: Pending
+- Follow-up pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/29
 
 ## Objective and Context
 
@@ -193,6 +193,7 @@ was introduced.
 | Web tests after technology feedback pass                                      | PASS - 59/59 web tests                                                                                    |
 | Chrome 1440px, 900px, and 390px technology inspection                         | PASS - clean lanes, readable stack logos, and no horizontal overflow                                      |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after feedback pass   | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
+| Follow-up draft pull request publication                                      | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/29                                              |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
@@ -223,5 +224,5 @@ verification.
   this frontend-only issue.
 - No third-party icon dependency was approved or added.
 - Full verification reports three existing Starlette/FastAPI deprecation warnings; no test fails.
-- PR #26 merged before the follow-up technology commit; a new focused pull request will carry the
-  technology and logo changes.
+- PR #26 merged before the follow-up technology commit; focused Draft PR #29 now carries the
+  technology and logo changes. Its GitHub CI evidence remains pending.
