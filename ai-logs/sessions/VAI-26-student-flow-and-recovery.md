@@ -6,7 +6,7 @@
 - Linear: VAI-26
 - Branch: `VAI-26-student-flow-and-recovery`
 - Worktree: `/Users/haipham/Documents/AiLearn`
-- Pull request: pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/27 (Draft)
 - Baseline: `0b8c9a116837f37fffd6bfbc7ff02d90a8c1792f`
 - Integrated origin/main: `90382f8341739ee4c374aa8f47cdad170e327ba6` (VAI-41 dashboard refresh)
 
