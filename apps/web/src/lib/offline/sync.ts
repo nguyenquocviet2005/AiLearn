@@ -9,6 +9,7 @@
 
 import type { StudentRepository } from "@/lib/adapters/student-repository";
 import type {
+  ExitTicketResponse,
   RemediationResponse,
   SubmitResponseResponse,
 } from "@/lib/adapters/student-types";
@@ -18,6 +19,7 @@ import {
   listPending,
   updateStatus,
   type DiagnosticResponsePayload,
+  type ExitTicketPayload,
   type PendingWrite,
   type RemediationAttemptPayload,
 } from "./queue";
@@ -41,7 +43,7 @@ function notify(): void {
 export interface FlushResult {
   write: PendingWrite;
   ok: boolean;
-  response?: SubmitResponseResponse | RemediationResponse;
+  response?: SubmitResponseResponse | RemediationResponse | ExitTicketResponse;
 }
 
 async function flushOne(
@@ -50,7 +52,8 @@ async function flushOne(
 ): Promise<FlushResult> {
   updateStatus(write.clientEventId, "SYNCING");
   try {
-    let response: SubmitResponseResponse | RemediationResponse;
+    let response:
+      SubmitResponseResponse | RemediationResponse | ExitTicketResponse;
     if (write.type === "DIAGNOSTIC_RESPONSE") {
       const payload = write.payload as DiagnosticResponsePayload;
       response = await repository.submitReadinessResponse(
@@ -59,7 +62,7 @@ async function flushOne(
         payload.responseLabel,
         payload.confidence,
       );
-    } else {
+    } else if (write.type === "REMEDIATION_ATTEMPT") {
       const payload = write.payload as RemediationAttemptPayload;
       response = await repository.submitRemediationAttempt(
         payload.studentId,
@@ -67,8 +70,16 @@ async function flushOne(
         payload.isCorrect,
         payload.attemptId,
       );
+    } else {
+      const payload = write.payload as ExitTicketPayload;
+      response = await repository.submitExitTicket(
+        payload.studentId,
+        payload.ticketId,
+        payload.responseLabel,
+        payload.submissionId,
+      );
     }
-    updateStatus(write.clientEventId, "SYNCED");
+    updateStatus(write.clientEventId, "SYNCED", 0, response);
     return { write, ok: true, response };
   } catch {
     updateStatus(write.clientEventId, "FAILED", 1);

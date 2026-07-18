@@ -6,7 +6,8 @@
  * so autosave, offline resume, and non-duplicated sync all share one code path.
  */
 
-export type PendingWriteType = "DIAGNOSTIC_RESPONSE" | "REMEDIATION_ATTEMPT";
+export type PendingWriteType =
+  "DIAGNOSTIC_RESPONSE" | "REMEDIATION_ATTEMPT" | "EXIT_TICKET";
 
 export interface DiagnosticResponsePayload {
   sessionId: string;
@@ -22,8 +23,15 @@ export interface RemediationAttemptPayload {
   attemptId: string;
 }
 
+export interface ExitTicketPayload {
+  studentId: string;
+  ticketId: string;
+  responseLabel: string;
+  submissionId: string;
+}
+
 export type PendingWritePayload =
-  DiagnosticResponsePayload | RemediationAttemptPayload;
+  DiagnosticResponsePayload | RemediationAttemptPayload | ExitTicketPayload;
 
 export type PendingWriteStatus = "PENDING" | "SYNCING" | "SYNCED" | "FAILED";
 
@@ -31,6 +39,7 @@ export interface PendingWrite {
   clientEventId: string;
   type: PendingWriteType;
   payload: PendingWritePayload;
+  result?: unknown;
   createdAt: string;
   retryCount: number;
   status: PendingWriteStatus;
@@ -94,6 +103,7 @@ export function updateStatus(
   clientEventId: string,
   status: PendingWriteStatus,
   retryCountDelta = 0,
+  result?: unknown,
 ): void {
   const writes = readAll();
   const index = writes.findIndex((w) => w.clientEventId === clientEventId);
@@ -105,6 +115,7 @@ export function updateStatus(
     ...current,
     status,
     retryCount: current.retryCount + retryCountDelta,
+    ...(result === undefined ? {} : { result }),
   };
   writeAll(writes);
 }

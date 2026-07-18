@@ -1,0 +1,190 @@
+{
+  "schema_version": "1",
+  "personas": [
+    {
+      "id": "foundational-gap",
+      "label": "Củng cố nền tảng",
+      "student_id": "stu_demo_foundation_01",
+      "display_name": "Bạn An",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_foundation_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "needs_support",
+        "confidence": 0.86,
+        "root_causes": [
+          {
+            "skill_id": "skill_ratio_proportion_basics",
+            "rank": 1,
+            "supporting_evidence_ids": ["ev_demo_foundation_01"],
+            "contradicting_evidence_ids": []
+          }
+        ],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống"
+      }
+    },
+    {
+      "id": "misconception",
+      "label": "Gỡ một hiểu nhầm",
+      "student_id": "stu_demo_misconception_01",
+      "display_name": "Bạn Bình",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_misconception_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "needs_support",
+        "confidence": 0.81,
+        "root_causes": [
+          {
+            "skill_id": "skill_distinguish_direct_inverse",
+            "rank": 1,
+            "supporting_evidence_ids": ["ev_demo_misconception_01"],
+            "contradicting_evidence_ids": []
+          }
+        ],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống"
+      }
+    },
+    {
+      "id": "root-cause-changes",
+      "label": "Điều chỉnh theo bằng chứng mới",
+      "student_id": "stu_demo_reclassified_01",
+      "display_name": "Bạn Chi",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_reclassified_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "needs_support",
+        "confidence": 0.68,
+        "root_causes": [
+          {
+            "skill_id": "skill_ratio_proportion_basics",
+            "rank": 1,
+            "supporting_evidence_ids": ["ev_demo_reclassified_initial"],
+            "contradicting_evidence_ids": []
+          }
+        ],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống",
+        "reclassify_on_response_label": "Tăng lên",
+        "reclassified_profile": {
+          "schema_version": "1",
+          "student_id": "stu_demo_reclassified_01",
+          "lesson_id": "lesson_g7_inverse_proportion_01",
+          "target_skill_id": "skill_word_problem_work_rate",
+          "readiness_status": "needs_support",
+          "confidence": 0.9,
+          "root_causes": [
+            {
+              "skill_id": "skill_distinguish_direct_inverse",
+              "rank": 1,
+              "supporting_evidence_ids": ["ev_demo_reclassified_exit_ticket"],
+              "contradicting_evidence_ids": ["ev_demo_reclassified_initial"]
+            }
+          ],
+          "generated_at": "2026-07-18T10:05:00Z"
+        }
+      }
+    },
+    {
+      "id": "insufficient-evidence",
+      "label": "Cần thêm bằng chứng",
+      "student_id": "stu_demo_insufficient_01",
+      "display_name": "Bạn Dũng",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_insufficient_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "abstained",
+        "confidence": 0.31,
+        "root_causes": [],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống"
+      }
+    },
+    {
+      "id": "passing-transfer",
+      "label": "Áp dụng được tình huống mới",
+      "student_id": "stu_demo_transfer_01",
+      "display_name": "Bạn Hà",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_transfer_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "needs_support",
+        "confidence": 0.84,
+        "root_causes": [
+          {
+            "skill_id": "skill_inverse_proportion_definition",
+            "rank": 1,
+            "supporting_evidence_ids": ["ev_demo_transfer_01"],
+            "contradicting_evidence_ids": []
+          }
+        ],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống"
+      }
+    },
+    {
+      "id": "teacher-escalation",
+      "label": "Cần cô hỗ trợ",
+      "student_id": "stu_demo_escalation_01",
+      "display_name": "Bạn Lan",
+      "profile": {
+        "schema_version": "1",
+        "student_id": "stu_demo_escalation_01",
+        "lesson_id": "lesson_g7_inverse_proportion_01",
+        "target_skill_id": "skill_word_problem_work_rate",
+        "readiness_status": "needs_support",
+        "confidence": 0.73,
+        "root_causes": [
+          {
+            "skill_id": "skill_direct_proportion",
+            "rank": 1,
+            "supporting_evidence_ids": ["ev_demo_escalation_01"],
+            "contradicting_evidence_ids": []
+          }
+        ],
+        "generated_at": "2026-07-18T10:00:00Z"
+      },
+      "exit_ticket": {
+        "id": "exit_inverse_relation",
+        "question": "Khi số người cùng làm một công việc tăng lên, thời gian hoàn thành thường thay đổi thế nào?",
+        "options": ["Tăng lên", "Giảm xuống"],
+        "correct_response_label": "Giảm xuống"
+      }
+    }
+  ]
+}
