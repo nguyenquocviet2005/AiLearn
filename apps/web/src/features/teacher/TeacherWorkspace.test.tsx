@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import App from "@/App";
 import { fixtureTeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
 import { TeacherWorkspace } from "./TeacherWorkspace";
 
@@ -15,9 +14,13 @@ describe("TeacherWorkspace", () => {
   it("renders the fixture class snapshot without calling the backend", async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
-    window.history.pushState({}, "", "/teacher");
-
-    render(<App />);
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={fixtureTeacherWorkspaceRepository}
+        view="overview"
+      />,
+    );
 
     expect(
       await screen.findByRole("heading", {
@@ -33,6 +36,7 @@ describe("TeacherWorkspace", () => {
 
   it("uses an injected repository and navigates to the lesson plan", async () => {
     const repository = {
+      ...fixtureTeacherWorkspaceRepository,
       getClassSnapshot: vi.fn(() =>
         fixtureTeacherWorkspaceRepository.getClassSnapshot(),
       ),
@@ -84,6 +88,7 @@ describe("TeacherWorkspace", () => {
 
   it("renders the overview when the unused lesson-plan request rejects", async () => {
     const repository = {
+      ...fixtureTeacherWorkspaceRepository,
       getClassSnapshot: vi.fn(() =>
         fixtureTeacherWorkspaceRepository.getClassSnapshot(),
       ),
@@ -106,6 +111,7 @@ describe("TeacherWorkspace", () => {
 
   it("renders the lesson plan when the unused snapshot request rejects", async () => {
     const repository = {
+      ...fixtureTeacherWorkspaceRepository,
       getClassSnapshot: vi.fn(() => Promise.reject(new Error("unavailable"))),
       getLessonPlan: vi.fn(() =>
         fixtureTeacherWorkspaceRepository.getLessonPlan(),
@@ -126,5 +132,70 @@ describe("TeacherWorkspace", () => {
       }),
     ).toBeInTheDocument();
     expect(repository.getClassSnapshot).not.toHaveBeenCalled();
+  });
+
+  it("creates a new version for a group move and duration edit", async () => {
+    const repository = {
+      ...fixtureTeacherWorkspaceRepository,
+      createVersion: vi.fn((snapshot, lessonPlan, expectedParentVersion) =>
+        fixtureTeacherWorkspaceRepository.createVersion(
+          snapshot,
+          lessonPlan,
+          expectedParentVersion,
+        ),
+      ),
+    };
+    const user = userEvent.setup();
+
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={repository}
+        view="lesson-plan"
+      />,
+    );
+
+    await screen.findByText("Warm-up confirmation items");
+    await user.clear(
+      screen.getByLabelText("Warm-up confirmation items duration"),
+    );
+    await user.type(
+      screen.getByLabelText("Warm-up confirmation items duration"),
+      "4",
+    );
+    await user.selectOptions(
+      screen.getByLabelText("Move stu_demo_01"),
+      "grp_demo_repair_denominator",
+    );
+    await user.click(screen.getByRole("button", { name: "Save teacher edit" }));
+
+    expect(repository.createVersion).toHaveBeenCalledOnce();
+    const [snapshot, plan] = repository.createVersion.mock.calls[0];
+    expect(plan.total_duration_minutes).toBe(44);
+    expect(snapshot.groups[0].student_ids).not.toContain("stu_demo_01");
+    expect(snapshot.groups[1].student_ids).toContain("stu_demo_01");
+    expect(
+      await screen.findByText("Version 2 · pending decision"),
+    ).toBeInTheDocument();
+  });
+
+  it("requires approval before publishing", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={fixtureTeacherWorkspaceRepository}
+        view="lesson-plan"
+      />,
+    );
+
+    await screen.findByText("Version 1 · pending decision");
+    expect(screen.getByRole("button", { name: "Publish plan" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Approve plan" }));
+    expect(
+      await screen.findByText("Version 2 · approved decision"),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Publish plan" })).toBeEnabled();
   });
 });
