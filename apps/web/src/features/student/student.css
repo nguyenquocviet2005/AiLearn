@@ -1,0 +1,383 @@
+/*
+ * Scoped design tokens for the student feature only (docs/AILEARN_SYSTEM_UX_BLUEPRINT.md
+ * §2 + docs/adaptive_tutoring_ux_redesign1.html). Deliberately does not touch
+ * apps/web/src/index.css or TeacherWorkspace, which use a different, older palette —
+ * see the VAI-18 plan's "design references" note.
+ */
+
+.student-shell {
+  --student-bg: #f5f6f2;
+  --student-surface: #ffffff;
+  --student-ink: #182135;
+  --student-muted: #687386;
+  --student-line: #e3e6df;
+  --student-indigo: #5046e5;
+  --student-indigo-soft: #eeedff;
+  --student-teal: #0b7d72;
+  --student-teal-soft: #e0f5f0;
+  --student-amber: #b96409;
+  --student-amber-soft: #fff1dc;
+  --student-rose: #b63e57;
+  --student-rose-soft: #fbe8ed;
+  --student-green: #277450;
+  --student-green-soft: #e4f3ea;
+  --student-radius: 18px;
+
+  font-family: Inter, "Aptos", "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--student-bg);
+  color: var(--student-ink);
+  min-height: 100vh;
+}
+
+.student-shell,
+.student-shell *,
+.student-shell *::before,
+.student-shell *::after {
+  box-sizing: border-box;
+}
+
+.student-shell button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--student-surface);
+  border-bottom: 1px solid var(--student-line);
+}
+
+.student-identity {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.student-identity b {
+  font-size: 0.95rem;
+}
+
+.student-identity small {
+  color: var(--student-muted);
+  font-size: 0.75rem;
+}
+
+.student-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--student-line);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--student-muted);
+}
+
+.student-sync.online {
+  color: var(--student-teal);
+  border-color: var(--student-teal);
+  background: var(--student-teal-soft);
+}
+
+.student-nav {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0 1.25rem;
+  background: var(--student-surface);
+  border-bottom: 1px solid var(--student-line);
+  overflow-x: auto;
+}
+
+.student-nav button {
+  border: 0;
+  background: transparent;
+  padding: 0.75rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--student-muted);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.student-nav button.active {
+  color: var(--student-indigo);
+  border-bottom-color: var(--student-indigo);
+}
+
+.student-main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3.5rem;
+}
+
+.student-card {
+  background: var(--student-surface);
+  border: 1px solid var(--student-line);
+  border-radius: var(--student-radius);
+  padding: 1.5rem;
+  box-shadow:
+    0 1px 2px rgba(25, 33, 51, 0.05),
+    0 12px 30px rgba(25, 33, 51, 0.07);
+}
+
+.student-card + .student-card {
+  margin-top: 1rem;
+}
+
+.student-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #eef0ec;
+  color: #596476;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.student-pill.teal {
+  background: var(--student-teal-soft);
+  color: var(--student-teal);
+}
+
+.student-pill.indigo {
+  background: var(--student-indigo-soft);
+  color: var(--student-indigo);
+}
+
+.student-progress-track {
+  height: 8px;
+  background: #ecefe9;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.student-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--student-teal);
+  border-radius: 999px;
+}
+
+.student-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.student-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1.5px solid var(--student-line);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  background: var(--student-surface);
+  text-align: left;
+  font-weight: 600;
+}
+
+.student-option.selected {
+  border-color: var(--student-indigo);
+  background: var(--student-indigo-soft);
+}
+
+.student-option-key {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: #f0f2ee;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.7rem;
+  flex: none;
+}
+
+.student-confidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.student-confidence button {
+  border: 1.5px solid var(--student-line);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  background: var(--student-surface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--student-muted);
+}
+
+.student-confidence button.selected {
+  border-color: var(--student-teal);
+  background: var(--student-teal-soft);
+  color: var(--student-teal);
+}
+
+.student-textarea {
+  width: 100%;
+  min-height: 4.5rem;
+  border: 1.5px solid var(--student-line);
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  resize: vertical;
+}
+
+.student-support-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+.student-text-btn {
+  border: 0;
+  background: transparent;
+  color: var(--student-indigo);
+  font-weight: 700;
+  padding: 0;
+}
+
+.student-btn {
+  min-height: 42px;
+  border: 1px solid var(--student-line);
+  border-radius: 11px;
+  background: var(--student-surface);
+  padding: 0.55rem 1rem;
+  font-weight: 700;
+}
+
+.student-btn.primary {
+  background: var(--student-indigo);
+  border-color: var(--student-indigo);
+  color: #fff;
+}
+
+.student-btn.teal {
+  background: var(--student-teal);
+  border-color: var(--student-teal);
+  color: #fff;
+}
+
+.student-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.student-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.student-step-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #edf0ea;
+}
+
+.student-step-row:last-child {
+  border-bottom: 0;
+}
+
+.student-step-marker {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #eef0ec;
+  color: var(--student-muted);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.7rem;
+  flex: none;
+}
+
+.student-step-row.done .student-step-marker {
+  background: var(--student-green-soft);
+  color: var(--student-green);
+}
+
+.student-step-row.current .student-step-marker {
+  background: var(--student-indigo);
+  color: #fff;
+}
+
+.student-representation-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--student-amber-soft);
+  color: var(--student-amber);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.student-help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.student-help-action {
+  border: 1px solid var(--student-line);
+  border-radius: 14px;
+  padding: 0.9rem;
+  background: var(--student-surface);
+  text-align: left;
+}
+
+.student-help-action b {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.student-help-action small {
+  color: var(--student-muted);
+}
+
+.student-day-rail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.student-day-stage {
+  border: 1px solid var(--student-line);
+  border-radius: 12px;
+  padding: 0.6rem 0.7rem;
+}
+
+.student-day-stage.current {
+  border-color: var(--student-indigo);
+  background: var(--student-indigo-soft);
+}
+
+.student-day-stage small {
+  display: block;
+  color: var(--student-muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}

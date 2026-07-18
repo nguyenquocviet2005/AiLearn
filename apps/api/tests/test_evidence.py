@@ -237,6 +237,63 @@ async def test_fetch_evidence_events_for_student_filters_by_student_and_lesson()
     assert records == [EvidenceEventRecord.model_validate(SAMPLE_ROW)]
 
 
+def test_create_evidence_event_accepts_optional_confidence(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    row_with_confidence = {**SAMPLE_ROW, "confidence": 0.9}
+    record = EvidenceEventRecord.model_validate(row_with_confidence)
+    monkeypatch.setattr(
+        "ailearn_api.routes.diagnostics.insert_evidence_event",
+        AsyncMock(return_value=record),
+    )
+    app = client.app
+    app.dependency_overrides[get_settings] = lambda: Settings(
+        supabase_url="https://example.supabase.co",
+        supabase_secret_key="test-secret",
+    )
+
+    response = client.post("/api/v1/evidence-events", json={**CREATE_PAYLOAD, "confidence": 0.9})
+
+    assert response.status_code == 201
+    assert response.json()["confidence"] == 0.9
+
+
+def test_create_evidence_event_omits_confidence_by_default(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    record = EvidenceEventRecord.model_validate(SAMPLE_ROW)
+    monkeypatch.setattr(
+        "ailearn_api.routes.diagnostics.insert_evidence_event",
+        AsyncMock(return_value=record),
+    )
+    app = client.app
+    app.dependency_overrides[get_settings] = lambda: Settings(
+        supabase_url="https://example.supabase.co",
+        supabase_secret_key="test-secret",
+    )
+
+    response = client.post("/api/v1/evidence-events", json=CREATE_PAYLOAD)
+
+    assert response.status_code == 201
+    assert response.json()["confidence"] is None
+
+
+def test_create_evidence_event_rejects_out_of_range_confidence(
+    client: TestClient,
+) -> None:
+    app = client.app
+    app.dependency_overrides[get_settings] = lambda: Settings(
+        supabase_url="https://example.supabase.co",
+        supabase_secret_key="test-secret",
+    )
+
+    response = client.post("/api/v1/evidence-events", json={**CREATE_PAYLOAD, "confidence": 1.5})
+
+    assert response.status_code == 422
+
+
 @pytest.mark.anyio
 async def test_fetch_evidence_events_for_student_returns_empty_list_when_none_found() -> None:
     transport = httpx.MockTransport(lambda request: httpx.Response(200, json=[]))

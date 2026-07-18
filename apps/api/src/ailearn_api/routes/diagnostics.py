@@ -210,6 +210,7 @@ async def submit_diagnostic_response(
         "recorded_at": datetime.now(UTC).isoformat(),
         "lesson_id": session.lesson_id,
         "response_label": body.response_label,
+        "confidence": body.confidence,
     }
 
     try:

@@ -73,7 +73,7 @@ async def fetch_evidence_event(
             params={
                 "select": (
                     "id,schema_version,student_id,session_id,skill_id,item_id,"
-                    "is_correct,recorded_at,lesson_id,response_label"
+                    "is_correct,recorded_at,lesson_id,response_label,confidence"
                 ),
                 "id": f"eq.{event_id}",
                 "limit": "1",
@@ -112,7 +112,7 @@ async def fetch_evidence_events_for_student(
             params={
                 "select": (
                     "id,schema_version,student_id,session_id,skill_id,item_id,"
-                    "is_correct,recorded_at,lesson_id,response_label"
+                    "is_correct,recorded_at,lesson_id,response_label,confidence"
                 ),
                 "student_id": f"eq.{student_id}",
                 "lesson_id": f"eq.{lesson_id}",

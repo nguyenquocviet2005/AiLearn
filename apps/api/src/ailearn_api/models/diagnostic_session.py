@@ -43,6 +43,7 @@ class SubmitResponseRequest(BaseModel):
 
     item_id: str = Field(min_length=1)
     response_label: str = Field(min_length=1)
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
 class SubmitResponseResponse(BaseModel):
