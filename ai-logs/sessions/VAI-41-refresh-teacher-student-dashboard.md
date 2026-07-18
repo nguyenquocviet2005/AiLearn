@@ -13,6 +13,7 @@
 - Primary pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26 (merged)
 - Technology pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/29 (merged)
 - Classification pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/30 (merged)
+- Motion and review pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/32 (draft)
 
 ## Objective and Context
 
@@ -231,6 +232,7 @@ was introduced.
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after graph fixes     | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 | Chrome 1440px, 900px, and 390px hero motion inspection                        | PASS - all three phases render; tablet labels stay in frame; no horizontal overflow                       |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after hero motion     | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
+| Review-fix draft pull request publication                                     | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/32                                              |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
