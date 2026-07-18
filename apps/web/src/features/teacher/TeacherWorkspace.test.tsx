@@ -167,7 +167,7 @@ describe("TeacherWorkspace", () => {
     ).toBeGreaterThan(0);
     expect(screen.getByText("Root-cause distribution")).toBeInTheDocument();
     expect(
-      screen.getByText(/17 learners need confirmation/),
+      screen.getByText(/15 learners need confirmation/),
     ).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
   });

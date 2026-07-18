@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
-from ailearn_content import ContentGenerator
+from ailearn_content import Content, ContentGenerator, grade
 from ailearn_remediation import (
     AttemptOutcome,
     DiagnosticProfile,
@@ -63,8 +63,11 @@ class StartRequest(BaseModel):
 class AttemptRequest(BaseModel):
     student_id: str
     step_id: str
-    is_correct: bool
     attempt_id: str
+    # Gradable steps send `response` (free text, graded server-side); self-report
+    # steps send `is_correct`. Exactly one is required.
+    response: str | None = None
+    is_correct: bool | None = None
 
 
 class ConfirmRequest(BaseModel):
@@ -79,32 +82,38 @@ class ExitTicketRequest(BaseModel):
     submission_id: str
 
 
-def _content_payload(session: SessionState) -> dict[str, Any]:
-    c = _content.generate(
+def _current_content(session: SessionState) -> Content:
+    return _content.generate(
         skill_id=session.root_cause_skill_id,
         state=session.current_state.value,
         kind=_engine.current_step_kind(session).value,
         representation=session.representation.value,
     )
+
+
+def _content_payload(content: Content) -> dict[str, Any]:
+    # The answer key (checkpoint_answer / accepted_answers) stays on the server;
+    # grading happens in submit_attempt so it is never shipped to the client.
     return {
-        "template_id": c.template_id,
-        "title": c.title,
-        "body": c.body,
-        "checkpoint_question": c.checkpoint_question,
-        "checkpoint_answer": c.checkpoint_answer,
-        "representation": c.representation,
-        "source": c.source,
+        "template_id": content.template_id,
+        "title": content.title,
+        "body": content.body,
+        "checkpoint_question": content.checkpoint_question,
+        "is_gradable": content.is_gradable,
+        "representation": content.representation,
+        "source": content.source,
     }
 
 
-def _response(session: SessionState) -> dict[str, Any]:
+def _response(session: SessionState, grading: dict[str, Any] | None = None) -> dict[str, Any]:
     result: dict[str, Any] = {
         "path": _engine.to_path(session, _now()).to_dict(),
         "current_step_kind": _engine.current_step_kind(session).value,
         "is_complete": _engine.is_complete(session),
         "transfer_outcome": session.transfer_outcome,
         "escalation_reason": session.escalation_reason,
-        "content": _content_payload(session),
+        "content": _content_payload(_current_content(session)),
+        "grading": grading,
     }
     if result["is_complete"]:
         result["exit_ticket"] = public_exit_ticket(session.student_id)
@@ -223,16 +232,32 @@ async def submit_attempt(
     Idempotent on attempt_id: a retried request for the same attempt_id replays
     the response recorded the first time instead of advancing the state machine
     again (VAI-18 — RemediationEngine.advance() has no idempotency of its own).
+    A gradable step's typed answer is graded on the server against the
+    template's accepted answers; the answer key never reaches the client.
     """
     record = await _get(settings, req.student_id)
 
     if req.attempt_id in record.processed_attempts:
         return record.processed_attempts[req.attempt_id]
 
+    step_content = _current_content(record.session)
+    grading: dict[str, Any] | None = None
+    if step_content.is_gradable and req.response is not None:
+        is_correct = grade(step_content.accepted_answers, req.response)
+        grading = {"graded": True, "is_correct": is_correct}
+    elif req.is_correct is not None:
+        is_correct = req.is_correct
+        grading = {"graded": False, "is_correct": is_correct}
+    else:
+        raise HTTPException(
+            status_code=422,
+            detail="Provide `response` for a gradable step or `is_correct` for self-report.",
+        )
+
     record.session = _engine.advance(
-        record.session, AttemptOutcome(req.step_id, req.is_correct, _now())
+        record.session, AttemptOutcome(req.step_id, is_correct, _now())
     )
-    result = _response(record.session)
+    result = _response(record.session, grading=grading)
     record.processed_attempts[req.attempt_id] = result
     await _save(settings, record)
     return result

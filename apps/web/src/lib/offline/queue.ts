@@ -19,8 +19,11 @@ export interface DiagnosticResponsePayload {
 export interface RemediationAttemptPayload {
   studentId: string;
   stepId: string;
-  isCorrect: boolean;
   attemptId: string;
+  /** Free-text answer for a gradable step; the server decides correctness. */
+  response?: string;
+  /** Student self-report, used only when the step is not auto-gradable. */
+  isCorrect?: boolean;
 }
 
 export interface ExitTicketPayload {

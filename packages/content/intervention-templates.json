@@ -15,8 +15,9 @@
       "kind": "worked_example",
       "representation": "table",
       "body": "So sánh hai tình huống trên cùng một bảng:\n\n| | Tỉ lệ THUẬN | Tỉ lệ NGHỊCH |\n|---|---|---|\n| Công thức | y = k·x | x·y = k |\n| Khi x tăng | y **tăng** | y **giảm** |\n| Đại lượng không đổi | Thương y/x = k | Tích x·y = k |\n| Ví dụ | 1 quyển vở 5.000đ → 3 quyển 15.000đ | 12 công nhân 6 ngày → 6 công nhân 12 ngày |\n\n**Cách kiểm tra nhanh:** lấy tích x·y ở mọi cặp giá trị.\nNếu các tích **bằng nhau** → tỉ lệ nghịch. Nếu thương y/x bằng nhau → tỉ lệ thuận.",
-      "checkpoint_question": "Bảng: x = 2, 4, 8 và y = 12, 6, 3. Tích x·y ở cả ba cặp bằng bao nhiêu? Hai đại lượng này tỉ lệ thuận hay nghịch?",
-      "checkpoint_answer": "Tích đều bằng 24 → tỉ lệ nghịch."
+      "checkpoint_question": "Bảng: x = 2, 4, 8 và y = 12, 6, 3. Hai đại lượng này tỉ lệ thuận hay tỉ lệ nghịch?",
+      "checkpoint_answer": "Tích đều bằng 24 → tỉ lệ nghịch.",
+      "accepted_answers": ["nghịch", "tỉ lệ nghịch", "24"]
     },
     {
       "template_id": "tpl_repair_inverse_definition_diagram",
@@ -31,7 +32,39 @@
       "representation": "diagram",
       "body": "Hình dung một hình chữ nhật có **diện tích luôn bằng 24**:\n\n```\nx = 2         x = 4        x = 6\n┌──┐          ┌────┐       ┌──────┐\n│  │ y = 12   │    │ y = 6 │      │ y = 4\n│  │          │    │       └──────┘\n│  │          └────┘\n└──┘\n2 × 12 = 24   4 × 6 = 24   6 × 4 = 24\n```\n\nChiều rộng (x) càng lớn thì chiều cao (y) càng nhỏ,\nnhưng **diện tích (tích x·y) luôn giữ nguyên = 24**.\n\nĐó chính là ý nghĩa của: **x · y = k**",
       "checkpoint_question": "Nếu hình chữ nhật có diện tích không đổi là 36 và chiều rộng x = 9, thì chiều cao y bằng bao nhiêu?",
-      "checkpoint_answer": "y = 36 / 9 = 4"
+      "checkpoint_answer": "y = 36 / 9 = 4",
+      "accepted_answers": ["4", "y = 4"]
+    },
+    {
+      "template_id": "tpl_repair_ratio_basics_text",
+      "title": "Ôn lại tỉ lệ thức: tích chéo bằng nhau",
+      "misconception_id": "mis_computation_error",
+      "target_skill_ids": [
+        "skill_ratio_proportion_basics",
+        "skill_direct_proportion"
+      ],
+      "state": "REPAIR",
+      "kind": "worked_example",
+      "representation": "text",
+      "body": "Tỉ lệ thức là hai tỉ số bằng nhau: **a/b = c/d**\n\n**Quy tắc vàng — tích chéo:** a/b = c/d  ⟺  a·d = b·c\n\n**Ví dụ mẫu:** Tìm x biết 3/4 = x/12\n\n- Nhân chéo: 3 × 12 = 4 × x\n- Tính: 36 = 4x\n- Chia hai vế cho 4: x = **9**\n\n**Kiểm tra lại:** 3/4 = 9/12 ? Rút gọn 9/12 = 3/4 ✓\n\n> Bẫy thường gặp: nhân sai cặp. Luôn nhân **chéo** (tử của vế này với mẫu của vế kia), không nhân tử với tử.",
+      "checkpoint_question": "Tìm x biết 2/5 = x/20.",
+      "checkpoint_answer": "Nhân chéo: 2 × 20 = 5x → 40 = 5x → x = 8",
+      "accepted_answers": ["8", "x = 8"]
+    },
+    {
+      "template_id": "tpl_repair_fraction_multiplication_text",
+      "title": "Nhân chia phân số: rút gọn trước khi nhân",
+      "misconception_id": "mis_computation_error",
+      "target_skill_ids": [
+        "skill_fraction_multiplication"
+      ],
+      "state": "REPAIR",
+      "kind": "guided_problem",
+      "representation": "text",
+      "body": "**Nhân phân số:** nhân tử với tử, mẫu với mẫu — nhưng **rút gọn trước** cho dễ.\n\n**Ví dụ mẫu:** 3/5 × 10/9\n\n- Rút gọn chéo: 3 và 9 cùng chia 3 → 1 và 3\n- Rút gọn chéo: 5 và 10 cùng chia 5 → 1 và 2\n- Còn lại: 1/1 × 2/3 = **2/3**\n\n**Chia phân số:** giữ nguyên phân số thứ nhất, **nhân với nghịch đảo** của phân số thứ hai.\n\n- Ví dụ: 4/7 : 2/3 = 4/7 × 3/2 = 12/14 = **6/7**\n\n> Bẫy thường gặp: cộng mẫu số khi nhân. Nhân phân số **không** cần quy đồng.",
+      "checkpoint_question": "Tính 2/3 × 9/8 (rút gọn kết quả).",
+      "checkpoint_answer": "2/3 × 9/8 = 3/4",
+      "accepted_answers": ["3/4"]
     },
     {
       "template_id": "tpl_repair_computation_steps_text",
@@ -47,7 +80,8 @@
       "representation": "text",
       "body": "Luôn làm theo đúng 3 bước, không nhảy bước:\n\n**Bước 1 — Tìm k:** lấy cặp giá trị đã biết đầy đủ, tính k = x₁ · y₁\n**Bước 2 — Viết công thức:** y = k / x\n**Bước 3 — Thay số và tính:** thay giá trị x₂ đã cho vào để tìm y₂\n\n**Ví dụ mẫu:** Cho x, y tỉ lệ nghịch. Biết x₁ = 5, y₁ = 12. Tìm y₂ khi x₂ = 10.\n\n- Bước 1: k = 5 × 12 = 60\n- Bước 2: y = 60 / x\n- Bước 3: y₂ = 60 / 10 = **6**\n\n**Kiểm tra lại:** x₂ · y₂ = 10 × 6 = 60 = k ✓ (tích phải bằng k, nếu khác là sai)",
       "checkpoint_question": "Cho x, y tỉ lệ nghịch, x₁ = 3, y₁ = 8. Tìm y₂ khi x₂ = 4. (Nhớ kiểm tra lại bằng tích)",
-      "checkpoint_answer": "k = 3 × 8 = 24; y₂ = 24 / 4 = 6. Kiểm tra: 4 × 6 = 24 ✓"
+      "checkpoint_answer": "k = 3 × 8 = 24; y₂ = 24 / 4 = 6. Kiểm tra: 4 × 6 = 24 ✓",
+      "accepted_answers": ["6", "y = 6", "y₂ = 6"]
     },
     {
       "template_id": "tpl_repair_word_problem_table",
@@ -61,8 +95,9 @@
       "kind": "worked_example",
       "representation": "table",
       "body": "Khi gặp bài toán lời văn, **đừng tính ngay** — hãy kẻ bảng trước.\n\n**Đề:** *12 công nhân hoàn thành công việc trong 6 ngày.*\n*Hỏi 9 công nhân làm trong bao nhiêu ngày?*\n\n| | Số công nhân (x) | Số ngày (y) |\n|---|---|---|\n| Trường hợp 1 | 12 | 6 |\n| Trường hợp 2 | 9 | ? |\n\n**Đặt câu hỏi:** Ít công nhân hơn → cần **nhiều** ngày hơn hay **ít** ngày hơn?\n→ Nhiều hơn ⟹ **ngược chiều** ⟹ tỉ lệ **nghịch**\n\n**Giải:** k = 12 × 6 = 72 → y = 72 / 9 = **8 ngày**\n\n**Kiểm tra tính hợp lý:** 8 > 6, đúng như dự đoán (ít người thì lâu hơn) ✓",
-      "checkpoint_question": "Kẻ bảng cho đề: 'Ô tô đi 60 km/h hết 3 giờ. Nếu đi 45 km/h thì hết bao lâu?' Chậm hơn thì thời gian nhiều hay ít hơn?",
-      "checkpoint_answer": "Chậm hơn → lâu hơn → tỉ lệ nghịch. k = 60 × 3 = 180; y = 180 / 45 = 4 giờ (> 3 giờ ✓)"
+      "checkpoint_question": "Đề: 'Ô tô đi 60 km/h hết 3 giờ. Nếu đi 45 km/h thì hết bao nhiêu giờ?' Tính số giờ.",
+      "checkpoint_answer": "Chậm hơn → lâu hơn → tỉ lệ nghịch. k = 60 × 3 = 180; y = 180 / 45 = 4 giờ (> 3 giờ ✓)",
+      "accepted_answers": ["4", "4 giờ", "4h"]
     },
     {
       "template_id": "tpl_practice_equal_ratios_text",
@@ -75,8 +110,9 @@
       "kind": "independent_problem",
       "representation": "text",
       "body": "**Mẹo cốt lõi:** x, y tỉ lệ **nghịch** với a, b ⟺ x, y tỉ lệ **thuận** với 1/a, 1/b\n\n**Ví dụ:** Tìm x, y biết chúng tỉ lệ nghịch với 3 và 5, và x + y = 32.\n\n- Tỉ lệ nghịch với 3, 5 ⟹ 3x = 5y ⟹ x/5 = y/3\n- Áp dụng tính chất dãy tỉ số bằng nhau:\n  x/5 = y/3 = (x + y)/(5 + 3) = 32/8 = 4\n- Suy ra: x = 5 × 4 = **20**, y = 3 × 4 = **12**\n\n**Kiểm tra:** 3 × 20 = 60 = 5 × 12 ✓ và 20 + 12 = 32 ✓\n\n> Bẫy thường gặp: tỉ lệ **nghịch** với 3 và 5 thì số ứng với 3 sẽ **lớn hơn**.",
-      "checkpoint_question": "Tìm a, b, c biết chúng tỉ lệ nghịch với 2, 3, 4 và a + b + c = 78.",
-      "checkpoint_answer": "a = 36, b = 24, c = 18. Kiểm tra: 36+24+18 = 78 ✓"
+      "checkpoint_question": "Cho a, b, c tỉ lệ nghịch với 2, 3, 4 và a + b + c = 78. Giá trị của a bằng bao nhiêu?",
+      "checkpoint_answer": "a = 36, b = 24, c = 18. Kiểm tra: 36+24+18 = 78 ✓",
+      "accepted_answers": ["36", "a = 36"]
     },
     {
       "template_id": "tpl_transfer_multistep_table",
@@ -90,7 +126,8 @@
       "representation": "table",
       "body": "Khi có **hơn 2 đại lượng**, xét quan hệ với đại lượng cần tìm **từng cái một**.\n\n**Đề:** *100 công nhân làm 3 ngày được 600 sản phẩm.*\n*Cần bao nhiêu công nhân để làm 900 sản phẩm trong 2 ngày?*\n\n| | Công nhân | Ngày | Sản phẩm |\n|---|---|---|---|\n| Trường hợp 1 | 100 | 3 | 600 |\n| Trường hợp 2 | ? | 2 | 900 |\n\n**Xét từng quan hệ với số công nhân:**\n\n- Sản phẩm ↑ (600→900) ⟹ cần **nhiều** công nhân hơn ⟹ tỉ lệ **thuận**\n- Số ngày ↓ (3→2) ⟹ cần **nhiều** công nhân hơn ⟹ tỉ lệ **nghịch**\n\n**Giải bằng năng suất:**\n\n- 1 công nhân 1 ngày làm: 600 / (100 × 3) = 2 sản phẩm\n- Cần tổng công-ngày: 900 / 2 = 450\n- Số công nhân: 450 / 2 ngày = **225 công nhân**",
       "checkpoint_question": "6 máy cày xong cánh đồng trong 10 ngày. Cần bao nhiêu máy để cày xong trong 4 ngày?",
-      "checkpoint_answer": "k = 6 × 10 = 60 máy-ngày; 60 / 4 = 15 máy"
+      "checkpoint_answer": "k = 6 × 10 = 60 máy-ngày; 60 / 4 = 15 máy",
+      "accepted_answers": ["15", "15 máy"]
     }
   ],
   "escalation_policy": {

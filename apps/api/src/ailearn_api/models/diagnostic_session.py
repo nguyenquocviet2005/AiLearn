@@ -50,3 +50,27 @@ class SubmitResponseResponse(BaseModel):
     evidence_event: EvidenceEventResponse
     remaining_item_ids: list[str]
     session_complete: bool
+
+
+class StartProbeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    student_id: str = Field(min_length=1)
+    lesson_id: str = Field(min_length=1)
+
+
+class ProbeContext(BaseModel):
+    """Why this probe item was selected (feeds the trust drawer)."""
+
+    focus_skill_ids: list[str]
+    reason_codes: list[str]
+    readiness_status: str
+
+
+class StartProbeResponse(BaseModel):
+    session_id: str
+    student_id: str
+    lesson_id: str
+    target_skill_id: str
+    items: list[AssessmentItemPublic]
+    probe: ProbeContext

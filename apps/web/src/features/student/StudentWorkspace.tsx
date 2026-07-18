@@ -11,6 +11,7 @@ import type {
   ExitTicketOutcome,
   ExitTicketResponse,
   RemediationResponse,
+  StartProbeResponse,
   StartSessionResponse,
 } from "@/lib/adapters/student-types";
 import {
@@ -33,13 +34,14 @@ import { ExitTicket } from "./ExitTicket";
 import { RemediationPath } from "./RemediationPath";
 import { StudentHelp } from "./StudentHelp";
 import { StudentHome } from "./StudentHome";
+import { StudentProgress } from "./StudentProgress";
 import { ReadinessQuestion } from "./ReadinessQuestion";
 
 export const DEMO_STUDENT_ID = "stu_g7_001";
 export const DEMO_LESSON_ID = "lesson_g7_inverse_proportion_01";
 export const DEMO_STUDENT_NAME = "Học sinh 001";
 
-type TabId = "home" | "readiness" | "path" | "help";
+type TabId = "home" | "readiness" | "path" | "progress" | "help";
 
 const studentNavigation: Array<{
   id: TabId;
@@ -60,6 +62,12 @@ const studentNavigation: Array<{
     label: "Lộ trình của em",
     shortLabel: "Học từng bước",
   },
+  {
+    id: "progress",
+    icon: "◔",
+    label: "Tiến bộ",
+    shortLabel: "Theo minh chứng",
+  },
   { id: "help", icon: "?", label: "Trợ giúp", shortLabel: "Luôn sẵn sàng" },
 ];
 
@@ -72,7 +80,7 @@ export type Stage =
       kind: "probe";
       remediation: RemediationResponse;
       profile: StudentDiagnosticProfileV1;
-      probeSession: StartSessionResponse;
+      probeSession: StartProbeResponse;
     }
   | {
       kind: "probe-waiting-to-sync";
@@ -145,6 +153,8 @@ export function StudentWorkspace({
   const [selectedPersonaId, setSelectedPersonaId] = useState("");
   const [pendingCount, setPendingCount] = useState(0);
   const [busy, setBusy] = useState(false);
+  // Bumped whenever new evidence is synced, so the progress tab refetches.
+  const [evidenceVersion, setEvidenceVersion] = useState(0);
   // First-seen representation for this remediation path, so the UI can show a
   // "representation changed" note (AC6) after a failed attempt switches it.
   const [initialRepresentation, setInitialRepresentation] = useState<
@@ -236,7 +246,13 @@ export function StudentWorkspace({
 
   useEffect(() => {
     setPendingCount((current) => current); // seed with current value on mount
-    const unsubscribe = onSyncChange(setPendingCount);
+    const unsubscribe = onSyncChange((count) => {
+      setPendingCount(count);
+      // A drained queue means fresh evidence reached the server.
+      if (count === 0) {
+        setEvidenceVersion((version) => version + 1);
+      }
+    });
     const teardown = setupAutoSync(repository);
     return () => {
       unsubscribe();
@@ -325,7 +341,7 @@ export function StudentWorkspace({
       const remediation = await repository.startRemediationSession(profile);
 
       if (remediation.path.current_state === "CONFIRMATION") {
-        const probeSession = await repository.startReadinessSession(
+        const probeSession = await repository.startProbe(
           currentStudent.id,
           lessonId,
         );
@@ -352,7 +368,7 @@ export function StudentWorkspace({
   async function submitProbeAnswer(
     profile: StudentDiagnosticProfileV1,
     remediation: RemediationResponse,
-    probeSession: StartSessionResponse,
+    probeSession: StartProbeResponse,
     itemId: string,
     responseLabel: string,
     confidence: number,
@@ -384,7 +400,7 @@ export function StudentWorkspace({
       );
 
       if (confirmed.path.current_state === "CONFIRMATION") {
-        const probeSession = await repository.startReadinessSession(
+        const probeSession = await repository.startProbe(
           currentStudent.id,
           lessonId,
         );
@@ -424,14 +440,14 @@ export function StudentWorkspace({
   async function submitRemediationAttempt(
     profile: StudentDiagnosticProfileV1,
     stepId: string,
-    isCorrect: boolean,
+    outcome: { response?: string; isCorrect?: boolean },
   ): Promise<void> {
     const attemptId = generateAttemptId();
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: currentStudent.id,
       stepId,
-      isCorrect,
       attemptId,
+      ...outcome,
     });
     const results = await flush(repository);
     const ours = results.find(
@@ -723,6 +739,15 @@ export function StudentWorkspace({
             />
           )}
 
+          {activeTab === "progress" && (
+            <StudentProgress
+              studentId={currentStudent.id}
+              lessonId={lessonId}
+              repository={repository}
+              refreshKey={evidenceVersion}
+            />
+          )}
+
           {activeTab === "help" && <StudentHelp stage={stage} />}
         </main>
       </div>
@@ -747,7 +772,7 @@ function ReadinessSection({
   onProbeAnswer: (
     profile: StudentDiagnosticProfileV1,
     remediation: RemediationResponse,
-    probeSession: StartSessionResponse,
+    probeSession: StartProbeResponse,
     itemId: string,
     responseLabel: string,
     confidence: number,
@@ -775,6 +800,7 @@ function ReadinessSection({
         index={0}
         total={1}
         variant="probe"
+        probeReasonCodes={stage.probeSession.probe.reason_codes}
         onSubmit={(itemId, label, confidence) =>
           onProbeAnswer(
             stage.profile,
@@ -833,7 +859,7 @@ function RemediationSection({
   onAttempt: (
     profile: StudentDiagnosticProfileV1,
     stepId: string,
-    isCorrect: boolean,
+    outcome: { response?: string; isCorrect?: boolean },
   ) => void;
   onExitTicket: (
     profile: StudentDiagnosticProfileV1,
@@ -848,8 +874,8 @@ function RemediationSection({
       <RemediationPath
         remediation={stage.remediation}
         initialRepresentation={initialRepresentation}
-        onAttempt={(stepId, isCorrect) =>
-          onAttempt(stage.profile, stepId, isCorrect)
+        onAttempt={(stepId, outcome) =>
+          onAttempt(stage.profile, stepId, outcome)
         }
       />
     );

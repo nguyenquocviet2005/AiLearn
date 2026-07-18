@@ -1989,3 +1989,109 @@ input.student-textarea {
     transition: none;
   }
 }
+
+/* --- Server-graded checkpoint feedback --- */
+
+.student-feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--student-pink);
+  background: var(--student-pink-soft);
+  color: var(--student-pink);
+  font-weight: 600;
+}
+
+.student-feedback.correct {
+  border-color: var(--student-green);
+  background: var(--student-green-soft);
+  color: var(--student-green);
+}
+
+/* --- Probe disambiguation reason --- */
+
+.student-probe-reason {
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  background: var(--student-purple-soft);
+  color: var(--student-purple);
+  font-size: 0.88rem;
+}
+
+/* --- Progress tab (evidence sufficiency, never a ranking) --- */
+
+.student-progress-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.student-progress-stats > div {
+  border: 1px solid var(--student-line);
+  border-radius: 12px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.student-progress-stats b {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--student-purple);
+}
+
+.student-progress-stats small {
+  color: var(--student-muted);
+  font-size: 0.78rem;
+}
+
+.student-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.student-skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--student-line);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.student-skill-row small {
+  display: block;
+  color: var(--student-muted);
+  font-size: 0.8rem;
+}
+
+.student-state-chip {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--student-line);
+  color: var(--student-muted);
+  white-space: nowrap;
+}
+
+.student-state-chip.green {
+  background: var(--student-green-soft);
+  border-color: var(--student-green);
+  color: var(--student-green);
+}
+
+.student-state-chip.pink {
+  background: var(--student-pink-soft);
+  border-color: var(--student-pink);
+  color: var(--student-pink);
+}
+
+.student-state-chip.cyan {
+  background: var(--student-cyan-soft);
+  border-color: var(--student-cyan);
+  color: var(--student-cyan);
+}

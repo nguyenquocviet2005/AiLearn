@@ -1,7 +1,13 @@
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
-from ailearn_diagnostic import AssessmentItem, build_readiness_session
+from ailearn_diagnostic import (
+    AssessmentItem,
+    build_readiness_session,
+    diagnose,
+    select_probe_item,
+)
+from ailearn_schemas import EvidenceEventV1
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import ValidationError
 
@@ -17,6 +23,7 @@ from ailearn_api.durable_session_store import (
 )
 from ailearn_api.evidence_client import (
     fetch_evidence_event,
+    fetch_evidence_events_for_student,
     fetch_evidence_item_ids_for_session,
     insert_evidence_event,
     parse_evidence_event_payload,
@@ -24,6 +31,9 @@ from ailearn_api.evidence_client import (
 from ailearn_api.models.diagnostic_session import (
     AssessmentItemPublic,
     ItemOptionPublic,
+    ProbeContext,
+    StartProbeRequest,
+    StartProbeResponse,
     StartSessionRequest,
     StartSessionResponse,
     SubmitResponseRequest,
@@ -178,6 +188,99 @@ async def start_diagnostic_session(
         lesson_id=session.lesson_id,
         target_skill_id=session.target_skill_id,
         items=[_public_item(item) for item in items],
+    )
+
+
+@router.post(
+    "/diagnostics/probe",
+    response_model=StartProbeResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        404: {"description": "Unknown lesson, no evidence yet, or no items left"},
+        503: {"description": "Supabase evidence storage is unavailable"},
+    },
+)
+async def start_probe(
+    body: StartProbeRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> StartProbeResponse:
+    """Select one discriminating follow-up question ("câu hỏi phân biệt").
+
+    Runs diagnosis over the student's full evidence stream, then picks the
+    unanswered item that best separates the competing root-cause hypotheses.
+    Deterministic; the reason codes explain the choice.
+    """
+    if body.lesson_id != CURRICULUM.lesson_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "lesson_not_found", "message": "Unknown lesson_id."},
+        )
+    try:
+        records = await fetch_evidence_events_for_student(settings, body.student_id, body.lesson_id)
+    except SupabaseUnavailableError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "code": "supabase_unavailable",
+                "message": "Evidence storage is unavailable.",
+            },
+        ) from exc
+    if not records:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "probe_no_evidence",
+                "message": "No readiness evidence to build a probe from.",
+            },
+        )
+
+    events = [EvidenceEventV1.model_validate(record.model_dump()) for record in records]
+    profile = diagnose(events, CURRICULUM, ITEMS)
+    selection = select_probe_item(events, CURRICULUM, ITEMS, profile)
+    if selection is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "probe_exhausted",
+                "message": "Every assessment item has already been answered.",
+            },
+        )
+
+    if durable_sessions_configured(settings):
+        session = new_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=[selection.item],
+        )
+        try:
+            await save_diagnostic_session(settings, session)
+        except SupabaseUnavailableError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail={
+                    "code": "supabase_unavailable",
+                    "message": "Diagnostic session storage is unavailable.",
+                },
+            ) from exc
+    else:
+        session = create_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=[selection.item],
+        )
+    return StartProbeResponse(
+        session_id=session.session_id,
+        student_id=session.student_id,
+        lesson_id=session.lesson_id,
+        target_skill_id=session.target_skill_id,
+        items=[_public_item(selection.item)],
+        probe=ProbeContext(
+            focus_skill_ids=list(selection.focus_skill_ids),
+            reason_codes=list(selection.reason_codes),
+            readiness_status=profile.readiness_status,
+        ),
     )
 
 

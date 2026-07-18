@@ -174,8 +174,8 @@
     },
     {
       "student_id": "stu_g7_029",
-      "readiness_status": "abstained",
-      "confidence": 0.95,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -192,8 +192,8 @@
     },
     {
       "student_id": "stu_g7_032",
-      "readiness_status": "abstained",
-      "confidence": 0.95,
+      "readiness_status": "ready",
+      "confidence": 1.0,
       "primary_root_cause_skill_id": null
     },
     {
@@ -275,11 +275,12 @@
       "rationale": "Shared primary root-cause evidence for skill_fraction_multiplication; repair this prerequisite before target-skill practice."
     },
     {
-      "id": "grp_03_skill_distinguish_direct_inverse",
-      "intervention_need": "repair:skill_distinguish_direct_inverse",
+      "id": "grp_03_skill_distinguish_direct_inverse_skill_word_problem_work_rate",
+      "intervention_need": "mixed_repair:teacher_station",
       "student_ids": [
         "stu_g7_003",
         "stu_g7_006",
+        "stu_g7_019",
         "stu_g7_022",
         "stu_g7_025",
         "stu_g7_031",
@@ -288,13 +289,16 @@
         "stu_g7_039",
         "stu_g7_040"
       ],
-      "rationale": "Shared primary root-cause evidence for skill_distinguish_direct_inverse; repair this prerequisite before target-skill practice."
+      "rationale": "Lower-prevalence prerequisite needs share a teacher-facilitated repair station; targeted skills: skill_distinguish_direct_inverse+skill_word_problem_work_rate."
     },
     {
-      "id": "grp_04_skill_word_problem_work_rate",
-      "intervention_need": "repair:skill_word_problem_work_rate",
-      "student_ids": ["stu_g7_019"],
-      "rationale": "Shared primary root-cause evidence for skill_word_problem_work_rate; repair this prerequisite before target-skill practice."
+      "id": "grp_04_ready_transfer",
+      "intervention_need": "extension:target_transfer",
+      "student_ids": [
+        "stu_g7_029",
+        "stu_g7_032"
+      ],
+      "rationale": "Diagnostic evidence indicates target readiness; use transfer and extension practice."
     },
     {
       "id": "grp_05_confirmation",
@@ -313,8 +317,6 @@
         "stu_g7_024",
         "stu_g7_026",
         "stu_g7_027",
-        "stu_g7_029",
-        "stu_g7_032",
         "stu_g7_033",
         "stu_g7_036"
       ],

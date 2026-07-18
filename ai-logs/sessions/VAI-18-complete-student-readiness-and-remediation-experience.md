@@ -132,3 +132,152 @@ list.
   the client never receives the ack, a *different* manually-retried `attempt_id` would still
   double-count. The client always reuses the same `attempt_id` for a given queued entry to avoid
   this in the realistic "never sent" case.
+
+---
+
+## Session 2 — core AI engines, reconciled onto current main
+
+- Date: 2026-07-19
+- Human owner: Việt Nguyễn Quốc
+- AI tool/model: Claude Code (Opus 4.8 / Sonnet 5, mixed across the session)
+- Branch: `vai-18-followup-engines-on-main`
+- Worktree: `/home/viet2005/workspace/worktrees/vai-18-followup-engines-on-main`
+- Objective: prompt was "make the student user flow fully-fledged and complete, focus on core
+  AI engines... for a hackathon challenge." Session 1 shipped the UI shell and offline queue
+  against the (then-current) backend; this session was meant to make the underlying engines real.
+
+### False start (discovered, not shipped)
+
+Work began on the old `vai-18-complete-student-readiness-and-remediation-experience` branch,
+unaware that PR #16 (Session 1) had already merged and that `origin/main` had since moved forward
+~20 commits (VAI-19 through VAI-41): a durable Supabase-backed session store, an exit-ticket flow,
+demo personas, class planning/lesson-plan generation, intervention reports, and a full teacher +
+student UI redesign (student.css alone changed ~2000 lines). Five commits were built on the stale
+base (in-memory evidence-repository fallback, a from-scratch demo-reset endpoint, a full new
+"probe" HTTP surface) before this was caught via `git fetch` + `git log 4970714..origin/main`.
+Comparing the two branches' `routes/demo.py` showed genuinely incompatible designs (persona-based
+reset vs. storage-mode-based reset). Rather than rebase and hand-resolve conflicts across files
+neither side had reviewed, a fresh worktree was created from `origin/main` and only the pieces
+confirmed absent upstream were re-implemented against it. The stale branch/commits were left
+untouched (not deleted) for reference.
+
+### AI contributions (delivered, on `vai-18-followup-engines-on-main`)
+
+Confirmed genuinely missing on `origin/main` before writing anything (each checked via `git show
+origin/main:<path>` before porting):
+
+- No `packages/diagnostic/probe.py` or `progress.py` existed.
+- No `packages/content/grading.py` existed; `RemediationPath.tsx` still graded checkpoints
+  client-side (`normalize(answer) === normalize(content.checkpoint_answer)`) and the API still
+  shipped `checkpoint_answer` in the wire payload.
+- The "probe" (CONFIRMATION disambiguation) still called `startReadinessSession()` and took
+  `items[0]` — the same stopgap flagged in the earlier (unmerged) work.
+- `explanation` (self-report field) was captured in `ReadinessQuestion.tsx` state but never sent
+  anywhere — deprioritized this session; not part of the agreed scope.
+
+Delivered:
+
+- `packages/diagnostic/probe.py` — deterministic discriminating-item selection with 7 named
+  reason codes; `POST /api/v1/diagnostics/probe`, wired into `routes/diagnostics.py`'s existing
+  durable/local dual-path pattern (not a new persistence mechanism).
+- `packages/diagnostic/progress.py` — `summarize_progress()`: per-skill evidence sufficiency
+  (`sufficient_secure`/`sufficient_gap`/`emerging`/`insufficient`), never a score or rank;
+  `GET /api/v1/students/{id}/progress`, added to `routes/students.py` alongside the existing
+  diagnostic-profile endpoint (extracted a shared `_load_evidence()` helper).
+- `packages/content/grading.py` — deterministic server-side checkpoint grading (numeric answers
+  require a standalone-token match so "15" doesn't match "150"). `routes/remediation.py`'s
+  `_content_payload` no longer serializes `checkpoint_answer`; exposes `is_gradable` instead.
+  `AttemptRequest` accepts `response` (graded server-side) or `is_correct` (self-report),
+  preserving the existing durable-session-store, exit-ticket, and attempt-idempotency logic
+  unchanged.
+- Two bug fixes, applied to main's current code (both still present there, confirmed before and
+  after with a regenerated fixture diff):
+  1. `AbstentionPolicy.conflicting_top_skill([])` returned `True`, so an all-correct evidence
+     sequence (empty ranked list) was misclassified as "conflicting" and forced into `abstained`
+     — the `diagnose()` `ready` branch was unreachable. Regenerating the committed teacher demo
+     fixtures (`data/fixtures/class-snapshot.json`, mirrored under `apps/web/src/test/fixtures/`)
+     surfaced the concrete impact: two seeded "strong" persona students
+     (`stu_g7_029`, `stu_g7_032`) were being shown to the teacher view as `abstained` instead of
+     `ready`. Updated `TeacherWorkspace.test.tsx`'s hardcoded "17 learners need confirmation" to
+     "15" to match.
+  2. `ContentGenerator._select()`'s score threshold (`>= 4`) was reachable by
+     representation+state+kind agreement alone (2+1+1) with no skill/misconception match, so an
+     unknown skill could return unrelated template content. A skill or misconception match is now
+     a hard precondition for candidacy.
+- Content gap: `skill_ratio_proportion_basics`, `skill_direct_proportion`, and
+  `skill_fraction_multiplication` had no intervention templates, so the prerequisite-gap demo
+  persona fell back to generic filler. Added two templates with `accepted_answers`; all 12
+  curriculum skills now have coverage.
+- Frontend: real `startProbe()` replacing the readiness-session stopgap in both call sites
+  (`diagnoseAndStartRemediation`, `resolveConfirmation`); `RemediationPath.tsx` submits the typed
+  answer for server grading and renders the returned verdict; new `StudentProgress.tsx` tab
+  ("Tiến bộ") using the current redesign's CSS custom properties (`--student-purple/cyan/pink/
+  green`), refetching whenever the offline queue drains to empty; probe reason codes translated
+  to one plain-language sentence in `copy.ts` (no skill ids or hypothesis language reaches the
+  student, verified by an explicit test assertion).
+- Added missing test coverage this session almost shipped without: API-level tests for
+  `POST /diagnostics/probe` and `GET /students/{id}/progress`, following the codebase's existing
+  monkeypatch-the-evidence-client convention (`test_diagnostics_probe.py`,
+  additions to `test_students.py`) rather than the in-memory demo store the abandoned branch had
+  invented — package-level unit tests alone had passed but gave false confidence about HTTP-level
+  wiring.
+
+### Human decisions
+
+- Confirmed: continue reconciling onto current `main` rather than mechanically rebasing the stale
+  branch, after being shown the scale of divergence (durable store, exit tickets, demo personas,
+  927-line workspace file, ~2000-line CSS rewrite).
+- Confirmed: for the demo-reset/evidence-storage conflict specifically, keep main's more mature
+  design (persona-based reset, durable Supabase-backed session store) and adapt the new engines to
+  it, rather than keeping the from-scratch in-memory approach built on the stale base.
+- Confirmed: proceed with the frontend port at its actual scope (927-line file, full CSS
+  rewrite) rather than stopping for a description-only summary first.
+
+### Files changed
+
+Backend: `packages/diagnostic/{probe,progress}.py` (new), `packages/content/grading.py` (new),
+`packages/diagnostic/{__init__,abstention}.py`, `packages/content/{__init__,generator}.py`,
+`packages/content/intervention-templates.json`, `apps/api/src/ailearn_api/models/{diagnostic_
+session,progress}.py`, `apps/api/src/ailearn_api/routes/{diagnostics,students,remediation}.py`.
+Frontend: `StudentWorkspace.tsx`, `RemediationPath.tsx`, `ReadinessQuestion.tsx`,
+`StudentProgress.tsx` (new), `copy.ts`, `student.css`, `student-repository.ts`, `student-types.ts`,
+`offline/{queue,sync}.ts`.
+Tests: `test_diagnostics_probe.py` (new), additions to `test_students.py`, `test_remediation.py`,
+`tests/unit/diagnostic/{test_probe,test_abstention}.py`, `tests/unit/content/{test_grading,
+test_generator}.py`, `StudentWorkspace.test.tsx`, `TeacherWorkspace.test.tsx` (fixture-count fix).
+Fixtures: `data/fixtures/class-snapshot.json` + its frontend mirror, regenerated after the
+abstention fix (verified via the existing `test_committed_teacher_demo_fixtures_match_the_
+deterministic_projection` snapshot test).
+
+### Commands and results
+
+| Command | Result |
+|---|---|
+| `pnpm format:check` / `ruff format --check` | PASS |
+| `pnpm lint` / `ruff check apps/api packages` | PASS |
+| `pnpm typecheck` / `mypy apps/api/src` | PASS (0 errors, 31 files) |
+| `pnpm --filter @ailearn/web test` | PASS (60 tests, 11 files) |
+| `uv run --project apps/api pytest apps/api/tests tests/unit -q` | PASS (185 passed, 2 skipped) |
+| `pnpm build` / `uv build --project apps/api` | PASS |
+| `uv run --project apps/api python scripts/eval_golden.py` | PASS (4/4, incl. abstention case) |
+| Live curl walkthrough against this branch (demo-mode Settings) | Partial — readiness-session
+  item selection worked without Supabase, but evidence writes/reads on this branch require a real
+  Supabase project (unlike the abandoned branch's in-memory store); full-loop verification
+  instead relied on the HTTP-level pytest suite above (monkeypatched evidence client), matching
+  how the existing suite already tests this dual-path code. |
+
+### Remaining limitations
+
+- This branch's demo experience needs a configured Supabase project to complete the
+  readiness → diagnosis → probe → remediation loop end-to-end; a bare `git clone` with no
+  secrets can only exercise item selection. This is consistent with main's existing design
+  (persona-based reset assumes a live seeded Supabase project) and was a deliberate trade-off
+  per the human owner's direction, not an oversight.
+- Self-explanation (`explanation` field already captured in `ReadinessQuestion.tsx` state) is
+  still not sent anywhere — left out of this session's scope.
+- Grading is deterministic string/substring matching, not semantic.
+- Teacher-facing evidence from remediation *practice* attempts (as opposed to readiness-session
+  responses) is not written back to the shared evidence stream in this session's scope — checked
+  that `teacher_projection.py` feeds all of a student's evidence into `diagnose()` for the class
+  snapshot, and deferred writing practice-attempt evidence rather than risk skewing that pipeline
+  without auditing it fully.

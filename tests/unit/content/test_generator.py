@@ -189,3 +189,15 @@ def test_content_generator_makes_no_path_decisions(gen):
     )
     for forbidden in ("next_state", "current_state", "escalate", "root_cause"):
         assert not hasattr(c, forbidden)
+
+
+def test_unrelated_template_is_not_selectable_without_a_skill_or_misconception_match(gen):
+    """Representation/state/kind agreement alone must never select content.
+
+    Regression: a score threshold once let representation(2)+state(1)+kind(1)
+    reach the cutoff, so an unknown skill could match arbitrary content.
+    """
+    c = gen.generate("skill_does_not_exist", "REPAIR", "worked_example", "text")
+    assert c.source == "generic_fallback"
+    c = gen.generate(None, "REPAIR", "worked_example", "text")
+    assert c.source == "generic_fallback"

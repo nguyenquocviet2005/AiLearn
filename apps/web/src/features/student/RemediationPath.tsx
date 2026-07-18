@@ -12,11 +12,14 @@ import {
 export interface RemediationPathProps {
   remediation: RemediationResponse;
   initialRepresentation: string | null;
-  onAttempt: (stepId: string, isCorrect: boolean) => void;
-}
-
-function normalize(value: string): string {
-  return value.trim().toLowerCase();
+  /**
+   * Submit one attempt. A gradable step sends the typed answer for the server
+   * to grade; a self-report step sends the student's own judgement.
+   */
+  onAttempt: (
+    stepId: string,
+    outcome: { response?: string; isCorrect?: boolean },
+  ) => void;
 }
 
 export function RemediationPath({
@@ -30,6 +33,7 @@ export function RemediationPath({
   const {
     path,
     content,
+    grading,
     current_step_kind: currentStepKind,
     escalation_reason: escalationReason,
   } = remediation;
@@ -38,15 +42,13 @@ export function RemediationPath({
   const representationChanged =
     initialRepresentation !== null &&
     initialRepresentation !== path.representation;
-  const hasGradableCheckpoint = content.checkpoint_answer.trim().length > 0;
 
   function handleGradedSubmit(): void {
     if (!currentStep) {
       return;
     }
-    const isCorrect =
-      normalize(answer) === normalize(content.checkpoint_answer);
-    onAttempt(currentStep.id, isCorrect);
+    // Correctness is decided on the server: the answer key never reaches here.
+    onAttempt(currentStep.id, { response: answer });
     setAnswer("");
   }
 
@@ -55,7 +57,7 @@ export function RemediationPath({
       return;
     }
     setSelfReport(isCorrect);
-    onAttempt(currentStep.id, isCorrect);
+    onAttempt(currentStep.id, { isCorrect });
   }
 
   if (remediation.is_complete) {
@@ -107,12 +109,24 @@ export function RemediationPath({
           <p>{content.body}</p>
         </div>
 
+        {grading?.graded && (
+          <div
+            className={`student-feedback${grading.is_correct ? " correct" : ""}`}
+            role="status"
+            aria-live="polite"
+          >
+            {grading.is_correct
+              ? "Chính xác! Em làm đúng bước này."
+              : "Chưa đúng. Mình cùng xem lại theo cách khác nhé."}
+          </div>
+        )}
+
         {content.checkpoint_question && (
           <>
             <p className="student-field-label student-field-label-spaced">
               {content.checkpoint_question}
             </p>
-            {hasGradableCheckpoint ? (
+            {content.is_gradable ? (
               <>
                 <input
                   className="student-textarea"

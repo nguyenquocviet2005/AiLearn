@@ -115,3 +115,75 @@ def test_get_diagnostic_profile_computes_profile_live_from_evidence(
     assert body["student_id"] == "stu_demo_01"
     assert body["lesson_id"] == "lesson_g7_inverse_proportion_01"
     assert body["readiness_status"] in {"ready", "needs_support", "abstained"}
+
+
+def test_get_progress_returns_503_when_unconfigured(client: TestClient) -> None:
+    response = client.get("/api/v1/students/stu_demo_01/progress")
+
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "supabase_unavailable"
+
+
+def test_get_progress_returns_404_when_student_unknown(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _configure(client)
+    monkeypatch.setattr(
+        "ailearn_api.routes.students.fetch_student",
+        AsyncMock(side_effect=SupabaseUnavailableError("Student row is missing")),
+    )
+
+    response = client.get("/api/v1/students/stu_unknown/progress")
+
+    assert response.status_code == 404
+    assert response.json()["detail"]["code"] == "student_not_found"
+
+
+def test_get_progress_returns_empty_view_before_any_evidence(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Progress returns an empty view (not a 404) before evidence exists."""
+    _configure(client)
+    monkeypatch.setattr(
+        "ailearn_api.routes.students.fetch_student", AsyncMock(return_value=STUDENT)
+    )
+    monkeypatch.setattr(
+        "ailearn_api.routes.students.fetch_evidence_events_for_student",
+        AsyncMock(return_value=[]),
+    )
+
+    response = client.get("/api/v1/students/stu_demo_01/progress")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total_attempts"] == 0
+    assert body["skills"] == []
+
+
+def test_get_progress_reports_evidence_sufficiency_per_skill(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Progress states are evidence sufficiency, never a score or ranking."""
+    _configure(client)
+    monkeypatch.setattr(
+        "ailearn_api.routes.students.fetch_student", AsyncMock(return_value=STUDENT)
+    )
+    monkeypatch.setattr(
+        "ailearn_api.routes.students.fetch_evidence_events_for_student",
+        AsyncMock(return_value=[EvidenceEventRecord.model_validate(EVENT_ROW)]),
+    )
+
+    response = client.get("/api/v1/students/stu_demo_01/progress")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total_attempts"] == 1
+    assert len(body["skills"]) == 1
+    skill = body["skills"][0]
+    assert skill["skill_id"] == "skill_ratio_proportion_basics"
+    assert skill["state"] in {
+        "sufficient_secure",
+        "sufficient_gap",
+        "emerging",
+        "insufficient",
+    }

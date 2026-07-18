@@ -36,8 +36,10 @@ class AbstentionPolicy:
         return False
 
     def conflicting_top_skill(self, ranked: list[RankedSkill]) -> bool:
+        # No ranked skills means no incorrect responses at all: that is the
+        # all-correct "ready" case, not conflicting evidence.
         if not ranked:
-            return True
+            return False
         top = ranked[0]
         support = len(top.supporting_evidence_ids)
         contradict = len(top.contradicting_evidence_ids)

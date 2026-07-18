@@ -36,19 +36,34 @@ class Template:
     body: str
     checkpoint_question: str
     checkpoint_answer: str
+    accepted_answers: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
 class Content:
-    """What the student shell renders for the current step."""
+    """What the student shell renders for the current step.
+
+    ``checkpoint_answer`` / ``accepted_answers`` are the answer key: grade with
+    them on the server, never serialize them to the student client.
+    """
 
     template_id: str
     title: str
     body: str
     checkpoint_question: str
     checkpoint_answer: str
+    accepted_answers: tuple[str, ...]
     representation: str
     source: str  # "template" | "template+llm" | "generic_fallback"
+
+    @property
+    def is_gradable(self) -> bool:
+        """True when a typed answer can be auto-graded against accepted answers.
+
+        When False the step falls back to student self-report (the UI shows
+        "I got it" / "I need help" instead of a text box).
+        """
+        return bool(self.accepted_answers)
 
 
 class LLMAdapter(Protocol):
@@ -73,6 +88,7 @@ _GENERIC = Content(
     ),
     checkpoint_question="Em hãy nêu lại công thức liên hệ giữa hai đại lượng trong bài.",
     checkpoint_answer="",
+    accepted_answers=(),
     representation="text",
     source="generic_fallback",
 )
@@ -110,6 +126,7 @@ class ContentGenerator:
                 body=t["body"],
                 checkpoint_question=t.get("checkpoint_question", ""),
                 checkpoint_answer=t.get("checkpoint_answer", ""),
+                accepted_answers=tuple(t.get("accepted_answers", ())),
             )
             for t in data.get("templates", [])
         )
@@ -147,6 +164,7 @@ class ContentGenerator:
             body=body,
             checkpoint_question=template.checkpoint_question,
             checkpoint_answer=template.checkpoint_answer,
+            accepted_answers=template.accepted_answers,
             representation=template.representation,
             source=source,
         )
@@ -166,10 +184,20 @@ class ContentGenerator:
         best: Optional[Template] = None
         best_score = -1
         for t in self._templates:
+            matches_skill = bool(skill_id) and skill_id in t.target_skill_ids
+            matches_misconception = (
+                bool(misconception_id) and t.misconception_id == misconception_id
+            )
+            # A template is only a candidate when it addresses this skill or
+            # misconception. Representation/state/kind refine the choice but must
+            # never, on their own, make unrelated content selectable.
+            if not (matches_skill or matches_misconception):
+                continue
+
             score = 0
-            if skill_id and skill_id in t.target_skill_ids:
+            if matches_skill:
                 score += 8
-            if misconception_id and t.misconception_id == misconception_id:
+            if matches_misconception:
                 score += 4
             if t.representation == representation:
                 score += 2
@@ -180,5 +208,4 @@ class ContentGenerator:
             if score > best_score:
                 best, best_score = t, score
 
-        # Require at least a skill or misconception match to avoid random content.
-        return best if best_score >= 4 else None
+        return best

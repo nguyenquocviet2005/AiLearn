@@ -7,7 +7,9 @@ import type {
   DemoResetResponse,
   ExitTicketResponse,
   RemediationResponse,
+  StartProbeResponse,
   StartSessionResponse,
+  StudentProgressResponse,
   SubmitResponseResponse,
 } from "./student-types";
 
@@ -34,18 +36,28 @@ export interface StudentRepository {
     responseLabel: string,
     confidence: number | null,
   ): Promise<SubmitResponseResponse>;
+  /** Ask the engine for one discriminating follow-up question. */
+  startProbe(studentId: string, lessonId: string): Promise<StartProbeResponse>;
   getDiagnosticProfile(
     studentId: string,
     lessonId: string,
   ): Promise<StudentDiagnosticProfileV1>;
+  getProgress(
+    studentId: string,
+    lessonId: string,
+  ): Promise<StudentProgressResponse>;
   startRemediationSession(
     profile: StudentDiagnosticProfileV1,
   ): Promise<RemediationResponse>;
+  /**
+   * Submit one attempt. Pass `response` for a gradable step (the server grades
+   * it) or `isCorrect` for a self-report step.
+   */
   submitRemediationAttempt(
     studentId: string,
     stepId: string,
-    isCorrect: boolean,
     attemptId: string,
+    outcome: { response?: string; isCorrect?: boolean },
   ): Promise<RemediationResponse>;
   confirmEvidence(
     studentId: string,
@@ -105,9 +117,22 @@ export const httpStudentRepository: StudentRepository = {
     );
   },
 
+  async startProbe(studentId, lessonId) {
+    return request<StartProbeResponse>("/api/v1/diagnostics/probe", {
+      method: "POST",
+      body: JSON.stringify({ student_id: studentId, lesson_id: lessonId }),
+    });
+  },
+
   async getDiagnosticProfile(studentId, lessonId) {
     return request<StudentDiagnosticProfileV1>(
       `/api/v1/students/${studentId}/diagnostic-profile?lesson_id=${encodeURIComponent(lessonId)}`,
+    );
+  },
+
+  async getProgress(studentId, lessonId) {
+    return request<StudentProgressResponse>(
+      `/api/v1/students/${studentId}/progress?lesson_id=${encodeURIComponent(lessonId)}`,
     );
   },
 
@@ -118,14 +143,16 @@ export const httpStudentRepository: StudentRepository = {
     });
   },
 
-  async submitRemediationAttempt(studentId, stepId, isCorrect, attemptId) {
+  async submitRemediationAttempt(studentId, stepId, attemptId, outcome) {
     return request<RemediationResponse>("/api/v1/remediation/attempts", {
       method: "POST",
       body: JSON.stringify({
         student_id: studentId,
         step_id: stepId,
-        is_correct: isCorrect,
         attempt_id: attemptId,
+        // Exactly one of these carries the outcome; the server grades `response`.
+        response: outcome.response ?? null,
+        is_correct: outcome.isCorrect ?? null,
       }),
     });
   },

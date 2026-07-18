@@ -8,12 +8,15 @@ import {
   confidenceLevelToValue,
   type ConfidenceLevel,
 } from "./confidence";
+import { probeReasonCopy } from "./copy";
 
 export interface ReadinessQuestionProps {
   item: AssessmentItemPublic;
   index: number;
   total: number;
   variant: "readiness" | "probe";
+  /** Probe-only: engine reason codes, shown to the student in plain language. */
+  probeReasonCodes?: string[];
   onSubmit: (itemId: string, responseLabel: string, confidence: number) => void;
   onSaveAndExit: () => void;
 }
@@ -23,6 +26,7 @@ export function ReadinessQuestion({
   index,
   total,
   variant,
+  probeReasonCodes,
   onSubmit,
   onSaveAndExit,
 }: ReadinessQuestionProps) {
@@ -68,7 +72,12 @@ export function ReadinessQuestion({
         <span>{Math.round(((index + 1) / total) * 100)}% hoàn thành</span>
       </div>
       {variant === "probe" && (
-        <p>Hệ thống cần thêm một câu để hiểu em đang vướng ở đâu.</p>
+        <>
+          <p>Hệ thống cần thêm một câu để hiểu em đang vướng ở đâu.</p>
+          <p className="student-probe-reason">
+            <b>Vì sao câu này?</b> {probeReasonCopy(probeReasonCodes ?? [])}
+          </p>
+        </>
       )}
       <div className="student-progress-track">
         <span

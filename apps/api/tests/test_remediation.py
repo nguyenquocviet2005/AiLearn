@@ -147,10 +147,45 @@ def test_submit_attempt_replays_cached_response_on_repeated_attempt_id(
     assert third.json()["current_step_kind"] == "independent_problem"
 
 
-def test_content_payload_includes_checkpoint_answer(client: TestClient) -> None:
+def test_content_payload_never_leaks_answer_key(client: TestClient) -> None:
     response = client.post("/api/v1/remediation/sessions", json={"profile": PROFILE_NEEDS_SUPPORT})
 
-    assert "checkpoint_answer" in response.json()["content"]
+    content = response.json()["content"]
+    assert "checkpoint_answer" not in content
+    assert "accepted_answers" not in content
+    assert "checkpoint_question" in content
+    assert "is_gradable" in content
+
+
+def test_gradable_attempt_is_graded_server_side(client: TestClient) -> None:
+    profile = {
+        **PROFILE_NEEDS_SUPPORT,
+        "student_id": "stu_demo_grade_01",
+        "root_causes": [
+            {
+                "skill_id": "skill_solve_unknown_value",
+                "rank": 1,
+                "supporting_evidence_ids": ["ev_1"],
+                "contradicting_evidence_ids": [],
+            }
+        ],
+    }
+    start = client.post("/api/v1/remediation/sessions", json={"profile": profile})
+    session = start.json()
+    assert session["content"]["is_gradable"] is True
+    step_id = session["path"]["steps"][0]["id"]
+
+    wrong = client.post(
+        "/api/v1/remediation/attempts",
+        json={
+            "student_id": "stu_demo_grade_01",
+            "step_id": step_id,
+            "attempt_id": "att_grade_wrong",
+            "response": "hoàn toàn không liên quan",
+        },
+    )
+    assert wrong.status_code == 200
+    assert wrong.json()["grading"] == {"graded": True, "is_correct": False}
 
 
 def test_confirm_evidence_sufficient_moves_to_repair(client: TestClient) -> None:

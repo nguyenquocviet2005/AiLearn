@@ -69,3 +69,9 @@ def test_conflicting_top_skill_triggers_abstention_signal() -> None:
         )
     ]
     assert policy.conflicting_top_skill(ranked) is True
+
+
+def test_all_correct_evidence_is_not_treated_as_conflicting() -> None:
+    """Empty ranking = no wrong answers; the engine must reach its ready branch."""
+    policy = AbstentionPolicy()
+    assert policy.conflicting_top_skill([]) is False

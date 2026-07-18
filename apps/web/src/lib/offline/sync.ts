@@ -67,8 +67,8 @@ async function flushOne(
       response = await repository.submitRemediationAttempt(
         payload.studentId,
         payload.stepId,
-        payload.isCorrect,
         payload.attemptId,
+        { response: payload.response, isCorrect: payload.isCorrect },
       );
     } else {
       const payload = write.payload as ExitTicketPayload;

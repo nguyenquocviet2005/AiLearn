@@ -9,7 +9,9 @@ import type {
   AssessmentItemPublic,
   ExitTicketResponse,
   RemediationResponse,
+  StartProbeResponse,
   StartSessionResponse,
+  StudentProgressResponse,
 } from "@/lib/adapters/student-types";
 
 import { StudentWorkspace } from "./StudentWorkspace";
@@ -62,6 +64,48 @@ const ABSTAINED_PROFILE: StudentDiagnosticProfileV1 = {
   ...NEEDS_SUPPORT_PROFILE,
   readiness_status: "abstained",
   root_causes: [],
+};
+
+const PROBE_SESSION: StartProbeResponse = {
+  ...SESSION,
+  session_id: "sess_probe",
+  items: [ITEMS[0]],
+  probe: {
+    focus_skill_ids: ["skill_ratio_proportion_basics"],
+    reason_codes: ["targets_primary_hypothesis"],
+    readiness_status: "abstained",
+  },
+};
+
+const PROGRESS: StudentProgressResponse = {
+  schema_version: "1",
+  student_id: "stu_g7_001",
+  lesson_id: "lesson_g7_inverse_proportion_01",
+  target_skill_id: "skill_word_problem_work_rate",
+  total_attempts: 4,
+  skills_practiced: 2,
+  skills_with_sufficient_evidence: 1,
+  practice_attempts: 1,
+  skills: [
+    {
+      skill_id: "skill_ratio_proportion_basics",
+      skill_name: "Tỉ số và tỉ lệ thức",
+      level: 1,
+      attempts: 3,
+      correct: 1,
+      state: "sufficient_gap",
+      is_target: false,
+    },
+    {
+      skill_id: "skill_word_problem_work_rate",
+      skill_name: "Bài toán năng suất lao động",
+      level: 3,
+      attempts: 1,
+      correct: 1,
+      state: "insufficient",
+      is_target: true,
+    },
+  ],
 };
 
 function remediationResponse(
@@ -119,7 +163,7 @@ function remediationResponse(
       title: "Ví dụ mẫu",
       body: "Đây là một ví dụ mẫu.",
       checkpoint_question: "2 + 2 = ?",
-      checkpoint_answer: "4",
+      is_gradable: true,
       representation: "text",
       source: "template",
     },
@@ -137,7 +181,9 @@ function fakeRepository(
       remaining_item_ids: [],
       session_complete: false,
     }),
+    startProbe: vi.fn().mockResolvedValue(PROBE_SESSION),
     getDiagnosticProfile: vi.fn().mockResolvedValue(NEEDS_SUPPORT_PROFILE),
+    getProgress: vi.fn().mockResolvedValue(PROGRESS),
     startRemediationSession: vi.fn().mockResolvedValue(remediationResponse()),
     submitRemediationAttempt: vi.fn().mockResolvedValue(
       remediationResponse({
@@ -147,7 +193,7 @@ function fakeRepository(
           title: "Bài có hướng dẫn",
           body: "Bài có hướng dẫn.",
           checkpoint_question: "3 + 3 = ?",
-          checkpoint_answer: "6",
+          is_gradable: true,
           representation: "text",
           source: "template",
         },
@@ -240,7 +286,7 @@ describe("StudentWorkspace", () => {
     expect(document.body.textContent).not.toMatch(/skill_/);
     expect(document.body.textContent).not.toContain("root_cause");
 
-    // Grade the checkpoint against the (server-only) checkpoint_answer.
+    // The typed answer is sent verbatim; the server decides correctness.
     const answerInput = screen.getByLabelText("Câu trả lời của em");
     await user.type(answerInput, "4");
     await user.click(screen.getByRole("button", { name: "Kiểm tra" }));
@@ -249,8 +295,8 @@ describe("StudentWorkspace", () => {
       expect(repository.submitRemediationAttempt).toHaveBeenCalledWith(
         "stu_g7_001",
         "step_1_worked_example",
-        true,
         expect.any(String),
+        { response: "4", isCorrect: undefined },
       );
     });
     expect(await screen.findByText("Bài có hướng dẫn.")).toBeInTheDocument();
@@ -289,7 +335,7 @@ describe("StudentWorkspace", () => {
             title: "Ví dụ dạng bảng",
             body: "Xem bảng dưới đây.",
             checkpoint_question: "5 + 5 = ?",
-            checkpoint_answer: "10",
+            is_gradable: true,
             representation: "table",
             source: "template",
           },
@@ -311,18 +357,9 @@ describe("StudentWorkspace", () => {
     expect(await screen.findByText(/Đã đổi sang/)).toBeInTheDocument();
   });
 
-  it("shows the confirmation disambiguation screen for an abstained profile", async () => {
-    const probeSession: StartSessionResponse = {
-      ...SESSION,
-      session_id: "sess_probe",
-      items: [ITEMS[0]],
-    };
+  it("asks the probe engine for a discriminating question when the profile abstains", async () => {
     const repository = fakeRepository({
       getDiagnosticProfile: vi.fn().mockResolvedValue(ABSTAINED_PROFILE),
-      startReadinessSession: vi
-        .fn()
-        .mockResolvedValueOnce(SESSION)
-        .mockResolvedValueOnce(probeSession),
       startRemediationSession: vi.fn().mockResolvedValue(
         remediationResponse({
           path: {
@@ -345,6 +382,12 @@ describe("StudentWorkspace", () => {
         "Hệ thống cần thêm một câu để hiểu em đang vướng ở đâu.",
       ),
     ).toBeInTheDocument();
+    // The probe comes from the engine, not from replaying a readiness session.
+    expect(repository.startProbe).toHaveBeenCalledWith(
+      "stu_g7_001",
+      "lesson_g7_inverse_proportion_01",
+    );
+    expect(repository.startReadinessSession).toHaveBeenCalledOnce();
   });
 
   it("does not duplicate a queued response after the network recovers", async () => {
@@ -403,6 +446,23 @@ describe("StudentWorkspace", () => {
       await within(screen.getByRole("main")).findByText("Question two?"),
     ).toBeInTheDocument();
     expect(repository.startReadinessSession).toHaveBeenCalledOnce();
+  });
+
+  it("shows progress as evidence sufficiency, not a score or ranking", async () => {
+    const repository = fakeRepository();
+    const user = userEvent.setup();
+    render(<StudentWorkspace repository={repository} />);
+
+    await user.click(screen.getByRole("button", { name: /Tiến bộ/ }));
+
+    expect(await screen.findByText("Tỉ số và tỉ lệ thức")).toBeInTheDocument();
+    // Each skill is labelled by evidence sufficiency, not by a score.
+    expect(screen.getByText("Cần ôn thêm")).toBeInTheDocument();
+    expect(screen.getByText("Chưa đủ bài để kết luận")).toBeInTheDocument();
+    const skillList = screen.getByLabelText("Các phần kiến thức");
+    expect(skillList.textContent).not.toMatch(/điểm|xếp hạng|%/i);
+    // Skill ids stay internal.
+    expect(screen.getByRole("main").textContent).not.toMatch(/skill_/);
   });
 
   it("lists cached content in the help tab so it stays reachable offline", async () => {
