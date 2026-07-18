@@ -37,9 +37,11 @@ describe("TeacherWorkspace", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      within(screen.getByRole("banner")).getByRole("img", {
-        name: "AiLearn",
-      }),
+      within(
+        screen.getByRole("complementary", {
+          name: "Không gian giáo viên",
+        }),
+      ).getByRole("link", { name: "AiLearn - trang chủ" }),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",

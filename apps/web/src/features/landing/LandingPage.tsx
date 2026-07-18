@@ -134,7 +134,10 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           <div className="landing-hero-signal" aria-hidden="true">
-            <span className="landing-signal-core">AI</span>
+            <span className="landing-signal-core">
+              <img src="/brand/ailearn-mascot.webp" alt="" />
+              <i className="firefly-tail-light" />
+            </span>
             <span className="landing-signal-label signal-one">Quan sát</span>
             <span className="landing-signal-label signal-two">Giải thích</span>
             <span className="landing-signal-label signal-three">Thích ứng</span>
@@ -209,6 +212,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               Vào dashboard giáo viên
             </WorkspaceLink>
           </article>
+
+          <div className="landing-audience-firefly" aria-hidden="true">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="firefly-tail-light" />
+            <span className="firefly-light-beam" />
+          </div>
 
           <article id="for-students">
             <p className="landing-kicker">Dành cho học sinh</p>
@@ -327,10 +336,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         </section>
 
         <section className="landing-trust" aria-labelledby="trust-title">
-          <img
-            src="/brand/ailearn-mascot.webp"
-            alt="Linh vật ánh sáng của AiLearn"
-          />
+          <div className="landing-trust-firefly">
+            <img
+              src="/brand/ailearn-mascot.webp"
+              alt="Linh vật ánh sáng của AiLearn"
+            />
+            <span className="firefly-tail-light" aria-hidden="true" />
+          </div>
           <div>
             <p className="landing-kicker landing-kicker-dark">
               Học được cả khi mạng yếu
@@ -355,7 +367,10 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
 
       <footer className="landing-footer">
         <div>
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
+          <div className="landing-footer-brand">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <strong>AiLearn</strong>
+          </div>
           <p>Trợ giảng thích ứng song hành cùng giáo viên Việt Nam.</p>
         </div>
         <div className="landing-footer-links">

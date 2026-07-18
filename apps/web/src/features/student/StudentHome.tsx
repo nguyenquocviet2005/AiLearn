@@ -28,6 +28,7 @@ export function StudentHome({
           <div className="student-home-visual" aria-label="Một việc cần làm">
             <span className="student-home-orbit" aria-hidden="true" />
             <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="student-firefly-tail" aria-hidden="true" />
             <span className="student-home-task">
               <strong>01</strong>
               <span>việc cần làm</span>

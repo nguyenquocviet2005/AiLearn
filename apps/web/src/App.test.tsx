@@ -125,6 +125,8 @@ describe("App", () => {
         name: "Chuẩn bị để tiết Toán dễ hiểu hơn",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "AiLearn" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "AiLearn - trang chủ" }),
+    ).toBeInTheDocument();
   });
 });

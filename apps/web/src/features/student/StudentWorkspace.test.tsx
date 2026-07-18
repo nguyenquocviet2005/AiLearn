@@ -182,9 +182,11 @@ describe("StudentWorkspace", () => {
     render(<StudentWorkspace repository={fakeRepository()} />);
 
     expect(
-      within(screen.getByRole("banner")).getByRole("img", {
-        name: "AiLearn",
-      }),
+      within(
+        screen.getByRole("complementary", {
+          name: "Đồng hành học tập",
+        }),
+      ).getByRole("link", { name: "AiLearn - trang chủ" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Hôm nay/ })).toHaveAttribute(
       "aria-current",
@@ -504,7 +506,7 @@ describe("StudentWorkspace", () => {
     expect(repository.startRemediationSession).toHaveBeenCalledWith(
       persona.profile,
     );
-    expect(await screen.findByText("Bạn An")).toBeInTheDocument();
+    expect(await screen.findAllByText("Bạn An")).toHaveLength(2);
   });
 
   it("keeps an offline exit ticket pending and resolves its original submission", async () => {

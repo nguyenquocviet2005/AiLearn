@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 
-import { AppHeader } from "@/components/navigation/AppHeader";
-
 import {
   httpStudentRepository,
   type StudentRepository,
@@ -598,19 +596,50 @@ export function StudentWorkspace({
       <a className="dashboard-skip-link" href="#student-main">
         Đi tới nội dung chính
       </a>
-      <AppHeader
-        className="dashboard-island student-island"
-        context={
-          <div className="app-island-workspace student-profile">
-            <span className="app-island-live" aria-hidden="true" />
+      <div className="student-layout">
+        <aside className="student-sidebar" aria-label="Đồng hành học tập">
+          <a
+            className="dashboard-rail-brand"
+            href="/"
+            aria-label="AiLearn - trang chủ"
+          >
+            <span className="rail-firefly" aria-hidden="true">
+              <img src="/brand/ailearn-mascot.webp" alt="" />
+            </span>
+            <span>AiLearn</span>
+          </a>
+
+          <div className="student-profile dashboard-rail-identity">
+            <span className="student-avatar" aria-hidden="true">
+              HS
+            </span>
             <span className="student-identity">
               <b>{currentStudent.displayName}</b>
               <small>Toán 7A · Tiến từng bước, không xếp hạng</small>
             </span>
           </div>
-        }
-        actions={
-          <>
+
+          <nav className="student-nav" aria-label="Điều hướng học sinh">
+            {studentNavigation.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={activeTab === item.id ? "active" : ""}
+                aria-current={activeTab === item.id ? "page" : undefined}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <span className="dashboard-nav-icon" aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span>
+                  <b>{item.label}</b>
+                  <small>{item.shortLabel}</small>
+                </span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="student-rail-controls">
             <DemoReset
               personas={personas}
               selectedPersonaId={selectedPersonaId}
@@ -638,31 +667,7 @@ export function StudentWorkspace({
                   : `Đang chờ đồng bộ · ${pendingCount}`}
               </span>
             </button>
-          </>
-        }
-      />
-
-      <div className="student-layout">
-        <aside className="student-sidebar">
-          <nav className="student-nav" aria-label="Điều hướng học sinh">
-            {studentNavigation.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={activeTab === item.id ? "active" : ""}
-                aria-current={activeTab === item.id ? "page" : undefined}
-                onClick={() => setActiveTab(item.id)}
-              >
-                <span className="dashboard-nav-icon" aria-hidden="true">
-                  {item.icon}
-                </span>
-                <span>
-                  <b>{item.label}</b>
-                  <small>{item.shortLabel}</small>
-                </span>
-              </button>
-            ))}
-          </nav>
+          </div>
 
           <div className="student-companion">
             <span className="companion-presence">
@@ -683,7 +688,10 @@ export function StudentWorkspace({
                 {studentNavigation.find((item) => item.id === activeTab)?.label}
               </strong>
             </div>
-            <span>Toán 7A</span>
+            <span className="student-page-meta">
+              <b>{currentStudent.displayName}</b>
+              <small>Toán 7A</small>
+            </span>
           </div>
 
           {activeTab === "home" && (
