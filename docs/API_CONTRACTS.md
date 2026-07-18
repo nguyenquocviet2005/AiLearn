@@ -70,7 +70,9 @@ The endpoint accepts no parameters and exposes no Supabase credentials, raw erro
 Required: `schema_version`, `id`, `student_id`, `session_id`, `skill_id`, `item_id`, `is_correct`,
 `recorded_at`.
 
-Optional: `lesson_id`, `response_label`.
+Optional: `lesson_id`, `response_label`, `confidence` (0–1, added in VAI-18 — additive per the
+freeze policy). `confidence` is captured from the student's self-reported certainty and persisted,
+but does not currently influence mastery/diagnosis scoring in `packages/diagnostic`.
 
 Fixture: `data/fixtures/evidence-event.json`.
 
@@ -227,12 +229,13 @@ never `is_correct`. The evidence event id is deterministic (`ev_{session_id}_{it
 retried request for the same session and item is idempotent: it replays the first recorded answer
 instead of creating a duplicate or erroring.
 
-Request:
+Request (`confidence` is optional, 0–1, added in VAI-18):
 
 ```json
 {
   "item_id": "item_inv_prop_01",
-  "response_label": "9"
+  "response_label": "9",
+  "confidence": 0.9
 }
 ```
 
@@ -250,7 +253,8 @@ Success response (`200`):
     "is_correct": true,
     "recorded_at": "2026-07-19T10:20:00Z",
     "lesson_id": "lesson_g7_inverse_proportion_01",
-    "response_label": "9"
+    "response_label": "9",
+    "confidence": 0.9
   },
   "remaining_item_ids": ["item_inv_prop_02", "item_inv_prop_03"],
   "session_complete": false
@@ -280,6 +284,117 @@ Unrecognized option label (`422`):
 ```
 
 Unavailable response (`503`) uses the same sanitized shape as other Supabase failures.
+
+## `POST /api/v1/remediation/sessions`
+
+Starts a remediation session from a `StudentDiagnosticProfileV1`, using `RemediationEngine.start()`
+from `packages/remediation`. Session state is held in an in-memory store scoped to the running API
+process (registered in VAI-18; see "Operational behavior" below — this route existed as code since
+VAI-16 but was not wired into the app until VAI-18).
+
+Request:
+
+```json
+{
+  "profile": {
+    "schema_version": "1",
+    "student_id": "stu_demo_01",
+    "lesson_id": "lesson_g7_inverse_proportion_01",
+    "target_skill_id": "skill_word_problem_work_rate",
+    "readiness_status": "needs_support",
+    "confidence": 0.8,
+    "root_causes": [
+      { "skill_id": "skill_ratio_proportion_basics", "rank": 1, "supporting_evidence_ids": [], "contradicting_evidence_ids": [] }
+    ],
+    "generated_at": "2026-07-19T10:50:00Z"
+  }
+}
+```
+
+Success response (`200`):
+
+```json
+{
+  "path": {
+    "schema_version": "1",
+    "id": "path_stu_demo_01_skill_word_problem_work_rate",
+    "student_id": "stu_demo_01",
+    "target_skill_id": "skill_word_problem_work_rate",
+    "current_state": "REPAIR",
+    "representation": "text",
+    "steps": [
+      { "id": "step_stu_demo_01_worked_example", "kind": "worked_example", "state": "REPAIR", "completed": false }
+    ],
+    "updated_at": "2026-07-19T11:00:00Z",
+    "root_cause_skill_id": "skill_ratio_proportion_basics"
+  },
+  "current_step_kind": "worked_example",
+  "is_complete": false,
+  "escalation_reason": null,
+  "content": {
+    "template_id": "tpl_1",
+    "title": "Ví dụ mẫu",
+    "body": "...",
+    "checkpoint_question": "...",
+    "checkpoint_answer": "...",
+    "representation": "text",
+    "source": "template"
+  }
+}
+```
+
+`checkpoint_answer` was added in VAI-18 so a caller can grade the checkpoint objectively (it was
+previously withheld from the wire response — safe to add because this route had no live caller
+before VAI-18 registered it). Invalid profile shape (`422`):
+
+```json
+{ "detail": "Invalid profile: ..." }
+```
+
+## `POST /api/v1/remediation/attempts`
+
+Records one attempt outcome and advances the path via `RemediationEngine.advance()`.
+
+Request (`attempt_id` added in VAI-18 for idempotency):
+
+```json
+{
+  "student_id": "stu_demo_01",
+  "step_id": "step_stu_demo_01_worked_example",
+  "is_correct": true,
+  "attempt_id": "att_stu_demo_01_worked_example_1"
+}
+```
+
+Success response (`200`): same shape as `POST /api/v1/remediation/sessions`. A retried request
+with the same `attempt_id` replays the response recorded the first time instead of calling
+`advance()` again — `RemediationEngine.advance()` has no idempotency of its own, so this is
+enforced at the route layer via a per-student processed-attempt-id map.
+
+Unknown student/session (`404`):
+
+```json
+{ "detail": "No session for stu_unknown" }
+```
+
+## `POST /api/v1/remediation/confirm`
+
+Resolves `CONFIRMATION` once more evidence is available, via `RemediationEngine.confirm()`. Only
+acts while the session is in `CONFIRMATION`; otherwise a no-op (naturally idempotent, no
+`attempt_id` needed).
+
+Request:
+
+```json
+{ "student_id": "stu_demo_01", "evidence_sufficient": true }
+```
+
+Success response (`200`): same shape as `POST /api/v1/remediation/sessions`.
+
+## `GET /api/v1/remediation/sessions/{student_id}`
+
+Reads the current remediation session state. Success response (`200`): same shape as
+`POST /api/v1/remediation/sessions`. Unknown student (`404`) uses the same shape as `/attempts`.
 
 ## `GET /api/v1/students/{student_id}/diagnostic-profile`
 

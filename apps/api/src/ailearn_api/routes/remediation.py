@@ -27,6 +27,11 @@ _content = ContentGenerator()
 # In-memory session store. Swapped for Supabase during integration (VAI-20).
 _sessions: dict[str, SessionState] = {}
 
+# Per-student processed attempt_ids -> the response returned the first time.
+# A retried attempt_id replays this instead of calling engine.advance() again,
+# since RemediationEngine.advance() has no idempotency of its own (VAI-18).
+_processed_attempts: dict[str, dict[str, dict[str, Any]]] = {}
+
 
 def _now() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -40,6 +45,7 @@ class AttemptRequest(BaseModel):
     student_id: str
     step_id: str
     is_correct: bool
+    attempt_id: str
 
 
 class ConfirmRequest(BaseModel):
@@ -59,6 +65,7 @@ def _content_payload(session: SessionState) -> dict[str, Any]:
         "title": c.title,
         "body": c.body,
         "checkpoint_question": c.checkpoint_question,
+        "checkpoint_answer": c.checkpoint_answer,
         "representation": c.representation,
         "source": c.source,
     }
@@ -95,11 +102,23 @@ def start_session(req: StartRequest) -> dict[str, Any]:
 
 @router.post("/attempts")
 def submit_attempt(req: AttemptRequest) -> dict[str, Any]:
-    """Record one attempt and advance the path."""
+    """Record one attempt and advance the path.
+
+    Idempotent on attempt_id: a retried request for the same attempt_id replays
+    the response recorded the first time instead of advancing the state machine
+    again (VAI-18 — RemediationEngine.advance() has no idempotency of its own).
+    """
     session = _get(req.student_id)
+
+    student_attempts = _processed_attempts.setdefault(req.student_id, {})
+    if req.attempt_id in student_attempts:
+        return student_attempts[req.attempt_id]
+
     session = _engine.advance(session, AttemptOutcome(req.step_id, req.is_correct, _now()))
     _sessions[req.student_id] = session
-    return _response(session)
+    result = _response(session)
+    student_attempts[req.attempt_id] = result
+    return result
 
 
 @router.post("/confirm")

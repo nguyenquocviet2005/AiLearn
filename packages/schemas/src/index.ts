@@ -40,6 +40,7 @@ export interface EvidenceEventV1 {
   recorded_at: string;
   lesson_id?: string | null;
   response_label?: string | null;
+  confidence?: number | null;
 }
 
 export interface RootCauseHypothesis {

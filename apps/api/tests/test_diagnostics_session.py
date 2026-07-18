@@ -42,6 +42,7 @@ def _fake_insert_evidence_event() -> Any:
             recorded_at=event.recorded_at,
             lesson_id=event.lesson_id,
             response_label=event.response_label,
+            confidence=event.confidence,
         )
         saved[event.id] = record
         return record
@@ -135,6 +136,82 @@ def test_submit_response_validates_response_label(client: TestClient) -> None:
 
     assert response.status_code == 422
     assert response.json()["detail"]["code"] == "invalid_response_label"
+
+
+def test_submit_response_passes_confidence_through(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _configure(client)
+    fake_insert = _fake_insert_evidence_event()
+    monkeypatch.setattr("ailearn_api.routes.diagnostics.insert_evidence_event", fake_insert)
+
+    start = client.post(
+        "/api/v1/diagnostics/start",
+        json={"student_id": "stu_demo_confidence", "lesson_id": "lesson_g7_inverse_proportion_01"},
+    )
+    session_id = start.json()["session_id"]
+    item = start.json()["items"][0]
+
+    response = client.post(
+        f"/api/v1/diagnostics/{session_id}/responses",
+        json={
+            "item_id": item["item_id"],
+            "response_label": item["options"][0]["label"],
+            "confidence": 0.6,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["evidence_event"]["confidence"] == 0.6
+
+
+def test_submit_response_confidence_is_optional(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _configure(client)
+    fake_insert = _fake_insert_evidence_event()
+    monkeypatch.setattr("ailearn_api.routes.diagnostics.insert_evidence_event", fake_insert)
+
+    start = client.post(
+        "/api/v1/diagnostics/start",
+        json={
+            "student_id": "stu_demo_no_confidence",
+            "lesson_id": "lesson_g7_inverse_proportion_01",
+        },
+    )
+    session_id = start.json()["session_id"]
+    item = start.json()["items"][0]
+
+    response = client.post(
+        f"/api/v1/diagnostics/{session_id}/responses",
+        json={"item_id": item["item_id"], "response_label": item["options"][0]["label"]},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["evidence_event"]["confidence"] is None
+
+
+def test_submit_response_rejects_out_of_range_confidence(client: TestClient) -> None:
+    start = client.post(
+        "/api/v1/diagnostics/start",
+        json={
+            "student_id": "stu_demo_bad_confidence",
+            "lesson_id": "lesson_g7_inverse_proportion_01",
+        },
+    )
+    session_id = start.json()["session_id"]
+    item = start.json()["items"][0]
+
+    response = client.post(
+        f"/api/v1/diagnostics/{session_id}/responses",
+        json={
+            "item_id": item["item_id"],
+            "response_label": item["options"][0]["label"],
+            "confidence": 1.5,
+        },
+    )
+
+    assert response.status_code == 422
 
 
 def test_submit_response_is_idempotent_on_retry(
