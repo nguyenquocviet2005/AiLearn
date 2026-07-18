@@ -16,19 +16,28 @@ Refresh the teacher and student dashboards so they use the same AiLearn branding
 page. Reuse the approved purple, white, and black visual system, logo, and mascot while preserving the
 existing teacher planning, reporting, student diagnostic, remediation, and offline behavior.
 
+After reviewing the first implementation, the human expanded the presentation scope to include the
+landing page and requested a less rectangular composition, one Dynamic Island-inspired translucent
+header across the web, more expressive motion, and adaptive side navigation that behaves like a
+companion.
+
 ## Planning and Implementation Prompts
 
 - Create a new Linear issue assigned to the human owner and begin implementation.
 - Modernize both dashboard experiences with the existing branding guide and mascot/icon language.
 - Preserve the current product direction and workflow behavior.
+- Revise the landing page and dashboards to remove the dense boxed appearance, share one floating
+  header, add purposeful motion, and make side navigation adaptive.
 
 ## Approved Plan
 
-1. Introduce shared dashboard branding tokens and a reusable teacher shell.
-2. Refresh teacher overview, lesson plan, report, loading/error, and print surfaces.
-3. Refresh student header, navigation, home, readiness, remediation, help, and offline states.
-4. Update focused tests, documentation, and this collaboration log.
-5. Run full verification and inspect desktop/mobile screenshots.
+1. Introduce shared branding tokens and a reusable floating application header.
+2. Recompose the landing page around the brand image, an animated evidence loop, and open content bands.
+3. Refresh teacher overview, lesson plan, report, loading/error, and print surfaces.
+4. Refresh student home, readiness, remediation, help, and offline states around an adaptive companion
+   rail that becomes a mobile dock.
+5. Update focused tests, documentation, and this collaboration log.
+6. Run full verification and inspect desktop/mobile screenshots.
 
 The human explicitly requested issue creation and immediate implementation, so no additional approval
 gate was required for this presentation-only change. No dependency, public contract, or backend change
@@ -42,6 +51,13 @@ was introduced.
 - Added a reusable teacher dashboard shell with branded navigation, role context, and mascot guidance.
 - Reworked teacher overview, lesson plan, intervention report, loading/error, and printable layouts.
 - Reworked the student shell, home, readiness, remediation path, exit ticket, and help/offline layouts.
+- Added one semantic `AppHeader` to the landing, teacher, and student surfaces, with a translucent
+  Dynamic Island-inspired interaction state.
+- Reworked both dashboard sidebars as compact companion rails that expand on interaction and become
+  bottom docks on smaller viewports.
+- Revisited the landing learning loop, audience bands, evidence preview, hero signal, and motion system
+  to reduce repetitive rectangular surfaces.
+- Added reduced-motion fallbacks for every new continuous or entrance animation.
 - Localized teacher-facing interface copy to Vietnamese without changing API-provided evidence text.
 - Updated tests for the new observable labels, branding, navigation state, and asynchronous save guard.
 - Performed desktop and true 390px viewport checks through Chrome DevTools Protocol.
@@ -51,6 +67,8 @@ was introduced.
 - Accepted: Keep the product name AiLearn.
 - Accepted: Reuse the VAI-40 branding guide and local brand assets.
 - Accepted: Refresh both teacher and student dashboards in one bounded issue.
+- Accepted: Expand the presentation scope to include the landing page and a shared site-wide header.
+- Accepted: Use a Dynamic Island-inspired translucent header and adaptive companion navigation.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
   familiar system symbols and the approved mascot asset are used instead.
 - Rejected: None.
@@ -61,6 +79,10 @@ was introduced.
 - `ai-logs/sessions/VAI-41-refresh-teacher-student-dashboard.md`
 - `apps/web/src/App.test.tsx`
 - `apps/web/src/index.css`
+- `apps/web/src/components/navigation/AppHeader.tsx`
+- `apps/web/src/features/landing/LandingPage.tsx`
+- `apps/web/src/features/landing/LandingPage.test.tsx`
+- `apps/web/src/features/landing/landing.css`
 - `apps/web/src/features/teacher/TeacherShell.tsx`
 - `apps/web/src/features/teacher/TeacherWorkspace.tsx`
 - `apps/web/src/features/teacher/TeacherWorkspace.test.tsx`
@@ -79,17 +101,23 @@ was introduced.
 
 ## Commands and Results
 
-| Command | Result |
-|---|---|
-| `git pull --ff-only origin main` | PASS - updated through merged VAI-40 |
-| `pnpm --filter @ailearn/web test` (baseline) | FAIL - 56/57 passed; pre-existing lesson-plan save test timing failure |
-| `pnpm --filter @ailearn/web typecheck` | PASS |
-| Focused teacher workspace tests | PASS - 10/10 |
-| Focused student workspace tests | PASS - 11/11 |
-| Focused teacher report and print tests | PASS - 7/7 |
-| Focused app route tests | PASS - 5/5 |
-| Chrome desktop and 390px responsive inspection | PASS - no horizontal overflow after width correction |
-| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
+| Command                                                                       | Result                                                                                                    |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `git pull --ff-only origin main`                                              | PASS - updated through merged VAI-40                                                                      |
+| `pnpm --filter @ailearn/web test` (baseline)                                  | FAIL - 56/57 passed; pre-existing lesson-plan save test timing failure                                    |
+| `pnpm --filter @ailearn/web typecheck`                                        | PASS                                                                                                      |
+| Focused teacher workspace tests                                               | PASS - 10/10                                                                                              |
+| Focused student workspace tests                                               | PASS - 11/11                                                                                              |
+| Focused teacher report and print tests                                        | PASS - 7/7                                                                                                |
+| Focused app route tests                                                       | PASS - 5/5                                                                                                |
+| Chrome desktop and 390px responsive inspection                                | PASS - no horizontal overflow after width correction                                                      |
+| Shared header and primary navigation tests after design revision              | PASS - 58/58 web tests                                                                                    |
+| Chrome desktop and true 390px inspection after design revision                | PASS - landing, teacher overview/lesson/report, and student home have no horizontal overflow              |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after design revision | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
+
+An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
+documentation files and exited before verification started. The paths were corrected, both files were
+formatted, and the complete verification command above passed.
 
 The shell's Corepack CJS launcher fails on this machine with
 `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`; verification uses the same pinned pnpm 11.13.1 package via

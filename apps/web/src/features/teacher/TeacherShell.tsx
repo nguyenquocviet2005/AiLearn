@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { AppHeader } from "@/components/navigation/AppHeader";
+
 export type TeacherRoute =
   | "/teacher"
   | "/teacher/lesson-plan"
@@ -44,25 +46,30 @@ export function TeacherShell({
         Đi tới nội dung chính
       </a>
 
-      <aside className="teacher-sidebar" aria-label="Không gian giáo viên">
-        <a
-          className="dashboard-brand"
-          href="/"
-          aria-label="AiLearn - trang chủ"
-        >
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
-        </a>
-
-        <div className="teacher-role">
-          <span className="teacher-role-avatar" aria-hidden="true">
-            GV
-          </span>
-          <div>
-            <strong>Không gian giáo viên</strong>
-            <small>Lớp 7A · Toán học</small>
+      <AppHeader
+        className="dashboard-island teacher-island"
+        context={
+          <div className="app-island-workspace">
+            <span className="app-island-live" aria-hidden="true" />
+            <span>
+              <strong>Không gian giáo viên</strong>
+              <small>Lớp 7A · Toán học</small>
+            </span>
           </div>
-        </div>
+        }
+        actions={
+          <>
+            <a className="app-island-switch" href="/student">
+              Học sinh <span aria-hidden="true">↗</span>
+            </a>
+            <span className="app-island-avatar" title="Hồ sơ giáo viên">
+              GV
+            </span>
+          </>
+        }
+      />
 
+      <aside className="teacher-sidebar" aria-label="Không gian giáo viên">
         <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
           {teacherNavigation.map((item) => (
             <a
@@ -83,7 +90,9 @@ export function TeacherShell({
         </nav>
 
         <div className="teacher-sidebar-note">
-          <img src="/brand/ailearn-mascot.webp" alt="" />
+          <span className="companion-presence">
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+          </span>
           <div>
             <strong>Quyết định thuộc về giáo viên</strong>
             <p>AiLearn chỉ đề xuất từ bằng chứng học tập đã ghi nhận.</p>

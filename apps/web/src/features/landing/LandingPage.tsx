@@ -1,5 +1,7 @@
 import "./landing.css";
 
+import { AppHeader } from "@/components/navigation/AppHeader";
+
 type WorkspaceRoute = "/teacher" | "/student";
 
 type LandingPageProps = {
@@ -69,34 +71,34 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         Bỏ qua điều hướng
       </a>
 
-      <header className="landing-header">
-        <a className="landing-brand" href="/" aria-label="AiLearn - Trang chủ">
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
-        </a>
-
-        <nav className="landing-nav" aria-label="Điều hướng trang giới thiệu">
-          <a href="#learning-loop">Cách hoạt động</a>
-          <a href="#for-teachers">Giáo viên</a>
-          <a href="#for-students">Học sinh</a>
-        </nav>
-
-        <div className="landing-header-actions">
-          <WorkspaceLink
-            className="landing-header-link"
-            onNavigate={onNavigate}
-            route="/student"
-          >
-            Học sinh
-          </WorkspaceLink>
-          <WorkspaceLink
-            className="landing-button landing-button-primary landing-header-button"
-            onNavigate={onNavigate}
-            route="/teacher"
-          >
-            Giáo viên
-          </WorkspaceLink>
-        </div>
-      </header>
+      <AppHeader
+        className="landing-island"
+        context={
+          <nav className="landing-nav" aria-label="Điều hướng trang giới thiệu">
+            <a href="#learning-loop">Cách hoạt động</a>
+            <a href="#for-teachers">Giáo viên</a>
+            <a href="#for-students">Học sinh</a>
+          </nav>
+        }
+        actions={
+          <>
+            <WorkspaceLink
+              className="landing-header-link"
+              onNavigate={onNavigate}
+              route="/student"
+            >
+              Học sinh
+            </WorkspaceLink>
+            <WorkspaceLink
+              className="landing-button landing-button-primary landing-header-button"
+              onNavigate={onNavigate}
+              route="/teacher"
+            >
+              Giáo viên
+            </WorkspaceLink>
+          </>
+        }
+      />
 
       <main id="landing-main">
         <section className="landing-hero" aria-labelledby="landing-title">
@@ -129,6 +131,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 Xem trải nghiệm học sinh
               </WorkspaceLink>
             </div>
+          </div>
+
+          <div className="landing-hero-signal" aria-hidden="true">
+            <span className="landing-signal-core">AI</span>
+            <span className="landing-signal-label signal-one">Quan sát</span>
+            <span className="landing-signal-label signal-two">Giải thích</span>
+            <span className="landing-signal-label signal-three">Thích ứng</span>
           </div>
 
           <ul

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -36,7 +36,11 @@ describe("TeacherWorkspace", () => {
         name: "Bắt đầu kế hoạch dạy học từ bằng chứng.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "AiLearn" })).toBeInTheDocument();
+    expect(
+      within(screen.getByRole("banner")).getByRole("img", {
+        name: "AiLearn",
+      }),
+    ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",
       expect.any(Object),

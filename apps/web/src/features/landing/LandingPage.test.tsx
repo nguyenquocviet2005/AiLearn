@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -7,6 +7,12 @@ import { LandingPage } from "./LandingPage";
 describe("LandingPage", () => {
   it("explains the learning loop and both product experiences", () => {
     render(<LandingPage onNavigate={vi.fn()} />);
+
+    expect(
+      within(screen.getByRole("banner")).getByRole("link", {
+        name: "AiLearn - trang chủ",
+      }),
+    ).toBeInTheDocument();
 
     expect(
       screen.getByRole("heading", {

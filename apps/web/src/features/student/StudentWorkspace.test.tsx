@@ -181,7 +181,11 @@ describe("StudentWorkspace", () => {
     const user = userEvent.setup();
     render(<StudentWorkspace repository={fakeRepository()} />);
 
-    expect(screen.getByRole("img", { name: "AiLearn" })).toBeInTheDocument();
+    expect(
+      within(screen.getByRole("banner")).getByRole("img", {
+        name: "AiLearn",
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Hôm nay/ })).toHaveAttribute(
       "aria-current",
       "page",

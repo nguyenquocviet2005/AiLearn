@@ -25,9 +25,13 @@ export function StudentHome({
               phần nào kỹ hơn — không tính điểm và không xếp hạng.
             </p>
           </div>
-          <div className="student-home-task" aria-label="Một việc cần làm">
-            <strong>01</strong>
-            <span>việc cần làm</span>
+          <div className="student-home-visual" aria-label="Một việc cần làm">
+            <span className="student-home-orbit" aria-hidden="true" />
+            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="student-home-task">
+              <strong>01</strong>
+              <span>việc cần làm</span>
+            </span>
           </div>
         </div>
         <div className="student-day-rail">

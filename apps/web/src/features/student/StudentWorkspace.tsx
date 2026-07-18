@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 
+import { AppHeader } from "@/components/navigation/AppHeader";
+
 import {
   httpStudentRepository,
   type StudentRepository,
@@ -596,53 +598,49 @@ export function StudentWorkspace({
       <a className="dashboard-skip-link" href="#student-main">
         Đi tới nội dung chính
       </a>
-      <header className="student-header">
-        <a
-          className="dashboard-brand"
-          href="/"
-          aria-label="AiLearn - trang chủ"
-        >
-          <img src="/brand/ailearn-logo.webp" alt="AiLearn" />
-        </a>
-        <div className="student-profile">
-          <span className="student-avatar" aria-hidden="true">
-            HS
-          </span>
-          <div className="student-identity">
-            <b>{currentStudent.displayName}</b>
-            <small>Toán 7A · Tiến từng bước, không xếp hạng</small>
+      <AppHeader
+        className="dashboard-island student-island"
+        context={
+          <div className="app-island-workspace student-profile">
+            <span className="app-island-live" aria-hidden="true" />
+            <span className="student-identity">
+              <b>{currentStudent.displayName}</b>
+              <small>Toán 7A · Tiến từng bước, không xếp hạng</small>
+            </span>
           </div>
-        </div>
-        <div className="student-header-actions">
-          <DemoReset
-            personas={personas}
-            selectedPersonaId={selectedPersonaId}
-            busy={busy}
-            onSelect={setSelectedPersonaId}
-            onReset={() => void resetDemo()}
-          />
-          <button
-            type="button"
-            className={`student-sync${pendingCount === 0 ? " online" : ""}`}
-            title={
-              pendingCount === 0
-                ? "Đã đồng bộ - nhấn để kiểm tra lại"
-                : `${pendingCount} thay đổi đang chờ đồng bộ`
-            }
-            onClick={() => void flush(repository)}
-          >
-            <span className="student-sync-icon" aria-hidden="true">
-              ↻
-            </span>
-            <span className="student-sync-dot" aria-hidden="true" />
-            <span>
-              {pendingCount === 0
-                ? "Đã đồng bộ"
-                : `Đang chờ đồng bộ · ${pendingCount}`}
-            </span>
-          </button>
-        </div>
-      </header>
+        }
+        actions={
+          <>
+            <DemoReset
+              personas={personas}
+              selectedPersonaId={selectedPersonaId}
+              busy={busy}
+              onSelect={setSelectedPersonaId}
+              onReset={() => void resetDemo()}
+            />
+            <button
+              type="button"
+              className={`student-sync${pendingCount === 0 ? " online" : ""}`}
+              title={
+                pendingCount === 0
+                  ? "Đã đồng bộ - nhấn để kiểm tra lại"
+                  : `${pendingCount} thay đổi đang chờ đồng bộ`
+              }
+              onClick={() => void flush(repository)}
+            >
+              <span className="student-sync-icon" aria-hidden="true">
+                ↻
+              </span>
+              <span className="student-sync-dot" aria-hidden="true" />
+              <span>
+                {pendingCount === 0
+                  ? "Đã đồng bộ"
+                  : `Đang chờ đồng bộ · ${pendingCount}`}
+              </span>
+            </button>
+          </>
+        }
+      />
 
       <div className="student-layout">
         <aside className="student-sidebar">
@@ -667,7 +665,9 @@ export function StudentWorkspace({
           </nav>
 
           <div className="student-companion">
-            <img src="/brand/ailearn-mascot.webp" alt="" />
+            <span className="companion-presence">
+              <img src="/brand/ailearn-mascot.webp" alt="" />
+            </span>
             <div>
               <strong>Em không học một mình</strong>
               <p>AiLearn sẽ đổi cách giải thích khi em cần.</p>
