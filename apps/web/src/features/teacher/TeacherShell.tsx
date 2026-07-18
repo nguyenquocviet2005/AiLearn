@@ -1,46 +1,32 @@
 import type { ReactNode } from "react";
 
+import "./teacher.css";
+
 export type TeacherRoute =
-  | "/teacher"
-  | "/teacher/lesson-plan"
-  | "/teacher/report"
-  | "/teacher/report/print";
+  "/teacher" | "/teacher/lesson-plan" | "/teacher/report";
 
-type TeacherSection = "overview" | "lesson-plan" | "report";
-
-const teacherNavigation: Array<{
-  id: TeacherSection;
-  href: Exclude<TeacherRoute, "/teacher/report/print">;
+const navigation: Array<{
+  href: TeacherRoute;
   icon: string;
   label: string;
 }> = [
-  { id: "overview", href: "/teacher", icon: "▦", label: "Tổng quan lớp" },
-  {
-    id: "lesson-plan",
-    href: "/teacher/lesson-plan",
-    icon: "≡",
-    label: "Kế hoạch bài dạy",
-  },
-  {
-    id: "report",
-    href: "/teacher/report",
-    icon: "◫",
-    label: "Báo cáo can thiệp",
-  },
+  { href: "/teacher", icon: "▦", label: "Tổng quan lớp" },
+  { href: "/teacher/lesson-plan", icon: "≡", label: "Kế hoạch bài dạy" },
+  { href: "/teacher/report", icon: "◫", label: "Báo cáo can thiệp" },
 ];
 
 export function TeacherShell({
-  current,
-  onNavigate,
   children,
+  currentRoute,
+  onNavigate,
 }: {
-  current: TeacherSection;
-  onNavigate: (path: TeacherRoute) => void;
   children: ReactNode;
+  currentRoute: TeacherRoute;
+  onNavigate: (path: TeacherRoute) => void;
 }) {
   return (
     <div className="teacher-app">
-      <a className="dashboard-skip-link" href="#teacher-main">
+      <a className="teacher-skip-link" href="#teacher-main">
         Đi tới nội dung chính
       </a>
 
@@ -62,16 +48,16 @@ export function TeacherShell({
           </span>
           <div>
             <strong>Không gian giáo viên</strong>
-            <small>Lớp 7A · Toán học</small>
+            <small>Lớp 7A · Checkpoint 2</small>
           </div>
         </div>
 
         <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
-          {teacherNavigation.map((item) => (
+          {navigation.map((item) => (
             <a
-              key={item.id}
-              aria-current={current === item.id ? "page" : undefined}
+              aria-current={currentRoute === item.href ? "page" : undefined}
               href={item.href}
+              key={item.href}
               onClick={(event) => {
                 event.preventDefault();
                 onNavigate(item.href);
@@ -101,7 +87,11 @@ export function TeacherShell({
         </a>
       </aside>
 
-      <main id="teacher-main" className="teacher-main">
+      <main
+        className="teacher-shell teacher-main"
+        id="teacher-main"
+        tabIndex={-1}
+      >
         {children}
       </main>
     </div>

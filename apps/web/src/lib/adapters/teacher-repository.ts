@@ -12,12 +12,44 @@ export type TeacherRepositoryErrorKind =
 
 export class TeacherRepositoryError extends Error {
   readonly kind: TeacherRepositoryErrorKind;
+  readonly status?: number;
+  readonly code?: string;
 
-  constructor(kind: TeacherRepositoryErrorKind, message: string) {
+  constructor(
+    kind: TeacherRepositoryErrorKind,
+    message: string,
+    options: { status?: number; code?: string } = {},
+  ) {
     super(message);
     this.name = "TeacherRepositoryError";
     this.kind = kind;
+    this.status = options.status;
+    this.code = options.code;
   }
+}
+
+async function rejectedResponseError(response: Response) {
+  let code: string | undefined;
+  let message = "Teacher workspace data request was rejected.";
+
+  try {
+    const payload = (await response.json()) as {
+      detail?: { code?: unknown; message?: unknown };
+    };
+    if (typeof payload.detail?.code === "string") {
+      code = payload.detail.code;
+    }
+    if (typeof payload.detail?.message === "string") {
+      message = payload.detail.message;
+    }
+  } catch {
+    // Some upstream failures intentionally have no JSON response body.
+  }
+
+  return new TeacherRepositoryError("response", message, {
+    status: response.status,
+    code,
+  });
 }
 
 export function createHttpTeacherWorkspaceRepository(
@@ -47,10 +79,7 @@ export function createHttpTeacherWorkspaceRepository(
       );
     }
     if (!response.ok) {
-      throw new TeacherRepositoryError(
-        "response",
-        "Teacher workspace data request was rejected.",
-      );
+      throw await rejectedResponseError(response);
     }
     return (await response.json()) as T;
   }

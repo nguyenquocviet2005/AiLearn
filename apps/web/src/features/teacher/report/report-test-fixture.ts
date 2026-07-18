@@ -10,7 +10,7 @@ export const reportTestFixture: InterventionReportV1 = {
   id: "report_demo_01",
   class_id: "class_g7a_demo",
   lesson_id: "lesson_g7_inverse_proportion_01",
-  generated_at: "2026-07-18T01:30:00Z",
+  generated_at: "2026-07-18T22:30:00Z",
   outcome_counts: {
     passed_transfer: 1,
     still_struggling: 1,
@@ -22,22 +22,22 @@ export const reportTestFixture: InterventionReportV1 = {
     {
       student_id: "stu_g7_001",
       outcome: "passed_transfer",
-      evidence_ids: ["ev_stu_g7_001_001", "ev_stu_g7_001_002"],
+      evidence_ids: ["ev_stu_g7_001_post_001", "ev_stu_g7_001_post_002"],
     },
     {
       student_id: "stu_g7_002",
       outcome: "still_struggling",
-      evidence_ids: ["ev_stu_g7_002_001"],
+      evidence_ids: ["ev_stu_g7_002_post_001", "ev_stu_g7_002_post_002"],
     },
     {
       student_id: "stu_g7_003",
       outcome: "root_cause_reclassified",
-      evidence_ids: ["ev_stu_g7_003_001"],
+      evidence_ids: ["ev_stu_g7_003_post_001", "ev_stu_g7_003_post_002"],
     },
     {
       student_id: "stu_g7_004",
       outcome: "teacher_escalation",
-      evidence_ids: ["ev_stu_g7_004_001", "ev_stu_g7_004_002"],
+      evidence_ids: ["ev_stu_g7_004_post_001", "ev_stu_g7_004_post_002"],
     },
     {
       student_id: "stu_g7_005",
@@ -69,19 +69,5 @@ export const reportTestRepository = {
 
 export async function reportTestPlan(): Promise<TeacherPlanVersionV1> {
   const plan = await fixtureTeacherWorkspaceRepository.getLessonPlan();
-  return {
-    ...plan,
-    plan_id: reportTestFixture.printable_lesson_plan_id,
-    snapshot: {
-      ...plan.snapshot,
-      class_id: reportTestFixture.class_id,
-      lesson_id: reportTestFixture.lesson_id,
-    },
-    lesson_plan: {
-      ...plan.lesson_plan,
-      id: reportTestFixture.printable_lesson_plan_id,
-      class_id: reportTestFixture.class_id,
-      lesson_id: reportTestFixture.lesson_id,
-    },
-  };
+  return plan;
 }

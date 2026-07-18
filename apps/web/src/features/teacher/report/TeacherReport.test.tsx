@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { TeacherRepositoryError } from "@/lib/adapters/teacher-repository";
 import { TeacherReport } from "./TeacherReport";
-import { reportTestRepository } from "./report-test-fixture";
+import { reportTestFixture, reportTestRepository } from "./report-test-fixture";
 
 describe("TeacherReport", () => {
   it("shows outcome counts, individual evidence, and the transfer boundary", async () => {
@@ -20,23 +20,23 @@ describe("TeacherReport", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Thấy rõ điều đã đổi và điều cần dạy tiếp.",
+        name: "See what changed—and what still needs teaching.",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Một lần làm đúng chưa phải là vận dụng."),
+      screen.getByText("Immediate success is not transfer."),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Đã vận dụng độc lập")).toHaveLength(2);
-    expect(screen.getAllByText("Cần giáo viên hỗ trợ")).toHaveLength(2);
-    expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
-    expect(screen.getByText("Chưa có bằng chứng")).toBeInTheDocument();
+    expect(screen.getAllByText("Passed independent transfer")).toHaveLength(2);
+    expect(screen.getAllByText("Teacher escalation")).toHaveLength(2);
+    expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
+    expect(screen.getByText("No evidence recorded")).toBeInTheDocument();
     expect(
       screen.getByText(
         "Re-teach inverse-proportion setup and fraction multiplication before work-rate transfer.",
       ),
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("link", { name: /Mở bản in/ }));
+    await user.click(screen.getByRole("link", { name: "Open printable view" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report/print");
   });
 
@@ -51,6 +51,38 @@ describe("TeacherReport", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "The intervention report data could not be loaded.",
     );
+  });
+
+  it("retries the report request after a temporary failure", async () => {
+    let resolveRetry!: (report: typeof reportTestFixture) => void;
+    const retryRequest = new Promise<typeof reportTestFixture>((resolve) => {
+      resolveRetry = resolve;
+    });
+    const repository = {
+      getReport: vi
+        .fn()
+        .mockRejectedValueOnce(new Error("offline"))
+        .mockReturnValueOnce(retryRequest),
+    };
+    const user = userEvent.setup();
+
+    render(<TeacherReport onNavigate={vi.fn()} repository={repository} />);
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The intervention report data could not be loaded.",
+    );
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+    expect(
+      screen.getByText("Loading intervention outcomes"),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+    resolveRetry(reportTestFixture);
+    expect(
+      await screen.findByRole("heading", {
+        name: "See what changed—and what still needs teaching.",
+      }),
+    ).toBeInTheDocument();
+    expect(repository.getReport).toHaveBeenCalledTimes(2);
   });
 
   it("distinguishes deployment configuration from API availability", async () => {

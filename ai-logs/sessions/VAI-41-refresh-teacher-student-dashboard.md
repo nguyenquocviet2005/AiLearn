@@ -77,6 +77,8 @@ was introduced.
   visual review exposed a breakpoint-specific horizontal offset.
 - Extracted the six source portraits from the vision PDF, converted them to compact WebP assets, and
   added an editorial staggered team section with direct header and footer navigation.
+- Fetched merged VAI-25 work from `origin/main` at `0b8c9a1`, preserved its expanded teacher demo flow,
+  and adapted the VAI-41 companion rail to the new `TeacherShell` contract and `teacher.css` ownership.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
 - Localized teacher-facing interface copy to Vietnamese without changing API-provided evidence text.
 - Updated tests for the new observable labels, branding, navigation state, and asynchronous save guard.
@@ -148,6 +150,10 @@ was introduced.
 | Web tests after team-section addition                                         | PASS - 58/58 web tests                                                                                    |
 | Chrome 1440px and 390px team-section inspection                               | PASS - all six portraits render; long names wrap; no horizontal overflow                                  |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after team addition   | PASS - format, lint, type-check, 58 web tests, web build, Ruff, mypy, 120 API/domain tests, and API build |
+| `git fetch origin` before publication                                         | PASS - updated `origin/main` through merged PR #25 at `0b8c9a1`                                           |
+| Web tests after VAI-25 merge resolution                                       | PASS - 59/59 web tests                                                                                    |
+| Chrome desktop and 390px inspection after VAI-25 merge                        | PASS - landing, teacher rail, and student dock render without horizontal overflow                         |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after VAI-25 merge    | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
@@ -166,6 +172,11 @@ After the machine restart, one root-scoped Prettier command could not find the w
 first verify attempt reached the broken Corepack launcher because the temporary pnpm wrapper had been
 removed. Prettier was rerun through `@ailearn/web`, the wrapper was restored as a symlink to the pinned
 ESM launcher, and the complete verification command above passed from the beginning.
+
+The first web test run after merging VAI-25 passed 57/59 tests. Both failures were stale semantic
+assertions for VAI-25's former English header and white-backed logo. The assertions were updated to the
+Vietnamese companion-rail navigation and mascot brand link; the next run passed 59/59 before full
+verification.
 
 ## Remaining Risks and Limitations
 

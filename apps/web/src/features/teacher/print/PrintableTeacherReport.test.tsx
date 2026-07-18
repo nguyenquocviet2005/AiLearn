@@ -33,22 +33,22 @@ describe("PrintableTeacherReport", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Báo cáo can thiệp và kế hoạch bài dạy",
+        name: "Intervention report and lesson plan",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Warm-up confirmation items · 5 phút"),
+      screen.getByText("Readiness confirmation warm-up · 5 min"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Một lần làm đúng chưa phải là vận dụng."),
+      screen.getByText("Immediate success is not transfer."),
     ).toBeInTheDocument();
-    expect(container.querySelector("img")).toHaveAttribute("alt", "AiLearn");
+    expect(container.querySelector("img")).not.toBeInTheDocument();
     expect(planRepository.getLessonPlan).toHaveBeenCalledWith(
       "plan_class_g7a_demo_lesson_g7_inverse_proportion_01",
     );
 
     await user.click(
-      screen.getByRole("button", { name: "In báo cáo và kế hoạch" }),
+      screen.getByRole("button", { name: "Print report and lesson plan" }),
     );
     expect(print).toHaveBeenCalledOnce();
   });
@@ -66,18 +66,18 @@ describe("PrintableTeacherReport", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Báo cáo can thiệp",
+        name: "Intervention report",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("ev_stu_g7_003_001")).toBeInTheDocument();
+    expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Chưa thể tải kế hoạch bài dạy tương ứng",
+      "The matching lesson plan is unavailable",
     );
     expect(
-      screen.getByRole("button", { name: "In báo cáo" }),
+      screen.getByRole("button", { name: "Print report" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Báo cáo can thiệp" }),
+      screen.getByRole("heading", { name: "Intervention report" }),
     ).toBeInTheDocument();
   });
 
@@ -97,13 +97,13 @@ describe("PrintableTeacherReport", () => {
     );
 
     expect(await screen.findByRole("status")).toHaveTextContent(
-      "Chưa thể tải kế hoạch bài dạy tương ứng",
+      "The matching lesson plan is unavailable",
     );
     expect(
-      screen.getByRole("heading", { name: "Báo cáo can thiệp" }),
+      screen.getByRole("heading", { name: "Intervention report" }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText("Warm-up confirmation items · 5 phút"),
+      screen.queryByText("Readiness confirmation warm-up · 5 min"),
     ).not.toBeInTheDocument();
   });
 
@@ -117,11 +117,11 @@ describe("PrintableTeacherReport", () => {
       />,
     );
 
-    expect(screen.queryByRole("button", { name: /In báo cáo/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Print report/ })).toBeNull();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "The intervention report data could not be loaded.",
     );
-    expect(screen.queryByRole("button", { name: /In báo cáo/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Print report/ })).toBeNull();
   });
 });
