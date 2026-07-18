@@ -1,4 +1,5 @@
 import type { OutcomeKind } from "@ailearn/schemas";
+import { VIETNAMESE_STUDENT_NAMES } from "./product/teacher-demo-model";
 
 const skillLabels: Record<string, string> = {
   skill_ratio_proportion_basics: "Tỉ số và tỉ lệ thức",
@@ -52,7 +53,8 @@ export function interventionNeedLabel(value: string): string {
 
 export function learnerLabel(studentId: string): string {
   const sequence = studentId.match(/(\d+)$/)?.[1];
-  return sequence ? `Học sinh ${sequence}` : studentId;
+  const index = sequence ? Number(sequence) - 1 : -1;
+  return VIETNAMESE_STUDENT_NAMES[index] ?? "Học sinh demo";
 }
 
 export function planStatusLabel(value: string): string {

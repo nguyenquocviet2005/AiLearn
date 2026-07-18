@@ -71,7 +71,7 @@ describe("PrintableTeacherReport", () => {
         name: "Báo cáo can thiệp",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
+    expect(screen.getAllByText("2 minh chứng sau can thiệp")).toHaveLength(4);
     expect(screen.getByRole("status")).toHaveTextContent(
       "Không tìm thấy kế hoạch bài dạy tương ứng",
     );
