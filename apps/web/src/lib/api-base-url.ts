@@ -1,6 +1,6 @@
 export const LOCAL_API_BASE_URL = "http://localhost:8000";
 export const PRODUCTION_API_BASE_URL =
-  "https://api-production-8a6d.up.railway.app";
+  "https://ailearn-production-ec5e.up.railway.app";
 
 export class ApiConfigurationError extends Error {
   constructor(message: string) {
