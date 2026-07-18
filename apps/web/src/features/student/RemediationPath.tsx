@@ -1,0 +1,184 @@
+import { useState } from "react";
+
+import type { RemediationResponse } from "@/lib/adapters/student-types";
+
+import {
+  escalationReasonCopy,
+  REPRESENTATION_LABELS,
+  STATE_COPY,
+  STEP_KIND_COPY,
+} from "./copy";
+
+export interface RemediationPathProps {
+  remediation: RemediationResponse;
+  initialRepresentation: string | null;
+  onAttempt: (stepId: string, isCorrect: boolean) => void;
+}
+
+function normalize(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+export function RemediationPath({
+  remediation,
+  initialRepresentation,
+  onAttempt,
+}: RemediationPathProps) {
+  const [answer, setAnswer] = useState("");
+  const [selfReport, setSelfReport] = useState<boolean | null>(null);
+
+  const {
+    path,
+    content,
+    current_step_kind: currentStepKind,
+    escalation_reason: escalationReason,
+  } = remediation;
+  const stateCopy = STATE_COPY[path.current_state];
+  const currentStep = path.steps.find((step) => step.kind === currentStepKind);
+  const representationChanged =
+    initialRepresentation !== null &&
+    initialRepresentation !== path.representation;
+  const hasGradableCheckpoint = content.checkpoint_answer.trim().length > 0;
+
+  function handleGradedSubmit(): void {
+    if (!currentStep) {
+      return;
+    }
+    const isCorrect =
+      normalize(answer) === normalize(content.checkpoint_answer);
+    onAttempt(currentStep.id, isCorrect);
+    setAnswer("");
+  }
+
+  function handleSelfReportSubmit(isCorrect: boolean): void {
+    if (!currentStep) {
+      return;
+    }
+    setSelfReport(isCorrect);
+    onAttempt(currentStep.id, isCorrect);
+  }
+
+  if (remediation.is_complete) {
+    return (
+      <article className="student-card">
+        <span className="student-pill teal">Hoàn thành</span>
+        <h1>Em đã hoàn thành lộ trình hôm nay!</h1>
+        <p>Cô sẽ xem lại cùng em ở buổi học tiếp theo. Làm tốt lắm!</p>
+        <StepList steps={path.steps} currentKind={currentStepKind} />
+      </article>
+    );
+  }
+
+  if (path.current_state === "TEACHER_ESCALATION") {
+    return (
+      <article className="student-card">
+        <span className="student-pill">{stateCopy.title}</span>
+        <h1>{escalationReasonCopy(escalationReason)}</h1>
+        <p>{stateCopy.description}</p>
+      </article>
+    );
+  }
+
+  return (
+    <div>
+      <article className="student-card">
+        <span className="student-pill indigo">{stateCopy.title}</span>
+        <p>{stateCopy.description}</p>
+        <StepList steps={path.steps} currentKind={currentStepKind} />
+      </article>
+
+      <article className="student-card">
+        {representationChanged && (
+          <div className="student-representation-note">
+            Đã đổi sang{" "}
+            {REPRESENTATION_LABELS[path.representation] ?? path.representation}
+          </div>
+        )}
+        <span className="student-pill">{STEP_KIND_COPY[currentStepKind]}</span>
+        <h2>{content.title}</h2>
+        <div data-representation={content.representation}>
+          <p>{content.body}</p>
+        </div>
+
+        {content.checkpoint_question && (
+          <>
+            <p style={{ fontWeight: 700, marginTop: "1rem" }}>
+              {content.checkpoint_question}
+            </p>
+            {hasGradableCheckpoint ? (
+              <>
+                <input
+                  className="student-textarea"
+                  style={{ minHeight: "auto" }}
+                  value={answer}
+                  onChange={(event) => setAnswer(event.target.value)}
+                  aria-label="Câu trả lời của em"
+                />
+                <button
+                  type="button"
+                  className="student-btn teal"
+                  disabled={answer.trim().length === 0}
+                  onClick={handleGradedSubmit}
+                  style={{ marginTop: "0.75rem" }}
+                >
+                  Kiểm tra →
+                </button>
+              </>
+            ) : (
+              <div
+                className="student-support-row"
+                role="group"
+                aria-label="Tự đánh giá"
+              >
+                <button
+                  type="button"
+                  className="student-btn teal"
+                  onClick={() => handleSelfReportSubmit(true)}
+                  disabled={selfReport !== null}
+                >
+                  Em làm đúng
+                </button>
+                <button
+                  type="button"
+                  className="student-btn"
+                  onClick={() => handleSelfReportSubmit(false)}
+                  disabled={selfReport !== null}
+                >
+                  Em cần giúp thêm
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </article>
+    </div>
+  );
+}
+
+function StepList({
+  steps,
+  currentKind,
+}: {
+  steps: RemediationResponse["path"]["steps"];
+  currentKind: RemediationResponse["current_step_kind"];
+}) {
+  return (
+    <div className="student-step-list" aria-label="Các bước của lộ trình">
+      {steps.map((step) => {
+        const status = step.completed
+          ? "done"
+          : step.kind === currentKind
+            ? "current"
+            : "";
+        return (
+          <div key={step.id} className={`student-step-row ${status}`.trim()}>
+            <span className="student-step-marker">
+              {step.completed ? "✓" : ""}
+            </span>
+            <span>{STEP_KIND_COPY[step.kind]}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

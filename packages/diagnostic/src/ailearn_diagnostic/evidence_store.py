@@ -30,6 +30,7 @@ def to_persistence_row(event: EvidenceEventV1) -> dict[str, Any]:
         "recorded_at": event.recorded_at.isoformat().replace("+00:00", "Z"),
         "lesson_id": event.lesson_id,
         "response_label": event.response_label,
+        "confidence": event.confidence,
     }
 
 

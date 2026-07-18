@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { StudentWorkspace } from "@/features/student/StudentWorkspace";
 import { TeacherWorkspace } from "@/features/teacher/TeacherWorkspace";
 import { getSystemStatus, type SystemStatus } from "@/lib/api";
 
@@ -19,8 +20,10 @@ function formatTimestamp(value: string) {
 
 function PlatformStatus({
   onOpenTeacherWorkspace,
+  onOpenStudentWorkspace,
 }: {
   onOpenTeacherWorkspace: () => void;
+  onOpenStudentWorkspace: () => void;
 }) {
   const [status, setStatus] = useState<StatusState>({ kind: "loading" });
 
@@ -101,6 +104,16 @@ function PlatformStatus({
         >
           Open teacher workspace
         </a>
+        <a
+          className="teacher-entry"
+          href="/student"
+          onClick={(event) => {
+            event.preventDefault();
+            onOpenStudentWorkspace();
+          }}
+        >
+          Open student workspace
+        </a>
       </Card>
     </main>
   );
@@ -109,6 +122,8 @@ function PlatformStatus({
 function currentPathname() {
   return window.location.pathname;
 }
+
+type Route = "/teacher" | "/teacher/lesson-plan" | "/student";
 
 export default function App() {
   const [pathname, setPathname] = useState(currentPathname);
@@ -122,7 +137,7 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  function navigate(path: "/teacher" | "/teacher/lesson-plan") {
+  function navigate(path: Route) {
     window.history.pushState({}, "", path);
     setPathname(path);
   }
@@ -136,5 +151,14 @@ export default function App() {
     );
   }
 
-  return <PlatformStatus onOpenTeacherWorkspace={() => navigate("/teacher")} />;
+  if (pathname === "/student") {
+    return <StudentWorkspace />;
+  }
+
+  return (
+    <PlatformStatus
+      onOpenTeacherWorkspace={() => navigate("/teacher")}
+      onOpenStudentWorkspace={() => navigate("/student")}
+    />
+  );
 }

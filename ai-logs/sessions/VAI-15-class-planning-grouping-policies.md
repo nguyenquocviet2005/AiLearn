@@ -9,6 +9,7 @@
 - Branch: `VAI-15-class-planning-grouping-policies`
 - Worktree: `/Users/haipham/Documents/AiLearn`
 - Baseline: `23e48142d4d6ba2692919702a00e90a2dbdc625e`
+- Pre-PR `origin/main` refresh: `f53a0812b439a07d2ca642c79efeffbf3823a9a0`
 - Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/17 (Draft)
 - Implementation commit: `a1db7b85b250680a7c59cb26f646ab178d501a0e`
 
@@ -74,9 +75,9 @@ architecture documents were reread before implementation.
 | `uv run --project apps/api --locked ruff format --check apps/api` | PASS |
 | `uv run --project apps/api --locked ruff check apps/api` | PASS |
 | `uv run --project apps/api --locked mypy apps/api/src` | PASS |
-| CI Python pytest set (schemas, diagnostic, planning, content, remediation, API) | PASS (92, 2 skipped) |
-| `pnpm format:check` / `lint` / `typecheck` / `test` / `build` | PASS (6 web tests) |
-| `./scripts/verify.sh` | PASS (51 Python tests in its narrower set) |
+| CI Python pytest set after merging current `origin/main` | PASS (134, 2 skipped) |
+| `pnpm format:check` / `lint` / `typecheck` / `test` / `build` | PASS (28 web tests) |
+| `./scripts/verify.sh` after merging current `origin/main` | PASS (93 Python tests in its narrower set) |
 | `uv build --project packages/planning --out-dir /private/tmp/ailearn-vai15-planning-dist` | PASS |
 | Railway TOML parse and Docker/start/health path inspection | PASS |
 | Docker image build | NOT RUN — Docker CLI unavailable |
@@ -93,7 +94,15 @@ architecture documents were reread before implementation.
 - LOW: CI static analysis covered only `apps/api`. Resolved by adding planning source/tests to CI and
   `scripts/verify.sh` Ruff/mypy commands.
 - Final LOW note: this collaboration log contained pre-fix counts and a pending verdict. Resolved by
-  recording the 10/92 post-fix results and the final `PASS_WITH_NOTES` verdict here.
+  recording the current post-fix results and the final `PASS_WITH_NOTES` verdict here.
+
+## Pre-PR main refresh
+
+VAI-17 and VAI-18 merged to `origin/main` while VAI-15 was in progress. The feature branch merged
+only that trusted `origin/main` state before CI. One documentation conflict was resolved by retaining
+the newly merged diagnostic/remediation/student architecture and adding the planning domain and its
+deferred HTTP/UI boundary. The Docker merge retained both the VAI-17 `data`/`eval` copies and the
+VAI-15 `packages/planning` copy. Full verification was rerun on the resolved merge result.
 
 ## Remaining risks and limitations
 

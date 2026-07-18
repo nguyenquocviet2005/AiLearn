@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from ailearn_api.config import get_settings
 from ailearn_api.routes.diagnostics import router as diagnostics_router
 from ailearn_api.routes.health import router as health_router
+from ailearn_api.routes.remediation import router as remediation_router
+from ailearn_api.routes.students import router as students_router
 from ailearn_api.routes.system_status import router as system_status_router
 
 
@@ -20,6 +22,8 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(system_status_router)
     app.include_router(diagnostics_router)
+    app.include_router(students_router)
+    app.include_router(remediation_router)
     return app
 
 

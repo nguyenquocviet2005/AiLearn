@@ -13,15 +13,29 @@ from ailearn_diagnostic.evidence_store import (
 )
 from ailearn_diagnostic.loaders import load_curriculum, load_golden_suite, load_items
 from ailearn_diagnostic.mastery import BetaBernoulliMasteryEstimator, MasteryEstimator
+from ailearn_diagnostic.models import (
+    AssessmentItem,
+    Curriculum,
+    GoldenCase,
+    GoldenSuite,
+    ItemIndex,
+    ItemOption,
+)
 from ailearn_diagnostic.root_cause import DeterministicRootCauseRanker, RootCauseRanker
 from ailearn_diagnostic.session import build_readiness_session
 
 __all__ = [
     "AbstentionPolicy",
+    "AssessmentItem",
     "BetaBernoulliMasteryEstimator",
+    "Curriculum",
     "DeterministicRootCauseRanker",
     "EvidenceStore",
+    "GoldenCase",
+    "GoldenSuite",
     "InMemoryEvidenceStore",
+    "ItemIndex",
+    "ItemOption",
     "MasteryEstimator",
     "RootCauseRanker",
     "build_readiness_session",

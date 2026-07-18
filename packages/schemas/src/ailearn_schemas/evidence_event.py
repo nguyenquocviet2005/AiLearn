@@ -19,3 +19,4 @@ class EvidenceEventV1(BaseModel):
     recorded_at: datetime
     lesson_id: str | None = None
     response_label: str | None = None
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
