@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ailearn.local/schemas/teacher-plan-version.v1.schema.json",
+  "title": "TeacherPlanVersionV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "plan_id", "version", "parent_version_id", "decision", "published_at", "created_at", "snapshot", "lesson_plan"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "id": { "type": "string", "minLength": 1 },
+    "plan_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "parent_version_id": { "type": ["string", "null"] },
+    "decision": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+    "published_at": { "type": ["string", "null"], "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "snapshot": { "$ref": "class-snapshot.v1.schema.json" },
+    "lesson_plan": { "$ref": "lesson-plan.v1.schema.json" }
+  }
+}

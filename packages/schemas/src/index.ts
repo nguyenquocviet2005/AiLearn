@@ -113,6 +113,21 @@ export interface TeacherLessonPlanV1 {
   generated_at: string;
 }
 
+export type TeacherPlanDecision = "pending" | "approved" | "rejected";
+
+export interface TeacherPlanVersionV1 {
+  schema_version: SchemaVersionV1;
+  id: string;
+  plan_id: string;
+  version: number;
+  parent_version_id: string | null;
+  decision: TeacherPlanDecision;
+  published_at: string | null;
+  created_at: string;
+  snapshot: ClassSnapshotV1;
+  lesson_plan: TeacherLessonPlanV1;
+}
+
 export interface ImprovementStep {
   id: string;
   kind: StepKind;

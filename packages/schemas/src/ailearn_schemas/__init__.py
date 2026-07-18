@@ -14,7 +14,11 @@ from ailearn_schemas.intervention_report import (
     RemainingGap,
     StudentOutcome,
 )
-from ailearn_schemas.lesson_plan import LessonActivity, TeacherLessonPlanV1
+from ailearn_schemas.lesson_plan import (
+    LessonActivity,
+    TeacherLessonPlanV1,
+    TeacherPlanVersionV1,
+)
 from ailearn_schemas.diagnostic_profile import (
     RootCauseHypothesis,
     StudentDiagnosticProfileV1,
@@ -38,5 +42,6 @@ __all__ = [
     "StudentImprovementPathV1",
     "StudentOutcome",
     "TeacherLessonPlanV1",
+    "TeacherPlanVersionV1",
     "TeachingPriority",
 ]

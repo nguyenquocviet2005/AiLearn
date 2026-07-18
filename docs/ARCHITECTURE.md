@@ -33,6 +33,13 @@ Remediation engine (pure domain):
   packages/content     (ContentGenerator, template-first + optional LLM enrichment)
 ```
 
+VAI-19 adds the teacher planning HTTP/UI boundary. `lesson_plan_versions` is append-only through
+the service-role API: each teacher edit, approval/rejection decision, and publication creates a new
+`TeacherPlanVersionV1` row. The original deterministic proposal remains intact. Publication is
+allowed only when the latest version is teacher-approved. The initial demo proposal remains a
+synthetic fixture until the first persisted version, so the teacher can inspect the plan when
+Supabase configuration is absent; writes correctly return a sanitized `503` without storage.
+
 The web application contains presentation and a typed API client. The API owns transport validation,
 CORS configuration, failure sanitization, and the server-side Supabase credential. The browser never
 calls Supabase directly. Evidence validation, diagnosis, and planning live in `ailearn_schemas`,
@@ -80,9 +87,9 @@ develop-against-fixtures note in the original issue text is superseded — VAI-1
 
 ## Deferred Architecture
 
-Authentication roles, authorization, synchronization across devices, teacher planning HTTP/UI
-wiring and persistence, AI orchestration, and a separate model service remain deferred to later
-issues. Durable (Supabase-backed) diagnostic/remediation session storage is deferred to VAI-20. A
+Authentication roles, authorization, synchronization across devices, AI orchestration, and a
+separate model service remain deferred to later issues. Durable (Supabase-backed)
+diagnostic/remediation session storage is deferred to VAI-20. A
 teacher-facing inbox to receive the student "Nhờ cô giải thích" (ask teacher) help action does not
 exist yet — it is captured client-side only (see Operational Behavior).
 

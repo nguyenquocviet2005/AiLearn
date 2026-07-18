@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 
-import type { ClassSnapshotV1, TeacherLessonPlanV1 } from "@ailearn/schemas";
+import type { ClassSnapshotV1, TeacherPlanVersionV1 } from "@ailearn/schemas";
 
-import {
-  fixtureTeacherWorkspaceRepository,
-  type TeacherWorkspaceRepository,
-} from "@/lib/adapters/teacher-fixtures";
+import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
+import { httpTeacherWorkspaceRepository } from "@/lib/adapters/teacher-repository";
 
 type TeacherView = "overview" | "lesson-plan";
 
@@ -19,7 +17,7 @@ type WorkspaceState =
   | {
       kind: "ready";
       view: "lesson-plan";
-      lessonPlan: TeacherLessonPlanV1;
+      planVersion: TeacherPlanVersionV1;
     }
   | { kind: "error"; view: TeacherView };
 
@@ -171,7 +169,111 @@ function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
   );
 }
 
-function LessonPlanView({ lessonPlan }: { lessonPlan: TeacherLessonPlanV1 }) {
+function LessonPlanView({
+  planVersion,
+  repository,
+  onVersionChange,
+}: {
+  planVersion: TeacherPlanVersionV1;
+  repository: TeacherWorkspaceRepository;
+  onVersionChange: (version: TeacherPlanVersionV1) => void;
+}) {
+  const [snapshot, setSnapshot] = useState(planVersion.snapshot);
+  const [lessonPlan, setLessonPlan] = useState(planVersion.lesson_plan);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const dirty =
+    snapshot !== planVersion.snapshot || lessonPlan !== planVersion.lesson_plan;
+  const durationInvalid =
+    lessonPlan.total_duration_minutes < 1 ||
+    lessonPlan.total_duration_minutes > 45 ||
+    lessonPlan.activities.some(
+      (activity) =>
+        !Number.isInteger(activity.duration_minutes) ||
+        activity.duration_minutes < 1,
+    );
+
+  useEffect(() => {
+    setSnapshot(planVersion.snapshot);
+    setLessonPlan(planVersion.lesson_plan);
+    setError(null);
+  }, [planVersion]);
+
+  async function saveVersion() {
+    setSaving(true);
+    setError(null);
+    try {
+      onVersionChange(
+        await repository.createVersion(
+          snapshot,
+          lessonPlan,
+          planVersion.version,
+        ),
+      );
+    } catch {
+      setError("Could not save this teacher edit.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function decide(action: "approve" | "reject" | "publish") {
+    setSaving(true);
+    setError(null);
+    try {
+      const next = await repository[action](
+        planVersion.plan_id,
+        planVersion.version,
+      );
+      onVersionChange(next);
+    } catch {
+      setError("Could not update the teacher decision.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function moveStudent(
+    studentId: string,
+    fromGroupId: string,
+    toGroupId: string,
+  ) {
+    setSnapshot((current) => ({
+      ...current,
+      groups: current.groups.map((group) => {
+        if (group.id === fromGroupId) {
+          return {
+            ...group,
+            student_ids: group.student_ids.filter((id) => id !== studentId),
+          };
+        }
+        if (group.id === toGroupId) {
+          return {
+            ...group,
+            student_ids: [...group.student_ids, studentId].sort(),
+          };
+        }
+        return group;
+      }),
+    }));
+  }
+
+  function updateDuration(activityId: string, duration: number) {
+    const activities = lessonPlan.activities.map((activity) =>
+      activity.id === activityId
+        ? { ...activity, duration_minutes: duration }
+        : activity,
+    );
+    setLessonPlan({
+      ...lessonPlan,
+      activities,
+      total_duration_minutes: activities.reduce(
+        (total, activity) => total + activity.duration_minutes,
+        0,
+      ),
+    });
+  }
+
   return (
     <section className="teacher-content" aria-labelledby="teacher-page-title">
       <div className="teacher-page-heading">
@@ -194,8 +296,8 @@ function LessonPlanView({ lessonPlan }: { lessonPlan: TeacherLessonPlanV1 }) {
           <strong>{lessonPlan.total_duration_minutes} minutes</strong>
         </div>
         <p>
-          This is a read-only fixture view. Teacher edits and approval are
-          intentionally deferred to VAI-19.
+          Version {planVersion.version} · {formatStatus(planVersion.decision)}{" "}
+          decision
         </p>
       </section>
 
@@ -208,7 +310,23 @@ function LessonPlanView({ lessonPlan }: { lessonPlan: TeacherLessonPlanV1 }) {
             <article>
               <div className="activity-heading">
                 <div>
-                  <p className="eyebrow">{activity.duration_minutes} minutes</p>
+                  <label
+                    className="eyebrow"
+                    htmlFor={`duration-${activity.id}`}
+                  >
+                    Minutes
+                    <input
+                      id={`duration-${activity.id}`}
+                      aria-label={`${activity.title} duration`}
+                      min="1"
+                      max="45"
+                      type="number"
+                      value={activity.duration_minutes}
+                      onChange={(event) =>
+                        updateDuration(activity.id, Number(event.target.value))
+                      }
+                    />
+                  </label>
                   <h2>{activity.title}</h2>
                 </div>
                 <span>{humanize(activity.skill_id)}</span>
@@ -222,6 +340,70 @@ function LessonPlanView({ lessonPlan }: { lessonPlan: TeacherLessonPlanV1 }) {
           </li>
         ))}
       </ol>
+
+      <section className="teacher-panel" aria-labelledby="group-editor-title">
+        <p className="eyebrow">Teacher edit</p>
+        <h2 id="group-editor-title">Adjust intervention groups</h2>
+        {snapshot.groups.map((group) => (
+          <div key={group.id}>
+            <h3>{humanize(group.intervention_need)}</h3>
+            {group.student_ids.map((studentId) => (
+              <label key={studentId}>
+                {studentId}
+                <select
+                  aria-label={`Move ${studentId}`}
+                  disabled={group.student_ids.length === 1}
+                  value={group.id}
+                  onChange={(event) =>
+                    moveStudent(studentId, group.id, event.target.value)
+                  }
+                >
+                  {snapshot.groups.map((target) => (
+                    <option key={target.id} value={target.id}>
+                      {humanize(target.intervention_need)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          </div>
+        ))}
+      </section>
+
+      <section className="teacher-panel" aria-label="Teacher approval controls">
+        <button
+          disabled={saving || durationInvalid}
+          onClick={() => void saveVersion()}
+          type="button"
+        >
+          Save teacher edit
+        </button>
+        <button
+          disabled={saving || dirty}
+          onClick={() => void decide("approve")}
+          type="button"
+        >
+          Approve plan
+        </button>
+        <button
+          disabled={saving || dirty}
+          onClick={() => void decide("reject")}
+          type="button"
+        >
+          Reject plan
+        </button>
+        <button
+          disabled={saving || dirty || planVersion.decision !== "approved"}
+          onClick={() => void decide("publish")}
+          type="button"
+        >
+          Publish plan
+        </button>
+        {error && <p role="alert">{error}</p>}
+        {durationInvalid && (
+          <p role="alert">A lesson plan cannot exceed 45 minutes.</p>
+        )}
+      </section>
     </section>
   );
 }
@@ -229,7 +411,7 @@ function LessonPlanView({ lessonPlan }: { lessonPlan: TeacherLessonPlanV1 }) {
 export function TeacherWorkspace({
   view,
   onNavigate,
-  repository = fixtureTeacherWorkspaceRepository,
+  repository = httpTeacherWorkspaceRepository,
 }: TeacherWorkspaceProps) {
   const [workspace, setWorkspace] = useState<WorkspaceState>({
     kind: "loading",
@@ -256,9 +438,9 @@ export function TeacherWorkspace({
       );
     } else {
       void repository.getLessonPlan().then(
-        (lessonPlan) => {
+        (planVersion) => {
           if (active) {
-            setWorkspace({ kind: "ready", view, lessonPlan });
+            setWorkspace({ kind: "ready", view, planVersion });
           }
         },
         () => {
@@ -334,7 +516,13 @@ export function TeacherWorkspace({
       {isCurrentView &&
         workspace.kind === "ready" &&
         workspace.view === "lesson-plan" && (
-          <LessonPlanView lessonPlan={workspace.lessonPlan} />
+          <LessonPlanView
+            onVersionChange={(planVersion) =>
+              setWorkspace({ kind: "ready", view: "lesson-plan", planVersion })
+            }
+            planVersion={workspace.planVersion}
+            repository={repository}
+          />
         )}
     </main>
   );

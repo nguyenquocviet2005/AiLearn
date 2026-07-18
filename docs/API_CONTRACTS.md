@@ -113,6 +113,13 @@ Sum of activity durations equals `total_duration_minutes`.
 
 Fixture: `data/fixtures/lesson-plan.json`.
 
+### `TeacherPlanVersionV1`
+
+Immutable teacher-review envelope around a `ClassSnapshotV1` and `TeacherLessonPlanV1`.
+It records the stable plan id, monotonically increasing version, parent version, decision
+(`pending` | `approved` | `rejected`), and optional `published_at`. A teacher edit, decision, and
+publication each append a version; the AI proposal is never overwritten.
+
 ### Domain planning engine (VAI-15)
 
 Pure Python surface in `packages/planning` (no new HTTP routes in VAI-15):
@@ -141,6 +148,21 @@ Required: `schema_version`, `id`, `class_id`, `lesson_id`, `generated_at`, `outc
 `student_outcomes[]`, `remaining_gaps[]`, `next_lesson_focus`, `printable_lesson_plan_id`.
 
 Fixture: `data/fixtures/intervention-report.json`.
+
+## Teacher planning endpoints
+
+- `GET /api/v1/classes/{class_id}/snapshot` returns the synthetic demo snapshot used for the
+  teacher proposal.
+- `GET /api/v1/lesson-plans/{plan_id}` returns the latest persisted `TeacherPlanVersionV1`, or the
+  immutable synthetic proposal when no edit version exists.
+- `POST /api/v1/lesson-plans/{plan_id}/versions` appends an edited version with a validated snapshot
+  and lesson plan.
+- `POST /api/v1/lesson-plans/{plan_id}/approve` and `/reject` append the teacher decision.
+- `POST /api/v1/lesson-plans/{plan_id}/publish` returns `409 lesson_plan_not_approved` unless the
+  latest version is approved; publication itself appends an auditable version with `published_at`.
+
+Teacher-plan versions are stored in Supabase `lesson_plan_versions`. The service-role API is the
+only configured database access path while authentication remains deferred.
 
 ## `POST /api/v1/evidence-events`
 
