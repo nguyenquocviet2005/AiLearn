@@ -8,7 +8,7 @@
 - Linear issue: https://linear.app/vaic-workspace/issue/VAI-41/refresh-teacher-and-student-dashboard-frontend
 - Branch: `honghainguyen2003/vai-41-refresh-teacher-and-student-dashboard-frontend`
 - Worktree: `/home/h2n/h2n/worktrees/vai-41-refresh-dashboard-frontend`
-- Pull request: Pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26
 
 ## Objective and Context
 
@@ -154,6 +154,7 @@ was introduced.
 | Web tests after VAI-25 merge resolution                                       | PASS - 59/59 web tests                                                                                    |
 | Chrome desktop and 390px inspection after VAI-25 merge                        | PASS - landing, teacher rail, and student dock render without horizontal overflow                         |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after VAI-25 merge    | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
+| Draft pull request publication                                                | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/26                                              |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
@@ -184,4 +185,4 @@ verification.
   this frontend-only issue.
 - No third-party icon dependency was approved or added.
 - Full verification reports three existing Starlette/FastAPI deprecation warnings; no test fails.
-- Pull request and CI evidence will be recorded after publication.
+- Draft pull request is published; GitHub CI evidence remains pending.
