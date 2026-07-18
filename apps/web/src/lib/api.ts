@@ -1,3 +1,5 @@
+import { getApiBaseUrl } from "./api-base-url";
+
 export type SystemStatus = {
   status: "ok";
   database: {
@@ -6,10 +8,8 @@ export type SystemStatus = {
   };
 };
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
-
 export async function getSystemStatus(): Promise<SystemStatus> {
-  const response = await fetch(`${apiBaseUrl}/api/v1/system-status`);
+  const response = await fetch(`${getApiBaseUrl()}/api/v1/system-status`);
   if (!response.ok) {
     throw new Error("System status is unavailable.");
   }

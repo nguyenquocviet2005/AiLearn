@@ -1,58 +1,115 @@
 import type { ClassSnapshotV1, TeacherPlanVersionV1 } from "@ailearn/schemas";
 
-import type { TeacherWorkspaceRepository } from "./teacher-fixtures";
+import { ApiConfigurationError, getApiBaseUrl } from "@/lib/api-base-url";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+import type { TeacherWorkspaceRepository } from "./teacher-workspace-repository";
+
 const planId = "plan_demo_fractions_01";
 const classId = "class_demo_6a";
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${apiBaseUrl}${path}`, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
-  });
-  if (!response.ok) {
-    throw new Error("Teacher plan service is unavailable.");
+export type TeacherRepositoryErrorKind =
+  "configuration" | "unavailable" | "response";
+
+export class TeacherRepositoryError extends Error {
+  readonly kind: TeacherRepositoryErrorKind;
+
+  constructor(kind: TeacherRepositoryErrorKind, message: string) {
+    super(message);
+    this.name = "TeacherRepositoryError";
+    this.kind = kind;
   }
-  return (await response.json()) as T;
 }
 
-export const httpTeacherWorkspaceRepository: TeacherWorkspaceRepository = {
-  getClassSnapshot() {
-    return request<ClassSnapshotV1>(`/api/v1/classes/${classId}/snapshot`);
-  },
-  getLessonPlan() {
-    return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${planId}`);
-  },
-  createVersion(snapshot, lessonPlan, expectedParentVersion) {
-    return request<TeacherPlanVersionV1>(
-      `/api/v1/lesson-plans/${planId}/versions`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          expected_parent_version: expectedParentVersion,
-          snapshot,
-          lesson_plan: lessonPlan,
-        }),
-      },
-    );
-  },
-  approve(id, expectedParentVersion) {
-    return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${id}/approve`, {
-      method: "POST",
-      body: JSON.stringify({ expected_parent_version: expectedParentVersion }),
-    });
-  },
-  reject(id, expectedParentVersion) {
-    return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${id}/reject`, {
-      method: "POST",
-      body: JSON.stringify({ expected_parent_version: expectedParentVersion }),
-    });
-  },
-  publish(id, expectedParentVersion) {
-    return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${id}/publish`, {
-      method: "POST",
-      body: JSON.stringify({ expected_parent_version: expectedParentVersion }),
-    });
-  },
-};
+export function createHttpTeacherWorkspaceRepository(
+  resolveBaseUrl: () => string = getApiBaseUrl,
+): TeacherWorkspaceRepository {
+  async function request<T>(path: string, init?: RequestInit): Promise<T> {
+    let apiBaseUrl: string;
+    try {
+      apiBaseUrl = resolveBaseUrl();
+    } catch (error) {
+      if (error instanceof ApiConfigurationError) {
+        throw new TeacherRepositoryError("configuration", error.message);
+      }
+      throw error;
+    }
+
+    let response: Response;
+    try {
+      response = await fetch(`${apiBaseUrl}${path}`, {
+        ...init,
+        headers: { "Content-Type": "application/json", ...init?.headers },
+      });
+    } catch {
+      throw new TeacherRepositoryError(
+        "unavailable",
+        "Teacher workspace API request failed.",
+      );
+    }
+    if (!response.ok) {
+      throw new TeacherRepositoryError(
+        "response",
+        "Teacher workspace data request was rejected.",
+      );
+    }
+    return (await response.json()) as T;
+  }
+
+  return {
+    getClassSnapshot() {
+      return request<ClassSnapshotV1>(`/api/v1/classes/${classId}/snapshot`);
+    },
+    getLessonPlan() {
+      return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${planId}`);
+    },
+    createVersion(snapshot, lessonPlan, expectedParentVersion) {
+      return request<TeacherPlanVersionV1>(
+        `/api/v1/lesson-plans/${planId}/versions`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            expected_parent_version: expectedParentVersion,
+            snapshot,
+            lesson_plan: lessonPlan,
+          }),
+        },
+      );
+    },
+    approve(id, expectedParentVersion) {
+      return request<TeacherPlanVersionV1>(
+        `/api/v1/lesson-plans/${id}/approve`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            expected_parent_version: expectedParentVersion,
+          }),
+        },
+      );
+    },
+    reject(id, expectedParentVersion) {
+      return request<TeacherPlanVersionV1>(
+        `/api/v1/lesson-plans/${id}/reject`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            expected_parent_version: expectedParentVersion,
+          }),
+        },
+      );
+    },
+    publish(id, expectedParentVersion) {
+      return request<TeacherPlanVersionV1>(
+        `/api/v1/lesson-plans/${id}/publish`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            expected_parent_version: expectedParentVersion,
+          }),
+        },
+      );
+    },
+  };
+}
+
+export const httpTeacherWorkspaceRepository =
+  createHttpTeacherWorkspaceRepository();

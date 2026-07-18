@@ -1,5 +1,7 @@
 import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 
+import { getApiBaseUrl } from "@/lib/api-base-url";
+
 import type {
   RemediationResponse,
   StartSessionResponse,
@@ -48,14 +50,12 @@ export interface StudentRepository {
   ): Promise<RemediationResponse>;
 }
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
-
 interface ErrorDetail {
   detail?: { code?: string; message?: string };
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${apiBaseUrl}${path}`, {
+  const response = await fetch(`${getApiBaseUrl()}${path}`, {
     ...init,
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
