@@ -88,6 +88,9 @@ remain unchanged.
 
 - `20260717000000_create_system_status.sql` — infrastructure singleton for system-status.
 - `20260718000000_create_evidence_events.sql` — product table for `EvidenceEventV1` persistence.
+- `20260719000000_create_students.sql` — synthetic class roster used by live teacher projections.
+- `20260720000000_add_confidence_to_evidence_events.sql` — additive confidence field for evidence.
+- `20260721000000_create_lesson_plan_versions.sql` — append-only teacher edits and decisions.
 - `20260722000000_create_learning_sessions.sql` — durable diagnostic/remediation sessions and
   idempotency results.
 
@@ -116,12 +119,23 @@ credentials because API tests substitute the infrastructure client.
 
 ### Vercel
 
-Create a Vercel project with root directory `apps/web`. Set `VITE_API_BASE_URL` to the Railway API origin.
-`apps/web/vercel.json` provides the SPA fallback.
+Create a Vercel project with root directory `apps/web`. Set `VITE_API_BASE_URL` to the Railway API origin
+for every deployed environment; `apps/web/vercel.json` provides the SPA fallback. Do not rely on a
+visitor's localhost, and do not reuse the production API for a staging deployment by omission.
 
-The established production API origin is `https://api-production-8a6d.up.railway.app`. The web client
+The established production API origin is `https://ailearn-production-ec5e.up.railway.app`. The web client
 uses this origin when a production build has no explicit `VITE_API_BASE_URL`; local development alone
-defaults to `http://localhost:8000`. Provider dashboard configuration still requires manual verification.
+defaults to `http://localhost:8000`.
+
+For the staging environment, configure the Vercel project at
+`https://ai-learn-web-test.vercel.app` with:
+
+```text
+VITE_API_BASE_URL=https://ailearn-staging.up.railway.app
+```
+
+Apply that variable to the branch/environment that deploys staging (normally `dev`), then redeploy.
+The browser must never receive `SUPABASE_SECRET_KEY` or any other backend secret.
 
 ### Railway
 
@@ -130,7 +144,14 @@ shared libraries under `packages/` via editable path installs, so the Docker bui
 whole repo to resolve them. The checked-in root-level `railway.toml` points `dockerfilePath` at
 `apps/api/Dockerfile` and defines the `$PORT` start command and `/health` health check. Configure
 `APP_ENV`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and exact `CORS_ORIGINS` values in Railway's secret
-store.
+store. The staging service uses `APP_ENV=staging`,
+`SUPABASE_URL=https://kfkufofszhshxltngfhg.supabase.co`, and
+`CORS_ORIGINS=https://ai-learn-web-test.vercel.app`; its `SUPABASE_SECRET_KEY` remains only in Railway.
+Before deploying a new Supabase project, apply the reviewed migrations and run the idempotent
+`uv run --project apps/api python -m ailearn_api.scripts.seed_fixtures` loader from a
+safe authenticated operator environment (for example, a Railway shell with server-side variables).
+Run `supabase db push --dry-run` first and obtain environment-specific approval before applying remote
+migrations; do not run these commands from a browser or expose credentials to the frontend.
 
 ## Repository Layout
 
