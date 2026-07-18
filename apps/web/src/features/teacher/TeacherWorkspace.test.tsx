@@ -2,7 +2,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { fixtureTeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
+import { createHttpTeacherWorkspaceRepository } from "@/lib/adapters/teacher-repository";
+import { ApiConfigurationError } from "@/lib/api-base-url";
+import { fixtureTeacherWorkspaceRepository } from "@/test/teacher-fixtures";
 import { TeacherWorkspace } from "./TeacherWorkspace";
 
 afterEach(() => {
@@ -11,6 +13,106 @@ afterEach(() => {
 });
 
 describe("TeacherWorkspace", () => {
+  it("loads the class overview through the configured HTTP repository", async () => {
+    const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => snapshot,
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={createHttpTeacherWorkspaceRepository(
+          () => "https://api.example.test",
+        )}
+        view="overview"
+      />,
+    );
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "A teaching plan starts with the evidence.",
+      }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.example.test/api/v1/classes/class_demo_6a/snapshot",
+      expect.any(Object),
+    );
+  });
+
+  it("loads and approves a lesson plan through the configured HTTP repository", async () => {
+    const initial = await fixtureTeacherWorkspaceRepository.getLessonPlan();
+    const approved = await fixtureTeacherWorkspaceRepository.approve(
+      initial.plan_id,
+      initial.version,
+    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => initial })
+      .mockResolvedValueOnce({ ok: true, json: async () => approved });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={createHttpTeacherWorkspaceRepository(
+          () => "https://api.example.test",
+        )}
+        view="lesson-plan"
+      />,
+    );
+
+    await screen.findByText("Version 1 · pending decision");
+    await user.click(screen.getByRole("button", { name: "Approve plan" }));
+    expect(
+      await screen.findByText("Version 2 · approved decision"),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "https://api.example.test/api/v1/lesson-plans/plan_demo_fractions_01/approve",
+      expect.objectContaining({ method: "POST" }),
+    );
+  });
+
+  it("shows an accurate API error when the configured repository cannot connect", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(new TypeError("Failed to fetch")),
+    );
+
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={createHttpTeacherWorkspaceRepository(
+          () => "https://api.example.test",
+        )}
+        view="overview"
+      />,
+    );
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The teacher workspace API is unavailable. Try again later.",
+    );
+  });
+
+  it("distinguishes deployment configuration errors from data failures", async () => {
+    render(
+      <TeacherWorkspace
+        onNavigate={vi.fn()}
+        repository={createHttpTeacherWorkspaceRepository(() => {
+          throw new ApiConfigurationError("invalid deployment configuration");
+        })}
+        view="overview"
+      />,
+    );
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The teacher workspace API is not configured for this deployment.",
+    );
+  });
+
   it("renders the fixture class snapshot without calling the backend", async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);

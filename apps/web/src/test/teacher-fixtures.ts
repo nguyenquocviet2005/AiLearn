@@ -4,32 +4,11 @@ import type {
   TeacherPlanVersionV1,
 } from "@ailearn/schemas";
 
-import classSnapshotFixture from "../../../../../data/fixtures/class-snapshot.json";
-import lessonPlanFixture from "../../../../../data/fixtures/lesson-plan.json";
+import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
+import classSnapshotFixture from "./fixtures/class-snapshot.json";
+import lessonPlanFixture from "./fixtures/lesson-plan.json";
 
-export interface TeacherWorkspaceRepository {
-  getClassSnapshot(): Promise<ClassSnapshotV1>;
-  getLessonPlan(): Promise<TeacherPlanVersionV1>;
-  createVersion(
-    snapshot: ClassSnapshotV1,
-    lessonPlan: TeacherLessonPlanV1,
-    expectedParentVersion: number,
-  ): Promise<TeacherPlanVersionV1>;
-  approve(
-    planId: string,
-    expectedParentVersion: number,
-  ): Promise<TeacherPlanVersionV1>;
-  reject(
-    planId: string,
-    expectedParentVersion: number,
-  ): Promise<TeacherPlanVersionV1>;
-  publish(
-    planId: string,
-    expectedParentVersion: number,
-  ): Promise<TeacherPlanVersionV1>;
-}
-
-// VAI-11 validates these frozen fixture artifacts against the shared V1 schemas.
+// Test-only data mirrors the VAI-11 artifacts and remains typed by shared V1 contracts.
 const classSnapshot = classSnapshotFixture as ClassSnapshotV1;
 const lessonPlan = lessonPlanFixture as TeacherLessonPlanV1;
 

@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 
 import type { ClassSnapshotV1, TeacherPlanVersionV1 } from "@ailearn/schemas";
 
-import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-fixtures";
-import { httpTeacherWorkspaceRepository } from "@/lib/adapters/teacher-repository";
+import {
+  httpTeacherWorkspaceRepository,
+  TeacherRepositoryError,
+} from "@/lib/adapters/teacher-repository";
+import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 
 type TeacherView = "overview" | "lesson-plan";
 
@@ -19,7 +22,7 @@ type WorkspaceState =
       view: "lesson-plan";
       planVersion: TeacherPlanVersionV1;
     }
-  | { kind: "error"; view: TeacherView };
+  | { kind: "error"; view: TeacherView; message: string };
 
 type TeacherWorkspaceProps = {
   view: TeacherView;
@@ -33,6 +36,18 @@ function humanize(value: string) {
 
 function formatStatus(value: string) {
   return value.replaceAll("_", " ");
+}
+
+function teacherWorkspaceErrorMessage(error: unknown): string {
+  if (error instanceof TeacherRepositoryError) {
+    if (error.kind === "configuration") {
+      return "The teacher workspace API is not configured for this deployment.";
+    }
+    if (error.kind === "unavailable") {
+      return "The teacher workspace API is unavailable. Try again later.";
+    }
+  }
+  return "The teacher workspace data could not be loaded.";
 }
 
 function TeacherOverview({ snapshot }: { snapshot: ClassSnapshotV1 }) {
@@ -430,9 +445,13 @@ export function TeacherWorkspace({
             setWorkspace({ kind: "ready", view, snapshot });
           }
         },
-        () => {
+        (error) => {
           if (active) {
-            setWorkspace({ kind: "error", view });
+            setWorkspace({
+              kind: "error",
+              view,
+              message: teacherWorkspaceErrorMessage(error),
+            });
           }
         },
       );
@@ -443,9 +462,13 @@ export function TeacherWorkspace({
             setWorkspace({ kind: "ready", view, planVersion });
           }
         },
-        () => {
+        (error) => {
           if (active) {
-            setWorkspace({ kind: "error", view });
+            setWorkspace({
+              kind: "error",
+              view,
+              message: teacherWorkspaceErrorMessage(error),
+            });
           }
         },
       );
@@ -497,13 +520,13 @@ export function TeacherWorkspace({
 
       {(!isCurrentView || workspace.kind === "loading") && (
         <p className="teacher-state" aria-live="polite">
-          Preparing the fixture workspace...
+          Preparing the teacher workspace...
         </p>
       )}
 
       {isCurrentView && workspace.kind === "error" && (
         <p className="teacher-state" role="alert">
-          The teacher fixture workspace is unavailable.
+          {workspace.message}
         </p>
       )}
 
