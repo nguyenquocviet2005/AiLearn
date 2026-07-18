@@ -6,7 +6,7 @@
 - Linear: VAI-20
 - Branch: `honghainguyen2003/vai-20-connect-the-complete-evidence-pipeline`
 - Worktree: `/home/h2n/h2n/worktrees/vai-20-connect-evidence-pipeline`
-- Pull request: pending
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/23 (Draft)
 
 ## Objective and approved plan
 
