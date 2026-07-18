@@ -10,6 +10,8 @@ COPY packages/schemas packages/schemas
 COPY packages/diagnostic packages/diagnostic
 COPY packages/content packages/content
 COPY packages/remediation packages/remediation
+COPY data data
+COPY eval eval
 
 WORKDIR /app/apps/api
 RUN uv sync --frozen --no-dev --no-install-project
