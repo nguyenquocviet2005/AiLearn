@@ -6,9 +6,11 @@
 - Human owner: Hải Nguyễn Hồng
 - AI tool: Codex (GPT-5)
 - Linear issue: https://linear.app/vaic-workspace/issue/VAI-41/refresh-teacher-and-student-dashboard-frontend
-- Branch: `honghainguyen2003/vai-41-refresh-teacher-and-student-dashboard-frontend`
+- Primary branch: `honghainguyen2003/vai-41-refresh-teacher-and-student-dashboard-frontend`
+- Follow-up branch: `vai-41-homepage-technology`
 - Worktree: `/home/h2n/h2n/worktrees/vai-41-refresh-dashboard-frontend`
-- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26
+- Primary pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/26 (merged)
+- Follow-up pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/29
 
 ## Objective and Context
 
@@ -28,6 +30,10 @@ and the firefly mascot use its glowing tail as a recurring light source.
 The human then requested a homepage team section using the member information and portraits from page
 9 of `/home/h2n/h2n/AiLearn/mat/Bản sao của Vison.pdf`.
 
+After the first draft pull request was published, the human requested a prominent homepage technology
+section grounded in the repository documentation and running implementation. The human also selected
+`/home/h2n/h2n/AiLearn/mat/KAWAII]_Final - LOGO - 1 – Đã sửa (1).png` as the public header logo.
+
 ## Planning and Implementation Prompts
 
 - Create a new Linear issue assigned to the human owner and begin implementation.
@@ -39,6 +45,10 @@ The human then requested a homepage team section using the member information an
   motif across the landing and student experience.
 - Add the six-person AiLearn team to the public homepage using the approved vision-deck portraits,
   names, and roles.
+- Explain the running algorithms, database, curriculum sources, and deployable stack on the homepage.
+- Replace the public-header identity with the selected final AiLearn logo asset.
+- Replace the dense formula-led technology composition with three Vietnamese product pillars, make
+  Personalized Remediation the third pillar, and present the runtime as a recognizable logo stack.
 
 ## Approved Plan
 
@@ -77,6 +87,16 @@ was introduced.
   visual review exposed a breakpoint-specific horizontal offset.
 - Extracted the six source portraits from the vision PDF, converted them to compact WebP assets, and
   added an editorial staggered team section with direct header and footer navigation.
+- Added a connected technology narrative covering the evidence-updated learner model, skill-graph and
+  misconception diagnosis, Personalized Remediation, CTGDPT 2018 seed and golden-case inputs, current
+  React/Vite/FastAPI/Supabase runtime, Railway/Vercel deployment, and FIFO offline queue.
+- Replaced formula-heavy English labels with Vietnamese product outcomes and a clean three-stage flow:
+  understand mastery, find the root gap, and personalize a short path to repair it.
+- Added locally served brand marks for the running stack. Neo4j, pgvector, and LangGraph appear only in
+  a clearly labeled expansion lane; the current Python graph engine and optional LLM boundary remain
+  explicit.
+- Derived a 508px transparent PNG from the human-selected final logo and aligned it within the shared
+  Dynamic Island header at desktop and mobile widths.
 - Fetched merged VAI-25 work from `origin/main` at `0b8c9a1`, preserved its expanded teacher demo flow,
   and adapted the VAI-41 companion rail to the new `TeacherShell` contract and `teacher.css` ownership.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
@@ -97,6 +117,15 @@ was introduced.
   placement alone.
 - Accepted: Publish the six team members and portraits from the supplied product vision deck on the
   homepage.
+- Accepted: Make the repository's implemented technology and data provenance a prominent homepage
+  story.
+- Accepted: Use the supplied `KAWAII]_Final - LOGO - 1 – Đã sửa (1).png` artwork in the public header.
+- Modified: Distinguish implemented runtime capabilities from proposed architecture so the homepage
+  does not present LangGraph, pgvector, or an LLM provider as already deployed.
+- Accepted: Make Personalized Remediation the third technology pillar and emphasize how AiLearn repairs
+  a gap instead of foregrounding mathematical formulas.
+- Accepted: Show Railway and the wider running stack through recognizable logos; show Neo4j only as a
+  graph-database expansion option because it is not a current repository dependency.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
   familiar system symbols and the approved mascot asset are used instead.
 - Rejected: None.
@@ -108,6 +137,8 @@ was introduced.
 - `apps/web/src/App.test.tsx`
 - `apps/web/src/index.css`
 - `apps/web/src/components/navigation/AppHeader.tsx`
+- `apps/web/public/brand/ailearn-header-logo.png`
+- `apps/web/public/technology/*.svg`
 - `apps/web/src/features/landing/LandingPage.tsx`
 - `apps/web/src/features/landing/LandingPage.test.tsx`
 - `apps/web/src/features/landing/landing.css`
@@ -155,6 +186,14 @@ was introduced.
 | Chrome desktop and 390px inspection after VAI-25 merge                        | PASS - landing, teacher rail, and student dock render without horizontal overflow                         |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after VAI-25 merge    | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
 | Draft pull request publication                                                | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/26                                              |
+| Web tests after technology and header-logo addition                           | PASS - 59/59 web tests                                                                                    |
+| Web lint, type-check, and production build after technology addition          | PASS                                                                                                      |
+| Chrome 1440px and 390px technology-section inspection                         | PASS - logo remains aligned, technology flow is readable, and no horizontal overflow is present           |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after technology work | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
+| Web tests after technology feedback pass                                      | PASS - 59/59 web tests                                                                                    |
+| Chrome 1440px, 900px, and 390px technology inspection                         | PASS - clean lanes, readable stack logos, and no horizontal overflow                                      |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after feedback pass   | PASS - format, lint, type-check, 59 web tests, web build, Ruff, mypy, 121 API/domain tests, and API build |
+| Follow-up draft pull request publication                                      | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/29                                              |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were
@@ -185,4 +224,5 @@ verification.
   this frontend-only issue.
 - No third-party icon dependency was approved or added.
 - Full verification reports three existing Starlette/FastAPI deprecation warnings; no test fails.
-- Draft pull request is published; GitHub CI evidence remains pending.
+- PR #26 merged before the follow-up technology commit; focused Draft PR #29 now carries the
+  technology and logo changes. Its GitHub CI evidence remains pending.

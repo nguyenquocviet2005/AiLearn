@@ -8,11 +8,14 @@ describe("LandingPage", () => {
   it("explains the learning loop and both product experiences", () => {
     render(<LandingPage onNavigate={vi.fn()} />);
 
-    expect(
-      within(screen.getByRole("banner")).getByRole("link", {
-        name: "AiLearn - trang chủ",
-      }),
-    ).toBeInTheDocument();
+    const brand = within(screen.getByRole("banner")).getByRole("link", {
+      name: "AiLearn - trang chủ",
+    });
+    expect(brand).toBeInTheDocument();
+    expect(brand.querySelector("img")).toHaveAttribute(
+      "src",
+      "/brand/ailearn-header-logo.png",
+    );
 
     expect(
       screen.getByRole("heading", {
@@ -28,6 +31,18 @@ describe("LandingPage", () => {
       screen.getByRole("heading", {
         name: "Một bước vừa đủ cho chỗ em đang cần.",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Không đoán mò. AiLearn lần theo từng dấu vết học tập.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Railway")).toBeInTheDocument();
+    expect(
+      screen.getByText("Neo4j · pgvector · LangGraph"),
     ).toBeInTheDocument();
     expect(
       screen.getByAltText("Linh vật ánh sáng của AiLearn"),
