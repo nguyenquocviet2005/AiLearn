@@ -8,6 +8,7 @@
 - Worktree: `/Users/haipham/Documents/AiLearn`
 - Pull request: pending
 - Baseline: `0b8c9a116837f37fffd6bfbc7ff02d90a8c1792f`
+- Integrated origin/main: `90382f8341739ee4c374aa8f47cdad170e327ba6` (VAI-41 dashboard refresh)
 
 ## Objective and supplied context
 
@@ -34,6 +35,8 @@ sequential workflow rather than overlapping implementations.
 - Added privacy-bounded active-learner persistence containing only a synthetic id, display name, and
   persona id.
 - Restored the selected persona and cached remediation path across reloads.
+- Adapted recovery behavior and tests to VAI-41's merged student dashboard shell, and retained the
+  previous offline state until a replacement demo path starts successfully.
 - Added regression coverage for data invariants, isolated transient reset, reload recovery, and
   non-duplicated queue synchronization.
 - Recovered writes interrupted in `SYNCING` exactly once per new JavaScript runtime, retaining the
@@ -68,7 +71,7 @@ sequential workflow rather than overlapping implementations.
 ## Verification evidence
 
 - Focused web tests: 26/26 passed.
-- Full web tests: 64/64 passed.
+- Full web tests after integrating VAI-41: 66/66 passed.
 - Web Prettier, ESLint, TypeScript, and production build: passed using the existing local binaries.
 - Ruff format/lint: passed for the CI surface.
 - Mypy: passed for `apps/api/src` and `packages/planning/src`.

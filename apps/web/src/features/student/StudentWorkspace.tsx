@@ -562,12 +562,14 @@ export function StudentWorkspace({
     setBusy(true);
     try {
       const reset = await repository.resetDemo(selectedPersonaId);
-      clearAll();
-      clearCache();
-      setPendingCount(0);
       const remediation = await repository.startRemediationSession(
         reset.persona.profile,
       );
+      // Keep the previous offline recovery state until the replacement path is
+      // actually available. A partial reset must not strand the learner.
+      clearAll();
+      clearCache();
+      setPendingCount(0);
       const learner = {
         id: reset.persona.student_id,
         displayName: reset.persona.display_name,
