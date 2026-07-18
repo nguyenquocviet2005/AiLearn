@@ -9,7 +9,7 @@
 - Branch: `VAI-25-vietnamese-teacher-demo-cases`
 - Worktree: `/Users/haipham/Documents/AiLearn-parallel-2`
 - Baseline: `90382f8341739ee4c374aa8f47cdad170e327ba6`
-- Pull request: pending
+- Pull request: <https://github.com/nguyenquocviet2005/AiLearn/pull/28>
 
 ## Objective and supplied context
 
