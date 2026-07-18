@@ -37,8 +37,13 @@ describe("LandingPage", () => {
         name: "Không đoán mò. AiLearn lần theo từng dấu vết học tập.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Beta-Bernoulli mastery")).toBeInTheDocument();
-    expect(screen.getByText("Supabase PostgreSQL")).toBeInTheDocument();
+    expect(
+      screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Railway")).toBeInTheDocument();
+    expect(
+      screen.getByText("Neo4j · pgvector · LangGraph"),
+    ).toBeInTheDocument();
     expect(
       screen.getByAltText("Linh vật ánh sáng của AiLearn"),
     ).toBeInTheDocument();

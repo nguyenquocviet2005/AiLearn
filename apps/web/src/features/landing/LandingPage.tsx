@@ -41,28 +41,67 @@ const learningLoop = [
 
 const technologyStages = [
   {
-    code: "β",
-    label: "Learner model",
-    title: "Beta-Bernoulli mastery",
-    formula: "P(mastery) = (1 + đúng) / (2 + tổng lượt)",
+    number: "01",
+    shortLabel: "Hiểu",
+    label: "Mô hình người học",
+    title: "Hiểu đúng mức độ thành thạo",
+    outcome: "Cập nhật sau mỗi minh chứng, không đóng khung học sinh",
     description:
-      "Mỗi phản hồi cập nhật một posterior theo kỹ năng. Dưới ngưỡng 70% mới được xem là tín hiệu cần hỗ trợ; thiếu hoặc mâu thuẫn dữ liệu thì hệ thống chủ động chưa kết luận.",
+      "AiLearn ghép các câu trả lời đúng, sai và mức tự tin thành một trạng thái kỹ năng có thể cập nhật. Khi dữ liệu còn ít hoặc mâu thuẫn, hệ thống chọn hỏi thêm thay vì vội kết luận.",
   },
   {
-    code: "↳",
-    label: "Diagnosis policy",
-    title: "Skill Graph + misconception",
-    formula: "tiền đề → mẫu sai → top 3 giả thuyết",
+    number: "02",
+    shortLabel: "Tìm",
+    label: "Chẩn đoán nguyên nhân",
+    title: "Lần ngược để tìm chỗ hổng gốc",
+    outcome: "Đồ thị kỹ năng + mẫu sai + bằng chứng đối chiếu",
     description:
-      "AiLearn lần theo cạnh tiên quyết, ánh xạ phương án nhiễu sang lỗi quan niệm và giữ cả bằng chứng ủng hộ lẫn phản bác cho từng nguyên nhân gốc.",
+      "Thay vì chỉ báo câu nào sai, AiLearn lần theo kiến thức tiền đề và mẫu lỗi quan niệm. Mỗi giả thuyết đều đi kèm dấu vết ủng hộ, phản bác và câu hỏi cần xác minh tiếp.",
   },
   {
-    code: "Σ",
-    label: "Class planning",
-    title: "Ưu tiên có công thức mở",
-    formula: "40% lớp · 25% ảnh hưởng · 20% khẩn cấp · 15% tin cậy",
+    number: "03",
+    shortLabel: "Vá gap",
+    label: "Cá nhân hóa lộ trình",
+    title: "Vá đúng gap bằng một đường học vừa đủ",
+    outcome: "Xác nhận → Sửa hổng → Luyện tập → Chuyển giao",
     description:
-      "Điểm ưu tiên được tính tất định để tạo nhóm can thiệp và giáo án 45 phút. Giáo viên có thể sửa, bác bỏ, phê duyệt; bản đề xuất ban đầu không bị ghi đè.",
+      "Lộ trình 8-15 phút đổi cách biểu diễn khi học sinh tiếp tục vướng, lùi về kỹ năng nền khi cần và kết thúc bằng bài mới để kiểm tra việc hiểu có thực sự chuyển giao.",
+  },
+];
+
+const runningTechnologyStack = [
+  { name: "React", role: "Giao diện tương tác", logo: "/technology/react.svg" },
+  {
+    name: "TypeScript",
+    role: "Kiểu dữ liệu xuyên suốt",
+    logo: "/technology/typescript.svg",
+  },
+  { name: "Vite", role: "Build web tốc độ cao", logo: "/technology/vite.svg" },
+  {
+    name: "Python",
+    role: "Các engine học tập",
+    logo: "/technology/python.svg",
+  },
+  {
+    name: "FastAPI",
+    role: "API và kiểm tra Pydantic",
+    logo: "/technology/fastapi.svg",
+  },
+  {
+    name: "Supabase",
+    role: "Dịch vụ dữ liệu",
+    logo: "/technology/supabase.svg",
+  },
+  {
+    name: "PostgreSQL",
+    role: "Nguồn dữ liệu tin cậy",
+    logo: "/technology/postgresql.svg",
+  },
+  { name: "Railway", role: "Vận hành API", logo: "/technology/railway.svg" },
+  {
+    name: "Vercel",
+    role: "Phân phối ứng dụng web",
+    logo: "/technology/vercel.svg",
   },
 ];
 
@@ -262,9 +301,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               </h2>
             </div>
             <p>
-              Kiến trúc hybrid giữ các quyết định giáo dục quan trọng trong
-              thuật toán có thể kiểm thử. AI tạo sinh chỉ hỗ trợ diễn giải và
-              biến thể nội dung trong một context đã được kiểm soát.
+              Kiến trúc hybrid nối dữ liệu chương trình, dấu vết làm bài và
+              chính sách sư phạm thành một vòng khép kín: hiểu chỗ vướng, tìm
+              nguyên nhân rồi đưa ra cách học để vá đúng gap.
             </p>
           </div>
 
@@ -273,35 +312,41 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <span>Nguồn vào đã định danh</span>
               <ul>
                 <li>
-                  <strong>CTGDPT 2018</strong>
-                  <small>Skill Graph Toán 7 và quan hệ tiên quyết</small>
+                  <strong>Chương trình GDPT 2018</strong>
+                  <small>Đồ thị kỹ năng Toán 7 và quan hệ kiến thức nền</small>
                 </li>
                 <li>
-                  <strong>Assessment + misconception</strong>
-                  <small>Câu hỏi, đáp án và distractor có metadata</small>
+                  <strong>Ngân hàng câu hỏi và lỗi quan niệm</strong>
+                  <small>Câu hỏi, đáp án và phương án nhiễu có mô tả rõ</small>
                 </li>
                 <li>
-                  <strong>EvidenceEventV1</strong>
-                  <small>Schema chung, dữ liệu demo được ẩn danh</small>
+                  <strong>Dòng minh chứng học tập</strong>
+                  <small>
+                    Hợp đồng dữ liệu chung, dữ liệu demo được ẩn danh
+                  </small>
                 </li>
                 <li>
-                  <strong>Golden evaluation</strong>
-                  <small>Ca chuẩn để hồi quy chẩn đoán từ một lệnh</small>
+                  <strong>Bộ ca kiểm thử chuẩn</strong>
+                  <small>
+                    Kịch bản chuẩn để kiểm tra lại chất lượng chẩn đoán
+                  </small>
                 </li>
               </ul>
             </aside>
 
             <ol className="landing-tech-engine">
-              {technologyStages.map((stage, index) => (
+              {technologyStages.map((stage) => (
                 <li key={stage.title}>
                   <div className="landing-tech-node" aria-hidden="true">
-                    <span>{stage.code}</span>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
+                    <span>{stage.number}</span>
+                    <small>{stage.shortLabel}</small>
                   </div>
                   <div className="landing-tech-copy">
                     <span>{stage.label}</span>
                     <h3>{stage.title}</h3>
-                    <code>{stage.formula}</code>
+                    <strong className="landing-tech-outcome">
+                      {stage.outcome}
+                    </strong>
                     <p>{stage.description}</p>
                   </div>
                 </li>
@@ -309,35 +354,50 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             </ol>
           </div>
 
-          <div className="landing-tech-runtime">
-            <div className="landing-tech-runtime-heading">
-              <span>Runtime hiện tại</span>
-              <strong>Chạy được từ trình duyệt đến database</strong>
+          <div className="landing-tech-stack">
+            <div className="landing-tech-stack-heading">
+              <div>
+                <span>Stack đang chạy</span>
+                <h3>Từ trình duyệt đến hạ tầng triển khai.</h3>
+              </div>
+              <p>
+                Mỗi lớp có một trách nhiệm rõ ràng, chạy được cả khi chưa kết
+                nối model tạo sinh.
+              </p>
             </div>
-            <ol aria-label="Kiến trúc triển khai AiLearn">
-              <li>
-                <span>01</span>
-                <strong>React · Vite · TypeScript</strong>
-                <small>Web giáo viên và trải nghiệm học sinh</small>
-              </li>
-              <li>
-                <span>02</span>
-                <strong>FastAPI · Pydantic</strong>
-                <small>API mỏng, hợp đồng V1 và engine Python</small>
-              </li>
-              <li>
-                <span>03</span>
-                <strong>Supabase PostgreSQL</strong>
-                <small>
-                  Evidence bất biến, session bền vững, plan nối tiếp
-                </small>
-              </li>
-            </ol>
-            <p>
-              <strong>Offline FIFO</strong>
-              Câu trả lời được xếp hàng trên thiết bị, đồng bộ đúng thứ tự và
-              chống ghi trùng khi mạng trở lại.
-            </p>
+
+            <ul className="landing-tech-stack-list">
+              {runningTechnologyStack.map((technology) => (
+                <li key={technology.name}>
+                  <img src={technology.logo} alt="" loading="lazy" />
+                  <span>
+                    <strong>{technology.name}</strong>
+                    <small>{technology.role}</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="landing-tech-operations">
+              <p>
+                <strong>Học tiếp khi mạng yếu</strong>
+                Câu trả lời được xếp hàng trên thiết bị, đồng bộ đúng thứ tự và
+                chống ghi trùng khi kết nối trở lại.
+              </p>
+
+              <aside aria-label="Hướng mở rộng đồ thị và truy xuất">
+                <img src="/technology/neo4j.svg" alt="" loading="lazy" />
+                <div>
+                  <span>Hướng mở rộng</span>
+                  <strong>Neo4j · pgvector · LangGraph</strong>
+                  <p>
+                    Skill Graph hiện chạy bằng dữ liệu có cấu trúc trong engine
+                    Python. Lớp graph chuyên biệt, tìm kiếm ngữ nghĩa và điều
+                    phối workflow chỉ được thêm khi quy mô thực sự cần.
+                  </p>
+                </div>
+              </aside>
+            </div>
           </div>
 
           <p className="landing-tech-boundary">
