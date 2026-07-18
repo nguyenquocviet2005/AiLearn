@@ -8,8 +8,7 @@
 - Linear issue: VAI-18
 - Branch: `vai-18-complete-student-readiness-and-remediation-experience`
 - Worktree: `/home/viet2005/workspace/AiLearn`
-- Pull request: (created after this log was committed — see PR link in the Linear comment / PR
-  description)
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/16 (Draft)
 
 ## Objective
 
