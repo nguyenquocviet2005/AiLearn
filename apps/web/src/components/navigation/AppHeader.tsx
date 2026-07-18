@@ -17,8 +17,7 @@ export function AppHeader({ context, actions, className }: AppHeaderProps) {
           href="/"
           aria-label="AiLearn - trang chủ"
         >
-          <img src="/brand/ailearn-mascot.webp" alt="" />
-          <span>AiLearn</span>
+          <img src="/brand/ailearn-header-logo.png" alt="" />
         </a>
         <div className="app-island-context">{context}</div>
         {actions && <div className="app-island-actions">{actions}</div>}

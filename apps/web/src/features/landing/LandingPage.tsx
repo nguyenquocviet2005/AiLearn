@@ -39,6 +39,33 @@ const learningLoop = [
   },
 ];
 
+const technologyStages = [
+  {
+    code: "β",
+    label: "Learner model",
+    title: "Beta-Bernoulli mastery",
+    formula: "P(mastery) = (1 + đúng) / (2 + tổng lượt)",
+    description:
+      "Mỗi phản hồi cập nhật một posterior theo kỹ năng. Dưới ngưỡng 70% mới được xem là tín hiệu cần hỗ trợ; thiếu hoặc mâu thuẫn dữ liệu thì hệ thống chủ động chưa kết luận.",
+  },
+  {
+    code: "↳",
+    label: "Diagnosis policy",
+    title: "Skill Graph + misconception",
+    formula: "tiền đề → mẫu sai → top 3 giả thuyết",
+    description:
+      "AiLearn lần theo cạnh tiên quyết, ánh xạ phương án nhiễu sang lỗi quan niệm và giữ cả bằng chứng ủng hộ lẫn phản bác cho từng nguyên nhân gốc.",
+  },
+  {
+    code: "Σ",
+    label: "Class planning",
+    title: "Ưu tiên có công thức mở",
+    formula: "40% lớp · 25% ảnh hưởng · 20% khẩn cấp · 15% tin cậy",
+    description:
+      "Điểm ưu tiên được tính tất định để tạo nhóm can thiệp và giáo án 45 phút. Giáo viên có thể sửa, bác bỏ, phê duyệt; bản đề xuất ban đầu không bị ghi đè.",
+  },
+];
+
 const teamMembers = [
   {
     name: "Bạch Kim Anh",
@@ -109,6 +136,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         context={
           <nav className="landing-nav" aria-label="Điều hướng trang giới thiệu">
             <a href="#learning-loop">Cách hoạt động</a>
+            <a href="#technology">Công nghệ</a>
             <a href="#for-teachers">Giáo viên</a>
             <a href="#for-students">Học sinh</a>
             <a href="#team">Đội ngũ</a>
@@ -219,6 +247,107 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section
+          className="landing-technology"
+          id="technology"
+          aria-labelledby="technology-title"
+        >
+          <div className="landing-technology-intro">
+            <div>
+              <p className="landing-kicker">Công nghệ đang chạy</p>
+              <h2 id="technology-title">
+                Không đoán mò. AiLearn lần theo từng dấu vết học tập.
+              </h2>
+            </div>
+            <p>
+              Kiến trúc hybrid giữ các quyết định giáo dục quan trọng trong
+              thuật toán có thể kiểm thử. AI tạo sinh chỉ hỗ trợ diễn giải và
+              biến thể nội dung trong một context đã được kiểm soát.
+            </p>
+          </div>
+
+          <div className="landing-tech-system">
+            <aside className="landing-tech-sources" aria-label="Nguồn dữ liệu">
+              <span>Nguồn vào đã định danh</span>
+              <ul>
+                <li>
+                  <strong>CTGDPT 2018</strong>
+                  <small>Skill Graph Toán 7 và quan hệ tiên quyết</small>
+                </li>
+                <li>
+                  <strong>Assessment + misconception</strong>
+                  <small>Câu hỏi, đáp án và distractor có metadata</small>
+                </li>
+                <li>
+                  <strong>EvidenceEventV1</strong>
+                  <small>Schema chung, dữ liệu demo được ẩn danh</small>
+                </li>
+                <li>
+                  <strong>Golden evaluation</strong>
+                  <small>Ca chuẩn để hồi quy chẩn đoán từ một lệnh</small>
+                </li>
+              </ul>
+            </aside>
+
+            <ol className="landing-tech-engine">
+              {technologyStages.map((stage, index) => (
+                <li key={stage.title}>
+                  <div className="landing-tech-node" aria-hidden="true">
+                    <span>{stage.code}</span>
+                    <small>{String(index + 1).padStart(2, "0")}</small>
+                  </div>
+                  <div className="landing-tech-copy">
+                    <span>{stage.label}</span>
+                    <h3>{stage.title}</h3>
+                    <code>{stage.formula}</code>
+                    <p>{stage.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="landing-tech-runtime">
+            <div className="landing-tech-runtime-heading">
+              <span>Runtime hiện tại</span>
+              <strong>Chạy được từ trình duyệt đến database</strong>
+            </div>
+            <ol aria-label="Kiến trúc triển khai AiLearn">
+              <li>
+                <span>01</span>
+                <strong>React · Vite · TypeScript</strong>
+                <small>Web giáo viên và trải nghiệm học sinh</small>
+              </li>
+              <li>
+                <span>02</span>
+                <strong>FastAPI · Pydantic</strong>
+                <small>API mỏng, hợp đồng V1 và engine Python</small>
+              </li>
+              <li>
+                <span>03</span>
+                <strong>Supabase PostgreSQL</strong>
+                <small>
+                  Evidence bất biến, session bền vững, plan nối tiếp
+                </small>
+              </li>
+            </ol>
+            <p>
+              <strong>Offline FIFO</strong>
+              Câu trả lời được xếp hàng trên thiết bị, đồng bộ đúng thứ tự và
+              chống ghi trùng khi mạng trở lại.
+            </p>
+          </div>
+
+          <p className="landing-tech-boundary">
+            <i aria-hidden="true" />
+            <span>
+              <strong>Ranh giới AI:</strong> chẩn đoán, xếp hạng và chuyển trạng
+              thái vẫn chạy khi không có LLM. Nếu lớp làm giàu nội dung lỗi hoặc
+              timeout, AiLearn quay về template cục bộ.
+            </span>
+          </p>
         </section>
 
         <section
@@ -448,6 +577,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           <p>Trợ giảng thích ứng song hành cùng giáo viên Việt Nam.</p>
         </div>
         <div className="landing-footer-links">
+          <a className="landing-text-link" href="#technology">
+            Công nghệ
+          </a>
           <a className="landing-text-link" href="#team">
             Đội ngũ
           </a>

@@ -10,7 +10,11 @@ offline behavior, and broader curriculum coverage remain deferred to later issue
 The web application opens on a public Vietnamese product landing page at `/`. It introduces AiLearn's
 evidence-led learning loop and links into the existing teacher workspace at `/teacher` and student
 experience at `/student`. The public page also presents the six-person AiLearn team using the approved
-names, roles, and portraits from the product vision deck.
+names, roles, and portraits from the product vision deck. Its technology section documents only the
+capabilities implemented in this repository: Beta-Bernoulli mastery estimation, deterministic skill-graph
+diagnosis and class-priority scoring, CTGDPT 2018 seed and golden-case sources, the React/FastAPI/Supabase
+runtime, and the browser's FIFO offline queue. Proposed LangGraph, pgvector, and managed-LLM components are
+not presented as live runtime dependencies.
 
 ## Prerequisites
 
