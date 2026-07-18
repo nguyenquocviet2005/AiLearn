@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from ailearn_api.config import get_settings
+from ailearn_api.routes.admin_auth import router as admin_auth_router
 from ailearn_api.routes.classes import router as classes_router
 from ailearn_api.routes.demo import router as demo_router
 from ailearn_api.routes.diagnostics import router as diagnostics_router
@@ -21,7 +22,7 @@ def create_app() -> FastAPI:
         allow_origins=settings.cors_origins,
         allow_credentials=False,
         allow_methods=["GET", "POST"],
-        allow_headers=["Accept", "Content-Type"],
+        allow_headers=["Accept", "Content-Type", "Authorization"],
     )
     app.include_router(health_router)
     app.include_router(system_status_router)
@@ -32,6 +33,7 @@ def create_app() -> FastAPI:
     app.include_router(classes_router)
     app.include_router(lesson_plans_router)
     app.include_router(reports_router)
+    app.include_router(admin_auth_router)
     return app
 
 
