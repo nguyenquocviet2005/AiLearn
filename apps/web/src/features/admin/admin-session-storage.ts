@@ -11,7 +11,10 @@ export function readAdminSession(): StoredAdminSession | null {
 
   try {
     const parsed = JSON.parse(raw) as Partial<StoredAdminSession>;
-    if (typeof parsed.token !== "string" || typeof parsed.expiresAt !== "string") {
+    if (
+      typeof parsed.token !== "string" ||
+      typeof parsed.expiresAt !== "string"
+    ) {
       return null;
     }
     return { token: parsed.token, expiresAt: parsed.expiresAt };

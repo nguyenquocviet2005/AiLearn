@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { httpAdminAuthRepository, type AdminAuthRepository } from "@/lib/adapters/admin-auth-repository";
+import {
+  httpAdminAuthRepository,
+  type AdminAuthRepository,
+} from "@/lib/adapters/admin-auth-repository";
 import type { AdminRoute } from "./AdminLoginPage";
 import { AdminShell } from "./AdminShell";
 import {
@@ -80,8 +83,8 @@ export function AdminWorkspace({
         <p className="admin-kicker">Quản trị hệ thống</p>
         <h1 id="admin-page-title">Chào mừng đến khu vực quản trị.</h1>
         <p className="admin-lede">
-          Các module quản lý nội dung, học sinh và bằng chứng sẽ được bổ sung
-          ở giai đoạn tiếp theo.
+          Các module quản lý nội dung, học sinh và bằng chứng sẽ được bổ sung ở
+          giai đoạn tiếp theo.
         </p>
       </section>
     </AdminShell>

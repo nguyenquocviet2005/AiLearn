@@ -43,7 +43,10 @@ export function AdminLoginPage({
     setError(null);
     try {
       const session = await repository.login(email, password);
-      writeAdminSession({ token: session.token, expiresAt: session.expires_at });
+      writeAdminSession({
+        token: session.token,
+        expiresAt: session.expires_at,
+      });
       onNavigate("/admin");
     } catch (caught) {
       setError(loginErrorMessage(caught));

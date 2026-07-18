@@ -48,11 +48,7 @@ export function AdminShell({
           </a>
         </nav>
 
-        <button
-          className="admin-logout"
-          onClick={onLogout}
-          type="button"
-        >
+        <button className="admin-logout" onClick={onLogout} type="button">
           <span aria-hidden="true">↩</span>
           Đăng xuất
         </button>
