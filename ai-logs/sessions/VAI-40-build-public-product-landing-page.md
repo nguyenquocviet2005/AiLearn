@@ -8,7 +8,7 @@
 - Linear issue: VAI-40
 - Branch: `honghainguyen2003/vai-40-build-public-product-landing-page`
 - Worktree: `/home/h2n/h2n/worktrees/vai-40-build-public-product-landing-page`
-- Pull request: Not created yet
+- Pull request: https://github.com/nguyenquocviet2005/AiLearn/pull/24
 
 ## Objective and context
 
