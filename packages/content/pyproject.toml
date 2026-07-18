@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 name = "ailearn-content"
 version = "0.1.0"
 description = "AiLearn template-based content service with optional LLM fallback"

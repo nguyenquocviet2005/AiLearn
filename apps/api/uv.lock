@@ -7,7 +7,9 @@ name = "ailearn-api"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "ailearn-content" },
     { name = "ailearn-diagnostic" },
+    { name = "ailearn-remediation" },
     { name = "ailearn-schemas" },
     { name = "fastapi" },
     { name = "httpx" },
@@ -25,7 +27,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "ailearn-content", editable = "../../packages/content" },
     { name = "ailearn-diagnostic", editable = "../../packages/diagnostic" },
+    { name = "ailearn-remediation", editable = "../../packages/remediation" },
     { name = "ailearn-schemas", editable = "../../packages/schemas" },
     { name = "fastapi", specifier = ">=0.116.0,<1.0.0" },
     { name = "httpx", specifier = ">=0.28.1,<1.0.0" },
@@ -42,6 +46,11 @@ dev = [
 ]
 
 [[package]]
+name = "ailearn-content"
+version = "0.1.0"
+source = { editable = "../../packages/content" }
+
+[[package]]
 name = "ailearn-diagnostic"
 version = "0.1.0"
 source = { editable = "../../packages/diagnostic" }
@@ -51,6 +60,11 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [{ name = "ailearn-schemas", editable = "../../packages/schemas" }]
+
+[[package]]
+name = "ailearn-remediation"
+version = "0.1.0"
+source = { editable = "../../packages/remediation" }
 
 [[package]]
 name = "ailearn-schemas"

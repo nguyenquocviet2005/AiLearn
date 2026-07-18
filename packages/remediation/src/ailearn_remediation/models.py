@@ -118,7 +118,7 @@ class AttemptOutcome:
 class SessionState:
     """Mutable runtime state of one remediation session.
 
-    Not part of the shared contract; internal to ai/remediation.
+    Not part of the shared contract; internal to packages/remediation.
     """
 
     student_id: str

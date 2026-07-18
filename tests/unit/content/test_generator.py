@@ -12,7 +12,7 @@ import pytest
 from ailearn_content import ContentGenerator, NullLLMAdapter
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-TEMPLATES = str(REPO_ROOT / "ai" / "content" / "intervention-templates.json")
+TEMPLATES = str(REPO_ROOT / "packages" / "content" / "intervention-templates.json")
 
 
 class ExplodingLLM:

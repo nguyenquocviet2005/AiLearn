@@ -45,5 +45,7 @@ jobs:
           uv run --project apps/api pytest
           tests/unit/schemas
           tests/unit/diagnostic
+          tests/unit/content
+          tests/unit/remediation
           apps/api/tests
       - run: uv build --project apps/api

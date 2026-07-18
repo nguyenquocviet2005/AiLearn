@@ -259,7 +259,7 @@ def test_ac6_escalation_is_terminal(engine):
 def test_ac7_engine_has_no_llm_dependency(engine):
     """AC7: the flow works when the LLM API is unavailable.
 
-    ai/remediation never imports or calls an LLM; a full run needs no network.
+    packages/remediation never imports or calls an LLM; a full run needs no network.
     """
     session = engine.start(_profile(ReadinessStatus.NEEDS_SUPPORT))
     for i in range(4):
