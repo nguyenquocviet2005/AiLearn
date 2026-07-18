@@ -4,8 +4,8 @@ AiLearn is an adaptive tutoring platform for Vietnamese general education. This 
 full-stack walking skeleton plus a contract-first V1 foundation: shared schemas/fixtures, evidence
 write/read, and the VAI-10 infrastructure status path.
 
-Full diagnostic engines, teacher UI, authentication, offline behavior, and curriculum seeds remain
-deferred to later issues.
+Teacher planning now has deterministic domain policies; live teacher API/UI wiring, authentication,
+offline behavior, and broader curriculum coverage remain deferred to later issues.
 
 ## Prerequisites
 
@@ -100,10 +100,11 @@ Create a Vercel project with root directory `apps/web`. Set `VITE_API_BASE_URL` 
 ### Railway
 
 Create a Railway service with root directory `.` (repo root) — **not** `apps/api`. `apps/api` depends on
-`packages/schemas` and `packages/diagnostic` via editable path installs, so the Docker build context must
-span the whole repo to resolve them. The checked-in root-level `railway.toml` points `dockerfilePath` at
-`apps/api/Dockerfile` and defines the `$PORT` start command and `/health` health check. Configure `APP_ENV`,
-`SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and exact `CORS_ORIGINS` values in Railway's secret store.
+shared libraries under `packages/` via editable path installs, so the Docker build context must span the
+whole repo to resolve them. The checked-in root-level `railway.toml` points `dockerfilePath` at
+`apps/api/Dockerfile` and defines the `$PORT` start command and `/health` health check. Configure
+`APP_ENV`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and exact `CORS_ORIGINS` values in Railway's secret
+store.
 
 ## Repository Layout
 
@@ -111,9 +112,10 @@ span the whole repo to resolve them. The checked-in root-level `railway.toml` po
 apps/web           React, Vite, TypeScript, shadcn/ui components
 apps/api           FastAPI thin transport adapters
 packages/schemas   Shared V1 contracts (JSON Schema, Pydantic, TypeScript)
-packages/diagnostic Evidence foundation stubs
+packages/diagnostic Deterministic diagnostic engine
+packages/planning   Class snapshot, priority, grouping, and lesson-plan policies
 data/fixtures      Shared anonymized contract fixtures
 supabase           Infrastructure and evidence migrations
 docs               Architecture, API contracts, ADRs
-tests/unit         Schema and diagnostic unit tests
+tests/unit         Schema, diagnostic, planning, content, and remediation unit tests
 ```

@@ -8,6 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY apps/api/pyproject.toml apps/api/uv.lock apps/api/
 COPY packages/schemas packages/schemas
 COPY packages/diagnostic packages/diagnostic
+COPY packages/planning packages/planning
 COPY packages/content packages/content
 COPY packages/remediation packages/remediation
 COPY data data

@@ -38,13 +38,18 @@ jobs:
           enable-cache: true
           python-version: "3.12"
       - run: uv sync --project apps/api --locked --all-groups
-      - run: uv run --project apps/api ruff format --check apps/api
-      - run: uv run --project apps/api ruff check apps/api
-      - run: uv run --project apps/api mypy apps/api/src
+      - run: >-
+          uv run --project apps/api ruff format --check
+          apps/api packages/planning tests/unit/planning
+      - run: >-
+          uv run --project apps/api ruff check
+          apps/api packages/planning tests/unit/planning
+      - run: uv run --project apps/api mypy apps/api/src packages/planning/src
       - run: >-
           uv run --project apps/api pytest
           tests/unit/schemas
           tests/unit/diagnostic
+          tests/unit/planning
           tests/unit/content
           tests/unit/remediation
           apps/api/tests

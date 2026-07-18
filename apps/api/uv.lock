@@ -9,6 +9,7 @@ source = { editable = "." }
 dependencies = [
     { name = "ailearn-content" },
     { name = "ailearn-diagnostic" },
+    { name = "ailearn-planning" },
     { name = "ailearn-remediation" },
     { name = "ailearn-schemas" },
     { name = "fastapi" },
@@ -29,6 +30,7 @@ dev = [
 requires-dist = [
     { name = "ailearn-content", editable = "../../packages/content" },
     { name = "ailearn-diagnostic", editable = "../../packages/diagnostic" },
+    { name = "ailearn-planning", editable = "../../packages/planning" },
     { name = "ailearn-remediation", editable = "../../packages/remediation" },
     { name = "ailearn-schemas", editable = "../../packages/schemas" },
     { name = "fastapi", specifier = ">=0.116.0,<1.0.0" },
@@ -54,6 +56,17 @@ source = { editable = "../../packages/content" }
 name = "ailearn-diagnostic"
 version = "0.1.0"
 source = { editable = "../../packages/diagnostic" }
+dependencies = [
+    { name = "ailearn-schemas" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "ailearn-schemas", editable = "../../packages/schemas" }]
+
+[[package]]
+name = "ailearn-planning"
+version = "0.1.0"
+source = { editable = "../../packages/planning" }
 dependencies = [
     { name = "ailearn-schemas" },
 ]

@@ -113,6 +113,19 @@ Sum of activity durations equals `total_duration_minutes`.
 
 Fixture: `data/fixtures/lesson-plan.json`.
 
+### Domain planning engine (VAI-15)
+
+Pure Python surface in `packages/planning` (no new HTTP routes in VAI-15):
+
+- `build_class_snapshot(...) -> ClassSnapshotV1`
+- `build_lesson_plan(...) -> TeacherLessonPlanV1`
+- `DeterministicInterventionPolicy` for visible priority scoring and intervention-need grouping
+
+Planning consumes valid `StudentDiagnosticProfileV1` values. A roster member without a profile is
+listed only in `unknown_student_ids`. Priority rationale strings expose the weighted prevalence,
+downstream-impact, lesson-urgency, and diagnostic-confidence components. Teacher edit/approval and
+live UI/API wiring remain deferred to VAI-19 and VAI-20.
+
 ### `StudentImprovementPathV1`
 
 Required: `schema_version`, `id`, `student_id`, `target_skill_id`, `current_state`,

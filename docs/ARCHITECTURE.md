@@ -7,7 +7,8 @@ fixtures, and evidence persistence. VAI-13 added demo curriculum seeds and golde
 VAI-14 added a deterministic diagnostic engine in `packages/diagnostic/` (domain-only; no HTTP).
 VAI-17 exposes that engine over HTTP and adds a `students` table. VAI-16 built the remediation
 engine (`packages/remediation`, `packages/content`) and its thin HTTP surface; VAI-18 registers
-that router (it existed as code but was unreachable until now) and adds the student-facing web UI:
+that router (it existed as code but was unreachable until now) and adds the student-facing web UI.
+VAI-15 adds deterministic class aggregation and lesson planning in `packages/planning/`:
 
 ```text
 React/Vite browser application
@@ -25,6 +26,8 @@ Curriculum / golden inputs:
   data/seeds + eval/golden
 Diagnostic engine (pure domain):
   packages/diagnostic  (MasteryEstimator, RootCauseRanker, diagnose, build_readiness_session)
+Planning engine (pure domain):
+  packages/planning    (DeterministicInterventionPolicy, snapshot + draft plan builders)
 Remediation engine (pure domain):
   packages/remediation (RemediationEngine, state machine)
   packages/content     (ContentGenerator, template-first + optional LLM enrichment)
@@ -32,8 +35,8 @@ Remediation engine (pure domain):
 
 The web application contains presentation and a typed API client. The API owns transport validation,
 CORS configuration, failure sanitization, and the server-side Supabase credential. The browser never
-calls Supabase directly. Evidence validation and diagnosis live in `ailearn_schemas` /
-`ailearn_diagnostic`; routes remain thin adapters.
+calls Supabase directly. Evidence validation, diagnosis, and planning live in `ailearn_schemas`,
+`ailearn_diagnostic`, and `ailearn_planning`; routes remain thin adapters.
 
 Product Diagnostic HTTP (`POST /diagnostics/start`, `POST /diagnostics/{id}/responses`,
 `GET /students/{id}/diagnostic-profile`) is implemented in VAI-17. Remediation HTTP
@@ -77,11 +80,11 @@ develop-against-fixtures note in the original issue text is superseded — VAI-1
 
 ## Deferred Architecture
 
-Authentication roles, authorization, synchronization across devices, teacher planning engines, AI
-orchestration, and a separate model service remain deferred to later issues. Durable
-(Supabase-backed) diagnostic/remediation session storage is deferred to VAI-20. A teacher-facing
-inbox to receive the student "Nhờ cô giải thích" (ask teacher) help action does not exist yet — it
-is captured client-side only (see Operational Behavior).
+Authentication roles, authorization, synchronization across devices, teacher planning HTTP/UI
+wiring and persistence, AI orchestration, and a separate model service remain deferred to later
+issues. Durable (Supabase-backed) diagnostic/remediation session storage is deferred to VAI-20. A
+teacher-facing inbox to receive the student "Nhờ cô giải thích" (ask teacher) help action does not
+exist yet — it is captured client-side only (see Operational Behavior).
 
 ## Operational Behavior
 
@@ -98,6 +101,10 @@ is captured client-side only (see Operational Behavior).
   `diagnose()` from that student's `evidence_events`.
 - `diagnose(events, curriculum, items)` in `packages/diagnostic` produces `StudentDiagnosticProfileV1`
   deterministically without LLM calls.
+- `build_class_snapshot(...)` in `packages/planning` keeps unknown students separate, groups diagnosed
+  students by intervention need, and exposes deterministic priority-score components in each rationale.
+- `build_lesson_plan(...)` produces a 45-minute `TeacherLessonPlanV1` draft whose activities identify
+  a root cause, instructional skill, expected evidence, and rationale.
 - `/api/v1/remediation/sessions` / `/attempts` / `/confirm` / `sessions/{id}` are thin adapters over
   `RemediationEngine`/`ContentGenerator`. `/attempts` requires a client-supplied `attempt_id`; a
   repeated `attempt_id` for the same student replays the first recorded response instead of calling

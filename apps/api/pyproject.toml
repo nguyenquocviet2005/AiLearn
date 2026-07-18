@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
   "ailearn-content",
   "ailearn-diagnostic",
+  "ailearn-planning",
   "ailearn-remediation",
   "ailearn-schemas",
   "fastapi>=0.116.0,<1.0.0",
@@ -32,6 +33,7 @@ packages = ["src/ailearn_api"]
 [tool.uv.sources]
 ailearn-schemas = { path = "../../packages/schemas", editable = true }
 ailearn-diagnostic = { path = "../../packages/diagnostic", editable = true }
+ailearn-planning = { path = "../../packages/planning", editable = true }
 ailearn-content = { path = "../../packages/content", editable = true }
 ailearn-remediation = { path = "../../packages/remediation", editable = true }
 
