@@ -64,6 +64,9 @@ describe("TeacherWorkspace", () => {
     await user.click(screen.getByRole("link", { name: "Lesson plan" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
 
+    await user.click(screen.getByRole("link", { name: "Intervention report" }));
+    expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
+
     rerender(
       <TeacherWorkspace
         onNavigate={onNavigate}

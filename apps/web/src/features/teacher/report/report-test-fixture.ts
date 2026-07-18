@@ -1,0 +1,62 @@
+import type { InterventionReportV1 } from "@ailearn/schemas";
+
+export const reportTestFixture: InterventionReportV1 = {
+  schema_version: "1",
+  id: "report_demo_01",
+  class_id: "class_demo_6a",
+  lesson_id: "lesson_demo_fractions_01",
+  generated_at: "2026-07-18T01:30:00Z",
+  outcome_counts: {
+    passed_transfer: 1,
+    still_struggling: 1,
+    root_cause_reclassified: 1,
+    incomplete: 1,
+    teacher_escalation: 1,
+  },
+  student_outcomes: [
+    {
+      student_id: "stu_demo_01",
+      outcome: "still_struggling",
+      evidence_ids: ["ev_demo_001", "ev_demo_010"],
+    },
+    {
+      student_id: "stu_demo_02",
+      outcome: "root_cause_reclassified",
+      evidence_ids: ["ev_demo_011"],
+    },
+    {
+      student_id: "stu_demo_03",
+      outcome: "passed_transfer",
+      evidence_ids: ["ev_demo_012"],
+    },
+    {
+      student_id: "stu_demo_04",
+      outcome: "teacher_escalation",
+      evidence_ids: ["ev_demo_013", "ev_demo_014"],
+    },
+    {
+      student_id: "stu_demo_05",
+      outcome: "incomplete",
+      evidence_ids: [],
+    },
+  ],
+  remaining_gaps: [
+    {
+      skill_id: "skill_fractions_equivalent",
+      student_ids: ["stu_demo_01", "stu_demo_04"],
+    },
+    {
+      skill_id: "skill_common_denominator",
+      student_ids: ["stu_demo_02"],
+    },
+  ],
+  next_lesson_focus:
+    "Re-teach equivalent fractions before unlike-fraction addition.",
+  printable_lesson_plan_id: "plan_demo_fractions_01",
+};
+
+export const reportTestRepository = {
+  async getReport() {
+    return reportTestFixture;
+  },
+};

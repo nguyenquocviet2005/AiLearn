@@ -23,7 +23,9 @@ type WorkspaceState =
 
 type TeacherWorkspaceProps = {
   view: TeacherView;
-  onNavigate: (path: "/teacher" | "/teacher/lesson-plan") => void;
+  onNavigate: (
+    path: "/teacher" | "/teacher/lesson-plan" | "/teacher/report",
+  ) => void;
   repository?: TeacherWorkspaceRepository;
 };
 
@@ -491,6 +493,15 @@ export function TeacherWorkspace({
             }}
           >
             Lesson plan
+          </a>
+          <a
+            href="/teacher/report"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigate("/teacher/report");
+            }}
+          >
+            Intervention report
           </a>
         </nav>
       </header>

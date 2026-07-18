@@ -60,7 +60,11 @@ The API exposes:
 - `GET /health` for liveness without requiring Supabase.
 - `GET /api/v1/system-status` for the Supabase-backed infrastructure check.
 - `POST /api/v1/evidence-events` and `GET /api/v1/evidence-events/{id}` for evidence write/read.
+- `GET /api/v1/reports/{report_id}` for the validated synthetic intervention report.
 - `/docs` for FastAPI's generated OpenAPI documentation.
+
+Teacher routes include `/teacher`, `/teacher/lesson-plan`, `/teacher/report`, and the compact
+`/teacher/report/print` fallback.
 
 ## Supabase Migration
 

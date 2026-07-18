@@ -21,8 +21,10 @@ export const httpTeacherWorkspaceRepository: TeacherWorkspaceRepository = {
   getClassSnapshot() {
     return request<ClassSnapshotV1>(`/api/v1/classes/${classId}/snapshot`);
   },
-  getLessonPlan() {
-    return request<TeacherPlanVersionV1>(`/api/v1/lesson-plans/${planId}`);
+  getLessonPlan(requestedPlanId = planId) {
+    return request<TeacherPlanVersionV1>(
+      `/api/v1/lesson-plans/${requestedPlanId}`,
+    );
   },
   createVersion(snapshot, lessonPlan, expectedParentVersion) {
     return request<TeacherPlanVersionV1>(

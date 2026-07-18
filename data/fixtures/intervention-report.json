@@ -6,7 +6,7 @@
   "generated_at": "2026-07-18T02:00:00Z",
   "outcome_counts": {
     "passed_transfer": 1,
-    "still_struggling": 2,
+    "still_struggling": 1,
     "root_cause_reclassified": 1,
     "incomplete": 1,
     "teacher_escalation": 1
