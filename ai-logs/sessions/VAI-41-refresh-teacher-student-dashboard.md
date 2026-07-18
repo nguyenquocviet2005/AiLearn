@@ -62,6 +62,8 @@ accessibility, dead CSS, asset consistency, and verification evidence.
 - Standardize the public slogan and replace the fourth team member's displayed name with Vũ Trung Quân.
 - Review every technology and classification commit after merge and correct confirmed findings.
 - Turn the hero's Observe, Explain, and Adapt orbit into a vivid looping process illustration.
+- Make the teacher-dashboard and student-experience links in the audience section visually prominent
+  framed calls to action.
 
 ## Approved Plan
 
@@ -122,6 +124,9 @@ was introduced.
   light completes the circular journey around the mascot.
 - Kept the motion loop dependency-free, paused it on interaction, supplied a static reduced-motion
   state, and removed it at the narrow mobile breakpoint where it would compete with the primary copy.
+- Promoted the two audience links into distinct 56px calls to action: white with a purple direction
+  control for teachers, and yellow with a black direction control for students. Both include keyboard
+  focus, hover feedback, reduced-motion behavior, and mobile-safe wrapping.
 - Fetched merged VAI-25 work from `origin/main` at `0b8c9a1`, preserved its expanded teacher demo flow,
   and adapted the VAI-41 companion rail to the new `TeacherShell` contract and `teacher.css` ownership.
 - Added reduced-motion fallbacks for every new continuous or entrance animation.
@@ -156,6 +161,7 @@ was introduced.
 - Accepted: Render the location process as a visible skill graph instead of a linear text trace.
 - Accepted: Present Observe, Explain, and Adapt as a continuously looping hero illustration rather
   than shipping a heavier prerecorded video asset.
+- Accepted: Place the teacher and student entry links in branded frames that invite a clear click.
 - Accepted: Use the exact slogan `Thấy đúng chỗ vướng. Dạy đúng nơi cần.` in the hero and SEO title.
 - Accepted: Replace Phạm Tuấn Phong with Vũ Trung Quân in the published team list.
 - Modified: No new icon dependency was added because the repository has no approved icon library;
@@ -233,6 +239,8 @@ was introduced.
 | Chrome 1440px, 900px, and 390px hero motion inspection                        | PASS - all three phases render; tablet labels stay in frame; no horizontal overflow                       |
 | `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after hero motion     | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 | Review-fix draft pull request publication                                     | PASS - https://github.com/nguyenquocviet2005/AiLearn/pull/32                                              |
+| Chrome 1440px and 390px audience CTA inspection                               | PASS - both framed actions remain readable, balanced, and within the viewport                             |
+| `PATH=/tmp/ailearn-vai41-bin:$PATH ./scripts/verify.sh` after audience CTAs   | PASS - format, lint, type-check, 66 web tests, web build, Ruff, mypy, 123 API/domain tests, and API build |
 
 An initial scoped Prettier invocation used `../../../` instead of `../../` for the two root-level
 documentation files and exited before verification started. The paths were corrected, both files were

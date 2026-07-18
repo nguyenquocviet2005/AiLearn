@@ -459,11 +459,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <li>Giáo viên giữ quyền sửa, bác bỏ và phê duyệt</li>
             </ul>
             <WorkspaceLink
-              className="landing-text-link"
+              className="landing-text-link landing-audience-cta landing-audience-cta-teacher"
               onNavigate={onNavigate}
               route="/teacher"
             >
-              Vào dashboard giáo viên
+              <span>Vào dashboard giáo viên</span>
+              <i aria-hidden="true">→</i>
             </WorkspaceLink>
           </article>
 
@@ -487,11 +488,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <li>Kiểm tra lại bằng tình huống mới, không chỉ lặp bài mẫu</li>
             </ul>
             <WorkspaceLink
-              className="landing-text-link"
+              className="landing-text-link landing-audience-cta landing-audience-cta-student"
               onNavigate={onNavigate}
               route="/student"
             >
-              Bắt đầu trải nghiệm học sinh
+              <span>Bắt đầu trải nghiệm học sinh</span>
+              <i aria-hidden="true">→</i>
             </WorkspaceLink>
           </article>
         </section>

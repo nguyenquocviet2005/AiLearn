@@ -82,8 +82,16 @@ describe("LandingPage", () => {
     await user.click(
       screen.getByRole("link", { name: "Xem trải nghiệm học sinh" }),
     );
+    await user.click(
+      screen.getByRole("link", { name: "Vào dashboard giáo viên" }),
+    );
+    await user.click(
+      screen.getByRole("link", { name: "Bắt đầu trải nghiệm học sinh" }),
+    );
 
     expect(onNavigate).toHaveBeenNthCalledWith(1, "/teacher");
     expect(onNavigate).toHaveBeenNthCalledWith(2, "/student");
+    expect(onNavigate).toHaveBeenNthCalledWith(3, "/teacher");
+    expect(onNavigate).toHaveBeenNthCalledWith(4, "/student");
   });
 });

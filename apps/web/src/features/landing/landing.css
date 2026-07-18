@@ -1722,6 +1722,107 @@
   content: "";
 }
 
+.landing-audience-cta {
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 56px;
+  padding: 0.4rem 0.45rem 0.4rem 1.15rem;
+  grid-template-columns: minmax(0, 1fr) 2.5rem;
+  gap: 1rem;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+  transition:
+    color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.landing-audience-cta::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgba(140, 235, 248, 0.22);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.landing-audience-cta span {
+  line-height: 1.25;
+}
+
+.landing-audience-cta i {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  place-items: center;
+  font-size: 1.25rem;
+  font-style: normal;
+  line-height: 1;
+  transition: transform 220ms ease;
+}
+
+.landing-audience-cta-teacher,
+.landing-audience-cta-teacher:hover {
+  border-color: rgba(255, 255, 255, 0.85);
+  color: var(--landing-deep);
+  background: var(--landing-white);
+}
+
+.landing-audience-cta-teacher i {
+  color: var(--landing-white);
+  background: var(--landing-purple);
+}
+
+.landing-audience-cta-student,
+.landing-audience-cta-student:hover {
+  border-color: var(--landing-yellow);
+  color: var(--landing-black);
+  background: var(--landing-yellow);
+  box-shadow: 0 14px 34px rgba(241, 217, 79, 0.16);
+}
+
+.landing-audience-cta-student::before {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.landing-audience-cta-student i {
+  color: var(--landing-yellow);
+  background: var(--landing-black);
+}
+
+.landing-audience-cta:hover,
+.landing-audience-cta:focus-visible {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  transform: translateY(-4px);
+}
+
+.landing-audience-cta:hover::before,
+.landing-audience-cta:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.landing-audience-cta:hover i,
+.landing-audience-cta:focus-visible i {
+  transform: translateX(3px);
+}
+
+.landing-audience-cta:focus-visible {
+  outline: 3px solid var(--landing-cyan);
+  outline-offset: 4px;
+}
+
 .landing-evidence {
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -2057,6 +2158,9 @@
   .landing-signal-runner i,
   .landing-signal-scene,
   .landing-signal-scene i,
+  .landing-audience-cta,
+  .landing-audience-cta::before,
+  .landing-audience-cta i,
   .landing-hero-signal::before,
   .landing-hero-signal::after,
   .landing-trust img {
