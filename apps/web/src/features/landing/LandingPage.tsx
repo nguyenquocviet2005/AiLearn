@@ -122,7 +122,7 @@ const teamMembers = [
     image: "/team/nguyen-hong-hai.webp",
   },
   {
-    name: "Phạm Tuấn Phong",
+    name: "Vũ Trung Quân",
     role: "CEO",
     image: "/team/pham-tuan-phong.webp",
   },
@@ -209,7 +209,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             </p>
             <h1 id="landing-title">AiLearn</h1>
             <p className="landing-hero-promise">
-              Thấy đúng chỗ vướng. Dạy đúng điều cần thiết.
+              Thấy đúng chỗ vướng. Dạy đúng nơi cần.
             </p>
             <p className="landing-hero-copy">
               AiLearn biến những bài làm ngắn thành bằng chứng dễ hiểu, giúp
@@ -468,93 +468,139 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         <section className="landing-evidence" aria-labelledby="evidence-title">
           <div className="landing-section-heading">
             <p className="landing-kicker landing-kicker-dark">
-              Evidence, not labels
+              Phân loại lỗi, không gắn nhãn
             </p>
             <h2 id="evidence-title">
               Insight chỉ có ý nghĩa khi dẫn tới hành động.
             </h2>
             <p>
-              AiLearn giữ lại nguồn bằng chứng, giả thuyết cạnh tranh và bước
-              xác minh tiếp theo để giáo viên nhìn thấy cơ sở của mỗi đề xuất.
+              Cùng một đáp án sai có thể đến từ nhầm khái niệm, lỗi tính toán,
+              khoảng trống biểu diễn hoặc đơn giản là chưa đủ bằng chứng.
+              AiLearn định vị từng khả năng trước khi đề xuất cách hỗ trợ.
             </p>
           </div>
 
-          <figure className="landing-product-preview">
+          <figure className="landing-misconception-lab">
             <figcaption>
               <div>
-                <span>Hiểu lớp · Toán 7A</span>
-                <strong>Ba quyết định trước tiết học</strong>
+                <span>Ca minh họa · Toán 7</span>
+                <strong>Một phương án sai đi qua hệ thống như thế nào?</strong>
               </div>
-              <small>28/32 học sinh đã có dữ liệu</small>
+              <small>Bộ phân loại đang dùng · dữ liệu tổng hợp</small>
             </figcaption>
 
-            <div className="landing-preview-decision">
-              <span>Quyết định 01</span>
-              <strong>Phân biệt tỉ lệ thuận và nghịch trước</strong>
-              <p>11 học sinh lặp lại cùng một mẫu sai ở hai ngữ cảnh.</p>
-            </div>
-
-            <div className="landing-preview-grid">
-              <section aria-labelledby="preview-priority-title">
-                <span className="landing-preview-label">
-                  Nên hỗ trợ ai trước?
-                </span>
-                <h3 id="preview-priority-title">
-                  Ưu tiên theo khả năng can thiệp
-                </h3>
-                <ol>
-                  <li>
-                    <b>01</b>
-                    <span>
-                      <strong>Sai có hệ thống</strong>
-                      <small>Hai minh chứng, mức tự tin cao</small>
-                    </span>
+            <div className="landing-misconception-grid">
+              <section
+                className="landing-taxonomy"
+                aria-labelledby="taxonomy-title"
+              >
+                <span className="landing-lab-label">Định nghĩa lỗi sai</span>
+                <h3 id="taxonomy-title">Bốn nhóm trong dữ liệu mẫu</h3>
+                <ul>
+                  <li className="is-active">
+                    <strong>Nhầm tỉ lệ nghịch thành tỉ lệ thuận</strong>
+                    <p>
+                      Áp dụng y = kx cho tình huống tỉ lệ nghịch; nghĩ x tăng
+                      thì y cũng tăng.
+                    </p>
                   </li>
                   <li>
-                    <b>02</b>
-                    <span>
-                      <strong>Hổng kỹ năng tiền đề</strong>
-                      <small>Ảnh hưởng ba kỹ năng phía sau</small>
-                    </span>
+                    <strong>Lỗi tính toán</strong>
+                    <p>Chọn đúng mô hình nhưng nhân, chia hoặc rút gọn sai.</p>
+                  </li>
+                  <li>
+                    <strong>Không dịch được đề bài thành quan hệ</strong>
+                    <p>Làm được với công thức, nhưng vướng khi đọc lời văn.</p>
+                  </li>
+                  <li>
+                    <strong>Bằng chứng không đủ hoặc mâu thuẫn</strong>
+                    <p>Hệ thống dừng kết luận và chủ động yêu cầu kiểm tra.</p>
+                  </li>
+                </ul>
+              </section>
+
+              <section
+                className="landing-location-trace"
+                aria-labelledby="location-title"
+              >
+                <span className="landing-lab-label">Cách định vị</span>
+                <h3 id="location-title">Từ lựa chọn sai đến kỹ năng gốc</h3>
+                <ol>
+                  <li>
+                    <span>01</span>
+                    <div>
+                      <small>Phương án học sinh chọn</small>
+                      <strong>“y = kx (k ≠ 0)”</strong>
+                    </div>
+                  </li>
+                  <li>
+                    <span>02</span>
+                    <div>
+                      <small>Mã lỗi gắn với phương án</small>
+                      <strong>Nhầm tỉ lệ thuận với tỉ lệ nghịch</strong>
+                    </div>
+                  </li>
+                  <li>
+                    <span>03</span>
+                    <div>
+                      <small>Đồ thị kỹ năng liên quan</small>
+                      <strong>
+                        Phân biệt hai quan hệ → Định nghĩa tỉ lệ nghịch
+                      </strong>
+                    </div>
                   </li>
                 </ol>
               </section>
 
-              <section aria-labelledby="preview-evidence-title">
-                <span className="landing-preview-label">
-                  Phân bố nguyên nhân
-                </span>
-                <h3 id="preview-evidence-title">Có bằng chứng để kiểm tra</h3>
-                <div className="landing-preview-bars">
+              <section
+                className="landing-hypothesis-check"
+                aria-labelledby="hypothesis-title"
+              >
+                <span className="landing-lab-label">Xác minh giả thuyết</span>
+                <h3 id="hypothesis-title">
+                  Giữ cả dấu vết ủng hộ lẫn phản bác
+                </h3>
+                <dl className="landing-evidence-balance">
                   <div>
-                    <span>Nhầm hai quan hệ</span>
-                    <b>11</b>
-                    <i
-                      style={{ "--bar-width": "78%" } as React.CSSProperties}
-                    />
+                    <dt>Ủng hộ</dt>
+                    <dd>2 minh chứng</dd>
                   </div>
                   <div>
-                    <span>Thiếu tiền đề phân số</span>
-                    <b>5</b>
-                    <i
-                      style={{ "--bar-width": "42%" } as React.CSSProperties}
-                    />
+                    <dt>Phản bác</dt>
+                    <dd>1 minh chứng</dd>
                   </div>
                   <div>
-                    <span>Cần hỏi thêm</span>
-                    <b>3</b>
-                    <i
-                      style={{ "--bar-width": "28%" } as React.CSSProperties}
-                    />
+                    <dt>Trạng thái</dt>
+                    <dd>Cần hỏi thêm</dd>
                   </div>
+                </dl>
+                <div className="landing-next-probe">
+                  <span>Câu hỏi kiểm tra tiếp theo</span>
+                  <p>
+                    Giữ nguyên lượng công việc. Nếu số người tăng gấp đôi thì
+                    thời gian hoàn thành thay đổi thế nào?
+                  </p>
                 </div>
+                <p className="landing-teacher-action">
+                  <strong>Hành động gợi ý:</strong> đối chiếu hai ngữ cảnh thuận
+                  và nghịch; chỉ mở bài vá hổng khi mẫu sai lặp lại.
+                </p>
               </section>
             </div>
 
-            <p className="landing-preview-note">
-              4 bài đang chờ đồng bộ được giữ riêng, không bị tính là học sinh
-              làm sai hoặc thiếu bài.
-            </p>
+            <footer className="landing-diagnosis-path">
+              <ol aria-label="Luồng chẩn đoán của AiLearn">
+                <li>Phản hồi</li>
+                <li>Mã lỗi</li>
+                <li>Đồ thị kỹ năng</li>
+                <li>Giả thuyết</li>
+                <li>Hành động</li>
+              </ol>
+              <p>
+                Bài đang chờ đồng bộ được giữ riêng, không bị tính thành bằng
+                chứng sai.
+              </p>
+            </footer>
           </figure>
         </section>
 

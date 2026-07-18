@@ -28,7 +28,7 @@ describe("App", () => {
       screen.getByRole("heading", { level: 1, name: "AiLearn" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Thấy đúng chỗ vướng. Dạy đúng điều cần thiết."),
+      screen.getByText("Thấy đúng chỗ vướng. Dạy đúng nơi cần."),
     ).toBeInTheDocument();
   });
 
