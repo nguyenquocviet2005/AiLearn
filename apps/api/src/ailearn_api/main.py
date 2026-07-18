@@ -8,6 +8,7 @@ from ailearn_api.routes.diagnostics import router as diagnostics_router
 from ailearn_api.routes.health import router as health_router
 from ailearn_api.routes.lesson_plans import router as lesson_plans_router
 from ailearn_api.routes.remediation import router as remediation_router
+from ailearn_api.routes.reports import router as reports_router
 from ailearn_api.routes.students import router as students_router
 from ailearn_api.routes.system_status import router as system_status_router
 
@@ -30,6 +31,7 @@ def create_app() -> FastAPI:
     app.include_router(demo_router)
     app.include_router(classes_router)
     app.include_router(lesson_plans_router)
+    app.include_router(reports_router)
     return app
 
 

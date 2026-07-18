@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { StudentWorkspace } from "@/features/student/StudentWorkspace";
+import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
+import { TeacherReport } from "@/features/teacher/report/TeacherReport";
 import { TeacherWorkspace } from "@/features/teacher/TeacherWorkspace";
 import { getSystemStatus, type SystemStatus } from "@/lib/api";
 
@@ -123,7 +125,12 @@ function currentPathname() {
   return window.location.pathname;
 }
 
-type Route = "/teacher" | "/teacher/lesson-plan" | "/student";
+type Route =
+  | "/teacher"
+  | "/teacher/lesson-plan"
+  | "/teacher/report"
+  | "/teacher/report/print"
+  | "/student";
 
 export default function App() {
   const [pathname, setPathname] = useState(currentPathname);
@@ -149,6 +156,14 @@ export default function App() {
         onNavigate={navigate}
       />
     );
+  }
+
+  if (pathname === "/teacher/report") {
+    return <TeacherReport onNavigate={navigate} />;
+  }
+
+  if (pathname === "/teacher/report/print") {
+    return <PrintableTeacherReport />;
   }
 
   if (pathname === "/student") {

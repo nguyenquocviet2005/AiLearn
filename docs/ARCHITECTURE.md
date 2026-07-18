@@ -44,6 +44,12 @@ fixture. A persisted teacher version takes precedence so edits are never overwri
 G7 seed projection remains inspectable when Supabase configuration is absent; writes correctly
 return a sanitized `503` without storage.
 
+VAI-21 adds the teacher intervention-report boundary. The API validates and serves the frozen
+`InterventionReportV1` fixture, while `/teacher/report` presents outcome counts, individual evidence,
+remaining gaps, and next-lesson focus. `/teacher/report/print` combines the same report with the
+lesson plan in a self-contained print stylesheet and does not load external media. Live event-to-report
+aggregation remains the VAI-20 boundary.
+
 The web application contains presentation and a typed API client. The API owns transport validation,
 CORS configuration, failure sanitization, and the server-side Supabase credential. The browser never
 calls Supabase directly. Evidence validation, diagnosis, and planning live in `ailearn_schemas`,

@@ -149,6 +149,11 @@ Required: `schema_version`, `id`, `class_id`, `lesson_id`, `generated_at`, `outc
 
 Fixture: `data/fixtures/intervention-report.json`.
 
+`GET /api/v1/reports/{report_id}` returns the validated synthetic
+`InterventionReportV1` used by the teacher outcome and printable views. An unknown identifier
+returns the sanitized `404 intervention_report_not_found` response. Live outcome aggregation and
+persistence remain owned by VAI-20.
+
 ## Teacher planning endpoints
 
 - `GET /api/v1/classes/class_g7a_demo/snapshot` returns a deterministic G7 snapshot from the
