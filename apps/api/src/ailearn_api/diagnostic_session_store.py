@@ -49,3 +49,8 @@ def create_session(
 
 def get_session(session_id: str) -> DiagnosticSessionState | None:
     return _sessions.get(session_id)
+
+
+def clear_sessions() -> None:
+    """Clear only transient diagnostic sessions for an explicit demo reset."""
+    _sessions.clear()

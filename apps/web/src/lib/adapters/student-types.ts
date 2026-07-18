@@ -2,6 +2,7 @@ import type {
   EvidenceEventV1,
   Representation,
   StepKind,
+  StudentDiagnosticProfileV1,
   StudentImprovementPathV1,
 } from "@ailearn/schemas";
 
@@ -53,6 +54,40 @@ export interface RemediationResponse {
   path: StudentImprovementPathV1;
   current_step_kind: StepKind;
   is_complete: boolean;
+  transfer_outcome: boolean | null;
   escalation_reason: string | null;
   content: RemediationContent;
+  exit_ticket?: ExitTicket;
+}
+
+export interface ExitTicket {
+  id: string;
+  question: string;
+  options: string[];
+}
+
+export type ExitTicketOutcomeKind =
+  "transfer_passed" | "teacher_escalation" | "diagnosis_reclassified";
+
+export interface ExitTicketOutcome {
+  kind: ExitTicketOutcomeKind;
+  recorded_at: string;
+  message: string;
+  reclassified_profile: StudentDiagnosticProfileV1 | null;
+}
+
+export interface ExitTicketResponse {
+  outcome: ExitTicketOutcome;
+  remediation: RemediationResponse;
+}
+
+export interface DemoPersonaSummary {
+  id: string;
+  label: string;
+  student_id: string;
+  display_name: string;
+}
+
+export interface DemoResetResponse {
+  persona: DemoPersonaSummary & { profile: StudentDiagnosticProfileV1 };
 }

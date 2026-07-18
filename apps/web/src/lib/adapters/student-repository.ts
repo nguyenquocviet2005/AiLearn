@@ -1,6 +1,9 @@
 import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 
 import type {
+  DemoPersonaSummary,
+  DemoResetResponse,
+  ExitTicketResponse,
   RemediationResponse,
   StartSessionResponse,
   SubmitResponseResponse,
@@ -46,6 +49,14 @@ export interface StudentRepository {
     studentId: string,
     evidenceSufficient: boolean,
   ): Promise<RemediationResponse>;
+  submitExitTicket(
+    studentId: string,
+    ticketId: string,
+    responseLabel: string,
+    submissionId: string,
+  ): Promise<ExitTicketResponse>;
+  listDemoPersonas(): Promise<DemoPersonaSummary[]>;
+  resetDemo(personaId: string): Promise<DemoResetResponse>;
 }
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
@@ -126,6 +137,32 @@ export const httpStudentRepository: StudentRepository = {
         student_id: studentId,
         evidence_sufficient: evidenceSufficient,
       }),
+    });
+  },
+
+  async submitExitTicket(studentId, ticketId, responseLabel, submissionId) {
+    return request<ExitTicketResponse>("/api/v1/remediation/exit-tickets", {
+      method: "POST",
+      body: JSON.stringify({
+        student_id: studentId,
+        ticket_id: ticketId,
+        response_label: responseLabel,
+        submission_id: submissionId,
+      }),
+    });
+  },
+
+  async listDemoPersonas() {
+    const response = await request<{ personas: DemoPersonaSummary[] }>(
+      "/api/v1/demo/personas",
+    );
+    return response.personas;
+  },
+
+  async resetDemo(personaId) {
+    return request<DemoResetResponse>("/api/v1/demo/reset", {
+      method: "POST",
+      body: JSON.stringify({ persona_id: personaId }),
     });
   },
 };

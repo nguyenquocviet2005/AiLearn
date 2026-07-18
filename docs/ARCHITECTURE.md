@@ -48,7 +48,10 @@ calls Supabase directly. Evidence validation, diagnosis, and planning live in `a
 Product Diagnostic HTTP (`POST /diagnostics/start`, `POST /diagnostics/{id}/responses`,
 `GET /students/{id}/diagnostic-profile`) is implemented in VAI-17. Remediation HTTP
 (`POST /remediation/sessions`, `POST /remediation/attempts`, `POST /remediation/confirm`,
-`GET /remediation/sessions/{id}`) was built in VAI-16 and registered into `create_app()` in VAI-18.
+`POST /remediation/exit-tickets`, `GET /remediation/sessions/{id}`) was built in VAI-16 and
+registered into `create_app()` in VAI-18. VAI-22 adds a final exit-ticket response above the
+existing near-transfer check. It records a passing transfer, teacher escalation, or a deterministic
+reclassification for the designated synthetic demo persona; the answer key stays server-side.
 Both routers hold session state in an **in-memory, per-process dict**
 (`ailearn_api.diagnostic_session_store`, `ailearn_api.routes.remediation._sessions`). Neither
 survives an API process restart; VAI-20 owns swapping both routers to durable Supabase-backed
@@ -84,6 +87,20 @@ and non-duplicated sync all share one code path.
 
 `apps/web/src/lib/adapters/student-repository.ts` is the real HTTP adapter (`data/fixtures/`
 develop-against-fixtures note in the original issue text is superseded — VAI-17's real API is live).
+
+### Demo personas and reset (`VAI-22`)
+
+`data/seeds/demo-personas.json` defines six synthetic, anonymized walkthrough personas: foundational
+gap, misconception, root-cause reclassification after new evidence, insufficient evidence, passing
+transfer, and teacher escalation. `GET /api/v1/demo/personas` exposes only their display metadata.
+`POST /api/v1/demo/reset` clears the diagnostic/remediation in-memory session stores and returns the
+selected seeded profile; it never deletes or rewrites Supabase evidence. The browser clears its own
+content cache and pending-write queue only after that reset succeeds, then starts the returned
+remediation profile.
+
+Exit-ticket submissions use the existing FIFO local write queue with a client `submission_id` and
+route-level idempotency. This preserves the outcome during a temporary network interruption and
+avoids duplicating a recorded transfer/escalation result after reconnection.
 
 ## Deferred Architecture
 
