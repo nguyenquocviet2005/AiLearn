@@ -75,7 +75,7 @@
           {
             "skill_id": "skill_ratio_proportion_basics",
             "rank": 1,
-            "supporting_evidence_ids": ["ev_demo_reclassified_initial"],
+            "supporting_evidence_ids": ["ev_demo_reclassified_ratio_initial"],
             "contradicting_evidence_ids": []
           }
         ],
@@ -99,7 +99,7 @@
               "skill_id": "skill_distinguish_direct_inverse",
               "rank": 1,
               "supporting_evidence_ids": ["ev_demo_reclassified_exit_ticket"],
-              "contradicting_evidence_ids": ["ev_demo_reclassified_initial"]
+              "contradicting_evidence_ids": ["ev_demo_reclassified_distinguish_prior"]
             }
           ],
           "generated_at": "2026-07-18T10:05:00Z"

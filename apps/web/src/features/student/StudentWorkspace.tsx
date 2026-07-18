@@ -19,6 +19,11 @@ import {
   saveToCache,
 } from "@/lib/offline/content-cache";
 import {
+  readActiveLearner,
+  saveActiveLearner,
+  type ActiveLearner,
+} from "@/lib/offline/active-learner";
+import {
   clearAll,
   enqueue,
   generateAttemptId,
@@ -124,6 +129,18 @@ interface CachedRemediation {
   exitTicketPending?: { submissionId: string };
 }
 
+function initialLearner(studentId: string): ActiveLearner {
+  const persisted = readActiveLearner();
+  if (
+    persisted &&
+    (readFromCache(readinessCacheKey(persisted.id)) ||
+      readFromCache(remediationCacheKey(persisted.id)))
+  ) {
+    return persisted;
+  }
+  return { id: studentId, displayName: DEMO_STUDENT_NAME };
+}
+
 export interface StudentWorkspaceProps {
   studentId?: string;
   lessonId?: string;
@@ -137,10 +154,9 @@ export function StudentWorkspace({
 }: StudentWorkspaceProps) {
   const [activeTab, setActiveTab] = useState<TabId>("home");
   const [stage, setStage] = useState<Stage>({ kind: "idle" });
-  const [currentStudent, setCurrentStudent] = useState({
-    id: studentId,
-    displayName: DEMO_STUDENT_NAME,
-  });
+  const [currentStudent, setCurrentStudent] = useState(() =>
+    initialLearner(studentId),
+  );
   const [personas, setPersonas] = useState<DemoPersonaSummary[]>([]);
   const [selectedPersonaId, setSelectedPersonaId] = useState("");
   const [pendingCount, setPendingCount] = useState(0);
@@ -161,7 +177,7 @@ export function StudentWorkspace({
   // advanced cached progress (remediation over readiness) rather than starting over.
   useEffect(() => {
     const cachedRemediation = readFromCache<CachedRemediation>(
-      remediationCacheKey(studentId),
+      remediationCacheKey(currentStudent.id),
     );
     if (cachedRemediation) {
       markRemediationSeen(cachedRemediation.remediation);
@@ -200,7 +216,7 @@ export function StudentWorkspace({
       return;
     }
     const cachedReadiness = readFromCache<CachedReadiness>(
-      readinessCacheKey(studentId),
+      readinessCacheKey(currentStudent.id),
     );
     if (
       cachedReadiness &&
@@ -224,7 +240,13 @@ export function StudentWorkspace({
           return;
         }
         setPersonas(availablePersonas);
-        setSelectedPersonaId(availablePersonas[0]?.id ?? "");
+        setSelectedPersonaId(
+          availablePersonas.some(
+            (persona) => persona.id === currentStudent.personaId,
+          )
+            ? (currentStudent.personaId ?? "")
+            : (availablePersonas[0]?.id ?? ""),
+        );
       })
       .catch(() => {
         // The existing student flow stays usable when the optional demo API is offline.
@@ -232,7 +254,7 @@ export function StudentWorkspace({
     return () => {
       active = false;
     };
-  }, [repository]);
+  }, [currentStudent.personaId, repository]);
 
   useEffect(() => {
     setPendingCount((current) => current); // seed with current value on mount
@@ -540,15 +562,21 @@ export function StudentWorkspace({
     setBusy(true);
     try {
       const reset = await repository.resetDemo(selectedPersonaId);
-      clearAll();
-      clearCache();
       const remediation = await repository.startRemediationSession(
         reset.persona.profile,
       );
-      setCurrentStudent({
+      // Keep the previous offline recovery state until the replacement path is
+      // actually available. A partial reset must not strand the learner.
+      clearAll();
+      clearCache();
+      setPendingCount(0);
+      const learner = {
         id: reset.persona.student_id,
         displayName: reset.persona.display_name,
-      });
+        personaId: reset.persona.id,
+      };
+      saveActiveLearner(learner);
+      setCurrentStudent(learner);
       setInitialRepresentation(remediation.path.representation);
       saveToCache(remediationCacheKey(reset.persona.student_id), {
         remediation,

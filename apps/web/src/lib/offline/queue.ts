@@ -95,6 +95,25 @@ export function listPending(): PendingWrite[] {
   );
 }
 
+export function recoverInterruptedWrites(): void {
+  const writes = readAll();
+  let changed = false;
+  const recovered = writes.map((write) => {
+    if (write.status !== "SYNCING") {
+      return write;
+    }
+    changed = true;
+    return {
+      ...write,
+      status: "FAILED" as const,
+      retryCount: write.retryCount + 1,
+    };
+  });
+  if (changed) {
+    writeAll(recovered);
+  }
+}
+
 export function countPending(): number {
   return listPending().length;
 }

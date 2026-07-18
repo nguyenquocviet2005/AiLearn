@@ -13,7 +13,8 @@ import type {
 } from "@/lib/adapters/student-types";
 
 import { StudentWorkspace } from "./StudentWorkspace";
-import { saveToCache } from "@/lib/offline/content-cache";
+import { readFromCache, saveToCache } from "@/lib/offline/content-cache";
+import { enqueue, listAll } from "@/lib/offline/queue";
 
 const ITEMS: AssessmentItemPublic[] = [
   {
@@ -383,6 +384,38 @@ describe("StudentWorkspace", () => {
     expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
   });
 
+  it("retries one failed queued response after reload without duplicating it", async () => {
+    const submitReadinessResponse = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValue({
+        evidence_event: {},
+        remaining_item_ids: [],
+        session_complete: false,
+      });
+    const repository = fakeRepository({ submitReadinessResponse });
+    const user = userEvent.setup();
+    const firstRender = render(<StudentWorkspace repository={repository} />);
+
+    await user.click(screen.getByRole("button", { name: /Bắt đầu bài ngắn/ }));
+    await answerReadinessItem(user, "A");
+    await waitFor(() => {
+      expect(submitReadinessResponse).toHaveBeenCalledOnce();
+      expect(listAll()).toHaveLength(1);
+      expect(listAll()[0].status).toBe("FAILED");
+    });
+    firstRender.unmount();
+
+    render(<StudentWorkspace repository={repository} />);
+
+    await waitFor(() => {
+      expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
+      expect(listAll()[0].status).toBe("SYNCED");
+    });
+    await user.click(screen.getByRole("button", { name: "Đã đồng bộ" }));
+    expect(submitReadinessResponse).toHaveBeenCalledTimes(2);
+  });
+
   it("resumes readiness progress from the cache after a simulated reload", async () => {
     const repository = fakeRepository();
     const user = userEvent.setup();
@@ -507,6 +540,81 @@ describe("StudentWorkspace", () => {
       persona.profile,
     );
     expect(await screen.findAllByText("Bạn An")).toHaveLength(2);
+  });
+
+  it("resumes the selected seeded learner and path after a reload", async () => {
+    const persona = {
+      id: "foundational-gap",
+      label: "Củng cố nền tảng",
+      student_id: "stu_demo_foundation_01",
+      display_name: "Bạn An",
+      profile: {
+        ...NEEDS_SUPPORT_PROFILE,
+        student_id: "stu_demo_foundation_01",
+      },
+    };
+    const repository = fakeRepository({
+      listDemoPersonas: vi.fn().mockResolvedValue([persona]),
+      resetDemo: vi.fn().mockResolvedValue({ persona }),
+    });
+    const user = userEvent.setup();
+    const firstRender = render(<StudentWorkspace repository={repository} />);
+
+    await screen.findByRole("combobox", { name: "Tình huống demo" });
+    await user.click(screen.getByRole("button", { name: "Đặt lại" }));
+    expect(await screen.findAllByText("Bạn An")).toHaveLength(2);
+    firstRender.unmount();
+
+    render(<StudentWorkspace repository={repository} />);
+
+    expect(await screen.findAllByText("Bạn An")).toHaveLength(2);
+    await user.click(
+      screen.getByRole("button", { name: "Xem lộ trình của em" }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: "Ví dụ mẫu" }),
+    ).toBeInTheDocument();
+    expect(repository.startRemediationSession).toHaveBeenCalledOnce();
+    expect(
+      screen.getByRole("combobox", { name: "Tình huống demo" }),
+    ).toHaveValue("foundational-gap");
+  });
+
+  it("keeps existing offline progress when a demo replacement path cannot start", async () => {
+    const persona = {
+      id: "foundational-gap",
+      label: "Củng cố nền tảng",
+      student_id: "stu_demo_foundation_01",
+      display_name: "Bạn An",
+      profile: {
+        ...NEEDS_SUPPORT_PROFILE,
+        student_id: "stu_demo_foundation_01",
+      },
+    };
+    const repository = fakeRepository({
+      listDemoPersonas: vi.fn().mockResolvedValue([persona]),
+      resetDemo: vi.fn().mockResolvedValue({ persona }),
+      startRemediationSession: vi.fn().mockRejectedValue(new Error("offline")),
+    });
+    saveToCache("readiness-progress:stu_g7_001", {
+      session: SESSION,
+      currentIndex: 1,
+    });
+    enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: SESSION.session_id,
+      itemId: ITEMS[0].item_id,
+      responseLabel: "A",
+      confidence: 0.9,
+    });
+    const user = userEvent.setup();
+
+    render(<StudentWorkspace repository={repository} />);
+    await screen.findByRole("combobox", { name: "Tình huống demo" });
+    await user.click(screen.getByRole("button", { name: "Đặt lại" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("offline");
+    expect(listAll()).toHaveLength(1);
+    expect(readFromCache("readiness-progress:stu_g7_001")).not.toBeNull();
   });
 
   it("keeps an offline exit ticket pending and resolves its original submission", async () => {
