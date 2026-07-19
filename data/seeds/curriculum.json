@@ -85,7 +85,12 @@
       "misconception_id": "mis_direct_inverse_confusion",
       "name": "Nhầm tỉ lệ nghịch thành tỉ lệ thuận",
       "description": "Áp dụng y = kx cho tình huống tỉ lệ nghịch; nghĩ x tăng thì y tăng",
-      "related_skill_ids": ["skill_distinguish_direct_inverse", "skill_inverse_proportion_definition"]
+      "related_skill_ids": [
+        "skill_ratio_proportion_basics",
+        "skill_direct_proportion",
+        "skill_distinguish_direct_inverse",
+        "skill_inverse_proportion_definition"
+      ]
     },
     {
       "misconception_id": "mis_computation_error",

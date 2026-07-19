@@ -2,19 +2,12 @@ import { useState } from "react";
 
 import type { AssessmentItemPublic } from "@/lib/adapters/student-types";
 
-import {
-  CONFIDENCE_LABELS,
-  CONFIDENCE_LEVELS,
-  confidenceLevelToValue,
-  type ConfidenceLevel,
-} from "./confidence";
-
 export interface ReadinessQuestionProps {
   item: AssessmentItemPublic;
   index: number;
   total: number;
   variant: "readiness" | "probe";
-  onSubmit: (itemId: string, responseLabel: string, confidence: number) => void;
+  onSubmit: (itemId: string, responseLabel: string) => void;
   onSaveAndExit: () => void;
 }
 
@@ -27,11 +20,8 @@ export function ReadinessQuestion({
   onSaveAndExit,
 }: ReadinessQuestionProps) {
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
-  const [confidenceLevel, setConfidenceLevel] =
-    useState<ConfidenceLevel | null>(null);
-  const [explanation, setExplanation] = useState("");
 
-  const canSubmit = selectedLabel !== null && confidenceLevel !== null;
+  const canSubmit = selectedLabel !== null;
 
   function handleReadAloud(): void {
     if ("speechSynthesis" in window) {
@@ -41,17 +31,11 @@ export function ReadinessQuestion({
   }
 
   function handleSubmit(): void {
-    if (!selectedLabel || !confidenceLevel) {
+    if (!selectedLabel) {
       return;
     }
-    onSubmit(
-      item.item_id,
-      selectedLabel,
-      confidenceLevelToValue(confidenceLevel),
-    );
+    onSubmit(item.item_id, selectedLabel);
     setSelectedLabel(null);
-    setConfidenceLevel(null);
-    setExplanation("");
   }
 
   return (
@@ -95,34 +79,6 @@ export function ReadinessQuestion({
               {String.fromCharCode(65 + optionIndex)}
             </span>
             {option.label}
-          </button>
-        ))}
-      </div>
-
-      <p className="student-field-label">
-        Em chọn như vậy vì… (có thể viết rất ngắn)
-      </p>
-      <textarea
-        className="student-textarea"
-        value={explanation}
-        onChange={(event) => setExplanation(event.target.value)}
-        placeholder="Không bắt buộc"
-        aria-label="Giải thích của em"
-      />
-
-      <p className="student-field-label student-field-label-spaced">
-        Em thấy câu này thế nào?
-      </p>
-      <div className="student-confidence">
-        {CONFIDENCE_LEVELS.map((level) => (
-          <button
-            key={level}
-            type="button"
-            aria-pressed={confidenceLevel === level}
-            className={confidenceLevel === level ? "selected" : ""}
-            onClick={() => setConfidenceLevel(level)}
-          >
-            {CONFIDENCE_LABELS[level]}
           </button>
         ))}
       </div>

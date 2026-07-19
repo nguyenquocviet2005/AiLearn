@@ -18,6 +18,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional, Protocol
 
+from ailearn_content.grading import grade as _grade_response
+
+# Step kinds that are demonstrations, not assessments: the student reads them and
+# self-reports understanding ("Đã hiểu / Chưa hiểu") instead of typing a graded
+# answer. Only genuine practice/transfer steps are server-graded from free text.
+_SELF_REPORT_KINDS = frozenset({"worked_example"})
+
 _REPO_ROOT = Path(__file__).resolve().parents[4]
 _TEMPLATES_PATH = _REPO_ROOT / "packages" / "content" / "intervention-templates.json"
 
@@ -35,18 +42,24 @@ class Template:
     representation: str
     body: str
     checkpoint_question: str
-    checkpoint_answer: str
+    checkpoint_answer: str  # teacher-facing/audit only; never serialized to the client
+    accepted_answers: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
 class Content:
-    """What the student shell renders for the current step."""
+    """What the student shell renders for the current step.
+
+    Never carries the answer key: `is_gradable` tells the client whether to render
+    a typed-answer box or a self-report toggle. Grading itself happens server-side
+    via ContentGenerator.grade().
+    """
 
     template_id: str
     title: str
     body: str
     checkpoint_question: str
-    checkpoint_answer: str
+    is_gradable: bool
     representation: str
     source: str  # "template" | "template+llm" | "generic_fallback"
 
@@ -72,7 +85,7 @@ _GENERIC = Content(
         "sau đó thử làm lại bài tập từng bước một."
     ),
     checkpoint_question="Em hãy nêu lại công thức liên hệ giữa hai đại lượng trong bài.",
-    checkpoint_answer="",
+    is_gradable=False,
     representation="text",
     source="generic_fallback",
 )
@@ -90,6 +103,7 @@ class ContentGenerator:
         self._templates: tuple[Template, ...] = self._load(
             Path(templates_path) if templates_path else _TEMPLATES_PATH
         )
+        self._by_id: dict[str, Template] = {t.template_id: t for t in self._templates}
 
     @staticmethod
     def _load(path: Path) -> tuple[Template, ...]:
@@ -98,21 +112,29 @@ class ContentGenerator:
                 data = json.load(f)
         except (OSError, json.JSONDecodeError):
             return ()
-        return tuple(
-            Template(
-                template_id=t["template_id"],
-                title=t["title"],
-                misconception_id=t.get("misconception_id"),
-                target_skill_ids=tuple(t.get("target_skill_ids", ())),
-                state=t["state"],
-                kind=t["kind"],
-                representation=t["representation"],
-                body=t["body"],
-                checkpoint_question=t.get("checkpoint_question", ""),
-                checkpoint_answer=t.get("checkpoint_answer", ""),
+        templates = []
+        for t in data.get("templates", []):
+            checkpoint_answer = t.get("checkpoint_answer", "")
+            accepted_answers = tuple(
+                t.get("accepted_answers")
+                or ([checkpoint_answer] if checkpoint_answer else [])
             )
-            for t in data.get("templates", [])
-        )
+            templates.append(
+                Template(
+                    template_id=t["template_id"],
+                    title=t["title"],
+                    misconception_id=t.get("misconception_id"),
+                    target_skill_ids=tuple(t.get("target_skill_ids", ())),
+                    state=t["state"],
+                    kind=t["kind"],
+                    representation=t["representation"],
+                    body=t["body"],
+                    checkpoint_question=t.get("checkpoint_question", ""),
+                    checkpoint_answer=checkpoint_answer,
+                    accepted_answers=accepted_answers,
+                )
+            )
+        return tuple(templates)
 
     def generate(
         self,
@@ -146,10 +168,22 @@ class ContentGenerator:
             title=template.title,
             body=body,
             checkpoint_question=template.checkpoint_question,
-            checkpoint_answer=template.checkpoint_answer,
+            is_gradable=bool(template.accepted_answers)
+            and kind not in _SELF_REPORT_KINDS,
             representation=template.representation,
             source=source,
         )
+
+    def grade(self, template_id: str, response: str) -> bool:
+        """Grade a typed response against one template's accepted answers.
+
+        Never exposes the accepted answers themselves, only this boolean verdict —
+        the caller (the remediation route) must not trust a client-asserted verdict.
+        """
+        template = self._by_id.get(template_id)
+        if template is None:
+            return False
+        return _grade_response(response, template.accepted_answers)
 
     def _select(
         self,
@@ -159,13 +193,20 @@ class ContentGenerator:
         representation: str,
         misconception_id: Optional[str],
     ) -> Optional[Template]:
-        """Deterministic selection: score candidates, best score wins, ties -> first."""
+        """Deterministic selection: prefer same step kind, then score ties by skill/mis/rep.
+
+        Returning a same-kind template (even with a weak score) is better than the
+        generic self-report fallback, which makes every step look identical.
+        """
         if not self._templates:
             return None
 
+        kind_matches = [t for t in self._templates if t.kind == kind]
+        pool = kind_matches or list(self._templates)
+
         best: Optional[Template] = None
         best_score = -1
-        for t in self._templates:
+        for t in pool:
             score = 0
             if skill_id and skill_id in t.target_skill_ids:
                 score += 8
@@ -180,5 +221,8 @@ class ContentGenerator:
             if score > best_score:
                 best, best_score = t, score
 
-        # Require at least a skill or misconception match to avoid random content.
+        if kind_matches:
+            return best
+
+        # No template for this step kind: only accept a strong skill/mis match.
         return best if best_score >= 4 else None

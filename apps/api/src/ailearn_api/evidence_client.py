@@ -9,13 +9,11 @@ from ailearn_api.config import Settings
 from ailearn_api.models.evidence import EvidenceEventRecord
 from ailearn_api.supabase_client import SupabaseUnavailableError, supabase_auth_headers
 
-
 def _auth_headers(settings: Settings) -> dict[str, str]:
     return {
         **supabase_auth_headers(settings),
         "Content-Type": "application/json",
     }
-
 
 async def insert_evidence_event(
     settings: Settings,
@@ -52,7 +50,6 @@ async def insert_evidence_event(
     finally:
         if owns_client:
             await http_client.aclose()
-
 
 async def fetch_evidence_event(
     settings: Settings,
@@ -91,7 +88,6 @@ async def fetch_evidence_event(
         if owns_client:
             await http_client.aclose()
 
-
 async def fetch_evidence_events_for_student(
     settings: Settings,
     student_id: str,
@@ -102,7 +98,7 @@ async def fetch_evidence_events_for_student(
         raise SupabaseUnavailableError("Supabase is not configured")
 
     owns_client = client is None
-    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    http_client = client or httpx.AsyncClient(timeout=20.0, follow_redirects=False)
     try:
         response = await http_client.get(
             f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
@@ -114,20 +110,23 @@ async def fetch_evidence_events_for_student(
                 ),
                 "student_id": f"eq.{student_id}",
                 "lesson_id": f"eq.{lesson_id}",
-                "order": "recorded_at.asc",
+                "order": "recorded_at.desc",
+                "limit": "80",
             },
         )
         response.raise_for_status()
         payload: Any = response.json()
         if not isinstance(payload, list):
             raise SupabaseUnavailableError("Evidence event list response is invalid")
-        return [EvidenceEventRecord.model_validate(row) for row in payload]
+        records = [EvidenceEventRecord.model_validate(row) for row in payload]
+        # Newest-first from PostgREST; diagnose expects chronological order.
+        records.reverse()
+        return records
     except (httpx.HTTPError, ValueError) as exc:
         raise SupabaseUnavailableError("Supabase request failed") from exc
     finally:
         if owns_client:
             await http_client.aclose()
-
 
 async def fetch_evidence_item_ids_for_session(
     settings: Settings,
@@ -163,7 +162,6 @@ async def fetch_evidence_item_ids_for_session(
         if owns_client:
             await http_client.aclose()
 
-
 async def fetch_evidence_events_for_lesson(
     settings: Settings,
     lesson_id: str,
@@ -198,7 +196,6 @@ async def fetch_evidence_events_for_lesson(
     finally:
         if owns_client:
             await http_client.aclose()
-
 
 def parse_evidence_event_payload(payload: dict[str, Any]) -> EvidenceEventV1:
     return validate_evidence_event(payload)

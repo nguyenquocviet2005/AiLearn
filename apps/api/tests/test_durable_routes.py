@@ -162,17 +162,29 @@ def test_exit_ticket_persists_transfer_as_diagnostic_evidence(
             }
         ],
     }
+    # One valid accepted answer per real template, in case a step lands on a
+    # gradable template regardless of skill match (see packages/content selection).
+    correct_responses = {
+        "tpl_repair_direct_vs_inverse_table": "tỉ lệ nghịch",
+        "tpl_repair_inverse_definition_diagram": "4",
+        "tpl_repair_computation_steps_text": "6",
+        "tpl_repair_word_problem_table": "nhiều hơn",
+        "tpl_practice_equal_ratios_text": "36, 24, 18",
+        "tpl_transfer_multistep_table": "15",
+    }
     latest = client.post("/api/v1/remediation/sessions", json={"profile": profile}).json()
     for index in range(5):
-        response = client.post(
-            "/api/v1/remediation/attempts",
-            json={
-                "student_id": profile["student_id"],
-                "step_id": f"step_{profile['student_id']}_{latest['current_step_kind']}",
-                "is_correct": True,
-                "attempt_id": f"att_transfer_{index}",
-            },
-        )
+        content = latest["content"]
+        body: dict[str, Any] = {
+            "student_id": profile["student_id"],
+            "step_id": f"step_{profile['student_id']}_{latest['current_step_kind']}",
+            "attempt_id": f"att_transfer_{index}",
+        }
+        if content["is_gradable"]:
+            body["response"] = correct_responses[content["template_id"]]
+        else:
+            body["is_correct"] = True
+        response = client.post("/api/v1/remediation/attempts", json=body)
         assert response.status_code == 200
         latest = response.json()
 

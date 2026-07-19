@@ -15,6 +15,7 @@ from ailearn_remediation import (
     DiagnosticProfile,
     RemediationEngine,
     SessionState,
+    load_skill_misconceptions,
 )
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -39,6 +40,7 @@ router = APIRouter(prefix="/api/v1/remediation", tags=["remediation"])
 
 _engine = RemediationEngine()
 _content = ContentGenerator()
+_skill_misconceptions = load_skill_misconceptions()
 
 # Local-development fallback when Supabase is deliberately not configured.
 _sessions: dict[str, SessionState] = {}
@@ -51,26 +53,24 @@ _processed_attempts: dict[str, dict[str, dict[str, Any]]] = {}
 # Per-student exit-ticket idempotency fallback for local development.
 _processed_exit_tickets: dict[str, dict[str, dict[str, Any]]] = {}
 
-
 def _now() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
-
 
 class StartRequest(BaseModel):
     profile: dict[str, Any] = Field(..., description="StudentDiagnosticProfileV1")
 
-
 class AttemptRequest(BaseModel):
     student_id: str
     step_id: str
-    is_correct: bool
     attempt_id: str
-
+    # Exactly one of these must be set, matching whether the current step is
+    # server-graded (`response`) or self-reported (`is_correct`) — see submit_attempt.
+    response: str | None = None
+    is_correct: bool | None = None
 
 class ConfirmRequest(BaseModel):
     student_id: str
     evidence_sufficient: bool
-
 
 class ExitTicketRequest(BaseModel):
     student_id: str
@@ -78,24 +78,28 @@ class ExitTicketRequest(BaseModel):
     response_label: str
     submission_id: str
 
-
 def _content_payload(session: SessionState) -> dict[str, Any]:
+    misconception_id = (
+        _skill_misconceptions.get(session.root_cause_skill_id)
+        if session.root_cause_skill_id
+        else None
+    )
     c = _content.generate(
         skill_id=session.root_cause_skill_id,
         state=session.current_state.value,
         kind=_engine.current_step_kind(session).value,
         representation=session.representation.value,
+        misconception_id=misconception_id,
     )
     return {
         "template_id": c.template_id,
         "title": c.title,
         "body": c.body,
         "checkpoint_question": c.checkpoint_question,
-        "checkpoint_answer": c.checkpoint_answer,
+        "is_gradable": c.is_gradable,
         "representation": c.representation,
         "source": c.source,
     }
-
 
 def _response(session: SessionState) -> dict[str, Any]:
     result: dict[str, Any] = {
@@ -110,7 +114,6 @@ def _response(session: SessionState) -> dict[str, Any]:
         result["exit_ticket"] = public_exit_ticket(session.student_id)
     return result
 
-
 def _storage_error(exc: SupabaseUnavailableError) -> HTTPException:
     return HTTPException(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -119,7 +122,6 @@ def _storage_error(exc: SupabaseUnavailableError) -> HTTPException:
             "message": "Remediation session storage is unavailable.",
         },
     )
-
 
 async def _get(settings: Settings, student_id: str) -> RemediationSessionRecord:
     if durable_sessions_configured(settings):
@@ -140,7 +142,6 @@ async def _get(settings: Settings, student_id: str) -> RemediationSessionRecord:
         processed_exit_tickets=_processed_exit_tickets.setdefault(student_id, {}),
     )
 
-
 async def _save(settings: Settings, record: RemediationSessionRecord) -> None:
     if durable_sessions_configured(settings):
         try:
@@ -151,7 +152,6 @@ async def _save(settings: Settings, record: RemediationSessionRecord) -> None:
     _sessions[record.session.student_id] = record.session
     _processed_attempts[record.session.student_id] = record.processed_attempts
     _processed_exit_tickets[record.session.student_id] = record.processed_exit_tickets
-
 
 async def _record_exit_ticket_evidence(
     settings: Settings,
@@ -187,13 +187,11 @@ async def _record_exit_ticket_evidence(
             },
         ) from exc
 
-
 def reset_remediation_state() -> None:
     """Clear transient remediation state for an explicit demo reset only."""
     _sessions.clear()
     _processed_attempts.clear()
     _processed_exit_tickets.clear()
-
 
 @router.post("/sessions")
 async def start_session(
@@ -212,7 +210,6 @@ async def start_session(
     )
     return _response(session)
 
-
 @router.post("/attempts")
 async def submit_attempt(
     req: AttemptRequest,
@@ -223,20 +220,50 @@ async def submit_attempt(
     Idempotent on attempt_id: a retried request for the same attempt_id replays
     the response recorded the first time instead of advancing the state machine
     again (VAI-18 — RemediationEngine.advance() has no idempotency of its own).
+
+    Gradable checkpoints (an accepted-answer template) are graded server-side from
+    `response`; a client-supplied `is_correct` is never trusted for those steps. Only
+    self-report steps (no accepted answer to grade against) use `is_correct` directly.
     """
     record = await _get(settings, req.student_id)
 
     if req.attempt_id in record.processed_attempts:
         return record.processed_attempts[req.attempt_id]
 
+    current_content = _content.generate(
+        skill_id=record.session.root_cause_skill_id,
+        state=record.session.current_state.value,
+        kind=_engine.current_step_kind(record.session).value,
+        representation=record.session.representation.value,
+        misconception_id=(
+            _skill_misconceptions.get(record.session.root_cause_skill_id)
+            if record.session.root_cause_skill_id
+            else None
+        ),
+    )
+    if current_content.is_gradable:
+        if req.response is None:
+            raise HTTPException(
+                status_code=422,
+                detail="This step is server-graded; submit `response`, not `is_correct`.",
+            )
+        is_correct = _content.grade(current_content.template_id, req.response)
+    else:
+        if req.is_correct is None:
+            raise HTTPException(
+                status_code=422,
+                detail="This step is self-reported; submit `is_correct`.",
+            )
+        is_correct = req.is_correct
+
     record.session = _engine.advance(
-        record.session, AttemptOutcome(req.step_id, req.is_correct, _now())
+        record.session, AttemptOutcome(req.step_id, is_correct, _now())
     )
     result = _response(record.session)
+    result["last_attempt_correct"] = is_correct
     record.processed_attempts[req.attempt_id] = result
     await _save(settings, record)
     return result
-
 
 @router.post("/confirm")
 async def confirm_evidence(
@@ -248,7 +275,6 @@ async def confirm_evidence(
     record.session = _engine.confirm(record.session, req.evidence_sufficient)
     await _save(settings, record)
     return _response(record.session)
-
 
 @router.post("/exit-tickets")
 async def submit_exit_ticket(
@@ -315,7 +341,6 @@ async def submit_exit_ticket(
     record.processed_exit_tickets[req.submission_id] = result
     await _save(settings, record)
     return result
-
 
 @router.get("/sessions/{student_id}")
 async def get_session(

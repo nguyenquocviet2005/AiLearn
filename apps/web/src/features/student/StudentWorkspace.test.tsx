@@ -120,7 +120,7 @@ function remediationResponse(
       title: "Ví dụ mẫu",
       body: "Đây là một ví dụ mẫu.",
       checkpoint_question: "2 + 2 = ?",
-      checkpoint_answer: "4",
+      is_gradable: true,
       representation: "text",
       source: "template",
     },
@@ -133,6 +133,7 @@ function fakeRepository(
 ): StudentRepository {
   return {
     startReadinessSession: vi.fn().mockResolvedValue(SESSION),
+    startProbe: vi.fn(),
     submitReadinessResponse: vi.fn().mockResolvedValue({
       evidence_event: {},
       remaining_item_ids: [],
@@ -143,12 +144,13 @@ function fakeRepository(
     submitRemediationAttempt: vi.fn().mockResolvedValue(
       remediationResponse({
         current_step_kind: "guided_problem",
+        last_attempt_correct: true,
         content: {
           template_id: "tpl_2",
           title: "Bài có hướng dẫn",
           body: "Bài có hướng dẫn.",
           checkpoint_question: "3 + 3 = ?",
-          checkpoint_answer: "6",
+          is_gradable: true,
           representation: "text",
           source: "template",
         },
@@ -169,7 +171,6 @@ async function answerReadinessItem(
   await user.click(
     screen.getByRole("radio", { name: new RegExp(optionLabel) }),
   );
-  await user.click(screen.getByRole("button", { name: "Em giải thích được" }));
   await user.click(screen.getByRole("button", { name: "Gửi câu trả lời" }));
 }
 
@@ -241,7 +242,8 @@ describe("StudentWorkspace", () => {
     expect(document.body.textContent).not.toMatch(/skill_/);
     expect(document.body.textContent).not.toContain("root_cause");
 
-    // Grade the checkpoint against the (server-only) checkpoint_answer.
+    // The typed response is graded server-side; the client never computes
+    // correctness itself and never sees an answer key.
     const answerInput = screen.getByLabelText("Câu trả lời của em");
     await user.type(answerInput, "4");
     await user.click(screen.getByRole("button", { name: "Kiểm tra" }));
@@ -250,14 +252,15 @@ describe("StudentWorkspace", () => {
       expect(repository.submitRemediationAttempt).toHaveBeenCalledWith(
         "stu_g7_001",
         "step_1_worked_example",
-        true,
         expect.any(String),
+        "4",
+        null,
       );
     });
     expect(await screen.findByText("Bài có hướng dẫn.")).toBeInTheDocument();
   });
 
-  it("requires both an option and a confidence level before enabling submit", async () => {
+  it("requires an option to be selected before enabling submit", async () => {
     const repository = fakeRepository();
     const user = userEvent.setup();
     render(<StudentWorkspace repository={repository} />);
@@ -270,9 +273,6 @@ describe("StudentWorkspace", () => {
     expect(submitButton).toBeDisabled();
 
     await user.click(screen.getByRole("radio", { name: /A/ }));
-    expect(submitButton).toBeDisabled();
-
-    await user.click(screen.getByRole("button", { name: "Em chưa chắc" }));
     expect(submitButton).toBeEnabled();
   });
 
@@ -290,7 +290,7 @@ describe("StudentWorkspace", () => {
             title: "Ví dụ dạng bảng",
             body: "Xem bảng dưới đây.",
             checkpoint_question: "5 + 5 = ?",
-            checkpoint_answer: "10",
+            is_gradable: true,
             representation: "table",
             source: "template",
           },
@@ -320,10 +320,7 @@ describe("StudentWorkspace", () => {
     };
     const repository = fakeRepository({
       getDiagnosticProfile: vi.fn().mockResolvedValue(ABSTAINED_PROFILE),
-      startReadinessSession: vi
-        .fn()
-        .mockResolvedValueOnce(SESSION)
-        .mockResolvedValueOnce(probeSession),
+      startProbe: vi.fn().mockResolvedValue(probeSession),
       startRemediationSession: vi.fn().mockResolvedValue(
         remediationResponse({
           path: {

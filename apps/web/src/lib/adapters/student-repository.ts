@@ -28,6 +28,11 @@ export interface StudentRepository {
     studentId: string,
     lessonId: string,
   ): Promise<StartSessionResponse>;
+  /** Selects and administers exactly one discriminating item (Blueprint §9.3). */
+  startProbe(
+    studentId: string,
+    lessonId: string,
+  ): Promise<StartSessionResponse>;
   submitReadinessResponse(
     sessionId: string,
     itemId: string,
@@ -41,11 +46,16 @@ export interface StudentRepository {
   startRemediationSession(
     profile: StudentDiagnosticProfileV1,
   ): Promise<RemediationResponse>;
+  /**
+   * Exactly one of `response` / `isCorrect` should be set, matching whether the
+   * current step is server-graded or self-reported (see `RemediationContent.is_gradable`).
+   */
   submitRemediationAttempt(
     studentId: string,
     stepId: string,
-    isCorrect: boolean,
     attemptId: string,
+    response: string | null,
+    isCorrect: boolean | null,
   ): Promise<RemediationResponse>;
   confirmEvidence(
     studentId: string,
@@ -91,6 +101,13 @@ export const httpStudentRepository: StudentRepository = {
     });
   },
 
+  async startProbe(studentId, lessonId) {
+    return request<StartSessionResponse>("/api/v1/diagnostics/probe", {
+      method: "POST",
+      body: JSON.stringify({ student_id: studentId, lesson_id: lessonId }),
+    });
+  },
+
   async submitReadinessResponse(sessionId, itemId, responseLabel, confidence) {
     return request<SubmitResponseResponse>(
       `/api/v1/diagnostics/${sessionId}/responses`,
@@ -118,14 +135,21 @@ export const httpStudentRepository: StudentRepository = {
     });
   },
 
-  async submitRemediationAttempt(studentId, stepId, isCorrect, attemptId) {
+  async submitRemediationAttempt(
+    studentId,
+    stepId,
+    attemptId,
+    response,
+    isCorrect,
+  ) {
     return request<RemediationResponse>("/api/v1/remediation/attempts", {
       method: "POST",
       body: JSON.stringify({
         student_id: studentId,
         step_id: stepId,
-        is_correct: isCorrect,
         attempt_id: attemptId,
+        response,
+        is_correct: isCorrect,
       }),
     });
   },

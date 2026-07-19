@@ -7,7 +7,10 @@
  * order; the rest resume on the next flush.
  */
 
-import type { StudentRepository } from "@/lib/adapters/student-repository";
+import {
+  ApiError,
+  type StudentRepository,
+} from "@/lib/adapters/student-repository";
 import type {
   ExitTicketResponse,
   RemediationResponse,
@@ -18,6 +21,7 @@ import {
   countPending,
   listPending,
   recoverInterruptedWrites,
+  removeWrite,
   updateStatus,
   type DiagnosticResponsePayload,
   type ExitTicketPayload,
@@ -45,6 +49,10 @@ function notify(): void {
 export interface FlushResult {
   write: PendingWrite;
   ok: boolean;
+  /** True when a permanent 404/422 was dropped so FIFO can continue. */
+  dropped?: boolean;
+  errorStatus?: number;
+  errorMessage?: string;
   response?: SubmitResponseResponse | RemediationResponse | ExitTicketResponse;
 }
 
@@ -55,7 +63,9 @@ async function flushOne(
   updateStatus(write.clientEventId, "SYNCING");
   try {
     let response:
-      SubmitResponseResponse | RemediationResponse | ExitTicketResponse;
+      | SubmitResponseResponse
+      | RemediationResponse
+      | ExitTicketResponse;
     if (write.type === "DIAGNOSTIC_RESPONSE") {
       const payload = write.payload as DiagnosticResponsePayload;
       response = await repository.submitReadinessResponse(
@@ -69,8 +79,9 @@ async function flushOne(
       response = await repository.submitRemediationAttempt(
         payload.studentId,
         payload.stepId,
-        payload.isCorrect,
         payload.attemptId,
+        payload.response,
+        payload.isCorrect,
       );
     } else {
       const payload = write.payload as ExitTicketPayload;
@@ -83,9 +94,28 @@ async function flushOne(
     }
     updateStatus(write.clientEventId, "SYNCED", 0, response);
     return { write, ok: true, response };
-  } catch {
+  } catch (error) {
+    // Permanent client/API errors must not poison FIFO and block later answers.
+    if (
+      error instanceof ApiError &&
+      (error.status === 404 || error.status === 422)
+    ) {
+      removeWrite(write.clientEventId);
+      return {
+        write,
+        ok: true,
+        dropped: true,
+        errorStatus: error.status,
+        errorMessage: error.message,
+      };
+    }
     updateStatus(write.clientEventId, "FAILED", 1);
-    return { write, ok: false };
+    return {
+      write,
+      ok: false,
+      errorStatus: error instanceof ApiError ? error.status : undefined,
+      errorMessage: error instanceof Error ? error.message : undefined,
+    };
   }
 }
 

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { LandingPage } from "@/features/landing/LandingPage";
+import { PrototypeFlow } from "@/features/prototype/PrototypeFlow";
+import { StudentPreviewWorkspace } from "@/features/student-preview/StudentPreviewWorkspace";
 import { StudentWorkspace } from "@/features/student/StudentWorkspace";
 import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
 import { TeacherProductWorkspace } from "@/features/teacher/product/TeacherProductWorkspace";
@@ -12,7 +14,12 @@ function currentPathname() {
   return window.location.pathname;
 }
 
-type Route = TeacherRoute | "/teacher/report/print" | "/student";
+type Route =
+  | TeacherRoute
+  | "/teacher/report/print"
+  | "/student"
+  | "/student-preview"
+  | "/prototype";
 
 const teacherProductRoutes = new Set<TeacherRoute>([
   "/teacher",
@@ -44,6 +51,10 @@ export default function App() {
     window.scrollTo({ top: 0 });
   }
 
+  if (pathname === "/prototype") {
+    return <PrototypeFlow onExit={() => navigate("/")} />;
+  }
+
   if (teacherProductRoutes.has(pathname as TeacherRoute)) {
     return (
       <TeacherProductWorkspace
@@ -72,6 +83,10 @@ export default function App() {
 
   if (pathname === "/student") {
     return <StudentWorkspace />;
+  }
+
+  if (pathname === "/student-preview") {
+    return <StudentPreviewWorkspace />;
   }
 
   return <LandingPage onNavigate={navigate} />;
