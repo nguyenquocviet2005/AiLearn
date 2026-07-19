@@ -16,26 +16,9 @@ export type TeacherRoute =
   | "/teacher/resources"
   | "/teacher/report";
 
-const sidebarNavigation: Array<{
-  href: TeacherRoute;
-  icon: string;
-  label: string;
-  ariaLabel?: string;
-}> = [
-  {
-    href: "/teacher",
-    icon: "⌂",
-    label: "Tổng quan",
-    ariaLabel: "Tổng quan lớp",
-  },
-  { href: "/teacher/analytics", icon: "◔", label: "Phân tích lớp" },
-];
-
 export function TeacherShell({
   children,
   connectionStatus = "connected",
-  currentRoute,
-  onNavigate,
   toolbarAction,
 }: {
   children: ReactNode;
@@ -67,36 +50,6 @@ export function TeacherShell({
           </span>
           <span>AiLearn</span>
         </a>
-
-        <div className="teacher-role dashboard-rail-identity">
-          <span className="teacher-role-avatar" aria-hidden="true">
-            GV
-          </span>
-          <div>
-            <strong>Không gian giáo viên</strong>
-            <small>Lớp 7A · Mốc kiểm tra 2</small>
-          </div>
-        </div>
-
-        <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
-          {sidebarNavigation.map((item) => (
-            <a
-              aria-current={currentRoute === item.href ? "page" : undefined}
-              aria-label={item.ariaLabel}
-              href={item.href}
-              key={item.href}
-              onClick={(event) => {
-                event.preventDefault();
-                onNavigate(item.href);
-              }}
-            >
-              <span className="dashboard-nav-icon" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span>{item.label}</span>
-            </a>
-          ))}
-        </nav>
 
         <div className="teacher-sidebar-note">
           <span className="companion-presence">

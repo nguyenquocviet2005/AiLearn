@@ -36,4 +36,5 @@
 - Mục Dạy trên lớp cũng dùng trạng thái trung tính và nhãn `Mở công cụ`, vì dashboard hiện không nhận tiến trình giảng dạy trực tiếp.
 - Thanh điều hướng trái được điều chỉnh thành thanh gọn, luôn đọc được hai mục chính; các khối giới thiệu dài được ẩn để không tạo khoảng trống không cần thiết.
 - Điều chỉnh tiếp: thanh trái tự co theo nội dung thay vì kéo cao toàn màn hình; mỗi mục điều hướng dùng đủ chiều rộng để không cắt nhãn khi chọn.
+- Theo quyết định mới, bỏ toàn bộ điều hướng trái. Thanh này chỉ giữ logo/tên AiLearn và quote về quyền quyết định của giáo viên; tất cả tuyến công việc được mở từ thanh tiến trình trong nội dung.
 - Kiểm tra PrototypeFlow được thu hẹp vào thanh điều hướng prototype để không nhầm nút Học sinh hợp lệ trong thanh tiến trình giáo viên.

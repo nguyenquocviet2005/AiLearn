@@ -25,15 +25,28 @@
 }
 
 .teacher-sidebar .dashboard-rail-brand > span:last-child,
-.teacher-sidebar .teacher-navigation a > span:last-child {
+.teacher-sidebar .teacher-sidebar-note > div {
   opacity: 1;
   transform: none;
 }
 
 .teacher-sidebar .dashboard-rail-identity,
-.teacher-sidebar .teacher-sidebar-note,
 .teacher-sidebar .teacher-switch-workspace,
 .teacher-sidebar .teacher-sync-card {
+  display: none;
+}
+
+.teacher-sidebar .teacher-sidebar-note {
+  box-sizing: border-box;
+  display: block;
+  min-height: 0;
+  width: 100%;
+  margin: 0.75rem 0 0;
+  padding: 0.8rem 0.35rem 0;
+  border-top: 1px solid rgba(84, 40, 207, 0.14);
+}
+
+.teacher-sidebar .teacher-sidebar-note .companion-presence {
   display: none;
 }
 
@@ -44,16 +57,6 @@
   }
 }
 
-.teacher-navigation {
-  gap: 2px;
-}
-
-.teacher-navigation a {
-  box-sizing: border-box;
-  min-height: 44px;
-  padding-block: 8px;
-  width: 100%;
-}
 .teacher-mobile-navigation {
   display: none;
 }
