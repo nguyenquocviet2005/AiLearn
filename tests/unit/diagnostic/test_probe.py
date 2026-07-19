@@ -102,7 +102,7 @@ def test_probe_covers_unobserved_skill_when_no_incorrect_evidence_yet() -> None:
     assert selection.item.item_id == "item_inv_prop_01"
 
 
-def test_probe_returns_none_when_all_items_answered() -> None:
+def test_probe_reuses_least_recent_when_all_items_answered() -> None:
     curriculum = load_curriculum()
     items = load_items()
     events = [
@@ -119,7 +119,12 @@ def test_probe_returns_none_when_all_items_answered() -> None:
         for index, item in enumerate(items.items.values())
     ]
 
-    assert select_probe_item(events, curriculum, items) is None
+    selection = select_probe_item(events, curriculum, items)
+
+    assert selection is not None
+    assert selection.reason == "reuse_least_recent"
+    # All events share the same timestamp, so the lowest item_id wins.
+    assert selection.item.item_id == min(items.items.keys())
 
 
 def test_probe_selection_is_deterministic_across_repeated_calls() -> None:

@@ -8,6 +8,7 @@ module picks that one item deterministically from whichever evidence already exi
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 
 from ailearn_schemas import EvidenceEventV1
 
@@ -18,12 +19,14 @@ TARGETS_PRIMARY_HYPOTHESIS = "targets_primary_hypothesis"
 ISOLATES_COMPETING_HYPOTHESIS = "isolates_competing_hypothesis"
 COVERS_UNOBSERVED_SKILL = "covers_unobserved_skill"
 NEXT_UNANSWERED_ITEM = "next_unanswered_item"
+REUSE_LEAST_RECENT = "reuse_least_recent"
 
 _REASON_PRIORITY: dict[str, int] = {
     TARGETS_PRIMARY_HYPOTHESIS: 0,
     ISOLATES_COMPETING_HYPOTHESIS: 1,
     COVERS_UNOBSERVED_SKILL: 2,
     NEXT_UNANSWERED_ITEM: 3,
+    REUSE_LEAST_RECENT: 4,
 }
 
 
@@ -41,18 +44,19 @@ def select_probe_item(
     curriculum: Curriculum,
     items: ItemIndex,
 ) -> ProbeSelection | None:
-    """Pick one unanswered item that best resolves the current abstention.
+    """Pick one item that best resolves the current abstention.
 
+    Prefer unanswered items. When the bank is exhausted (common on shared demo
+    students), reuse the least-recently-answered item so confirmation can still
+    proceed instead of failing the student flow with a 409.
     Deterministic: the same evidence sequence always yields the same selection.
-    Returns None once every item has been answered (caller should escalate to the
-    teacher instead of looping).
     """
     answered_item_ids = {event.item_id for event in events}
     candidates = [
         item for item in items.items.values() if item.item_id not in answered_item_ids
     ]
     if not candidates:
-        return None
+        return _reuse_least_recent(events, curriculum, items)
 
     ranker = DeterministicRootCauseRanker()
     ranked = ranker.rank_for_abstention(events, curriculum, items)
@@ -100,4 +104,36 @@ def select_probe_item(
     )
     return ProbeSelection(
         item=best, reason=reason_for(best), target_skill_id=primary_skill_id
+    )
+
+
+def _reuse_least_recent(
+    events: list[EvidenceEventV1],
+    curriculum: Curriculum,
+    items: ItemIndex,
+) -> ProbeSelection | None:
+    """When every item has been answered, reuse the oldest-answered one."""
+    if not items.items:
+        return None
+
+    last_answered_at: dict[str, datetime] = {}
+    for event in events:
+        previous = last_answered_at.get(event.item_id)
+        if previous is None or event.recorded_at > previous:
+            last_answered_at[event.item_id] = event.recorded_at
+
+    epoch = datetime(1970, 1, 1, tzinfo=UTC)
+
+    def reuse_key(item_id: str) -> tuple[datetime, str]:
+        return (last_answered_at.get(item_id, epoch), item_id)
+
+    chosen_id = min(items.items.keys(), key=reuse_key)
+    item = items.items[chosen_id]
+    ranker = DeterministicRootCauseRanker()
+    ranked = ranker.rank_for_abstention(events, curriculum, items)
+    primary_skill_id = ranked[0].skill_id if ranked else None
+    return ProbeSelection(
+        item=item,
+        reason=REUSE_LEAST_RECENT,
+        target_skill_id=primary_skill_id,
     )

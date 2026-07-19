@@ -100,14 +100,15 @@ def test_probe_returns_404_for_unknown_lesson(client: TestClient) -> None:
     assert response.json()["detail"]["code"] == "lesson_not_found"
 
 
-def test_probe_returns_409_when_every_item_already_answered(
+def test_probe_reuses_item_when_every_item_already_answered(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _configure(client)
     from ailearn_api.curriculum import ITEMS
 
     records = [
-        _record(item.item_id, item.skill_ids[0], is_correct=True) for item in ITEMS.items.values()
+        _record(item.item_id, item.skill_ids[0], is_correct=True)
+        for item in ITEMS.items.values()
     ]
     monkeypatch.setattr(
         "ailearn_api.routes.diagnostics.fetch_evidence_events_for_student",
@@ -119,11 +120,14 @@ def test_probe_returns_409_when_every_item_already_answered(
         json={"student_id": "stu_probe_04", "lesson_id": LESSON_ID},
     )
 
-    assert response.status_code == 409
-    assert response.json()["detail"]["code"] == "probe_exhausted"
+    assert response.status_code == 201
+    body = response.json()
+    assert len(body["items"]) == 1
+    assert body["reason"] == "reuse_least_recent"
 
 
 def test_probe_returns_503_when_evidence_storage_unavailable(client: TestClient) -> None:
+    _configure(client)
     response = client.post(
         "/api/v1/diagnostics/probe",
         json={"student_id": "stu_probe_05", "lesson_id": LESSON_ID},

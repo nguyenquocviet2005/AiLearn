@@ -153,3 +153,11 @@ Tests: `tests/unit/diagnostic/test_probe.py` (new), `tests/unit/content/test_gra
   issue. Flagging both explicitly for a future cleanup issue.
 - Did not touch VAI-33 (student progress/help screens), demo-mode in-memory evidence storage,
   or anything beyond the two engine gaps — by explicit user scope choice.
+
+## Follow-up (2026-07-19): deploy probe_exhausted UX
+
+**Symptom:** After readiness on shared demo students, FE showed English "Every assessment item has already been answered." + Thử lại.
+
+**Cause:** Diagnosis CONFIRMATION → `POST /diagnostics/probe` → `select_probe_item` returned None when every bank item was already in evidence → API 409 `probe_exhausted` → FE `describeError` echoed raw English detail.
+
+**Fix:** Prefer unanswered items; if exhausted, reuse least-recently-answered (`reuse_least_recent`) instead of 409. FE maps legacy 409 to Vietnamese copy. Tests updated; 503 probe test now hermetic via `_configure`.
