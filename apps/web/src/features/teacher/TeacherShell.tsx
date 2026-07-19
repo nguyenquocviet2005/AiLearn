@@ -49,7 +49,10 @@ export function TeacherShell({
           </span>
           <div>
             <strong>Quyết định thuộc về giáo viên</strong>
-            <p>AiLearn chỉ đề xuất từ bằng chứng học tập đã ghi nhận.</p>
+            <p>
+              AiLearn đề xuất từ minh chứng; giáo viên quyết định bước tiếp
+              theo.
+            </p>
           </div>
         </div>
       </aside>
