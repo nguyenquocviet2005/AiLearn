@@ -85,13 +85,8 @@ describe("LandingPage", () => {
       screen.getByText("Cập nhật online theo dòng minh chứng"),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", {
-        name: "Lõi này chạm tới từng tiêu chí đánh giá.",
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("An toàn AI, Grounding & Độ tin cậy"),
-    ).toBeInTheDocument();
+      screen.queryByText("Đối chiếu barem chấm điểm"),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
     ).toBeInTheDocument();
