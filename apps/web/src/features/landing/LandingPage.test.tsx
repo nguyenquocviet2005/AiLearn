@@ -78,6 +78,21 @@ describe("LandingPage", () => {
       screen.getByText("Ghi lại EvidenceEventV1 và chẩn đoán lại"),
     ).toBeInTheDocument();
     expect(
+      screen.getByText("Năm thuộc tính khiến lõi này đáng tin"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Biết khi nào nên im lặng")).toBeInTheDocument();
+    expect(
+      screen.getByText("Cập nhật online theo dòng minh chứng"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Lõi này chạm tới từng tiêu chí đánh giá.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("An toàn AI, Grounding & Độ tin cậy"),
+    ).toBeInTheDocument();
+    expect(
       screen.getByText("Vá đúng gap bằng một đường học vừa đủ"),
     ).toBeInTheDocument();
     expect(

@@ -136,6 +136,94 @@ const remediationSequence = [
   { number: "05", label: "Ghi nhận kết quả", state: "Minh chứng mới" },
 ];
 
+const coreTrustProperties = [
+  {
+    tone: "cyan",
+    tag: "Nhẹ để triển khai",
+    title: "Chạy tốt trên máy cấu hình thấp",
+    detail:
+      "Beta-Bernoulli và toàn bộ quy tắc là mô hình xác suất dạng đóng chạy trên CPU, không huấn luyện — triển khai được trên phần cứng phổ thông ở trường, không cần GPU và không cần LLM để ra một chẩn đoán.",
+    proof: "Chỉ CPU · không cần GPU",
+  },
+  {
+    tone: "pink",
+    tag: "Lớp bảo vệ nhiều tầng",
+    title: "Biết khi nào nên im lặng",
+    detail:
+      "Dưới 5 minh chứng, lỗi không đủ nghĩa hoặc bằng chứng ủng hộ/phản bác cân bằng đều bị chặn thành “cần xác nhận thêm”; validator và giáo viên là cửa cuối.",
+    proof: "Abstention · SymPy · human gate",
+  },
+  {
+    tone: "yellow",
+    tag: "Độ tin cậy hiệu chỉnh",
+    title: "Mỗi chẩn đoán kèm một con số",
+    detail:
+      "Confidence xác định trong 0–1 dựng từ số minh chứng và tỉ lệ ủng hộ; hạ theo thang riêng khi engine chọn hỏi thêm thay vì kết luận.",
+    proof: "C = 0,2 + 0,03N + 0,4·S/(S+K)",
+  },
+  {
+    tone: "purple",
+    tag: "Trace tái lập 100%",
+    title: "Cùng minh chứng, cùng kết quả",
+    detail:
+      "Không có ngẫu nhiên: mọi giả thuyết mang ID minh chứng ủng hộ và phản bác, mọi điểm ưu tiên phơi bày từng thành phần để giáo viên truy lại.",
+    proof: "Deterministic · evidence IDs",
+  },
+  {
+    tone: "green",
+    tag: "Vòng lặp học liên tục",
+    title: "Cập nhật online theo dòng minh chứng",
+    detail:
+      "Mô hình người học cập nhật Bayesian ngay khi có minh chứng mới; kết quả bài chuyển giao được ghi lại và đưa vào chẩn đoán vòng sau — một vòng lặp khép kín.",
+    proof: "Online update · closed loop",
+  },
+];
+
+const rubricAlignment = [
+  {
+    tone: "cyan",
+    points: "20",
+    criterion: "Chất lượng triển khai kỹ thuật",
+    evidence:
+      "Mô hình dạng đóng chạy CPU, hàng đợi offline FIFO, ba engine xác định có test phủ.",
+  },
+  {
+    tone: "purple",
+    points: "20",
+    criterion: "Kiến trúc AI-Native & Đổi mới",
+    evidence:
+      "Lai ghép: xác suất + skill graph + state machine + RAG có guardrail, khép vòng minh chứng học liên tục.",
+  },
+  {
+    tone: "yellow",
+    points: "20",
+    criterion: "Khả thi kinh doanh & Lộ trình Pilot",
+    evidence:
+      "Không GPU nên chi phí mỗi lớp thấp; vertical slice Toán 7; teacher-first rút ngắn thời gian soạn bài.",
+  },
+  {
+    tone: "pink",
+    points: "15",
+    criterion: "UX AI-Native & Tư duy thiết kế",
+    evidence:
+      "Ba quyết định trước giờ lên lớp, evidence drawer, không xếp hạng học sinh, hoạt động khi mất mạng.",
+  },
+  {
+    tone: "cyan",
+    points: "15",
+    criterion: "An toàn AI, Grounding & Độ tin cậy",
+    evidence:
+      "Taxonomy đóng, trích nguồn chương trình, validator, abstention và confidence hiệu chỉnh.",
+  },
+  {
+    tone: "purple",
+    points: "10",
+    criterion: "Trình bày & Bảo vệ giải pháp",
+    evidence:
+      "Mọi quyết định tái lập được và truy tới ID minh chứng, dễ bảo vệ khi phản biện trực tiếp.",
+  },
+];
+
 const runtimeTechnology = {
   pwa: [
     { name: "React", logo: "/technology/react.svg" },
@@ -889,6 +977,27 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               </div>
             </div>
 
+            <div className="landing-ai-properties">
+              <p className="landing-ai-properties-label">
+                Năm thuộc tính khiến lõi này đáng tin
+              </p>
+              <ul aria-label="Thuộc tính kỹ thuật của lõi AiLearn">
+                {coreTrustProperties.map((property) => (
+                  <li
+                    className={`landing-ai-property landing-ai-property--${property.tone}`}
+                    key={property.tag}
+                  >
+                    <span className="landing-ai-property-tag">
+                      {property.tag}
+                    </span>
+                    <strong>{property.title}</strong>
+                    <p>{property.detail}</p>
+                    <code>{property.proof}</code>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <ol className="landing-ai-engine-list">
               <li className="landing-ai-engine landing-ai-engine--diagnostic">
                 <article>
@@ -1144,6 +1253,30 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 </article>
               </li>
             </ol>
+
+            <div className="landing-ai-rubric">
+              <div className="landing-ai-rubric-heading">
+                <p className="landing-kicker">Đối chiếu barem chấm điểm</p>
+                <h3>Lõi này chạm tới từng tiêu chí đánh giá.</h3>
+              </div>
+              <ol className="landing-ai-rubric-list">
+                {rubricAlignment.map((row) => (
+                  <li
+                    className={`landing-ai-rubric-row landing-ai-rubric-row--${row.tone}`}
+                    key={row.criterion}
+                  >
+                    <span className="landing-ai-rubric-points">
+                      <strong>{row.points}</strong>
+                      <small>điểm</small>
+                    </span>
+                    <div>
+                      <strong>{row.criterion}</strong>
+                      <p>{row.evidence}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
 
             <footer className="landing-ai-core-boundary">
               <span>Điểm khác biệt</span>
