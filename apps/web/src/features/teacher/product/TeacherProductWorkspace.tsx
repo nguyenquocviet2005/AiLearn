@@ -14,6 +14,12 @@ import {
   type TeacherDemoModel,
   type TeacherStudentRow,
 } from "./teacher-demo-model";
+import {
+  GRADE7_MATH_KNTT_CHAPTERS,
+  GRADE7_MATH_KNTT_LESSON_TOTAL,
+  GRADE7_MATH_KNTT_SOURCE,
+  getCurrentGrade7MathKnttLesson,
+} from "./grade7-math-kntt-syllabus";
 import "./teacher-product.css";
 
 type ProductRoute = Exclude<
@@ -114,6 +120,12 @@ const routeMeta: Record<
     description:
       "Những việc quan trọng nhất để lớp 7A sẵn sàng cho tiết Toán tiếp theo.",
   },
+  "/teacher/analytics": {
+    eyebrow: "Toàn cảnh lớp · Toán 7",
+    title: "Nhìn nhanh lớp 7A trước khi vào tiết.",
+    description:
+      "Xem mức sẵn sàng, khoảng hổng và vị trí bài học trong tiến trình Toán 7.",
+  },
   "/teacher/classes": {
     eyebrow: "Lớp học · Toán 7",
     title: "Một nơi để theo dõi cả lớp và từng bài học.",
@@ -158,7 +170,7 @@ const routeMeta: Record<
   },
   "/teacher/resources": {
     eyebrow: "Học liệu · Giáo viên duyệt trước",
-    title: "Học liệu được tạo theo đúng nhu cầu của từng nhóm.",
+    title: "Học liệu theo nhu cầu của lớp.",
     description:
       "Xem trước và gắn học liệu đã được giáo viên duyệt vào kế hoạch trước khi sử dụng trên lớp.",
   },
@@ -267,7 +279,10 @@ export function WorkflowStrip({
     ["/teacher/after-class", "Sau giờ học"],
     ["/teacher/interventions", "Can thiệp"],
   ] as const;
-  const currentIndex = steps.findIndex(([path]) => path === current);
+  const currentIndex = Math.max(
+    0,
+    steps.findIndex(([path]) => path === current),
+  );
   return (
     <ol className="workflow-strip" aria-label="Tiến trình bài dạy">
       {steps.map(([path, label], index) => (
@@ -496,7 +511,7 @@ function ClassesPage({
         </div>
         <button
           className="product-secondary"
-          onClick={() => navigate("/teacher/insights")}
+          onClick={() => navigate("/teacher/analytics")}
           type="button"
         >
           Mở phân tích lớp
@@ -716,6 +731,320 @@ function PreparePage({
   );
 }
 
+function AnalyticsPage({
+  model,
+  navigate,
+}: {
+  model: TeacherDemoModel;
+  navigate: (route: TeacherRoute) => void;
+}) {
+  const currentLesson = getCurrentGrade7MathKnttLesson();
+  const readiness = [
+    { label: "Sẵn sàng", count: model.metrics.ready, tone: "ready" },
+    { label: "Cần hỗ trợ", count: model.metrics.needsSupport, tone: "support" },
+    {
+      label: "Chưa đủ minh chứng",
+      count: model.metrics.insufficient,
+      tone: "evidence",
+    },
+  ];
+  const rootCauses = Array.from(
+    model.students.reduce((counts, student) => {
+      if (!student.rootCauseId) return counts;
+      counts.set(
+        student.rootCauseId,
+        (counts.get(student.rootCauseId) ?? 0) + 1,
+      );
+      return counts;
+    }, new Map<string, number>()),
+  )
+    .map(([skill, count]) => ({
+      skill,
+      label: teacherSkillLabel(skill),
+      count,
+    }))
+    .sort((left, right) => right.count - left.count);
+  const maxCauseCount = Math.max(...rootCauses.map((cause) => cause.count), 1);
+  const priorityRows = model.teachingPriorities.slice(0, 2).map((priority) => ({
+    ...priority,
+    duration: model.plan.lesson_plan.activities
+      .filter((activity) => activity.root_cause_skill_id === priority.skill_id)
+      .reduce((total, activity) => total + activity.duration_minutes, 0),
+  }));
+  const groupRows = model.groups.map((group) => ({
+    label: group.name,
+    count: group.student_ids.length,
+    target: group.target,
+  }));
+  const maxGroupCount = Math.max(...groupRows.map((group) => group.count), 1);
+  let accumulated = 0;
+
+  return (
+    <div className="analytics-page">
+      <section
+        className="analytics-summary"
+        aria-labelledby="analytics-summary-title"
+      >
+        <div>
+          <span className="product-chip">
+            Dữ liệu lớp cập nhật 2 phút trước
+          </span>
+          <h2 id="analytics-summary-title">
+            Điều gì cần ưu tiên trong tiết này?
+          </h2>
+          <p>
+            Kết quả dưới đây được tính từ hồ sơ chẩn đoán, minh chứng và nhóm
+            học tập của {model.metrics.total} học sinh lớp 7A.
+          </p>
+        </div>
+        <button
+          className="product-primary"
+          onClick={() => navigate("/teacher/insights")}
+          type="button"
+        >
+          Xem minh chứng chi tiết
+        </button>
+      </section>
+
+      <div className="analytics-grid analytics-grid-top">
+        <section
+          className="product-panel chart-panel"
+          aria-labelledby="readiness-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Mức sẵn sàng</span>
+              <h2 id="readiness-title">Toàn lớp</h2>
+            </div>
+            <span className="count-badge">{model.metrics.total} học sinh</span>
+          </div>
+          <div className="readiness-chart">
+            <svg
+              aria-label={`Mức sẵn sàng: ${readiness.map((item) => `${item.label} ${item.count} học sinh`).join(", ")}`}
+              className="readiness-donut"
+              role="img"
+              viewBox="0 0 120 120"
+            >
+              <circle className="donut-track" cx="60" cy="60" r="45" />
+              {readiness.map((item) => {
+                const fraction = item.count / model.metrics.total;
+                const dash = fraction * 282.74;
+                const element = (
+                  <circle
+                    className={`donut-segment is-${item.tone}`}
+                    cx="60"
+                    cy="60"
+                    key={item.label}
+                    r="45"
+                    strokeDasharray={`${dash} ${282.74 - dash}`}
+                    strokeDashoffset={-accumulated * 282.74}
+                  />
+                );
+                accumulated += fraction;
+                return element;
+              })}
+              <text className="donut-total" x="60" y="57">
+                {model.metrics.total}
+              </text>
+              <text className="donut-caption" x="60" y="72">
+                học sinh
+              </text>
+            </svg>
+            <ul className="chart-legend">
+              {readiness.map((item) => (
+                <li key={item.label}>
+                  <i className={`legend-dot is-${item.tone}`} />
+                  <span>{item.label}</span>
+                  <strong>{item.count}</strong>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="chart-note">
+            {model.metrics.insufficient} em chưa được xếp vào nhóm chắc chắn vì
+            minh chứng còn thiếu hoặc mâu thuẫn.
+          </p>
+        </section>
+
+        <section
+          className="product-panel chart-panel"
+          aria-labelledby="priority-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Ưu tiên giảng dạy</span>
+              <h2 id="priority-title">Nối lại với bài đang học</h2>
+            </div>
+          </div>
+          <ol className="teaching-priorities">
+            {priorityRows.map((priority) => (
+              <li key={priority.skill_id}>
+                <span>{priority.rank}</span>
+                <div>
+                  <strong>{priority.label}</strong>
+                  <p>
+                    {priority.duration > 0
+                      ? `Dành ${priority.duration} phút trong kế hoạch hiện tại${priority.rank === 1 ? " — thời lượng dài nhất." : "."}`
+                      : "Cần thêm hoạt động phù hợp trong kế hoạch."}
+                    {priority.rank === 2
+                      ? ` Liên hệ trực tiếp với mục tiêu của bài ${currentLesson.lesson.title.toLowerCase()}.`
+                      : ""}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="chart-note">
+            Đây là gợi ý từ chẩn đoán lớp; cô có thể điều chỉnh trong kế hoạch
+            bài dạy.
+          </p>
+        </section>
+      </div>
+
+      <div className="analytics-grid">
+        <section
+          className="product-panel chart-panel"
+          aria-labelledby="cause-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Khoảng hổng theo nguyên nhân</span>
+              <h2 id="cause-title">Cần xử lý trước</h2>
+            </div>
+          </div>
+          <ul
+            className="bar-chart"
+            aria-label="Số học sinh theo nguyên nhân gốc"
+          >
+            {rootCauses.map((cause) => (
+              <li key={cause.skill}>
+                <div>
+                  <span>{cause.label}</span>
+                  <strong>{cause.count} em</strong>
+                </div>
+                <i aria-hidden="true">
+                  <b
+                    style={{ width: `${(cause.count / maxCauseCount) * 100}%` }}
+                  />
+                </i>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="product-text-button"
+            onClick={() => navigate("/teacher/students")}
+            type="button"
+          >
+            Mở danh sách học sinh <span aria-hidden="true">→</span>
+          </button>
+        </section>
+
+        <section
+          className="product-panel chart-panel"
+          aria-labelledby="group-chart-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Nhóm học tập</span>
+              <h2 id="group-chart-title">Quy mô và trọng tâm</h2>
+            </div>
+          </div>
+          <ul
+            className="bar-chart group-bar-chart"
+            aria-label="Số học sinh theo nhóm học tập"
+          >
+            {groupRows.map((group) => (
+              <li key={group.label}>
+                <div>
+                  <span>{group.label}</span>
+                  <strong>{group.count} em</strong>
+                </div>
+                <i aria-hidden="true">
+                  <b
+                    style={{ width: `${(group.count / maxGroupCount) * 100}%` }}
+                  />
+                </i>
+                <small>{group.target}</small>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="product-text-button"
+            onClick={() => navigate("/teacher/insights")}
+            type="button"
+          >
+            Xem nhóm và minh chứng <span aria-hidden="true">→</span>
+          </button>
+        </section>
+      </div>
+
+      <section
+        className="product-panel syllabus-panel"
+        aria-labelledby="syllabus-title"
+      >
+        <div className="panel-heading">
+          <div>
+            <span>Tiến trình môn Toán 7</span>
+            <h2 id="syllabus-title">Kết nối tri thức với cuộc sống</h2>
+          </div>
+          <span className="count-badge">
+            Bài {currentLesson.lesson.number}/{GRADE7_MATH_KNTT_LESSON_TOTAL}
+          </span>
+        </div>
+        <p>
+          Bài hiện tại thuộc{" "}
+          <strong>
+            Chương {currentLesson.chapter.number}: {currentLesson.chapter.title}
+          </strong>
+          . Danh mục này giúp đặt bài dạy vào mạch học; kết quả lớp vẫn chỉ dựa
+          trên minh chứng đã thu thập.
+        </p>
+        <div className="syllabus-chapters">
+          {GRADE7_MATH_KNTT_CHAPTERS.map((chapter) => {
+            const currentInChapter = chapter.lessons.some(
+              (lesson) => lesson.id === currentLesson.lesson.id,
+            );
+            return (
+              <details key={chapter.id} open={currentInChapter}>
+                <summary>
+                  <span>{chapter.number}</span>
+                  <strong>{chapter.title}</strong>
+                  <small>{chapter.lessons.length} bài</small>
+                </summary>
+                <ol>
+                  {chapter.lessons.map((lesson) => {
+                    const state =
+                      lesson.id === currentLesson.lesson.id
+                        ? "current"
+                        : "upcoming";
+                    return (
+                      <li className={state} key={lesson.id}>
+                        <span>{lesson.number}</span>
+                        {lesson.title}
+                        {state === "current" && <b>Đang chuẩn bị</b>}
+                        {lesson.number < currentLesson.lesson.number && (
+                          <small>Trước bài hiện tại</small>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </details>
+            );
+          })}
+        </div>
+        <small className="syllabus-source">
+          Danh mục chương và bài:{" "}
+          <a href={GRADE7_MATH_KNTT_SOURCE} rel="noreferrer" target="_blank">
+            tài liệu tập huấn Toán 7 Kết nối tri thức
+          </a>
+          . Không sao chép nội dung sách giáo khoa.
+        </small>
+      </section>
+    </div>
+  );
+}
+
 function EnginePipeline() {
   const stages = [
     ["01", "Minh chứng", "Câu trả lời, thời gian và quan sát"],
@@ -733,7 +1062,7 @@ function EnginePipeline() {
     <section className="engine-pipeline" aria-labelledby="engine-title">
       <div className="panel-heading">
         <div>
-          <span>AiLearn Core Engine</span>
+          <span>Cách AiLearn phân tích</span>
           <h2 id="engine-title">Từ dữ liệu đến hành động của giáo viên</h2>
         </div>
         <span className="count-badge">Có thể truy xuất từng kết luận</span>
@@ -2184,6 +2513,9 @@ export function TeacherProductWorkspace({
           <WorkflowStrip current={route} onNavigate={onNavigate} />
           {route === "/teacher" && (
             <TodayPage model={effectiveModel} navigate={onNavigate} />
+          )}
+          {route === "/teacher/analytics" && (
+            <AnalyticsPage model={effectiveModel} navigate={onNavigate} />
           )}
           {route === "/teacher/classes" && (
             <ClassesPage model={effectiveModel} navigate={onNavigate} />

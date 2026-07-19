@@ -82,6 +82,7 @@ describe("App", () => {
   });
 
   it.each([
+    ["/teacher/analytics", "Nhìn nhanh lớp 7A trước khi vào tiết."],
     ["/teacher/classes", "Một nơi để theo dõi cả lớp và từng bài học."],
     ["/teacher/prepare", "Chuẩn bị bài dạy từ mục tiêu đến minh chứng."],
     ["/teacher/insights", "Hiểu nguyên nhân trước khi chọn cách dạy."],
@@ -92,10 +93,7 @@ describe("App", () => {
       "/teacher/interventions",
       "Củng cố đến khi học sinh thực sự vận dụng được.",
     ],
-    [
-      "/teacher/resources",
-      "Học liệu được tạo theo đúng nhu cầu của từng nhóm.",
-    ],
+    ["/teacher/resources", "Học liệu theo nhu cầu của lớp."],
   ])("supports direct navigation to %s", async (route, heading) => {
     const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
     const plan = await reportTestPlan();

@@ -1,10 +1,11 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import "./teacher.css";
 
 export type TeacherRoute =
   | "/teacher"
   | "/teacher/classes"
+  | "/teacher/analytics"
   | "/teacher/prepare"
   | "/teacher/insights"
   | "/teacher/students"
@@ -15,7 +16,7 @@ export type TeacherRoute =
   | "/teacher/resources"
   | "/teacher/report";
 
-const navigation: Array<{
+const primaryNavigation: Array<{
   href: TeacherRoute;
   icon: string;
   label: string;
@@ -24,32 +25,24 @@ const navigation: Array<{
   {
     href: "/teacher",
     icon: "⌂",
-    label: "Hôm nay",
+    label: "Tổng quan",
     ariaLabel: "Tổng quan lớp",
   },
-  { href: "/teacher/classes", icon: "▦", label: "Lớp học" },
-  { href: "/teacher/prepare", icon: "◇", label: "Chuẩn bị bài" },
-  { href: "/teacher/insights", icon: "◎", label: "Phân tích lớp" },
-  { href: "/teacher/students", icon: "◉", label: "Học sinh" },
-  { href: "/teacher/lesson-plan", icon: "≡", label: "Kế hoạch bài dạy" },
-  { href: "/teacher/teaching", icon: "▶", label: "Chế độ giảng dạy" },
-  { href: "/teacher/after-class", icon: "✓", label: "Sau giờ học" },
-  { href: "/teacher/interventions", icon: "+", label: "Can thiệp" },
-  { href: "/teacher/resources", icon: "□", label: "Học liệu" },
-  {
-    href: "/teacher/report",
-    icon: "◫",
-    label: "Báo cáo",
-    ariaLabel: "Báo cáo can thiệp",
-  },
+  { href: "/teacher/analytics", icon: "◔", label: "Phân tích lớp" },
+  { href: "/teacher/lesson-plan", icon: "≡", label: "Kế hoạch" },
+  { href: "/teacher/teaching", icon: "▶", label: "Dạy học" },
 ];
 
-const mobilePrimaryRoutes = new Set<TeacherRoute>([
-  "/teacher",
-  "/teacher/insights",
-  "/teacher/lesson-plan",
-  "/teacher/teaching",
-]);
+const moreNavigation: Array<{ href: TeacherRoute; label: string }> = [
+  { href: "/teacher/classes", label: "Lớp học" },
+  { href: "/teacher/prepare", label: "Chuẩn bị bài" },
+  { href: "/teacher/insights", label: "Chẩn đoán" },
+  { href: "/teacher/students", label: "Học sinh" },
+  { href: "/teacher/after-class", label: "Sau giờ học" },
+  { href: "/teacher/interventions", label: "Can thiệp" },
+  { href: "/teacher/resources", label: "Học liệu" },
+  { href: "/teacher/report", label: "Báo cáo" },
+];
 
 export function TeacherShell({
   children,
@@ -64,20 +57,11 @@ export function TeacherShell({
   onNavigate: (path: TeacherRoute) => void;
   toolbarAction?: ReactNode;
 }) {
-  const [compactNavigation, setCompactNavigation] = useState(
-    () => typeof window !== "undefined" && window.innerWidth <= 900,
-  );
-  useEffect(() => {
-    const updateNavigation = () =>
-      setCompactNavigation(window.innerWidth <= 900);
-    window.addEventListener("resize", updateNavigation);
-    return () => window.removeEventListener("resize", updateNavigation);
-  }, []);
   const connectionCopy = {
-    loading: "Đang kết nối API",
-    connected: "API đã kết nối",
+    loading: "Đang kết nối dữ liệu",
+    connected: "Dữ liệu đã kết nối",
     degraded: "Kết nối một phần",
-    error: "API đang gián đoạn",
+    error: "Kết nối đang gián đoạn",
   }[connectionStatus];
   return (
     <div className="teacher-app">
@@ -106,78 +90,6 @@ export function TeacherShell({
             <small>Lớp 7A · Mốc kiểm tra 2</small>
           </div>
         </div>
-
-        {!compactNavigation && (
-          <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
-            {navigation.map((item) => (
-              <a
-                aria-label={item.ariaLabel}
-                aria-current={currentRoute === item.href ? "page" : undefined}
-                href={item.href}
-                key={item.href}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onNavigate(item.href);
-                }}
-              >
-                <span className="dashboard-nav-icon" aria-hidden="true">
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-              </a>
-            ))}
-          </nav>
-        )}
-
-        {compactNavigation && (
-          <nav
-            className="teacher-mobile-navigation"
-            aria-label="Điều hướng giáo viên trên thiết bị nhỏ"
-          >
-            {navigation
-              .filter((item) => mobilePrimaryRoutes.has(item.href))
-              .map((item) => (
-                <a
-                  aria-current={currentRoute === item.href ? "page" : undefined}
-                  href={item.href}
-                  key={item.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    onNavigate(item.href);
-                  }}
-                >
-                  <span aria-hidden="true">{item.icon}</span>
-                  <span>{item.label}</span>
-                </a>
-              ))}
-            <details>
-              <summary>
-                <span aria-hidden="true">•••</span>
-                <span>Thêm</span>
-              </summary>
-              <div>
-                {navigation
-                  .filter((item) => !mobilePrimaryRoutes.has(item.href))
-                  .map((item) => (
-                    <a
-                      aria-current={
-                        currentRoute === item.href ? "page" : undefined
-                      }
-                      href={item.href}
-                      key={item.href}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onNavigate(item.href);
-                      }}
-                    >
-                      <span aria-hidden="true">{item.icon}</span>
-                      {item.label}
-                    </a>
-                  ))}
-              </div>
-            </details>
-          </nav>
-        )}
 
         <div className="teacher-sidebar-note">
           <span className="companion-presence">
@@ -211,8 +123,52 @@ export function TeacherShell({
         tabIndex={-1}
       >
         <div className="teacher-product-topbar">
-          <div>
-            <span className="demo-badge">Dữ liệu demo</span>
+          <nav
+            className="teacher-top-navigation"
+            aria-label="Điều hướng giáo viên"
+          >
+            {primaryNavigation.map((item) => (
+              <a
+                aria-current={currentRoute === item.href ? "page" : undefined}
+                aria-label={item.ariaLabel}
+                href={item.href}
+                key={item.href}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onNavigate(item.href);
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+            <details className="teacher-top-overflow">
+              <summary>Thêm</summary>
+              <div>
+                {moreNavigation.map((item) => (
+                  <a
+                    aria-current={
+                      currentRoute === item.href ? "page" : undefined
+                    }
+                    href={item.href}
+                    key={item.href}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      (
+                        event.currentTarget.closest(
+                          "details",
+                        ) as HTMLDetailsElement | null
+                      )?.removeAttribute("open");
+                      onNavigate(item.href);
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </details>
+          </nav>
+          <div className="teacher-topbar-status">
+            <span className="demo-badge">Dữ liệu minh hoạ</span>
             <span className={`connection-badge is-${connectionStatus}`}>
               <i />
               {connectionCopy}
