@@ -35,4 +35,5 @@
 - Các bước chưa có dữ liệu hoàn thành xác nhận hiển thị là `Xem dữ liệu`; chỉ trạng thái phê duyệt kế hoạch dùng nhãn `Đã duyệt` khi mô hình thực sự cho biết kế hoạch đã được phê duyệt.
 - Mục Dạy trên lớp cũng dùng trạng thái trung tính và nhãn `Mở công cụ`, vì dashboard hiện không nhận tiến trình giảng dạy trực tiếp.
 - Thanh điều hướng trái được điều chỉnh thành thanh gọn, luôn đọc được hai mục chính; các khối giới thiệu dài được ẩn để không tạo khoảng trống không cần thiết.
+- Điều chỉnh tiếp: thanh trái tự co theo nội dung thay vì kéo cao toàn màn hình; mỗi mục điều hướng dùng đủ chiều rộng để không cắt nhãn khi chọn.
 - Kiểm tra PrototypeFlow được thu hẹp vào thanh điều hướng prototype để không nhầm nút Học sinh hợp lệ trong thanh tiến trình giáo viên.

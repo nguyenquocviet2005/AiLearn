@@ -13,13 +13,15 @@
 }
 
 .teacher-app .teacher-sidebar {
-  overflow-y: auto;
-  width: 184px;
+  bottom: auto;
+  min-height: 0;
+  overflow: visible;
+  width: 204px;
 }
 
 .teacher-app .teacher-sidebar:hover,
 .teacher-app .teacher-sidebar:focus-within {
-  width: 184px;
+  width: 204px;
 }
 
 .teacher-sidebar .dashboard-rail-brand > span:last-child,
@@ -30,14 +32,15 @@
 
 .teacher-sidebar .dashboard-rail-identity,
 .teacher-sidebar .teacher-sidebar-note,
-.teacher-sidebar .teacher-switch-workspace {
+.teacher-sidebar .teacher-switch-workspace,
+.teacher-sidebar .teacher-sync-card {
   display: none;
 }
 
 @media (min-width: 901px) {
   .teacher-app .teacher-shell {
     width: auto;
-    margin: 0 2rem 0 13rem;
+    margin: 0 2rem 0 15rem;
   }
 }
 
@@ -46,8 +49,10 @@
 }
 
 .teacher-navigation a {
+  box-sizing: border-box;
   min-height: 44px;
   padding-block: 8px;
+  width: 100%;
 }
 .teacher-mobile-navigation {
   display: none;
@@ -2395,7 +2400,9 @@ progress {
   .teacher-app .teacher-sidebar,
   .teacher-app .teacher-sidebar:hover,
   .teacher-app .teacher-sidebar:focus-within {
+    bottom: 0.75rem;
     overflow: visible;
+    width: auto;
   }
   .teacher-navigation {
     display: grid;
