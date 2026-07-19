@@ -164,9 +164,18 @@ def test_representation_affects_selection(gen):
     assert diagram.representation == "diagram"
 
 
-def test_unknown_skill_returns_generic_fallback(gen):
+def test_unknown_skill_still_resolves_same_kind_template(gen):
     c = gen.generate("skill_does_not_exist", "REPAIR", "worked_example", "text")
+    assert c.source == "template"
+    # worked_example is a demonstration step: self-reported, never graded.
+    assert c.is_gradable is False
+    assert c.template_id.startswith("tpl_repair_")
+
+
+def test_generic_fallback_when_no_template_for_kind(gen):
+    c = gen.generate("skill_does_not_exist", "TRANSFER", "result", "text")
     assert c.source == "generic_fallback"
+    assert c.is_gradable is False
 
 
 def test_every_template_has_body_and_checkpoint(gen):
@@ -189,3 +198,45 @@ def test_content_generator_makes_no_path_decisions(gen):
     )
     for forbidden in ("next_state", "current_state", "escalate", "root_cause"):
         assert not hasattr(c, forbidden)
+
+
+# ----------------------------------------------------------- secure grading
+
+
+def test_content_never_carries_the_answer_key(gen):
+    # A guided_problem is a genuinely graded step, so is_gradable is True here.
+    c = gen.generate(
+        skill_id="skill_find_constant_k",
+        state="REPAIR",
+        kind="guided_problem",
+        representation="text",
+    )
+    assert not hasattr(c, "checkpoint_answer")
+    assert not hasattr(c, "accepted_answers")
+    assert c.is_gradable is True
+
+
+def test_grade_accepts_a_normalized_match(gen):
+    c = gen.generate(
+        skill_id="skill_inverse_proportion_definition",
+        state="REPAIR",
+        kind="worked_example",
+        representation="diagram",
+    )
+    assert c.template_id == "tpl_repair_inverse_definition_diagram"
+    assert gen.grade(c.template_id, "  Y = 4  ") is True
+    assert gen.grade(c.template_id, "4") is True
+
+
+def test_grade_rejects_a_wrong_response(gen):
+    c = gen.generate(
+        skill_id="skill_inverse_proportion_definition",
+        state="REPAIR",
+        kind="worked_example",
+        representation="diagram",
+    )
+    assert gen.grade(c.template_id, "9") is False
+
+
+def test_grade_unknown_template_id_returns_false(gen):
+    assert gen.grade("tpl_does_not_exist", "anything") is False

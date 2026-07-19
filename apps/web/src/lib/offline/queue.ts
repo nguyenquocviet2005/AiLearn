@@ -19,8 +19,11 @@ export interface DiagnosticResponsePayload {
 export interface RemediationAttemptPayload {
   studentId: string;
   stepId: string;
-  isCorrect: boolean;
   attemptId: string;
+  // Exactly one of these is set, matching whether the current step is
+  // server-graded (`response`) or self-reported (`isCorrect`).
+  response: string | null;
+  isCorrect: boolean | null;
 }
 
 export interface ExitTicketPayload {
@@ -141,6 +144,33 @@ export function updateStatus(
 
 export function clearAll(): void {
   writeAll([]);
+}
+
+/** Remove one write (used for permanent API failures that must not stall FIFO). */
+export function removeWrite(clientEventId: string): void {
+  writeAll(readAll().filter((write) => write.clientEventId !== clientEventId));
+}
+
+/** True when a readiness/probe session still has unsynced diagnostic answers. */
+export function hasPendingDiagnosticForSession(sessionId: string): boolean {
+  return listPending().some((write) => {
+    if (write.type !== "DIAGNOSTIC_RESPONSE") {
+      return false;
+    }
+    const payload = write.payload as DiagnosticResponsePayload;
+    return payload.sessionId === sessionId;
+  });
+}
+
+/** True when a specific exit-ticket submission is still waiting to sync. */
+export function hasPendingExitTicket(submissionId: string): boolean {
+  return listPending().some((write) => {
+    if (write.type !== "EXIT_TICKET") {
+      return false;
+    }
+    const payload = write.payload as ExitTicketPayload;
+    return payload.submissionId === submissionId;
+  });
 }
 
 export function generateAttemptId(): string {

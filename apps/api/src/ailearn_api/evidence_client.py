@@ -102,7 +102,7 @@ async def fetch_evidence_events_for_student(
         raise SupabaseUnavailableError("Supabase is not configured")
 
     owns_client = client is None
-    http_client = client or httpx.AsyncClient(timeout=5.0, follow_redirects=False)
+    http_client = client or httpx.AsyncClient(timeout=20.0, follow_redirects=False)
     try:
         response = await http_client.get(
             f"{settings.supabase_url.rstrip('/')}/rest/v1/evidence_events",
@@ -114,14 +114,18 @@ async def fetch_evidence_events_for_student(
                 ),
                 "student_id": f"eq.{student_id}",
                 "lesson_id": f"eq.{lesson_id}",
-                "order": "recorded_at.asc",
+                "order": "recorded_at.desc",
+                "limit": "80",
             },
         )
         response.raise_for_status()
         payload: Any = response.json()
         if not isinstance(payload, list):
             raise SupabaseUnavailableError("Evidence event list response is invalid")
-        return [EvidenceEventRecord.model_validate(row) for row in payload]
+        records = [EvidenceEventRecord.model_validate(row) for row in payload]
+        # Newest-first from PostgREST; diagnose expects chronological order.
+        records.reverse()
+        return records
     except (httpx.HTTPError, ValueError) as exc:
         raise SupabaseUnavailableError("Supabase request failed") from exc
     finally:

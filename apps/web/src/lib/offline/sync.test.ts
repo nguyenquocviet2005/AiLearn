@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { StudentRepository } from "@/lib/adapters/student-repository";
+import {
+  ApiError,
+  type StudentRepository,
+} from "@/lib/adapters/student-repository";
 
 import { clearAll, enqueue, listAll, updateStatus } from "./queue";
 import { flush, onSyncChange, setupAutoSync } from "./sync";
@@ -10,6 +13,7 @@ function fakeRepository(
 ): StudentRepository {
   return {
     startReadinessSession: vi.fn(),
+    startProbe: vi.fn(),
     submitReadinessResponse: vi.fn().mockResolvedValue({
       evidence_event: {},
       remaining_item_ids: [],
@@ -75,6 +79,40 @@ describe("sync", () => {
     expect(repository.submitReadinessResponse).toHaveBeenCalledTimes(1);
   });
 
+  it("drops permanent 404 failures so later writes can flush", async () => {
+    const repository = fakeRepository({
+      submitReadinessResponse: vi
+        .fn()
+        .mockRejectedValueOnce(
+          new ApiError(404, "diagnostic_session_not_found", "gone"),
+        )
+        .mockResolvedValue({
+          evidence_event: {},
+          remaining_item_ids: [],
+          session_complete: true,
+        }),
+    });
+    enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_old",
+      itemId: "item_1",
+      responseLabel: "A",
+      confidence: null,
+    });
+    enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_new",
+      itemId: "item_2",
+      responseLabel: "B",
+      confidence: null,
+    });
+
+    await flush(repository);
+
+    expect(repository.submitReadinessResponse).toHaveBeenCalledTimes(2);
+    expect(listAll()).toHaveLength(1);
+    expect(listAll()[0].payload).toMatchObject({ sessionId: "sess_new" });
+    expect(listAll()[0].status).toBe("SYNCED");
+  });
+
   it("stops at the first failure to preserve write order", async () => {
     const repository = fakeRepository({
       submitRemediationAttempt: vi
@@ -85,12 +123,14 @@ describe("sync", () => {
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: "stu_1",
       stepId: "step_1",
+      response: null,
       isCorrect: true,
       attemptId: "att_1",
     });
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: "stu_1",
       stepId: "step_2",
+      response: null,
       isCorrect: true,
       attemptId: "att_2",
     });
@@ -113,12 +153,14 @@ describe("sync", () => {
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: "stu_1",
       stepId: "step_1",
+      response: null,
       isCorrect: true,
       attemptId: "att_1",
     });
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: "stu_1",
       stepId: "step_2",
+      response: null,
       isCorrect: true,
       attemptId: "att_2",
     });

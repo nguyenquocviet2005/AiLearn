@@ -221,6 +221,8 @@ async def test_fetch_evidence_events_for_student_filters_by_student_and_lesson()
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.params["student_id"] == "eq.stu_demo_01"
         assert request.url.params["lesson_id"] == "eq.lesson_demo_fractions_01"
+        assert request.url.params["order"] == "recorded_at.desc"
+        assert request.url.params["limit"] == "80"
         return httpx.Response(200, json=[SAMPLE_ROW])
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http_client:

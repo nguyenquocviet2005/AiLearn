@@ -15,6 +15,7 @@ from ailearn_remediation import (
     DiagnosticProfile,
     RemediationEngine,
     SessionState,
+    load_skill_misconceptions,
 )
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -39,6 +40,7 @@ router = APIRouter(prefix="/api/v1/remediation", tags=["remediation"])
 
 _engine = RemediationEngine()
 _content = ContentGenerator()
+_skill_misconceptions = load_skill_misconceptions()
 
 # Local-development fallback when Supabase is deliberately not configured.
 _sessions: dict[str, SessionState] = {}
@@ -63,8 +65,11 @@ class StartRequest(BaseModel):
 class AttemptRequest(BaseModel):
     student_id: str
     step_id: str
-    is_correct: bool
     attempt_id: str
+    # Exactly one of these must be set, matching whether the current step is
+    # server-graded (`response`) or self-reported (`is_correct`) — see submit_attempt.
+    response: str | None = None
+    is_correct: bool | None = None
 
 
 class ConfirmRequest(BaseModel):
@@ -80,18 +85,24 @@ class ExitTicketRequest(BaseModel):
 
 
 def _content_payload(session: SessionState) -> dict[str, Any]:
+    misconception_id = (
+        _skill_misconceptions.get(session.root_cause_skill_id)
+        if session.root_cause_skill_id
+        else None
+    )
     c = _content.generate(
         skill_id=session.root_cause_skill_id,
         state=session.current_state.value,
         kind=_engine.current_step_kind(session).value,
         representation=session.representation.value,
+        misconception_id=misconception_id,
     )
     return {
         "template_id": c.template_id,
         "title": c.title,
         "body": c.body,
         "checkpoint_question": c.checkpoint_question,
-        "checkpoint_answer": c.checkpoint_answer,
+        "is_gradable": c.is_gradable,
         "representation": c.representation,
         "source": c.source,
     }
@@ -223,16 +234,47 @@ async def submit_attempt(
     Idempotent on attempt_id: a retried request for the same attempt_id replays
     the response recorded the first time instead of advancing the state machine
     again (VAI-18 — RemediationEngine.advance() has no idempotency of its own).
+
+    Gradable checkpoints (an accepted-answer template) are graded server-side from
+    `response`; a client-supplied `is_correct` is never trusted for those steps. Only
+    self-report steps (no accepted answer to grade against) use `is_correct` directly.
     """
     record = await _get(settings, req.student_id)
 
     if req.attempt_id in record.processed_attempts:
         return record.processed_attempts[req.attempt_id]
 
+    current_content = _content.generate(
+        skill_id=record.session.root_cause_skill_id,
+        state=record.session.current_state.value,
+        kind=_engine.current_step_kind(record.session).value,
+        representation=record.session.representation.value,
+        misconception_id=(
+            _skill_misconceptions.get(record.session.root_cause_skill_id)
+            if record.session.root_cause_skill_id
+            else None
+        ),
+    )
+    if current_content.is_gradable:
+        if req.response is None:
+            raise HTTPException(
+                status_code=422,
+                detail="This step is server-graded; submit `response`, not `is_correct`.",
+            )
+        is_correct = _content.grade(current_content.template_id, req.response)
+    else:
+        if req.is_correct is None:
+            raise HTTPException(
+                status_code=422,
+                detail="This step is self-reported; submit `is_correct`.",
+            )
+        is_correct = req.is_correct
+
     record.session = _engine.advance(
-        record.session, AttemptOutcome(req.step_id, req.is_correct, _now())
+        record.session, AttemptOutcome(req.step_id, is_correct, _now())
     )
     result = _response(record.session)
+    result["last_attempt_correct"] = is_correct
     record.processed_attempts[req.attempt_id] = result
     await _save(settings, record)
     return result

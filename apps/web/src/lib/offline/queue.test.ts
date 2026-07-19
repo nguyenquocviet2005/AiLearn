@@ -5,6 +5,7 @@ import {
   countPending,
   enqueue,
   generateAttemptId,
+  hasPendingDiagnosticForSession,
   listAll,
   listPending,
   recoverInterruptedWrites,
@@ -26,6 +27,7 @@ describe("queue", () => {
     const second = enqueue("REMEDIATION_ATTEMPT", {
       studentId: "stu_1",
       stepId: "step_1",
+      response: null,
       isCorrect: true,
       attemptId: "att_1",
     });
@@ -106,5 +108,36 @@ describe("queue", () => {
 
     expect(listPending()).toHaveLength(1);
     expect(listAll()[0]).toMatchObject({ status: "FAILED", retryCount: 1 });
+  });
+
+  it("scopes diagnostic pending checks to one session id", () => {
+    enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_a",
+      itemId: "item_1",
+      responseLabel: "A",
+      confidence: null,
+    });
+    enqueue("DIAGNOSTIC_RESPONSE", {
+      sessionId: "sess_b",
+      itemId: "item_2",
+      responseLabel: "B",
+      confidence: null,
+    });
+    enqueue("REMEDIATION_ATTEMPT", {
+      studentId: "stu_1",
+      stepId: "step_1",
+      response: null,
+      isCorrect: true,
+      attemptId: "att_1",
+    });
+
+    expect(hasPendingDiagnosticForSession("sess_a")).toBe(true);
+    expect(hasPendingDiagnosticForSession("sess_b")).toBe(true);
+    expect(hasPendingDiagnosticForSession("sess_missing")).toBe(false);
+
+    const [first] = listAll();
+    updateStatus(first.clientEventId, "SYNCED");
+    expect(hasPendingDiagnosticForSession("sess_a")).toBe(false);
+    expect(hasPendingDiagnosticForSession("sess_b")).toBe(true);
   });
 });

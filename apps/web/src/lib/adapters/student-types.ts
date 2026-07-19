@@ -32,6 +32,8 @@ export interface StartSessionResponse {
   lesson_id: string;
   target_skill_id: string;
   items: AssessmentItemPublic[];
+  /** Why this item was chosen. Only populated by /diagnostics/probe. */
+  reason?: string | null;
 }
 
 export interface SubmitResponseResponse {
@@ -45,7 +47,8 @@ export interface RemediationContent {
   title: string;
   body: string;
   checkpoint_question: string;
-  checkpoint_answer: string;
+  /** Whether this checkpoint is graded server-side from a typed `response`. */
+  is_gradable: boolean;
   representation: Representation;
   source: "template" | "template+llm" | "generic_fallback";
 }
@@ -58,7 +61,13 @@ export interface RemediationResponse {
   escalation_reason: string | null;
   content: RemediationContent;
   exit_ticket?: ExitTicket;
+  /** The server's verdict on the attempt just submitted. Only present on attempt responses. */
+  last_attempt_correct?: boolean;
 }
+
+export type RemediationAttemptOutcome =
+  | { kind: "response"; response: string }
+  | { kind: "self_report"; isCorrect: boolean };
 
 export interface ExitTicket {
   id: string;
