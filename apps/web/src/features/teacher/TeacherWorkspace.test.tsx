@@ -141,6 +141,11 @@ describe("TeacherWorkspace", () => {
     expect(
       screen.getByText("Quyết định thuộc về giáo viên"),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "AiLearn đề xuất từ minh chứng; giáo viên quyết định bước tiếp theo.",
+      ),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /Chốt kế hoạch/ }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
