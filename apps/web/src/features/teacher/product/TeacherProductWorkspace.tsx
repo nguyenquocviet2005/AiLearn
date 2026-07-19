@@ -2583,7 +2583,6 @@ export function TeacherProductWorkspace({
 }) {
   const [state, setState] = useState<ProductState>({ kind: "loading" });
   const [requestKey, setRequestKey] = useState(0);
-  const [resetOpen, setResetOpen] = useState(false);
   const [progress, setProgressState] = useState<DemoProgress>(() => {
     try {
       const stored = window.sessionStorage.getItem(
@@ -2604,8 +2603,6 @@ export function TeacherProductWorkspace({
       return initialProgress;
     }
   });
-  const closeReset = () => setResetOpen(false);
-  const resetRef = useModalFocus<HTMLElement>(resetOpen, closeReset);
   function setProgress(next: DemoProgress) {
     setProgressState(next);
     try {
@@ -2653,29 +2650,12 @@ export function TeacherProductWorkspace({
       active = false;
     };
   }, [repository, requestKey]);
-  const connectionStatus =
-    state.kind === "loading"
-      ? "loading"
-      : state.kind === "ready"
-        ? "connected"
-        : state.kind === "partial"
-          ? "degraded"
-          : "error";
   const effectiveModel =
     state.kind === "ready"
       ? applyTeacherDecisions(state.model, progress)
       : null;
   return (
-    <TeacherShell
-      connectionStatus={connectionStatus}
-      currentRoute={route}
-      onNavigate={onNavigate}
-      toolbarAction={
-        <button onClick={() => setResetOpen(true)} type="button">
-          Đặt lại tiến trình demo
-        </button>
-      }
-    >
+    <TeacherShell currentRoute={route} onNavigate={onNavigate}>
       {state.kind === "loading" && (
         <section
           aria-busy="true"
@@ -2773,45 +2753,6 @@ export function TeacherProductWorkspace({
               setProgress={setProgress}
             />
           )}
-        </div>
-      )}
-      {resetOpen && (
-        <div className="modal-backdrop" role="presentation">
-          <section
-            aria-labelledby="reset-title"
-            aria-modal="true"
-            className="reset-dialog"
-            ref={resetRef}
-            role="dialog"
-          >
-            <span aria-hidden="true">↺</span>
-            <h2 id="reset-title">Đặt lại tiến trình trên trình duyệt?</h2>
-            <p>
-              Nhóm đã chỉnh, ghi chú, chuẩn bị, trạng thái giảng dạy và can
-              thiệp sẽ trở về điểm bắt đầu. Quyết định phê duyệt kế hoạch nằm
-              trên API nên không bị thay đổi và dữ liệu thật vẫn an toàn.
-            </p>
-            <div>
-              <button
-                className="product-secondary"
-                onClick={() => setResetOpen(false)}
-                type="button"
-              >
-                Giữ trạng thái hiện tại
-              </button>
-              <button
-                className="product-primary"
-                onClick={() => {
-                  setProgress(initialProgress);
-                  setResetOpen(false);
-                  onNavigate("/teacher");
-                }}
-                type="button"
-              >
-                Đặt lại tiến trình demo
-              </button>
-            </div>
-          </section>
         </div>
       )}
     </TeacherShell>

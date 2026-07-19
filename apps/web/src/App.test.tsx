@@ -43,11 +43,16 @@ describe("App", () => {
 
     expect(window.location.pathname).toBe("/teacher");
     expect(
-      screen.getByRole("navigation", {
+      screen.queryByRole("navigation", {
         name: "Điều hướng giáo viên",
       }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "AiLearn - trang chủ" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Lớp 7A · Mốc kiểm tra 2")).toBeInTheDocument();
+    expect(
+      screen.getByText("Quyết định thuộc về giáo viên"),
+    ).toBeInTheDocument();
   });
 
   it("renders the teacher product and lesson-plan routes on direct navigation", async () => {

@@ -135,10 +135,12 @@ describe("TeacherWorkspace", () => {
     expect(
       screen.getByRole("link", { name: "Đi tới nội dung chính" }),
     ).toHaveAttribute("href", "#teacher-main");
-    expect(screen.getByRole("link", { name: "Tổng quan lớp" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
+    expect(
+      screen.queryByRole("navigation", { name: "Điều hướng giáo viên" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Quyết định thuộc về giáo viên"),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /Chốt kế hoạch/ }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
