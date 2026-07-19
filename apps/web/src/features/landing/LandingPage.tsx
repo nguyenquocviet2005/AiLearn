@@ -179,51 +179,6 @@ const coreTrustProperties = [
   },
 ];
 
-const rubricAlignment = [
-  {
-    tone: "cyan",
-    points: "20",
-    criterion: "Chất lượng triển khai kỹ thuật",
-    evidence:
-      "Mô hình dạng đóng chạy CPU, hàng đợi offline FIFO, ba engine xác định có test phủ.",
-  },
-  {
-    tone: "purple",
-    points: "20",
-    criterion: "Kiến trúc AI-Native & Đổi mới",
-    evidence:
-      "Lai ghép: xác suất + skill graph + state machine + RAG có guardrail, khép vòng minh chứng học liên tục.",
-  },
-  {
-    tone: "yellow",
-    points: "20",
-    criterion: "Khả thi kinh doanh & Lộ trình Pilot",
-    evidence:
-      "Không GPU nên chi phí mỗi lớp thấp; vertical slice Toán 7; teacher-first rút ngắn thời gian soạn bài.",
-  },
-  {
-    tone: "pink",
-    points: "15",
-    criterion: "UX AI-Native & Tư duy thiết kế",
-    evidence:
-      "Ba quyết định trước giờ lên lớp, evidence drawer, không xếp hạng học sinh, hoạt động khi mất mạng.",
-  },
-  {
-    tone: "cyan",
-    points: "15",
-    criterion: "An toàn AI, Grounding & Độ tin cậy",
-    evidence:
-      "Taxonomy đóng, trích nguồn chương trình, validator, abstention và confidence hiệu chỉnh.",
-  },
-  {
-    tone: "purple",
-    points: "10",
-    criterion: "Trình bày & Bảo vệ giải pháp",
-    evidence:
-      "Mọi quyết định tái lập được và truy tới ID minh chứng, dễ bảo vệ khi phản biện trực tiếp.",
-  },
-];
-
 const runtimeTechnology = {
   pwa: [
     { name: "React", logo: "/technology/react.svg" },
@@ -1253,30 +1208,6 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 </article>
               </li>
             </ol>
-
-            <div className="landing-ai-rubric">
-              <div className="landing-ai-rubric-heading">
-                <p className="landing-kicker">Đối chiếu barem chấm điểm</p>
-                <h3>Lõi này chạm tới từng tiêu chí đánh giá.</h3>
-              </div>
-              <ol className="landing-ai-rubric-list">
-                {rubricAlignment.map((row) => (
-                  <li
-                    className={`landing-ai-rubric-row landing-ai-rubric-row--${row.tone}`}
-                    key={row.criterion}
-                  >
-                    <span className="landing-ai-rubric-points">
-                      <strong>{row.points}</strong>
-                      <small>điểm</small>
-                    </span>
-                    <div>
-                      <strong>{row.criterion}</strong>
-                      <p>{row.evidence}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
 
             <footer className="landing-ai-core-boundary">
               <span>Điểm khác biệt</span>
