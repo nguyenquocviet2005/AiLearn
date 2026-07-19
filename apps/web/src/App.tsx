@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { LandingPage } from "@/features/landing/LandingPage";
+import { PrototypeFlow } from "@/features/prototype/PrototypeFlow";
+import { StudentPreviewWorkspace } from "@/features/student-preview/StudentPreviewWorkspace";
 import { StudentWorkspace } from "@/features/student/StudentWorkspace";
 import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
+import { TeacherProductWorkspace } from "@/features/teacher/product/TeacherProductWorkspace";
 import { TeacherReport } from "@/features/teacher/report/TeacherReport";
+import type { TeacherRoute } from "@/features/teacher/TeacherShell";
 import { TeacherWorkspace } from "@/features/teacher/TeacherWorkspace";
 
 function currentPathname() {
@@ -11,11 +15,24 @@ function currentPathname() {
 }
 
 type Route =
-  | "/teacher"
-  | "/teacher/lesson-plan"
-  | "/teacher/report"
+  | "/"
+  | TeacherRoute
   | "/teacher/report/print"
-  | "/student";
+  | "/student"
+  | "/student-preview"
+  | "/prototype";
+
+const teacherProductRoutes = new Set<TeacherRoute>([
+  "/teacher",
+  "/teacher/classes",
+  "/teacher/prepare",
+  "/teacher/insights",
+  "/teacher/students",
+  "/teacher/teaching",
+  "/teacher/after-class",
+  "/teacher/interventions",
+  "/teacher/resources",
+]);
 
 export default function App() {
   const [pathname, setPathname] = useState(currentPathname);
@@ -35,13 +52,26 @@ export default function App() {
     window.scrollTo({ top: 0 });
   }
 
-  if (pathname === "/teacher" || pathname === "/teacher/lesson-plan") {
+  if (pathname === "/prototype") {
+    return <PrototypeFlow onExit={() => navigate("/")} />;
+  }
+
+  if (teacherProductRoutes.has(pathname as TeacherRoute)) {
     return (
-      <TeacherWorkspace
-        view={pathname === "/teacher" ? "overview" : "lesson-plan"}
+      <TeacherProductWorkspace
         onNavigate={navigate}
+        route={
+          pathname as Exclude<
+            TeacherRoute,
+            "/teacher/lesson-plan" | "/teacher/report"
+          >
+        }
       />
     );
+  }
+
+  if (pathname === "/teacher/lesson-plan") {
+    return <TeacherWorkspace view="lesson-plan" onNavigate={navigate} />;
   }
 
   if (pathname === "/teacher/report") {
@@ -54,6 +84,10 @@ export default function App() {
 
   if (pathname === "/student") {
     return <StudentWorkspace />;
+  }
+
+  if (pathname === "/student-preview") {
+    return <StudentPreviewWorkspace />;
   }
 
   return <LandingPage onNavigate={navigate} />;

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { listCacheEntries } from "@/lib/offline/content-cache";
 
+import { STUDY_MATERIALS } from "./copy";
 import type { Stage } from "./StudentWorkspace";
 
 export interface StudentHelpProps {
@@ -96,6 +97,23 @@ export function StudentHelp({ stage }: StudentHelpProps) {
         </div>
       )}
       {showOffline && <OfflineCacheList />}
+      <div className="student-study-materials" aria-label="Tài liệu gợi ý">
+        <strong>Tài liệu / video theo điểm yếu đã chẩn đoán</strong>
+        <p>
+          Em xem lại lý thuyết hoặc video trước khi quay lại lộ trình. Các link
+          mở tab mới.
+        </p>
+        <ul>
+          {STUDY_MATERIALS.map((material) => (
+            <li key={material.url}>
+              <a href={material.url} target="_blank" rel="noreferrer">
+                {material.title}
+              </a>
+              <small>{material.blurb}</small>
+            </li>
+          ))}
+        </ul>
+      </div>
     </article>
   );
 }

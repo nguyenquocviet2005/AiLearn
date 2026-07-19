@@ -21,6 +21,7 @@ from ailearn_diagnostic.models import (
     ItemIndex,
     ItemOption,
 )
+from ailearn_diagnostic.probe import ProbeSelection, select_probe_item
 from ailearn_diagnostic.root_cause import DeterministicRootCauseRanker, RootCauseRanker
 from ailearn_diagnostic.session import build_readiness_session
 
@@ -37,12 +38,14 @@ __all__ = [
     "ItemIndex",
     "ItemOption",
     "MasteryEstimator",
+    "ProbeSelection",
     "RootCauseRanker",
     "build_readiness_session",
     "diagnose",
     "load_curriculum",
     "load_golden_suite",
     "load_items",
+    "select_probe_item",
     "to_persistence_row",
     "validate_evidence_event",
 ]

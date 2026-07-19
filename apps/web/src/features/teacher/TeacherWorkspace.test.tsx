@@ -97,9 +97,9 @@ describe("TeacherWorkspace", () => {
         name: "Chọn bước dạy tiếp theo bằng bằng chứng.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Lớp: class_g7a_demo")).toBeInTheDocument();
+    expect(screen.getByText("Lớp: Lớp 7A")).toBeInTheDocument();
     expect(
-      screen.getByText("Bài học: lesson_g7_inverse_proportion_01"),
+      screen.getByText("Bài học: Đại lượng tỉ lệ nghịch"),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.example.test/api/v1/classes/class_g7a_demo/snapshot",
@@ -314,7 +314,7 @@ describe("TeacherWorkspace", () => {
       "4",
     );
     await user.selectOptions(
-      screen.getByLabelText("Chuyển Học sinh 004"),
+      screen.getByLabelText("Chuyển Phạm Đức Duy"),
       "grp_02_skill_distinguish_direct_inverse",
     );
     expect(screen.getByRole("button", { name: "Lưu chỉnh sửa" })).toBeEnabled();
@@ -337,7 +337,7 @@ describe("TeacherWorkspace", () => {
       "Thời lượng Khởi động xác nhận mức sẵn sàng",
     );
     expect(within(lessonPlanStatus()).getByText("2")).toBeInTheDocument();
-    expect(screen.getByLabelText("Chuyển Học sinh 004")).toHaveValue(
+    expect(screen.getByLabelText("Chuyển Phạm Đức Duy")).toHaveValue(
       "grp_02_skill_distinguish_direct_inverse",
     );
 

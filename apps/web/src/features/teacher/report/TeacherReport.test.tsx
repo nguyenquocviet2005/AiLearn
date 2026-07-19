@@ -28,7 +28,7 @@ describe("TeacherReport", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("Đã vận dụng độc lập")).toHaveLength(2);
     expect(screen.getAllByText("Cần giáo viên can thiệp")).toHaveLength(2);
-    expect(screen.getByText(/ev_stu_g7_003_post_001/)).toBeInTheDocument();
+    expect(screen.getAllByText("2 minh chứng sau can thiệp")).toHaveLength(4);
     expect(screen.getByText("Chưa ghi nhận bằng chứng")).toBeInTheDocument();
     expect(
       screen.getByText(

@@ -16,7 +16,7 @@ describe("resolveApiBaseUrl", () => {
 
   it("uses the established Railway origin in production, never localhost", () => {
     const resolved = resolveApiBaseUrl({ defaultUrl: PRODUCTION_API_BASE_URL });
-    expect(resolved).toBe(PRODUCTION_API_BASE_URL);
+    expect(resolved).toBe("https://ailearn-production-ec5e.up.railway.app");
     expect(resolved).not.toContain("localhost");
   });
 

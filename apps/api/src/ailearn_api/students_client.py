@@ -5,7 +5,7 @@ import httpx
 
 from ailearn_api.config import Settings
 from ailearn_api.models.student import StudentRecord
-from ailearn_api.supabase_client import SupabaseUnavailableError
+from ailearn_api.supabase_client import SupabaseUnavailableError, supabase_auth_headers
 
 
 async def fetch_student(
@@ -21,7 +21,7 @@ async def fetch_student(
     try:
         response = await http_client.get(
             f"{settings.supabase_url.rstrip('/')}/rest/v1/students",
-            headers={"apikey": settings.supabase_secret_key},
+            headers=supabase_auth_headers(settings),
             params={
                 "select": "id,display_name,class_id,created_at",
                 "id": f"eq.{student_id}",
@@ -56,7 +56,7 @@ async def fetch_students_for_class(
     try:
         response = await http_client.get(
             f"{settings.supabase_url.rstrip('/')}/rest/v1/students",
-            headers={"apikey": settings.supabase_secret_key},
+            headers=supabase_auth_headers(settings),
             params={
                 "select": "id,display_name,class_id,created_at",
                 "class_id": f"eq.{class_id}",

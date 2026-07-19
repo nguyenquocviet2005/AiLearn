@@ -36,6 +36,10 @@ class StartSessionResponse(BaseModel):
     lesson_id: str
     target_skill_id: str
     items: list[AssessmentItemPublic]
+    reason: str | None = Field(
+        default=None,
+        description="Why this item was chosen. Only populated by /diagnostics/probe.",
+    )
 
 
 class SubmitResponseRequest(BaseModel):

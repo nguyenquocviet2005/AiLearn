@@ -1,7 +1,8 @@
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
-from ailearn_diagnostic import AssessmentItem, build_readiness_session
+from ailearn_diagnostic import AssessmentItem, build_readiness_session, select_probe_item
+from ailearn_schemas import EvidenceEventV1
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import ValidationError
 
@@ -17,6 +18,7 @@ from ailearn_api.durable_session_store import (
 )
 from ailearn_api.evidence_client import (
     fetch_evidence_event,
+    fetch_evidence_events_for_student,
     fetch_evidence_item_ids_for_session,
     insert_evidence_event,
     parse_evidence_event_payload,
@@ -178,6 +180,98 @@ async def start_diagnostic_session(
         lesson_id=session.lesson_id,
         target_skill_id=session.target_skill_id,
         items=[_public_item(item) for item in items],
+    )
+
+
+@router.post(
+    "/diagnostics/probe",
+    response_model=StartSessionResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        404: {"description": "Unknown lesson_id, or no evidence recorded yet"},
+        409: {"description": "Assessment item bank is empty"},
+        503: {"description": "Supabase evidence storage is unavailable"},
+    },
+)
+async def start_probe_session(
+    body: StartSessionRequest,
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> StartSessionResponse:
+    """Select and administer exactly one discriminating item (Blueprint §9.3).
+
+    Unlike /diagnostics/start, this never restarts a full readiness session: it
+    picks the single unanswered item that best resolves the current abstention.
+    When every bank item has already been answered (common on shared demo
+    students), the engine reuses the least-recently-answered item instead of
+    failing the student flow.
+    """
+    if body.lesson_id != CURRICULUM.lesson_id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "lesson_not_found", "message": "Unknown lesson_id."},
+        )
+
+    try:
+        records = await fetch_evidence_events_for_student(settings, body.student_id, body.lesson_id)
+    except SupabaseUnavailableError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "code": "supabase_unavailable",
+                "message": "Evidence storage is unavailable.",
+            },
+        ) from exc
+    if not records:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "no_evidence_recorded",
+                "message": "No readiness evidence has been recorded for this student yet.",
+            },
+        )
+
+    events = [EvidenceEventV1.model_validate(record.model_dump()) for record in records]
+    selection = select_probe_item(events, CURRICULUM, ITEMS)
+    if selection is None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "code": "probe_exhausted",
+                "message": "No assessment items are available for this lesson.",
+            },
+        )
+
+    if durable_sessions_configured(settings):
+        session = new_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=[selection.item],
+        )
+        try:
+            await save_diagnostic_session(settings, session)
+        except SupabaseUnavailableError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail={
+                    "code": "supabase_unavailable",
+                    "message": "Diagnostic session storage is unavailable.",
+                },
+            ) from exc
+    else:
+        session = create_session(
+            student_id=body.student_id,
+            lesson_id=CURRICULUM.lesson_id,
+            target_skill_id=CURRICULUM.target_skill_id,
+            items=[selection.item],
+        )
+    return StartSessionResponse(
+        session_id=session.session_id,
+        student_id=session.student_id,
+        lesson_id=session.lesson_id,
+        target_skill_id=session.target_skill_id,
+        items=[_public_item(selection.item)],
+        reason=selection.reason,
     )
 
 

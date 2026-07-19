@@ -11,6 +11,15 @@ class SupabaseUnavailableError(RuntimeError):
     """Raised when the infrastructure status cannot be read safely."""
 
 
+def supabase_auth_headers(settings: Settings) -> dict[str, str]:
+    """PostgREST requires both apikey and Authorization for the service role."""
+    assert settings.supabase_secret_key is not None
+    return {
+        "apikey": settings.supabase_secret_key,
+        "Authorization": f"Bearer {settings.supabase_secret_key}",
+    }
+
+
 async def fetch_system_status(
     settings: Settings,
     client: httpx.AsyncClient | None = None,
@@ -23,7 +32,7 @@ async def fetch_system_status(
     try:
         response = await http_client.get(
             f"{settings.supabase_url.rstrip('/')}/rest/v1/system_status",
-            headers={"apikey": settings.supabase_secret_key},
+            headers=supabase_auth_headers(settings),
             params={
                 "select": "status,checked_at",
                 "id": "eq.platform",

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
 
 import {
+  ApiError,
   httpStudentRepository,
   type StudentRepository,
 } from "@/lib/adapters/student-repository";
@@ -10,6 +11,7 @@ import type {
   DemoPersonaSummary,
   ExitTicketOutcome,
   ExitTicketResponse,
+  RemediationAttemptOutcome,
   RemediationResponse,
   StartSessionResponse,
 } from "@/lib/adapters/student-types";
@@ -27,6 +29,8 @@ import {
   clearAll,
   enqueue,
   generateAttemptId,
+  hasPendingDiagnosticForSession,
+  hasPendingExitTicket,
   listAll,
 } from "@/lib/offline/queue";
 import { flush, onSyncChange, setupAutoSync } from "@/lib/offline/sync";
@@ -83,6 +87,7 @@ export type Stage =
       kind: "probe-waiting-to-sync";
       remediation: RemediationResponse;
       profile: StudentDiagnosticProfileV1;
+      probeSession: StartSessionResponse;
     }
   | {
       kind: "remediation";
@@ -161,6 +166,7 @@ export function StudentWorkspace({
   const [selectedPersonaId, setSelectedPersonaId] = useState("");
   const [pendingCount, setPendingCount] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [pathNotice, setPathNotice] = useState<string | null>(null);
   // First-seen representation for this remediation path, so the UI can show a
   // "representation changed" note (AC6) after a failed attempt switches it.
   const [initialRepresentation, setInitialRepresentation] = useState<
@@ -266,15 +272,26 @@ export function StudentWorkspace({
     };
   }, [repository]);
 
-  // Once a delayed sync catches up, move a waiting stage forward automatically.
+  // Once this stage's own writes sync, move forward. Do not wait for unrelated
+  // older queue items (they previously blocked the whole learner flow).
   useEffect(() => {
-    if (stage.kind === "waiting-to-sync" && pendingCount === 0) {
+    const readinessReady =
+      stage.kind === "waiting-to-sync" &&
+      !hasPendingDiagnosticForSession(stage.session.session_id);
+    const probeReady =
+      stage.kind === "probe-waiting-to-sync" &&
+      !hasPendingDiagnosticForSession(stage.probeSession.session_id);
+    const exitReady =
+      stage.kind === "exit-ticket-pending" &&
+      !hasPendingExitTicket(stage.submissionId);
+
+    if (readinessReady) {
       void diagnoseAndStartRemediation();
     }
-    if (stage.kind === "probe-waiting-to-sync" && pendingCount === 0) {
+    if (probeReady) {
       void resolveConfirmation();
     }
-    if (stage.kind === "exit-ticket-pending" && pendingCount === 0) {
+    if (exitReady && stage.kind === "exit-ticket-pending") {
       finalizeQueuedExitTicket(stage.profile, stage.submissionId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -306,13 +323,12 @@ export function StudentWorkspace({
     currentIndex: number,
     itemId: string,
     responseLabel: string,
-    confidence: number,
   ): Promise<void> {
     enqueue("DIAGNOSTIC_RESPONSE", {
       sessionId: session.session_id,
       itemId,
       responseLabel,
-      confidence,
+      confidence: null,
     });
     const nextIndex = currentIndex + 1;
 
@@ -339,36 +355,54 @@ export function StudentWorkspace({
 
   async function diagnoseAndStartRemediation(): Promise<void> {
     setStage({ kind: "diagnosing" });
-    try {
-      const profile = await repository.getDiagnosticProfile(
-        currentStudent.id,
-        lessonId,
-      );
-      const remediation = await repository.startRemediationSession(profile);
+    const maxAttempts = 3;
+    let lastError: unknown;
 
-      if (remediation.path.current_state === "CONFIRMATION") {
-        const probeSession = await repository.startReadinessSession(
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      try {
+        const profile = await repository.getDiagnosticProfile(
           currentStudent.id,
           lessonId,
         );
-        setStage({ kind: "probe", remediation, profile, probeSession });
-        return;
-      }
+        const remediation = await repository.startRemediationSession(profile);
 
-      saveToCache(remediationCacheKey(currentStudent.id), {
-        remediation,
-        profile,
-      });
-      markRemediationSeen(remediation);
-      setStage(
-        remediation.is_complete
-          ? { kind: "exit-ticket", remediation, profile }
-          : { kind: "remediation", remediation, profile },
-      );
-      setActiveTab("path");
-    } catch (error) {
-      setStage({ kind: "error", message: describeError(error) });
+        if (remediation.path.current_state === "CONFIRMATION") {
+          const probeSession = await repository.startProbe(
+            currentStudent.id,
+            lessonId,
+          );
+          setStage({ kind: "probe", remediation, profile, probeSession });
+          return;
+        }
+
+        saveToCache(remediationCacheKey(currentStudent.id), {
+          remediation,
+          profile,
+        });
+        markRemediationSeen(remediation);
+        setStage(
+          remediation.is_complete
+            ? { kind: "exit-ticket", remediation, profile }
+            : { kind: "remediation", remediation, profile },
+        );
+        setActiveTab("path");
+        return;
+      } catch (error) {
+        lastError = error;
+        const retryable =
+          error instanceof ApiError &&
+          error.status === 503 &&
+          attempt < maxAttempts;
+        if (!retryable) {
+          break;
+        }
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, 400 * attempt);
+        });
+      }
     }
+
+    setStage({ kind: "error", message: describeError(lastError) });
   }
 
   async function submitProbeAnswer(
@@ -377,15 +411,19 @@ export function StudentWorkspace({
     probeSession: StartSessionResponse,
     itemId: string,
     responseLabel: string,
-    confidence: number,
   ): Promise<void> {
     enqueue("DIAGNOSTIC_RESPONSE", {
       sessionId: probeSession.session_id,
       itemId,
       responseLabel,
-      confidence,
+      confidence: null,
     });
-    setStage({ kind: "probe-waiting-to-sync", remediation, profile });
+    setStage({
+      kind: "probe-waiting-to-sync",
+      remediation,
+      profile,
+      probeSession,
+    });
     // See the note in submitReadinessAnswer: the pendingCount effect handles the
     // transition once flush() settles, so we don't also call it directly here.
     await flush(repository);
@@ -406,7 +444,7 @@ export function StudentWorkspace({
       );
 
       if (confirmed.path.current_state === "CONFIRMATION") {
-        const probeSession = await repository.startReadinessSession(
+        const probeSession = await repository.startProbe(
           currentStudent.id,
           lessonId,
         );
@@ -446,14 +484,15 @@ export function StudentWorkspace({
   async function submitRemediationAttempt(
     profile: StudentDiagnosticProfileV1,
     stepId: string,
-    isCorrect: boolean,
+    outcome: RemediationAttemptOutcome,
   ): Promise<void> {
     const attemptId = generateAttemptId();
     enqueue("REMEDIATION_ATTEMPT", {
       studentId: currentStudent.id,
       stepId,
-      isCorrect,
       attemptId,
+      response: outcome.kind === "response" ? outcome.response : null,
+      isCorrect: outcome.kind === "self_report" ? outcome.isCorrect : null,
     });
     const results = await flush(repository);
     const ours = results.find(
@@ -461,21 +500,43 @@ export function StudentWorkspace({
         r.write.type === "REMEDIATION_ATTEMPT" &&
         (r.write.payload as { attemptId: string }).attemptId === attemptId,
     );
-    if (ours?.ok && ours.response) {
-      const remediation = ours.response as RemediationResponse;
+    // Auto-sync may have drained this write on a prior chained flush; recover
+    // the SYNCED result from the queue so the path still advances.
+    const recoveredCandidate =
+      ours?.response ??
+      listAll().find(
+        (write) =>
+          write.type === "REMEDIATION_ATTEMPT" &&
+          (write.payload as { attemptId: string }).attemptId === attemptId &&
+          write.status === "SYNCED" &&
+          write.result,
+      )?.result;
+    const recovered =
+      recoveredCandidate &&
+      typeof recoveredCandidate === "object" &&
+      "path" in recoveredCandidate &&
+      "current_step_kind" in recoveredCandidate
+        ? (recoveredCandidate as RemediationResponse)
+        : null;
+    if (recovered) {
+      setPathNotice(null);
       saveToCache(remediationCacheKey(currentStudent.id), {
-        remediation,
+        remediation: recovered,
         profile,
       });
-      markRemediationSeen(remediation);
+      markRemediationSeen(recovered);
       setStage(
-        remediation.is_complete
-          ? { kind: "exit-ticket", remediation, profile }
-          : { kind: "remediation", remediation, profile },
+        recovered.is_complete
+          ? { kind: "exit-ticket", remediation: recovered, profile }
+          : { kind: "remediation", remediation: recovered, profile },
       );
+      return;
     }
-    // If it didn't sync yet (offline), the queue holds it; the current step's
-    // content stays on screen until sync catches up and refreshes the cache.
+    // Keep the student on the current path step — a hard error stage made the
+    // frequent sync race look like the whole lesson broke.
+    setPathNotice(
+      "Chưa gửi được câu trả lời. Em hãy bấm đồng bộ trên thanh bên rồi thử lại bước này.",
+    );
   }
 
   function showExitTicketResult(
@@ -603,6 +664,25 @@ export function StudentWorkspace({
     }
   }
 
+  // Lets a student (or a tester) retake their own diagnostic from scratch,
+  // without going through the demo persona switcher — which resets identity
+  // and is meant for showcasing scripted personas, not for a real retake.
+  function restartOwnProgress(): void {
+    clearAll();
+    clearCache();
+    setPendingCount(0);
+    setInitialRepresentation(null);
+    // Also drop back to the real student identity: if this is clicked while a
+    // demo persona is active, its synthetic id has no row in the students
+    // table, so a fresh readiness submission would 404 on diagnostic-profile
+    // lookup (the persona-reset path avoids that by never calling it).
+    const learner = { id: studentId, displayName: DEMO_STUDENT_NAME };
+    saveActiveLearner(learner);
+    setCurrentStudent(learner);
+    setStage({ kind: "idle" });
+    setActiveTab("home");
+  }
+
   function continueReclassifiedPath(): void {
     if (stage.kind !== "exit-ticket-result" || !stage.nextProfile) {
       return;
@@ -668,6 +748,15 @@ export function StudentWorkspace({
           </nav>
 
           <div className="student-rail-controls">
+            <button
+              type="button"
+              className="student-reset"
+              disabled={busy || stage.kind === "idle"}
+              title="Xoá bài đang làm trên máy này và bắt đầu lại từ đầu"
+              onClick={() => restartOwnProgress()}
+            >
+              Làm lại từ đầu
+            </button>
             <DemoReset
               personas={personas}
               selectedPersonaId={selectedPersonaId}
@@ -734,9 +823,12 @@ export function StudentWorkspace({
           {activeTab === "readiness" && (
             <ReadinessSection
               stage={stage}
+              pendingCount={pendingCount}
               onAnswer={submitReadinessAnswer}
               onProbeAnswer={submitProbeAnswer}
               onSaveAndExit={() => setActiveTab("home")}
+              onRetrySync={() => void flush(repository)}
+              onRetryDiagnose={() => void diagnoseAndStartRemediation()}
             />
           )}
 
@@ -744,9 +836,11 @@ export function StudentWorkspace({
             <RemediationSection
               stage={stage}
               initialRepresentation={initialRepresentation}
+              pathNotice={pathNotice}
               onAttempt={submitRemediationAttempt}
               onExitTicket={submitExitTicket}
               onContinueReclassifiedPath={continueReclassifiedPath}
+              onDone={() => setActiveTab("home")}
               busy={busy}
             />
           )}
@@ -760,17 +854,20 @@ export function StudentWorkspace({
 
 function ReadinessSection({
   stage,
+  pendingCount,
   onAnswer,
   onProbeAnswer,
   onSaveAndExit,
+  onRetrySync,
+  onRetryDiagnose,
 }: {
   stage: Stage;
+  pendingCount: number;
   onAnswer: (
     session: StartSessionResponse,
     currentIndex: number,
     itemId: string,
     responseLabel: string,
-    confidence: number,
   ) => void;
   onProbeAnswer: (
     profile: StudentDiagnosticProfileV1,
@@ -778,9 +875,10 @@ function ReadinessSection({
     probeSession: StartSessionResponse,
     itemId: string,
     responseLabel: string,
-    confidence: number,
   ) => void;
   onSaveAndExit: () => void;
+  onRetrySync: () => void;
+  onRetryDiagnose: () => void;
 }) {
   if (stage.kind === "readiness") {
     return (
@@ -789,8 +887,8 @@ function ReadinessSection({
         index={stage.currentIndex}
         total={stage.session.items.length}
         variant="readiness"
-        onSubmit={(itemId, label, confidence) =>
-          onAnswer(stage.session, stage.currentIndex, itemId, label, confidence)
+        onSubmit={(itemId, label) =>
+          onAnswer(stage.session, stage.currentIndex, itemId, label)
         }
         onSaveAndExit={onSaveAndExit}
       />
@@ -803,14 +901,13 @@ function ReadinessSection({
         index={0}
         total={1}
         variant="probe"
-        onSubmit={(itemId, label, confidence) =>
+        onSubmit={(itemId, label) =>
           onProbeAnswer(
             stage.profile,
             stage.remediation,
             stage.probeSession,
             itemId,
             label,
-            confidence,
           )
         }
         onSaveAndExit={onSaveAndExit}
@@ -821,9 +918,34 @@ function ReadinessSection({
     stage.kind === "waiting-to-sync" ||
     stage.kind === "probe-waiting-to-sync"
   ) {
+    const sessionId =
+      stage.kind === "waiting-to-sync"
+        ? stage.session.session_id
+        : stage.probeSession.session_id;
+    const sessionStillPending = hasPendingDiagnosticForSession(sessionId);
     return (
       <div className="student-card" aria-live="polite">
-        <p>Đã lưu câu trả lời trên máy. Đang chờ kết nối để gửi đi...</p>
+        <p>
+          {sessionStillPending
+            ? "Đã lưu câu trả lời trên máy. Đang gửi lên máy chủ để xem xét..."
+            : "Đã nhận câu trả lời. Đang xem xét để mở lộ trình phù hợp..."}
+        </p>
+        {sessionStillPending && (
+          <>
+            <p className="student-question-note">
+              {pendingCount > 0
+                ? `Còn ${pendingCount} thay đổi chờ đồng bộ. Nếu mạng ổn định mà vẫn chờ, hãy thử gửi lại.`
+                : "Đang thử gửi lại câu trả lời của em."}
+            </p>
+            <button
+              type="button"
+              className="student-btn teal"
+              onClick={onRetrySync}
+            >
+              Thử đồng bộ lại
+            </button>
+          </>
+        )}
       </div>
     );
   }
@@ -838,6 +960,13 @@ function ReadinessSection({
     return (
       <div className="student-card" role="alert">
         <p>{stage.message}</p>
+        <button
+          type="button"
+          className="student-btn primary"
+          onClick={onRetryDiagnose}
+        >
+          Thử lại
+        </button>
       </div>
     );
   }
@@ -851,17 +980,20 @@ function ReadinessSection({
 function RemediationSection({
   stage,
   initialRepresentation,
+  pathNotice,
   onAttempt,
   onExitTicket,
   onContinueReclassifiedPath,
+  onDone,
   busy,
 }: {
   stage: Stage;
   initialRepresentation: string | null;
+  pathNotice: string | null;
   onAttempt: (
     profile: StudentDiagnosticProfileV1,
     stepId: string,
-    isCorrect: boolean,
+    outcome: RemediationAttemptOutcome,
   ) => void;
   onExitTicket: (
     profile: StudentDiagnosticProfileV1,
@@ -869,6 +1001,7 @@ function RemediationSection({
     responseLabel: string,
   ) => void;
   onContinueReclassifiedPath: () => void;
+  onDone: () => void;
   busy: boolean;
 }) {
   if (stage.kind === "remediation") {
@@ -876,8 +1009,9 @@ function RemediationSection({
       <RemediationPath
         remediation={stage.remediation}
         initialRepresentation={initialRepresentation}
-        onAttempt={(stepId, isCorrect) =>
-          onAttempt(stage.profile, stepId, isCorrect)
+        pathNotice={pathNotice}
+        onAttempt={(stepId, outcome) =>
+          onAttempt(stage.profile, stepId, outcome)
         }
       />
     );
@@ -887,6 +1021,7 @@ function RemediationSection({
       <RemediationPath
         remediation={stage.remediation}
         initialRepresentation={initialRepresentation}
+        pathNotice={pathNotice}
         onAttempt={() => undefined}
       />
     );
@@ -921,14 +1056,33 @@ function RemediationSection({
       <article className="student-card">
         <span className="student-pill teal">Kết quả</span>
         <h1>{stage.outcome.message}</h1>
-        {stage.nextProfile && (
-          <button
-            type="button"
-            className="student-btn primary"
-            onClick={onContinueReclassifiedPath}
-          >
-            Tiếp tục bài phù hợp →
-          </button>
+        {stage.nextProfile ? (
+          <>
+            <p>
+              Hệ thống thấy em cần thêm một lộ trình khác để nắm chắc phần này.
+            </p>
+            <button
+              type="button"
+              className="student-btn primary"
+              onClick={onContinueReclassifiedPath}
+            >
+              Tiếp tục bài phù hợp →
+            </button>
+          </>
+        ) : (
+          <>
+            <p>
+              Em đã học xong lộ trình hôm nay. Cô sẽ xem lại kết quả này ở buổi
+              học tiếp theo — em không cần làm thêm gì bây giờ.
+            </p>
+            <button
+              type="button"
+              className="student-btn primary"
+              onClick={onDone}
+            >
+              Về trang chủ hôm nay →
+            </button>
+          </>
         )}
       </article>
     );
@@ -940,6 +1094,13 @@ function RemediationSection({
       </div>
     );
   }
+  if (stage.kind === "error") {
+    return (
+      <div className="student-card" role="alert">
+        <p>{stage.message}</p>
+      </div>
+    );
+  }
   return (
     <div className="student-card">
       <p>Lộ trình sẽ xuất hiện sau khi em hoàn thành bài chuẩn bị.</p>
@@ -948,6 +1109,23 @@ function RemediationSection({
 }
 
 function describeError(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (
+      error.status === 503 &&
+      (error.code === "supabase_unavailable" ||
+        /Evidence storage is unavailable/i.test(error.message))
+    ) {
+      return "Chưa tải được dữ liệu bài làm. Em hãy bấm Thử lại sau vài giây.";
+    }
+    if (
+      error.status === 409 &&
+      (error.code === "probe_exhausted" ||
+        /Every assessment item has already been answered/i.test(error.message))
+    ) {
+      return "Em đã làm hết các câu hỏi sẵn có. Hãy bấm Đặt lại demo hoặc dùng tài khoản học sinh khác.";
+    }
+    return error.message;
+  }
   if (error instanceof Error) {
     return error.message;
   }
