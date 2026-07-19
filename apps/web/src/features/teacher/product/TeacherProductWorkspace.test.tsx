@@ -42,7 +42,8 @@ describe("TeacherProductWorkspace", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: heading }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Dữ liệu minh hoạ")).toBeInTheDocument();
+    expect(screen.getByText("Cô Nguyễn Thu Hà")).toBeInTheDocument();
+    expect(screen.queryByText("Dữ liệu minh hoạ")).not.toBeInTheDocument();
     expect(screen.queryByText(/stu_g7_/)).not.toBeInTheDocument();
   });
 
@@ -213,19 +214,9 @@ describe("TeacherProductWorkspace", () => {
       screen.getByRole("button", { name: "Xem kết quả sau giờ học" }),
     ).toBeEnabled();
 
-    await user.click(
-      screen.getByRole("button", { name: "Đặt lại tiến trình demo" }),
-    );
-    const dialog = screen.getByRole("dialog", {
-      name: "Đặt lại tiến trình trên trình duyệt?",
-    });
-    await user.click(
-      within(dialog).getByRole("button", { name: "Đặt lại tiến trình demo" }),
-    );
-    expect(onNavigate).toHaveBeenCalledWith("/teacher");
     expect(
-      window.sessionStorage.getItem("ailearn-teacher-demo-progress"),
-    ).toContain('"teachingStarted":false');
+      screen.queryByRole("button", { name: "Đặt lại tiến trình demo" }),
+    ).not.toBeInTheDocument();
   });
 
   it("turns teacher preparation, group inspection, and resources into visible actions", async () => {
@@ -341,7 +332,9 @@ describe("TeacherProductWorkspace", () => {
     );
 
     expect(await screen.findByText(/VITE_API_BASE_URL/)).toBeInTheDocument();
-    expect(screen.getAllByText("Kết nối đang gián đoạn")).toHaveLength(2);
+    expect(
+      screen.getByText("Kết nối dữ liệu bị gián đoạn"),
+    ).toBeInTheDocument();
   });
 
   it("blocks Teaching Mode until the teacher approves the plan", async () => {
@@ -384,7 +377,11 @@ describe("TeacherProductWorkspace", () => {
         name: "Phân tích lớp vẫn sẵn sàng.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Kết nối một phần")).toHaveLength(2);
+    expect(
+      screen.getByText(
+        "Ảnh chụp lớp đã tải; kế hoạch bài dạy tạm thời gián đoạn.",
+      ),
+    ).toBeInTheDocument();
     expect(screen.getAllByText("40").length).toBeGreaterThan(0);
   });
 

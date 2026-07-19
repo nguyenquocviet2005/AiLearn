@@ -37,4 +37,5 @@
 - Thanh điều hướng trái được điều chỉnh thành thanh gọn, luôn đọc được hai mục chính; các khối giới thiệu dài được ẩn để không tạo khoảng trống không cần thiết.
 - Điều chỉnh tiếp: thanh trái tự co theo nội dung thay vì kéo cao toàn màn hình; mỗi mục điều hướng dùng đủ chiều rộng để không cắt nhãn khi chọn.
 - Theo quyết định mới, bỏ toàn bộ điều hướng trái. Thanh này chỉ giữ logo/tên AiLearn và quote về quyền quyết định của giáo viên; tất cả tuyến công việc được mở từ thanh tiến trình trong nội dung.
+- Bỏ các dấu hiệu demo/kỹ thuật khỏi thanh trên: nhãn dữ liệu minh hoạ, trạng thái kết nối và thao tác đặt lại tiến trình. Các trạng thái lỗi tải dữ liệu vẫn hiển thị tại đúng màn hình khi cần.
 - Kiểm tra PrototypeFlow được thu hẹp vào thanh điều hướng prototype để không nhầm nút Học sinh hợp lệ trong thanh tiến trình giáo viên.

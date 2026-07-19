@@ -18,8 +18,6 @@ export type TeacherRoute =
 
 export function TeacherShell({
   children,
-  connectionStatus = "connected",
-  toolbarAction,
 }: {
   children: ReactNode;
   connectionStatus?: "loading" | "connected" | "degraded" | "error";
@@ -27,12 +25,6 @@ export function TeacherShell({
   onNavigate: (path: TeacherRoute) => void;
   toolbarAction?: ReactNode;
 }) {
-  const connectionCopy = {
-    loading: "Đang kết nối dữ liệu",
-    connected: "Dữ liệu đã kết nối",
-    degraded: "Kết nối một phần",
-    error: "Kết nối đang gián đoạn",
-  }[connectionStatus];
   return (
     <div className="teacher-app">
       <a className="teacher-skip-link" href="#teacher-main">
@@ -60,21 +52,6 @@ export function TeacherShell({
             <p>AiLearn chỉ đề xuất từ bằng chứng học tập đã ghi nhận.</p>
           </div>
         </div>
-
-        <div
-          className={`teacher-sync-card is-${connectionStatus}`}
-          aria-label="Trạng thái đồng bộ"
-        >
-          <span className="teacher-sync-dot" aria-hidden="true" />
-          <div>
-            <strong>{connectionCopy}</strong>
-            <small>
-              {connectionStatus === "connected"
-                ? "Đồng bộ gần nhất: 2 phút trước"
-                : "Dữ liệu đã lưu trên trình duyệt vẫn an toàn"}
-            </small>
-          </div>
-        </div>
       </aside>
 
       <main
@@ -83,14 +60,6 @@ export function TeacherShell({
         tabIndex={-1}
       >
         <div className="teacher-product-topbar">
-          <div className="teacher-topbar-status">
-            <span className="demo-badge">Dữ liệu minh hoạ</span>
-            <span className={`connection-badge is-${connectionStatus}`}>
-              <i />
-              {connectionCopy}
-            </span>
-          </div>
-          {toolbarAction}
           <span className="teacher-profile">
             <b>TH</b>
             <span>
