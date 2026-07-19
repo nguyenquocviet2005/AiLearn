@@ -115,10 +115,14 @@ export function PrototypeFlow({ onExit }: PrototypeFlowProps) {
     <div className="prototype-app">
       <header className="prototype-banner">
         <div className="prototype-banner-top">
-          <a className="prototype-brand" href="/" onClick={(event) => {
-            event.preventDefault();
-            goHome();
-          }}>
+          <a
+            className="prototype-brand"
+            href="/"
+            onClick={(event) => {
+              event.preventDefault();
+              goHome();
+            }}
+          >
             <img src="/brand/ailearn-mascot.webp" alt="" />
             <span>AiLearn prototype</span>
           </a>
@@ -165,7 +169,10 @@ export function PrototypeFlow({ onExit }: PrototypeFlowProps) {
 
       <div className="prototype-stage" data-step={step}>
         {step === "intro" && (
-          <section className="prototype-intro" aria-labelledby="proto-intro-title">
+          <section
+            className="prototype-intro"
+            aria-labelledby="proto-intro-title"
+          >
             <p className="prototype-kicker">Design review · Frontend only</p>
             <h1 id="proto-intro-title">
               Đi hết vòng học khép kín bằng dữ liệu giả lập.
@@ -194,7 +201,9 @@ export function PrototypeFlow({ onExit }: PrototypeFlowProps) {
                 <strong>3</strong>
                 <div>
                   <span>Trải nghiệm học sinh</span>
-                  <p>Bài sẵn sàng, lộ trình sửa hổng, phiếu cuối — theo persona.</p>
+                  <p>
+                    Bài sẵn sàng, lộ trình sửa hổng, phiếu cuối — theo persona.
+                  </p>
                 </div>
               </li>
               <li>

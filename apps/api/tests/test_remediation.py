@@ -106,6 +106,7 @@ def _advance_past_worked_example(
     assert body["content"]["is_gradable"] is True
     return body
 
+
 PROFILE_ABSTAINED_WITH_ROOT_CAUSE = {
     "schema_version": "1",
     "student_id": "stu_demo_confirm_01",
@@ -158,9 +159,7 @@ def test_start_session_returns_422_for_invalid_profile(client: TestClient) -> No
 
 def test_submit_attempt_advances_session(client: TestClient) -> None:
     _configure(client)
-    started = client.post(
-        "/api/v1/remediation/sessions", json={"profile": PROFILE_NEEDS_SUPPORT}
-    )
+    started = client.post("/api/v1/remediation/sessions", json={"profile": PROFILE_NEEDS_SUPPORT})
     assert started.status_code == 200
     # The worked_example step is a demonstration: self-reported, not graded.
     assert started.json()["content"]["is_gradable"] is False
@@ -199,9 +198,7 @@ def test_submit_attempt_replays_cached_response_on_repeated_attempt_id(
 ) -> None:
     """A retried attempt_id does not advance the state machine a second time."""
     _configure(client)
-    client.post(
-        "/api/v1/remediation/sessions", json={"profile": PROFILE_NEEDS_SUPPORT}
-    )
+    client.post("/api/v1/remediation/sessions", json={"profile": PROFILE_NEEDS_SUPPORT})
     body = {
         "student_id": "stu_demo_repair_01",
         "step_id": "step_stu_demo_repair_01_worked_example",

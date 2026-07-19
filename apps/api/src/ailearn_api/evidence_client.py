@@ -9,11 +9,13 @@ from ailearn_api.config import Settings
 from ailearn_api.models.evidence import EvidenceEventRecord
 from ailearn_api.supabase_client import SupabaseUnavailableError, supabase_auth_headers
 
+
 def _auth_headers(settings: Settings) -> dict[str, str]:
     return {
         **supabase_auth_headers(settings),
         "Content-Type": "application/json",
     }
+
 
 async def insert_evidence_event(
     settings: Settings,
@@ -51,6 +53,7 @@ async def insert_evidence_event(
         if owns_client:
             await http_client.aclose()
 
+
 async def fetch_evidence_event(
     settings: Settings,
     event_id: str,
@@ -87,6 +90,7 @@ async def fetch_evidence_event(
     finally:
         if owns_client:
             await http_client.aclose()
+
 
 async def fetch_evidence_events_for_student(
     settings: Settings,
@@ -128,6 +132,7 @@ async def fetch_evidence_events_for_student(
         if owns_client:
             await http_client.aclose()
 
+
 async def fetch_evidence_item_ids_for_session(
     settings: Settings,
     session_id: str,
@@ -161,6 +166,7 @@ async def fetch_evidence_item_ids_for_session(
     finally:
         if owns_client:
             await http_client.aclose()
+
 
 async def fetch_evidence_events_for_lesson(
     settings: Settings,
@@ -196,6 +202,7 @@ async def fetch_evidence_events_for_lesson(
     finally:
         if owns_client:
             await http_client.aclose()
+
 
 def parse_evidence_event_payload(payload: dict[str, Any]) -> EvidenceEventV1:
     return validate_evidence_event(payload)

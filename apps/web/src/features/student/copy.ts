@@ -97,6 +97,7 @@ export const STUDY_MATERIALS: StudyMaterial[] = [
     title: "Video bài giảng tỉ lệ nghịch lớp 7",
     kind: "video",
     url: "https://www.youtube.com/results?search_query=%C4%90%E1%BA%A1i+l%C6%B0%E1%BB%A3ng+t%E1%BB%89+l%E1%BB%87+ngh%E1%BB%8Bch+l%E1%BB%9Bp+7",
-    blurb: "Danh sách video YouTube bài giảng tỉ lệ nghịch lớp 7 (VietJack / các thầy cô).",
+    blurb:
+      "Danh sách video YouTube bài giảng tỉ lệ nghịch lớp 7 (VietJack / các thầy cô).",
   },
 ];

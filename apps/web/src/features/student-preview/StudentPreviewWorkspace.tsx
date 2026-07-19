@@ -77,8 +77,15 @@ export function StudentPreviewWorkspace() {
       personaId: DEFAULT_PERSONA.id,
     }),
   );
-  const { activeTab, stage, currentStudent, personas, selectedPersonaId, busy, initialRepresentation } =
-    state;
+  const {
+    activeTab,
+    stage,
+    currentStudent,
+    personas,
+    selectedPersonaId,
+    busy,
+    initialRepresentation,
+  } = state;
 
   useEffect(() => {
     let active = true;
@@ -89,7 +96,7 @@ export function StudentPreviewWorkspace() {
       dispatch({
         type: "PERSONAS_LOADED",
         personas: loaded,
-        selectedPersonaId: currentStudent.personaId ?? (loaded[0]?.id ?? ""),
+        selectedPersonaId: currentStudent.personaId ?? loaded[0]?.id ?? "",
       });
     });
     return () => {
@@ -120,7 +127,8 @@ export function StudentPreviewWorkspace() {
         currentStudent.id,
         MOCK_LESSON_ID,
       );
-      const remediation = await mockStudentRepository.startRemediationSession(profile);
+      const remediation =
+        await mockStudentRepository.startRemediationSession(profile);
       if (remediation.path.current_state === "CONFIRMATION") {
         const probeSession = await mockStudentRepository.startProbe(
           currentStudent.id,
@@ -161,7 +169,8 @@ export function StudentPreviewWorkspace() {
         currentStudent.id,
         MOCK_LESSON_ID,
       );
-      const evidenceSufficient = refreshedProfile.readiness_status !== "abstained";
+      const evidenceSufficient =
+        refreshedProfile.readiness_status !== "abstained";
       const confirmed = await mockStudentRepository.confirmEvidence(
         currentStudent.id,
         evidenceSufficient,
@@ -311,7 +320,9 @@ export function StudentPreviewWorkspace() {
                 type="button"
                 className={activeTab === item.id ? "active" : ""}
                 aria-current={activeTab === item.id ? "page" : undefined}
-                onClick={() => dispatch({ type: "SET_ACTIVE_TAB", tab: item.id })}
+                onClick={() =>
+                  dispatch({ type: "SET_ACTIVE_TAB", tab: item.id })
+                }
               >
                 <span className="dashboard-nav-icon" aria-hidden="true">
                   {item.icon}
@@ -331,7 +342,10 @@ export function StudentPreviewWorkspace() {
                 value={selectedPersonaId}
                 disabled={busy}
                 onChange={(event) =>
-                  dispatch({ type: "SELECT_PERSONA", personaId: event.target.value })
+                  dispatch({
+                    type: "SELECT_PERSONA",
+                    personaId: event.target.value,
+                  })
                 }
               >
                 {personas.map((persona) => (
@@ -349,7 +363,12 @@ export function StudentPreviewWorkspace() {
                 Đặt lại
               </button>
             </div>
-            <button type="button" className="student-sync online" disabled title="Bản xem trước dùng dữ liệu mẫu, không kết nối máy chủ.">
+            <button
+              type="button"
+              className="student-sync online"
+              disabled
+              title="Bản xem trước dùng dữ liệu mẫu, không kết nối máy chủ."
+            >
               <span className="student-sync-icon" aria-hidden="true">
                 ↻
               </span>
@@ -372,7 +391,9 @@ export function StudentPreviewWorkspace() {
         <main id="student-main" className="student-main">
           <div className="student-page-context">
             <div>
-              <span className="student-kicker">Không gian học tập (bản xem trước)</span>
+              <span className="student-kicker">
+                Không gian học tập (bản xem trước)
+              </span>
               <strong>
                 {studentNavigation.find((item) => item.id === activeTab)?.label}
               </strong>
@@ -398,7 +419,13 @@ export function StudentPreviewWorkspace() {
               onAnswer={(session, currentIndex, itemId, label) =>
                 void submitReadinessAnswer(session, currentIndex, itemId, label)
               }
-              onProbeAnswer={(profile, remediation, probeSession, itemId, label) =>
+              onProbeAnswer={(
+                profile,
+                remediation,
+                probeSession,
+                itemId,
+                label,
+              ) =>
                 void submitProbeAnswer(
                   profile,
                   remediation,
@@ -407,7 +434,9 @@ export function StudentPreviewWorkspace() {
                   label,
                 )
               }
-              onSaveAndExit={() => dispatch({ type: "SET_ACTIVE_TAB", tab: "home" })}
+              onSaveAndExit={() =>
+                dispatch({ type: "SET_ACTIVE_TAB", tab: "home" })
+              }
             />
           )}
 
@@ -538,7 +567,9 @@ function RemediationSection({
       <RemediationPath
         remediation={stage.remediation}
         initialRepresentation={initialRepresentation}
-        onAttempt={(stepId, outcome) => onAttempt(stage.profile, stepId, outcome)}
+        onAttempt={(stepId, outcome) =>
+          onAttempt(stage.profile, stepId, outcome)
+        }
       />
     );
   }

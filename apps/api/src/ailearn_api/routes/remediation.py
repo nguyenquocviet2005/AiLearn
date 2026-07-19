@@ -53,11 +53,14 @@ _processed_attempts: dict[str, dict[str, dict[str, Any]]] = {}
 # Per-student exit-ticket idempotency fallback for local development.
 _processed_exit_tickets: dict[str, dict[str, dict[str, Any]]] = {}
 
+
 def _now() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+
 class StartRequest(BaseModel):
     profile: dict[str, Any] = Field(..., description="StudentDiagnosticProfileV1")
+
 
 class AttemptRequest(BaseModel):
     student_id: str
@@ -68,15 +71,18 @@ class AttemptRequest(BaseModel):
     response: str | None = None
     is_correct: bool | None = None
 
+
 class ConfirmRequest(BaseModel):
     student_id: str
     evidence_sufficient: bool
+
 
 class ExitTicketRequest(BaseModel):
     student_id: str
     ticket_id: str
     response_label: str
     submission_id: str
+
 
 def _content_payload(session: SessionState) -> dict[str, Any]:
     misconception_id = (
@@ -101,6 +107,7 @@ def _content_payload(session: SessionState) -> dict[str, Any]:
         "source": c.source,
     }
 
+
 def _response(session: SessionState) -> dict[str, Any]:
     result: dict[str, Any] = {
         "path": _engine.to_path(session, _now()).to_dict(),
@@ -114,6 +121,7 @@ def _response(session: SessionState) -> dict[str, Any]:
         result["exit_ticket"] = public_exit_ticket(session.student_id)
     return result
 
+
 def _storage_error(exc: SupabaseUnavailableError) -> HTTPException:
     return HTTPException(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -122,6 +130,7 @@ def _storage_error(exc: SupabaseUnavailableError) -> HTTPException:
             "message": "Remediation session storage is unavailable.",
         },
     )
+
 
 async def _get(settings: Settings, student_id: str) -> RemediationSessionRecord:
     if durable_sessions_configured(settings):
@@ -142,6 +151,7 @@ async def _get(settings: Settings, student_id: str) -> RemediationSessionRecord:
         processed_exit_tickets=_processed_exit_tickets.setdefault(student_id, {}),
     )
 
+
 async def _save(settings: Settings, record: RemediationSessionRecord) -> None:
     if durable_sessions_configured(settings):
         try:
@@ -152,6 +162,7 @@ async def _save(settings: Settings, record: RemediationSessionRecord) -> None:
     _sessions[record.session.student_id] = record.session
     _processed_attempts[record.session.student_id] = record.processed_attempts
     _processed_exit_tickets[record.session.student_id] = record.processed_exit_tickets
+
 
 async def _record_exit_ticket_evidence(
     settings: Settings,
@@ -187,11 +198,13 @@ async def _record_exit_ticket_evidence(
             },
         ) from exc
 
+
 def reset_remediation_state() -> None:
     """Clear transient remediation state for an explicit demo reset only."""
     _sessions.clear()
     _processed_attempts.clear()
     _processed_exit_tickets.clear()
+
 
 @router.post("/sessions")
 async def start_session(
@@ -209,6 +222,7 @@ async def start_session(
         RemediationSessionRecord(session=session, processed_attempts={}, processed_exit_tickets={}),
     )
     return _response(session)
+
 
 @router.post("/attempts")
 async def submit_attempt(
@@ -265,6 +279,7 @@ async def submit_attempt(
     await _save(settings, record)
     return result
 
+
 @router.post("/confirm")
 async def confirm_evidence(
     req: ConfirmRequest,
@@ -275,6 +290,7 @@ async def confirm_evidence(
     record.session = _engine.confirm(record.session, req.evidence_sufficient)
     await _save(settings, record)
     return _response(record.session)
+
 
 @router.post("/exit-tickets")
 async def submit_exit_ticket(
@@ -341,6 +357,7 @@ async def submit_exit_ticket(
     record.processed_exit_tickets[req.submission_id] = result
     await _save(settings, record)
     return result
+
 
 @router.get("/sessions/{student_id}")
 async def get_session(

@@ -72,7 +72,8 @@ function buildResponse(
 ): RemediationResponse {
   const { persona, stepIndex } = session;
   const isComplete = stepIndex >= persona.steps.length;
-  const currentStep = persona.steps[Math.min(stepIndex, persona.steps.length - 1)];
+  const currentStep =
+    persona.steps[Math.min(stepIndex, persona.steps.length - 1)];
 
   const response: RemediationResponse = {
     path: {
@@ -89,7 +90,8 @@ function buildResponse(
         completed: session.completed.has(step.id),
       })),
       updated_at: nowIso(),
-      root_cause_skill_id: persona.resolvedProfile.root_causes[0]?.skill_id ?? null,
+      root_cause_skill_id:
+        persona.resolvedProfile.root_causes[0]?.skill_id ?? null,
     },
     current_step_kind: currentStep.kind,
     is_complete: isComplete,
@@ -158,8 +160,7 @@ export const mockStudentRepository: StudentRepository = {
     studentId: string,
     lessonId: string,
   ): Promise<StartSessionResponse> {
-    const persona =
-      findPersonaByStudentId(studentId) ?? MOCK_PERSONAS[0];
+    const persona = findPersonaByStudentId(studentId) ?? MOCK_PERSONAS[0];
     return {
       session_id: `mock_readiness_${persona.studentId}`,
       student_id: persona.studentId,
@@ -220,8 +221,12 @@ export const mockStudentRepository: StudentRepository = {
   async startRemediationSession(
     profile: StudentDiagnosticProfileV1,
   ): Promise<RemediationResponse> {
-    const persona = findPersonaByStudentId(profile.student_id) ?? MOCK_PERSONAS[0];
-    if (profile.readiness_status === "abstained" && !sessions.has(persona.studentId)) {
+    const persona =
+      findPersonaByStudentId(profile.student_id) ?? MOCK_PERSONAS[0];
+    if (
+      profile.readiness_status === "abstained" &&
+      !sessions.has(persona.studentId)
+    ) {
       return confirmationResponse(persona);
     }
     const session = getOrCreateSession(persona);
@@ -237,7 +242,8 @@ export const mockStudentRepository: StudentRepository = {
   ): Promise<RemediationResponse> {
     const persona = findPersonaByStudentId(studentId) ?? MOCK_PERSONAS[0];
     const session = getOrCreateSession(persona);
-    const step = persona.steps.find((candidate) => candidate.id === stepId) ??
+    const step =
+      persona.steps.find((candidate) => candidate.id === stepId) ??
       persona.steps[session.stepIndex];
 
     // The server always decides correctness for gradable steps; a client
@@ -252,7 +258,10 @@ export const mockStudentRepository: StudentRepository = {
       session.stepIndex += 1;
     } else {
       session.consecutiveFailures += 1;
-      if (persona.escalatesOnRepeatedFailure && session.consecutiveFailures >= 2) {
+      if (
+        persona.escalatesOnRepeatedFailure &&
+        session.consecutiveFailures >= 2
+      ) {
         session.state = "TEACHER_ESCALATION";
         session.escalationReason = "esc_repeated_failure";
       }

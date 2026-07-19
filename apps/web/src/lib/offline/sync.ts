@@ -63,9 +63,7 @@ async function flushOne(
   updateStatus(write.clientEventId, "SYNCING");
   try {
     let response:
-      | SubmitResponseResponse
-      | RemediationResponse
-      | ExitTicketResponse;
+      SubmitResponseResponse | RemediationResponse | ExitTicketResponse;
     if (write.type === "DIAGNOSTIC_RESPONSE") {
       const payload = write.payload as DiagnosticResponsePayload;
       response = await repository.submitReadinessResponse(

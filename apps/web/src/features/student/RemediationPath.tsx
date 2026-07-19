@@ -206,9 +206,7 @@ function StudyMaterialsPanel({ compact = false }: { compact?: boolean }) {
   return (
     <div
       className={
-        compact
-          ? "student-study-materials compact"
-          : "student-study-materials"
+        compact ? "student-study-materials compact" : "student-study-materials"
       }
       aria-label="Tài liệu gợi ý"
     >

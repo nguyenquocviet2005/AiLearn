@@ -15,10 +15,10 @@ import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspac
 import classSnapshotFixture from "@/test/fixtures/class-snapshot.json";
 import lessonPlanFixture from "@/test/fixtures/lesson-plan.json";
 
-const classSnapshot = structuredClone(
-  classSnapshotFixture,
-) as ClassSnapshotV1;
-const baseLessonPlan = structuredClone(lessonPlanFixture) as TeacherLessonPlanV1;
+const classSnapshot = structuredClone(classSnapshotFixture) as ClassSnapshotV1;
+const baseLessonPlan = structuredClone(
+  lessonPlanFixture,
+) as TeacherLessonPlanV1;
 
 /** Mutable plan store so save/approve/publish feel real inside the prototype. */
 let planStore: TeacherPlanVersionV1 = versionFor(1);

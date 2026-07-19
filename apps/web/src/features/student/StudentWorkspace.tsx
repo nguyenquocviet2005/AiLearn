@@ -504,15 +504,13 @@ export function StudentWorkspace({
     // the SYNCED result from the queue so the path still advances.
     const recovered =
       ours?.response ??
-      (
-        listAll().find(
-          (write) =>
-            write.type === "REMEDIATION_ATTEMPT" &&
-            (write.payload as { attemptId: string }).attemptId === attemptId &&
-            write.status === "SYNCED" &&
-            write.result,
-        )?.result as RemediationResponse | undefined
-      );
+      (listAll().find(
+        (write) =>
+          write.type === "REMEDIATION_ATTEMPT" &&
+          (write.payload as { attemptId: string }).attemptId === attemptId &&
+          write.status === "SYNCED" &&
+          write.result,
+      )?.result as RemediationResponse | undefined);
     if (recovered) {
       setPathNotice(null);
       saveToCache(remediationCacheKey(currentStudent.id), {
@@ -742,11 +740,7 @@ export function StudentWorkspace({
             ))}
           </nav>
 
-          <div
-            className="student-rail-controls"
-            ref={(node) => {
-            }}
-          >
+          <div className="student-rail-controls" ref={(node) => {}}>
             <button
               type="button"
               className="student-reset"
@@ -1058,8 +1052,7 @@ function RemediationSection({
         {stage.nextProfile ? (
           <>
             <p>
-              Hệ thống thấy em cần thêm một lộ trình khác để nắm chắc phần
-              này.
+              Hệ thống thấy em cần thêm một lộ trình khác để nắm chắc phần này.
             </p>
             <button
               type="button"
@@ -1072,10 +1065,14 @@ function RemediationSection({
         ) : (
           <>
             <p>
-              Em đã học xong lộ trình hôm nay. Cô sẽ xem lại kết quả này ở
-              buổi học tiếp theo — em không cần làm thêm gì bây giờ.
+              Em đã học xong lộ trình hôm nay. Cô sẽ xem lại kết quả này ở buổi
+              học tiếp theo — em không cần làm thêm gì bây giờ.
             </p>
-            <button type="button" className="student-btn primary" onClick={onDone}>
+            <button
+              type="button"
+              className="student-btn primary"
+              onClick={onDone}
+            >
               Về trang chủ hôm nay →
             </button>
           </>

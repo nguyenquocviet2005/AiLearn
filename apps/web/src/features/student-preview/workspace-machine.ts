@@ -157,7 +157,8 @@ export function previewReducer(
       return {
         ...state,
         stage,
-        activeTab: action.type === "REMEDIATION_RESOLVED" ? "path" : state.activeTab,
+        activeTab:
+          action.type === "REMEDIATION_RESOLVED" ? "path" : state.activeTab,
         initialRepresentation:
           state.initialRepresentation ?? remediation.path.representation,
       };
@@ -175,7 +176,10 @@ export function previewReducer(
       };
 
     case "CONTINUE_RECLASSIFIED": {
-      if (state.stage.kind !== "exit-ticket-result" || !state.stage.nextProfile) {
+      if (
+        state.stage.kind !== "exit-ticket-result" ||
+        !state.stage.nextProfile
+      ) {
         return state;
       }
       const remediation = state.stage.remediation;
@@ -220,7 +224,11 @@ export function previewReducer(
       };
 
     case "ERROR":
-      return { ...state, stage: { kind: "error", message: action.message }, busy: false };
+      return {
+        ...state,
+        stage: { kind: "error", message: action.message },
+        busy: false,
+      };
 
     default:
       return state;
