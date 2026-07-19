@@ -31,6 +31,9 @@ export function skillLabel(skillId: string): string {
 }
 
 export function teacherFacingText(value: string): string {
+  if (value.includes("prevalence=") || value.includes("score=")) {
+    return priorityExplanation(value);
+  }
   return Object.entries(skillLabels)
     .reduce(
       (localized, [skillId, label]) => localized.replaceAll(skillId, label),
