@@ -135,15 +135,20 @@ describe("TeacherWorkspace", () => {
     expect(
       screen.getByRole("link", { name: "Đi tới nội dung chính" }),
     ).toHaveAttribute("href", "#teacher-main");
-    expect(screen.getByRole("link", { name: "Tổng quan lớp" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
+    expect(
+      screen.queryByRole("navigation", { name: "Điều hướng giáo viên" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Quyết định thuộc về giáo viên"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "AiLearn đề xuất từ minh chứng; giáo viên quyết định bước tiếp theo.",
+      ),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("link", { name: "Kế hoạch bài dạy" }));
+    await user.click(screen.getByRole("button", { name: /Chốt kế hoạch/ }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
-    await user.click(screen.getByRole("link", { name: "Báo cáo can thiệp" }));
-    expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
   });
 
   it("renders the complete synthetic class without calling the backend", async () => {

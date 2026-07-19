@@ -66,38 +66,132 @@ export const REPRESENTATION_LABELS: Record<string, string> = {
   diagram: "Dạng hình vẽ",
 };
 
-/** Curated Grade-7 inverse-proportion resources for the demo help panel. */
-export interface StudyMaterial {
-  title: string;
-  kind: "video" | "ly_thuyet" | "bai_tap";
-  url: string;
-  blurb: string;
-}
+/**
+ * Lesson-prep resources (soạn bài) for Grade-7 inverse proportion.
+ * Students review these before the readiness check so they have enough
+ * background to take the short test and surface weak spots.
+ */
+export type StudyMaterial =
+  | {
+      title: string;
+      kind: "ly_thuyet" | "bai_tap";
+      url: string;
+      blurb: string;
+    }
+  | {
+      title: string;
+      kind: "video";
+      youtubeId: string;
+      blurb: string;
+    };
 
 export const STUDY_MATERIALS: StudyMaterial[] = [
   {
     title: "Lý thuyết Đại lượng tỉ lệ nghịch (Toán 7)",
     kind: "ly_thuyet",
     url: "https://vietjack.com/toan-lop-7/bai-3-dai-luong-ti-le-nghich.jsp",
-    blurb: "Định nghĩa xy = a, tính chất tích không đổi — bám SGK lớp 7.",
+    blurb:
+      "Đọc định nghĩa xy = a và tính chất tích không đổi trước khi làm bài.",
   },
   {
     title: "Biểu diễn quan hệ & tìm hệ số tỉ lệ nghịch",
     kind: "bai_tap",
     url: "https://www.vietjack.com/toan-lop-7/bieu-dien-quan-he-ti-le-nghich-va-xac-dinh-he-so-sm.jsp",
-    blurb: "Ví dụ có lời giải + bài tự luyện tìm hệ số a.",
+    blurb:
+      "Ví dụ có lời giải — soạn vài dạng bài hay gặp trước khi kiểm tra ngắn.",
   },
   {
     title: "Chuyên đề Đại lượng tỉ lệ nghịch Toán 7",
     kind: "bai_tap",
     url: "https://thcs.toanmath.com/2023/08/chuyen-de-dai-luong-ti-le-nghich-toan-7.html",
-    blurb: "Tóm tắt lý thuyết và các dạng bài thường gặp (41 trang).",
+    blurb: "Tóm tắt lý thuyết và các dạng bài thường gặp để ôn nhanh.",
   },
   {
-    title: "Video bài giảng tỉ lệ nghịch lớp 7",
+    title: "Đại lượng tỉ lệ nghịch — chương trình mới",
     kind: "video",
-    url: "https://www.youtube.com/results?search_query=%C4%90%E1%BA%A1i+l%C6%B0%E1%BB%A3ng+t%E1%BB%89+l%E1%BB%87+ngh%E1%BB%8Bch+l%E1%BB%9Bp+7",
+    youtubeId: "rmQ58CUKioA",
     blurb:
-      "Danh sách video YouTube bài giảng tỉ lệ nghịch lớp 7 (VietJack / các thầy cô).",
+      "Một video bài giảng Toán 7: xem trực tiếp để nắm ý chính trước bài test.",
   },
 ];
+
+/**
+ * Student-facing lesson knowledge map. `skillIds` is matching metadata only —
+ * never render those ids in the UI.
+ */
+export interface KnowledgeNode {
+  id: string;
+  skillIds: readonly string[];
+  title: string;
+  blurb: string;
+  stage: "Nền tảng" | "Trọng tâm" | "Áp dụng";
+}
+
+export const LESSON_KNOWLEDGE_PATH: readonly KnowledgeNode[] = [
+  {
+    id: "kn_ratio",
+    skillIds: ["skill_ratio_proportion_basics"],
+    title: "Tỉ số và tỉ lệ thức",
+    blurb: "Nắm tỉ số a:b và tỉ lệ thức trước khi vào đại lượng.",
+    stage: "Nền tảng",
+  },
+  {
+    id: "kn_direct",
+    skillIds: ["skill_direct_proportion"],
+    title: "Đại lượng tỉ lệ thuận",
+    blurb: "Nhận biết y = kx để phân biệt với tỉ lệ nghịch.",
+    stage: "Nền tảng",
+  },
+  {
+    id: "kn_inverse_def",
+    skillIds: [
+      "skill_inverse_proportion_definition",
+      "skill_verify_inverse_by_product",
+    ],
+    title: "Định nghĩa tỉ lệ nghịch",
+    blurb: "Hiểu x·y = k và kiểm tra bằng tích không đổi.",
+    stage: "Trọng tâm",
+  },
+  {
+    id: "kn_constant",
+    skillIds: ["skill_find_constant_k", "skill_solve_unknown_value"],
+    title: "Tìm hệ số k và giá trị chưa biết",
+    blurb: "Từ một cặp giá trị suy ra k, rồi tìm ẩn còn lại.",
+    stage: "Trọng tâm",
+  },
+  {
+    id: "kn_distinguish",
+    skillIds: [
+      "skill_distinguish_direct_inverse",
+      "skill_equal_ratios_property",
+    ],
+    title: "Phân biệt thuận / nghịch",
+    blurb: "Chọn đúng mô hình trước khi giải bài toán.",
+    stage: "Trọng tâm",
+  },
+  {
+    id: "kn_apply",
+    skillIds: [
+      "skill_word_problem_work_rate",
+      "skill_word_problem_speed_distance",
+      "skill_multistep_reasoning",
+      "skill_fraction_multiplication",
+    ],
+    title: "Bài toán năng suất & thời gian",
+    blurb: "Áp dụng tỉ lệ nghịch vào tình huống thực tế của bài học.",
+    stage: "Áp dụng",
+  },
+];
+
+export function knowledgeFocusId(
+  rootCauseSkillId: string | null | undefined,
+): string | null {
+  if (!rootCauseSkillId) {
+    return null;
+  }
+  return (
+    LESSON_KNOWLEDGE_PATH.find((node) =>
+      node.skillIds.includes(rootCauseSkillId),
+    )?.id ?? null
+  );
+}

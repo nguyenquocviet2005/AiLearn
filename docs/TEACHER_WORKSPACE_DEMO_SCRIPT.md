@@ -12,7 +12,7 @@ Demo chứng minh AiLearn biến dấu vết học tập thành quyết định 
 ## 2. Checklist chuẩn bị
 
 - Mở URL Vercel Preview của pull request, không dùng production.
-- Kiểm tra `/`, `/teacher`, `/teacher/lesson-plan` và `/teacher/report` tải được bằng điều hướng trực tiếp.
+- Kiểm tra `/`, `/teacher`, `/teacher/analytics`, `/teacher/lesson-plan` và `/teacher/report` tải được bằng điều hướng trực tiếp.
 - Kiểm tra Railway `GET /health` và `GET /api/v1/system-status` nếu có quyền truy cập.
 - Xác nhận `VITE_API_BASE_URL` của Preview trỏ tới API staging, không trỏ `localhost`.
 - Mở Chrome/Safari ở 1440×900; zoom 100%; tắt extension có thể chặn request.
@@ -25,7 +25,7 @@ Demo chứng minh AiLearn biến dấu vết học tập thành quyết định 
 
 Giáo viên thường thấy điểm số hoặc số câu sai nhưng vẫn phải tự đoán vì sao học sinh sai, ai cần được ưu tiên và nên dạy lại nội dung nào. AiLearn dùng chuỗi minh chứng cùng đồ thị kỹ năng tiền đề để tạo chẩn đoán có độ tin cậy. Các hồ sơ được tổng hợp thành ảnh chụp lớp, nhóm nhu cầu và kế hoạch phân hóa. Giáo viên xem bằng chứng, điều chỉnh và phê duyệt trước khi dạy.
 
-**Core engine** là vòng xử lý có thể kiểm chứng:
+**Bộ máy phân tích** là vòng xử lý có thể kiểm chứng:
 
 `Minh chứng → Chẩn đoán → Ảnh chụp lớp → Nhóm học tập → Kế hoạch → Phê duyệt → Giảng dạy → Minh chứng mới → Củng cố → Báo cáo`
 
@@ -33,25 +33,33 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 
 ## 4. Kịch bản click-by-click đầy đủ
 
-### Bước 1 — Hôm nay
+### Bước 1 — Tổng quan lớp
+
+- Route: `/teacher/analytics` (chọn **Phân tích lớp** trên thanh điều hướng trên cùng).
+- Click: **Đặt lại tiến trình demo** rồi xác nhận nếu trạng thái trình duyệt không ở đầu.
+- Kết quả: biểu đồ tròn mức sẵn sàng, biểu đồ thanh nguyên nhân gốc, quy mô nhóm và tiến trình Toán 7 Kết nối tri thức.
+- Dữ liệu: 8 em sẵn sàng, 30 em cần hỗ trợ, 2 em cần thêm minh chứng; số liệu được tính từ ảnh chụp lớp.
+- Lời nói: “Đây là toàn cảnh lớp 7A. Biểu đồ không chỉ để đẹp: mỗi phần đều dẫn tới danh sách học sinh và minh chứng phía sau.”
+- Điểm nhấn: **Nền tảng tỉ số và tỉ lệ thức** nhận 30 phút trong các hoạt động của kế hoạch, dài nhất; **Phân biệt tỉ lệ thuận và tỉ lệ nghịch** được nối trực tiếp với bài hiện tại.
+- Ý nghĩa: giáo viên thấy cả nhu cầu của lớp lẫn vị trí của bài 23 trong Chương VI, thay vì chỉ thấy một con điểm trung bình.
+- Chuyển: “Từ bức tranh chung, ta đi vào việc cần làm hôm nay.”
+
+### Bước 2 — Hôm nay
 
 - Route: `/teacher`.
-- Click: **Đặt lại tiến trình demo** rồi xác nhận nếu trạng thái trình duyệt không ở đầu.
 - Kết quả: thấy tiết tiếp theo của **Lớp 7A**, 40 học sinh, 5 nhóm và hộp việc cần làm.
-- Dữ liệu: 8 em sẵn sàng, 30 em cần hỗ trợ, 2 em cần thêm minh chứng; số liệu được tính từ class snapshot.
-- Lời nói: “AiLearn không mở đầu bằng một biển KPI. Cô Hà thấy ngay ba việc cần quyết định trước tiết học.”
-- Ý nghĩa: dashboard dẫn tới hành động, không chỉ mô tả.
-- Chuyển: “Trước khi xem AI đề xuất, ta kiểm tra bối cảnh của lớp và bài học.”
+- Lời nói: “Màn hình này biến phân tích thành ba việc cụ thể trước tiết học.”
+- Chuyển: “Bây giờ ta kiểm tra bối cảnh của lớp và bài học.”
 
-### Bước 2 — Lớp học
+### Bước 3 — Lớp học
 
-- Click: thanh bên **Lớp học**.
+- Click: **Thêm → Lớp học** trên thanh điều hướng trên cùng.
 - Kết quả: thẻ Lớp 7A, tiến độ minh chứng 38/40 và tiến trình chương Đại lượng tỉ lệ.
 - Click: **Chuẩn bị** ở bài “Đại lượng tỉ lệ nghịch”.
 - Lời nói: “Một lớp có thể có nhiều bài, nhưng mọi phân tích luôn giữ rõ lớp, bài và thời điểm tạo dữ liệu.”
 - Chuyển: “Giáo viên bổ sung mục tiêu và ràng buộc thực tế trước khi engine lập kế hoạch.”
 
-### Bước 3 — Chuẩn bị bài
+### Bước 4 — Chuẩn bị bài
 
 - Route: `/teacher/prepare`.
 - Thao tác: xem mục tiêu, thời lượng 45 phút, chọn “Dạy học theo trạm”, nhập ghi chú “Ưu tiên ví dụ năng suất gần gũi”.
@@ -60,15 +68,15 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Lời nói: “AI nhận mục tiêu, thời gian và chiến lược từ giáo viên. Nó không tự bịa ra điều kiện lớp học.”
 - Chuyển: click **Xem chẩn đoán của lớp**.
 
-### Bước 4 — Pipeline core engine
+### Bước 5 — Cách AiLearn phân tích
 
 - Route: `/teacher/insights`.
-- Kết quả: pipeline năm bước từ Minh chứng đến Kế hoạch; mỗi bước nói rõ đầu vào, xử lý và đầu ra.
-- Lời nói: “Đây là phần lõi: một câu sai chỉ là bằng chứng, chưa phải nhãn. Engine xếp hạng nguyên nhân tiền đề, tính độ tin cậy, rồi mới tổng hợp lớp.”
+- Kết quả: chuỗi bước từ Minh chứng đến Kế hoạch; mỗi bước nói rõ đầu vào, xử lý và đầu ra.
+- Lời nói: “Đây là phần lõi: một câu sai chỉ là bằng chứng, chưa phải nhãn. Bộ máy xếp hạng nguyên nhân tiền đề, tính độ tin cậy, rồi mới tổng hợp lớp.”
 - Điểm nhấn: badge “Có thể truy xuất từng kết luận”.
 - Chuyển: “Ta nhìn vào nguyên nhân, không dừng ở trung bình của lớp.”
 
-### Bước 5 — Nguyên nhân gốc và nhóm
+### Bước 6 — Nguyên nhân gốc và nhóm
 
 - Quan sát: biểu đồ ngang nguyên nhân gốc và 5 nhóm.
 - Click: **Xem nhóm** tại “Nhóm cần thêm minh chứng”.
@@ -77,7 +85,7 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Wow moment: 5 nhóm cộng lại đúng 40 học sinh; nhóm không phải nhãn cố định.
 - Chuyển: “Mỗi con số tổng hợp đều có thể đi xuống hồ sơ từng em.”
 
-### Bước 6 — Bảng học sinh và bộ lọc
+### Bước 7 — Bảng học sinh và bộ lọc
 
 - Click: **Học sinh**.
 - Thao tác: chọn bộ lọc **Cần hỗ trợ**; gõ “Nguyễn” vào ô tìm kiếm.
@@ -85,16 +93,16 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Lời nói: “Giáo viên có thể tìm, lọc và so sánh nhanh. Tên hiển thị thân thiện; ID kỹ thuật không lộ trên giao diện.”
 - Chuyển: click tên **Nguyễn Minh Anh** (xóa bộ lọc nếu cần).
 
-### Bước 7 — Hồ sơ học sinh
+### Bước 8 — Hồ sơ học sinh
 
 - Kết quả: drawer hồ sơ với mức sẵn sàng, độ tin cậy, nguyên nhân gốc, minh chứng hỗ trợ/mâu thuẫn và ghi chú.
 - Nhập ghi chú: “Quan sát thêm khi em giải thích bảng giá trị.”
 - Click: **Giao lộ trình củng cố**.
 - Lời nói: “Giáo viên có thể yêu cầu thêm minh chứng, đổi nhóm hoặc ghi đè chẩn đoán kèm lý do. Trong demo này ta lưu quyết định chuyên môn rồi giao lộ trình.”
 - Ý nghĩa: giáo viên có quyền kiểm soát; hành động được lưu trong phiên demo.
-- Chuyển: đóng drawer và mở **Kế hoạch bài dạy**.
+- Chuyển: đóng drawer và mở **Kế hoạch**.
 
-### Bước 8 — Kế hoạch phân hóa
+### Bước 9 — Kế hoạch phân hóa
 
 - Route: `/teacher/lesson-plan`.
 - Kết quả: kế hoạch 45 phút theo phiên bản, hoạt động gắn kỹ năng và minh chứng kỳ vọng.
@@ -102,9 +110,9 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Click: **Phê duyệt kế hoạch** khi trạng thái cho phép.
 - Lời nói: “AiLearn tạo bản nháp. Cô Hà chỉnh nội dung và phê duyệt. Không có kế hoạch nào tự động đi vào lớp mà bỏ qua giáo viên.”
 - Wow moment: vòng đời versioned plan; xung đột phiên bản được phát hiện thay vì ghi đè im lặng.
-- Chuyển: click **Chế độ giảng dạy**.
+- Chuyển: click **Dạy học**.
 
-### Bước 9 — Chế độ giảng dạy
+### Bước 10 — Chế độ giảng dạy
 
 - Click: **Bắt đầu Chế độ giảng dạy**.
 - Kết quả: giao diện nền tối, giảm nhiễu; thấy pha hiện tại, thời gian, mục tiêu, minh chứng cần quan sát và ba nhóm.
@@ -113,14 +121,14 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Lời nói: “Khi đứng lớp, giáo viên không cần dashboard dày. Chế độ này chỉ giữ thứ cần để hành động trong vài giây.”
 - Chuyển: đi qua các pha và click **Hoàn thành tiết học**, hoặc chuyển sang Sau giờ học để tiết kiệm thời gian demo.
 
-### Bước 10 — Sau giờ học
+### Bước 11 — Sau giờ học
 
 - Click: **Sau giờ học**.
 - Kết quả: trước/sau mức sẵn sàng, số em tiến bộ, cần củng cố, cần thêm minh chứng và đề xuất bài tiếp theo.
 - Lời nói: “Một câu đúng khi có hướng dẫn chưa đủ. AiLearn chờ bài chuyển giao độc lập trước khi xác nhận kỹ năng đã được sửa.”
 - Click: **Xem danh sách can thiệp**.
 
-### Bước 11 — Can thiệp
+### Bước 12 — Can thiệp
 
 - Route: `/teacher/interventions`.
 - Kết quả: hàng đợi với nhu cầu, giai đoạn, tiến trình và hành động. Sáu giai đoạn từ xác minh đến duy trì được hiển thị.
@@ -128,14 +136,14 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 - Lời nói: “Lộ trình không dừng ở luyện câu tương tự. Nó đi qua chuyển giao gần, chuyển giao xa và kiểm tra duy trì.”
 - Click: **Mở báo cáo can thiệp**.
 
-### Bước 12 — Báo cáo và bài tiếp theo
+### Bước 13 — Báo cáo và bài tiếp theo
 
 - Route: `/teacher/report`.
 - Kết quả: kết quả chuyển giao, khoảng hổng còn lại, đề xuất trọng tâm bài tiếp theo và link bản in.
 - Lời nói: “Báo cáo trả kết quả về đúng vòng lập kế hoạch. Bài tiếp theo bắt đầu từ minh chứng mới, không bắt đầu lại từ một phỏng đoán.”
 - Chuyển: mở **Học liệu** để cho thấy đầu ra có thể sử dụng.
 
-### Bước 13 — Học liệu
+### Bước 14 — Học liệu
 
 - Route: `/teacher/resources`.
 - Click: **Xem trước** một phiếu; kết quả hiển thị hướng dẫn và tiêu chí thành công.
@@ -144,7 +152,7 @@ Engine không phải một LLM tự do. Các quan hệ chương trình, trạng 
 
 ## 5. Hành trình đầy đủ
 
-`Hôm nay → Lớp học → Chuẩn bị → Phân tích lớp → Học sinh → Kế hoạch bài dạy → Chế độ giảng dạy → Sau giờ học → Can thiệp → Báo cáo → Học liệu → Bài tiếp theo`
+`Phân tích lớp → Hôm nay → Lớp học → Chuẩn bị → Chẩn đoán → Học sinh → Kế hoạch → Dạy học → Sau giờ học → Can thiệp → Báo cáo → Học liệu → Bài tiếp theo`
 
 Các chuyển tiếp quan trọng đều có CTA rõ nghĩa. Trạng thái demo (chuẩn bị, ghi chú, bắt đầu dạy, giao can thiệp) lưu trong `sessionStorage` và **Đặt lại tiến trình demo** phục hồi trạng thái trình duyệt mà không ghi thay đổi vào dữ liệu API. Quyết định phê duyệt trên API được giữ nguyên.
 

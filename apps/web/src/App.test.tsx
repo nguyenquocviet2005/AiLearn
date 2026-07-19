@@ -43,11 +43,16 @@ describe("App", () => {
 
     expect(window.location.pathname).toBe("/teacher");
     expect(
-      screen.getByRole("navigation", {
+      screen.queryByRole("navigation", {
         name: "Điều hướng giáo viên",
       }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "AiLearn - trang chủ" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Lớp 7A · Mốc kiểm tra 2")).toBeInTheDocument();
+    expect(
+      screen.getByText("Quyết định thuộc về giáo viên"),
+    ).toBeInTheDocument();
   });
 
   it("renders the teacher product and lesson-plan routes on direct navigation", async () => {
@@ -82,6 +87,7 @@ describe("App", () => {
   });
 
   it.each([
+    ["/teacher/analytics", "Nhìn nhanh lớp 7A trước khi vào tiết."],
     ["/teacher/classes", "Một nơi để theo dõi cả lớp và từng bài học."],
     ["/teacher/prepare", "Chuẩn bị bài dạy từ mục tiêu đến minh chứng."],
     ["/teacher/insights", "Hiểu nguyên nhân trước khi chọn cách dạy."],
@@ -92,10 +98,7 @@ describe("App", () => {
       "/teacher/interventions",
       "Củng cố đến khi học sinh thực sự vận dụng được.",
     ],
-    [
-      "/teacher/resources",
-      "Học liệu được tạo theo đúng nhu cầu của từng nhóm.",
-    ],
+    ["/teacher/resources", "Học liệu theo nhu cầu của lớp."],
   ])("supports direct navigation to %s", async (route, heading) => {
     const snapshot = await fixtureTeacherWorkspaceRepository.getClassSnapshot();
     const plan = await reportTestPlan();
@@ -159,8 +162,14 @@ describe("App", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Chuẩn bị để tiết Toán dễ hiểu hơn",
+        name: "Cho cô biết chỗ em đang vướng",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Chuẩn bị kiến thức" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Làm bài test" }),
     ).toBeInTheDocument();
   });
 });

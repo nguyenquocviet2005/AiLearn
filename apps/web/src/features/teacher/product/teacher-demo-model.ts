@@ -109,6 +109,7 @@ export type TeacherDemoModel = {
   evidence: DemoEvidenceEvent[];
   outcomes: DemoStudentOutcome[];
   improvementPaths: StudentImprovementPathV1[];
+  teachingPriorities: Array<TeachingPriority & { label: string }>;
   topPriority: TeachingPriority & { label: string };
   metrics: {
     total: number;
@@ -423,9 +424,13 @@ export function buildTeacherDemoModel(
     ),
   }));
 
-  const topPriority = [...snapshot.teaching_priorities].sort(
-    (left, right) => left.rank - right.rank,
-  )[0];
+  const teachingPriorities = [...snapshot.teaching_priorities]
+    .sort((left, right) => left.rank - right.rank)
+    .map((priority) => ({
+      ...priority,
+      label: teacherSkillLabel(priority.skill_id),
+    }));
+  const topPriority = teachingPriorities[0];
   const improved = outcomes.filter(
     (outcome) =>
       outcome.outcome === "passed_transfer" ||
@@ -445,10 +450,8 @@ export function buildTeacherDemoModel(
     evidence,
     outcomes,
     improvementPaths,
-    topPriority: {
-      ...topPriority,
-      label: teacherSkillLabel(topPriority.skill_id),
-    },
+    teachingPriorities,
+    topPriority,
     metrics: {
       total: students.length,
       ready: students.filter((student) => student.readiness === "ready").length,
