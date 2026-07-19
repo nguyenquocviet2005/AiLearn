@@ -107,8 +107,7 @@ def test_probe_reuses_item_when_every_item_already_answered(
     from ailearn_api.curriculum import ITEMS
 
     records = [
-        _record(item.item_id, item.skill_ids[0], is_correct=True)
-        for item in ITEMS.items.values()
+        _record(item.item_id, item.skill_ids[0], is_correct=True) for item in ITEMS.items.values()
     ]
     monkeypatch.setattr(
         "ailearn_api.routes.diagnostics.fetch_evidence_events_for_student",
