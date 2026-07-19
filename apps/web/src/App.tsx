@@ -15,6 +15,7 @@ function currentPathname() {
 }
 
 type Route =
+  | "/"
   | TeacherRoute
   | "/teacher/report/print"
   | "/student"

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { StudentPreviewWorkspace } from "@/features/student-preview/StudentPreviewWorkspace";
 import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
 import { TeacherReport } from "@/features/teacher/report/TeacherReport";
+import type { TeacherRoute } from "@/features/teacher/TeacherShell";
 import { TeacherWorkspace } from "@/features/teacher/TeacherWorkspace";
 
 import {
@@ -78,18 +79,17 @@ export function PrototypeFlow({ onExit }: PrototypeFlowProps) {
     window.dispatchEvent(new PopStateEvent("popstate"));
   }
 
-  function handleTeacherNavigate(
-    path: "/teacher" | "/teacher/lesson-plan" | "/teacher/report",
-  ) {
-    if (path === "/teacher") {
-      setStep("teacher-overview");
-      return;
-    }
+  function handleTeacherNavigate(path: TeacherRoute) {
     if (path === "/teacher/lesson-plan") {
       setStep("teacher-plan");
       return;
     }
-    setStep("report");
+    if (path === "/teacher/report") {
+      setStep("report");
+      return;
+    }
+    // Other teacher product routes stay on the overview step in this prototype.
+    setStep("teacher-overview");
   }
 
   const stepIndex = STEPS.findIndex((item) => item.id === step);

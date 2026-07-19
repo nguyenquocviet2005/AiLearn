@@ -350,7 +350,7 @@ export function StudentWorkspace({
     // Do not also call diagnoseAndStartRemediation() here: the pendingCount effect
     // below reacts once flush() settles (immediately or after a later reconnect),
     // so triggering it here too would race and double-invoke it.
-    const flushResults = await flush(repository);
+    await flush(repository);
   }
 
   async function diagnoseAndStartRemediation(): Promise<void> {
@@ -502,15 +502,22 @@ export function StudentWorkspace({
     );
     // Auto-sync may have drained this write on a prior chained flush; recover
     // the SYNCED result from the queue so the path still advances.
-    const recovered =
+    const recoveredCandidate =
       ours?.response ??
-      (listAll().find(
+      listAll().find(
         (write) =>
           write.type === "REMEDIATION_ATTEMPT" &&
           (write.payload as { attemptId: string }).attemptId === attemptId &&
           write.status === "SYNCED" &&
           write.result,
-      )?.result as RemediationResponse | undefined);
+      )?.result;
+    const recovered =
+      recoveredCandidate &&
+      typeof recoveredCandidate === "object" &&
+      "path" in recoveredCandidate &&
+      "current_step_kind" in recoveredCandidate
+        ? (recoveredCandidate as RemediationResponse)
+        : null;
     if (recovered) {
       setPathNotice(null);
       saveToCache(remediationCacheKey(currentStudent.id), {
@@ -740,7 +747,7 @@ export function StudentWorkspace({
             ))}
           </nav>
 
-          <div className="student-rail-controls" ref={(node) => {}}>
+          <div className="student-rail-controls">
             <button
               type="button"
               className="student-reset"
