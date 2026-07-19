@@ -78,6 +78,21 @@ describe("LandingPage", () => {
       screen.getByText("Ghi lại EvidenceEventV1 và chẩn đoán lại"),
     ).toBeInTheDocument();
     expect(
+      screen.getByText("Pedagogical Alignment from Classroom Evidence"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Gióng vào chương trình")).toBeInTheDocument();
+    expect(screen.getByText("Chốt bằng minh chứng")).toBeInTheDocument();
+    expect(
+      screen.getByText("Reinforcement Learning from Human Feedback"),
+    ).toBeInTheDocument();
+    // RLHF must stay labelled as roadmap, not as shipped behaviour.
+    expect(
+      screen.getByText("Lộ trình sau MVP — tín hiệu đang được thu"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Hàm thưởng R")).toBeInTheDocument();
+    expect(screen.getByText("Chính sách π")).toBeInTheDocument();
+    expect(screen.getByText("Giáo viên quyết định")).toBeInTheDocument();
+    expect(
       screen.getByText("Năm thuộc tính khiến lõi này đáng tin"),
     ).toBeInTheDocument();
     expect(screen.getByText("Biết khi nào nên im lặng")).toBeInTheDocument();
