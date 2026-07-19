@@ -140,7 +140,7 @@ describe("TeacherWorkspace", () => {
       "page",
     );
 
-    await user.click(screen.getByRole("button", { name: "4 Chốt kế hoạch" }));
+    await user.click(screen.getByRole("button", { name: /Chốt kế hoạch/ }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
   });
 

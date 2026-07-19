@@ -21,4 +21,17 @@
 
 ## Kiểm tra
 
-- Sẽ ghi kết quả format, lint, typecheck, frontend tests và production build trước khi tạo PR.
+- `CI=true pnpm --filter @ailearn/web format`: PASS.
+- `CI=true pnpm --filter @ailearn/web test`: PASS (17 tệp, 105 kiểm tra).
+- `pnpm --filter @ailearn/web lint`: PASS.
+- `pnpm --filter @ailearn/web typecheck`: PASS.
+- `pnpm --filter @ailearn/web build`: PASS.
+- `git diff --check`: PASS.
+
+## Rà soát độc lập và điều chỉnh cuối
+
+- Rà soát độc lập phát hiện thanh trái rút gọn có thể làm mất đường vào một số mô-đun và trạng thái vận hành có nguy cơ được hiểu là tiến độ đã xác nhận.
+- Đã sửa bằng thanh tiến trình có thể nhấp, bao phủ toàn bộ tuyến giáo viên; thanh trái chỉ giữ hai điểm vào chính là Tổng quan và Phân tích lớp.
+- Các bước chưa có dữ liệu hoàn thành xác nhận hiển thị là `Xem dữ liệu`; chỉ trạng thái phê duyệt kế hoạch dùng nhãn `Đã duyệt` khi mô hình thực sự cho biết kế hoạch đã được phê duyệt.
+- Mục Dạy trên lớp cũng dùng trạng thái trung tính và nhãn `Mở công cụ`, vì dashboard hiện không nhận tiến trình giảng dạy trực tiếp.
+- Kiểm tra PrototypeFlow được thu hẹp vào thanh điều hướng prototype để không nhầm nút Học sinh hợp lệ trong thanh tiến trình giáo viên.

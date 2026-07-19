@@ -273,12 +273,17 @@ export function WorkflowStrip({
 }) {
   const steps = [
     ["/teacher", "Hôm nay"],
+    ["/teacher/analytics", "Phân tích"],
+    ["/teacher/classes", "Lớp học"],
     ["/teacher/prepare", "Chuẩn bị"],
     ["/teacher/insights", "Hiểu lớp"],
+    ["/teacher/students", "Học sinh"],
     ["/teacher/lesson-plan", "Chốt kế hoạch"],
     ["/teacher/teaching", "Giảng dạy"],
     ["/teacher/after-class", "Sau giờ học"],
     ["/teacher/interventions", "Can thiệp"],
+    ["/teacher/resources", "Học liệu"],
+    ["/teacher/report", "Báo cáo"],
   ] as const;
   const currentIndex = Math.max(
     0,
@@ -790,15 +795,15 @@ function AnalyticsPage({
     model.plan.decision === "approved" ? "Sẵn sàng dạy" : "Cần chốt cách dạy";
   const operationSteps = [
     {
-      label: "Giao bài chuẩn bị",
+      label: "Kiểm tra minh chứng đầu vào",
       note: `${model.metrics.evidenceTotal} minh chứng đã ghi nhận`,
-      state: "done",
+      state: "neutral",
       route: "/teacher/prepare" as const,
     },
     {
       label: "Thu bài và chẩn đoán",
       note: `${model.metrics.total - model.metrics.insufficient}/${model.metrics.total} hồ sơ có thể hành động`,
-      state: "current",
+      state: "neutral",
       route: "/teacher/insights" as const,
     },
     {
@@ -807,13 +812,14 @@ function AnalyticsPage({
         model.plan.decision === "approved"
           ? "Kế hoạch đã được phê duyệt"
           : "Giáo viên duyệt phương án đề xuất",
-      state: model.plan.decision === "approved" ? "done" : "upcoming",
+      state: model.plan.decision === "approved" ? "done" : "current",
       route: "/teacher/lesson-plan" as const,
     },
     {
       label: "Dạy trên lớp",
       note: "Mở chế độ giảng dạy khi vào tiết",
-      state: "upcoming",
+      state: "neutral",
+      status: "Mở công cụ",
       route: "/teacher/teaching" as const,
     },
   ];
@@ -883,11 +889,14 @@ function AnalyticsPage({
                     <small>{step.note}</small>
                   </div>
                   <b>
-                    {step.state === "current"
-                      ? "Đang làm"
-                      : step.state === "done"
-                        ? "Đã xong"
-                        : "Mở"}
+                    {step.status ??
+                      (step.state === "done"
+                        ? "Đã duyệt"
+                        : step.state === "current"
+                          ? "Cần xử lý"
+                          : step.state === "neutral"
+                            ? "Xem dữ liệu"
+                            : "Mở")}
                   </b>
                 </button>
               </li>

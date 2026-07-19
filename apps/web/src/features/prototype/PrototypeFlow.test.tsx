@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -51,7 +51,11 @@ describe("PrototypeFlow", () => {
       ).toBeInTheDocument();
     });
 
-    await user.click(screen.getByRole("button", { name: /Học sinh/i }));
+    await user.click(
+      within(
+        screen.getByRole("list", { name: "Các bước prototype" }),
+      ).getByRole("button", { name: /Học sinh/i }),
+    );
     await waitFor(() => {
       expect(
         screen.getByRole("button", { name: /Bắt đầu bài ngắn/i }),
