@@ -94,7 +94,11 @@ export type Stage =
       remediation: RemediationResponse;
       profile: StudentDiagnosticProfileV1;
     }
-  | { kind: "complete"; remediation: RemediationResponse }
+  | {
+      kind: "complete";
+      remediation: RemediationResponse;
+      profile: StudentDiagnosticProfileV1;
+    }
   | {
       kind: "exit-ticket";
       remediation: RemediationResponse;
