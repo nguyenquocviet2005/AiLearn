@@ -92,7 +92,11 @@ Landing and student feature source files were not changed.
 - Base: `dev`
 - GitHub CI: PASS — Web checks and API checks.
 - Vercel build statuses: PASS/Ready for both `ai-learn-web` and `ai-learn-web-test`.
-- Preview route verification: BLOCKED. Both generated Preview URLs redirect to Vercel SSO/login, so HTTP 200 responses are the provider login page rather than AiLearn. Deployment Protection must allow public Preview access or a human must supply an authorized Vercel share/bypass link before every live route can be truthfully verified.
+- Ephemeral Preview URLs remain protected by Vercel SSO. The human supplied the public staging alias `https://ai-learn-web-test.vercel.app`, whose deployed bundle contains the new Teacher Workspace routes/copy and the staging Railway API target.
+- Public staging verification: PASS — `/` plus all 12 teacher routes through `/teacher/report/print` returned AiLearn HTML with HTTP 200 and no redirect.
+- Staging integration verification: PASS — `/health`, `/api/v1/system-status`, the demo class snapshot, and demo lesson-plan endpoints returned HTTP 200 from `https://ailearn-staging.up.railway.app` with `Access-Control-Allow-Origin: https://ai-learn-web-test.vercel.app`.
+- Staging bundle inspection: PASS — new Teacher Workspace markers were present and no `localhost:8000` reference was found.
+- `https://ailearn-vaic.cloud` remains on the older production bundle, as expected for a `dev`-targeted pull request that must not deploy production.
 
 ## Risks and limitations
 
