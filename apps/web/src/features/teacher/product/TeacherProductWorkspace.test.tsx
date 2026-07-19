@@ -18,6 +18,7 @@ afterEach(() => {
 describe("TeacherProductWorkspace", () => {
   it.each([
     ["/teacher", "Chào buổi sáng, cô Hà."],
+    ["/teacher/analytics", "Nhìn nhanh lớp 7A trước khi vào tiết."],
     ["/teacher/classes", "Một nơi để theo dõi cả lớp và từng bài học."],
     ["/teacher/prepare", "Chuẩn bị bài dạy từ mục tiêu đến minh chứng."],
     ["/teacher/insights", "Hiểu nguyên nhân trước khi chọn cách dạy."],
@@ -28,10 +29,7 @@ describe("TeacherProductWorkspace", () => {
       "/teacher/interventions",
       "Củng cố đến khi học sinh thực sự vận dụng được.",
     ],
-    [
-      "/teacher/resources",
-      "Học liệu được tạo theo đúng nhu cầu của từng nhóm.",
-    ],
+    ["/teacher/resources", "Học liệu theo nhu cầu của lớp."],
   ] as const)("renders the useful teacher route %s", async (route, heading) => {
     render(
       <TeacherProductWorkspace
@@ -44,8 +42,44 @@ describe("TeacherProductWorkspace", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: heading }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Dữ liệu demo")).toBeInTheDocument();
+    expect(screen.getByText("Dữ liệu minh hoạ")).toBeInTheDocument();
     expect(screen.queryByText(/stu_g7_/)).not.toBeInTheDocument();
+  });
+
+  it("calculates class charts and shows Vietnamese priority names", async () => {
+    render(
+      <TeacherProductWorkspace
+        onNavigate={vi.fn()}
+        repository={fixtureTeacherWorkspaceRepository}
+        route="/teacher/analytics"
+      />,
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "Toàn lớp" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /Mức sẵn sàng/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByText("Nền tảng tỉ số và tỉ lệ thức").length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("Phân biệt tỉ lệ thuận và tỉ lệ nghịch").length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getByText(
+        "Dành 30 phút trong kế hoạch hiện tại — thời lượng dài nhất.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Bài toán năng suất thực tế")).toBeInTheDocument();
+    expect(screen.getByText("Nhân phân số")).toBeInTheDocument();
+    expect(
+      screen.getByText("Kết nối tri thức với cuộc sống"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/skill_ratio_proportion_basics/),
+    ).not.toBeInTheDocument();
   });
 
   it("filters the real snapshot rows and opens a Vietnamese student profile", async () => {
@@ -297,7 +331,7 @@ describe("TeacherProductWorkspace", () => {
     );
 
     expect(await screen.findByText(/VITE_API_BASE_URL/)).toBeInTheDocument();
-    expect(screen.getAllByText("API đang gián đoạn")).toHaveLength(2);
+    expect(screen.getAllByText("Kết nối đang gián đoạn")).toHaveLength(2);
   });
 
   it("blocks Teaching Mode until the teacher approves the plan", async () => {

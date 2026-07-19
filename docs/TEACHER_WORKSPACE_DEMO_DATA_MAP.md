@@ -26,6 +26,13 @@
 | `StudentImprovementPathV1[]`     | Completed steps và progress                     | Interventions                         |
 | Session demo state               | Notes, teaching state, assigned interventions   | Students, Teaching, Interventions     |
 
+## Tiến trình Toán 7 Kết nối tri thức
+
+- Danh mục hiển thị 10 chương và 37 bài của Toán 7, Kết nối tri thức với cuộc sống.
+- Bài hiện tại là **Bài 23 — Đại lượng tỉ lệ nghịch**, thuộc **Chương VI — Tỉ lệ thức và đại lượng tỉ lệ**.
+- Đây là chỉ mục tiến trình để đặt bài dạy vào mạch môn học, không phải bản sao nội dung, bài tập hay minh hoạ của sách giáo khoa.
+- Nguồn danh mục: [tài liệu tập huấn Toán 7 của NXB Giáo dục Việt Nam](https://medialib.qlgd.edu.vn/Uploads/THU_VIEN/shn/2/37/UserFiles/1.-Toan-7-d876f79e-f1eb-4de6-822f-80caa5e52a52.pdf).
+
 ## Phân bố lớp từ snapshot
 
 - 40 học sinh tổng cộng.
@@ -38,11 +45,11 @@
 
 | Nhóm hiển thị                                  | Số học sinh | Nhu cầu                                  | Hành động                         |
 | ---------------------------------------------- | ----------: | ---------------------------------------- | --------------------------------- |
-| Nhóm A · Nền tảng tỉ số và tỉ lệ thức          |           4 | Sửa kỹ năng tiền đề có tác động hạ nguồn | Worked example + guided practice  |
+| Nhóm A · Nền tảng tỉ số và tỉ lệ thức          |           4 | Sửa kỹ năng tiền đề có tác động hạ nguồn | Ví dụ mẫu và luyện tập có hướng dẫn |
 | Nhóm B · Phân biệt tỉ lệ thuận và tỉ lệ nghịch |          11 | Sửa misconception chính                  | Bảng so sánh và câu hỏi phân biệt |
 | Nhóm giáo viên đồng hành                       |          15 | Nhiều nhu cầu ít phổ biến                | Trạm có giáo viên hướng dẫn       |
-| Nhóm mở rộng · Vận dụng độc lập                |           8 | Đã sẵn sàng                              | Near/far transfer task            |
-| Nhóm cần thêm minh chứng                       |           2 | Evidence thiếu/mâu thuẫn                 | Hai câu xác minh trước can thiệp  |
+| Nhóm mở rộng · Vận dụng độc lập                |           8 | Đã sẵn sàng                              | Bài chuyển giao gần và xa         |
+| Nhóm cần thêm minh chứng                       |           2 | Minh chứng thiếu hoặc mâu thuẫn          | Hai câu xác minh trước can thiệp  |
 
 ## Học sinh và tên hiển thị
 

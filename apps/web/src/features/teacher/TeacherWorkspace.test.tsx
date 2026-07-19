@@ -140,9 +140,9 @@ describe("TeacherWorkspace", () => {
       "page",
     );
 
-    await user.click(screen.getByRole("link", { name: "Kế hoạch bài dạy" }));
+    await user.click(screen.getByRole("link", { name: "Kế hoạch" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
-    await user.click(screen.getByRole("link", { name: "Báo cáo can thiệp" }));
+    await user.click(screen.getByRole("link", { name: "Báo cáo" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
   });
 

@@ -25,6 +25,7 @@ type Route =
 const teacherProductRoutes = new Set<TeacherRoute>([
   "/teacher",
   "/teacher/classes",
+  "/teacher/analytics",
   "/teacher/prepare",
   "/teacher/insights",
   "/teacher/students",
