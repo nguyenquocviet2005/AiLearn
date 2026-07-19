@@ -16,7 +16,7 @@ export type TeacherRoute =
   | "/teacher/resources"
   | "/teacher/report";
 
-const primaryNavigation: Array<{
+const sidebarNavigation: Array<{
   href: TeacherRoute;
   icon: string;
   label: string;
@@ -29,19 +29,6 @@ const primaryNavigation: Array<{
     ariaLabel: "Tổng quan lớp",
   },
   { href: "/teacher/analytics", icon: "◔", label: "Phân tích lớp" },
-  { href: "/teacher/lesson-plan", icon: "≡", label: "Kế hoạch" },
-  { href: "/teacher/teaching", icon: "▶", label: "Dạy học" },
-];
-
-const moreNavigation: Array<{ href: TeacherRoute; label: string }> = [
-  { href: "/teacher/classes", label: "Lớp học" },
-  { href: "/teacher/prepare", label: "Chuẩn bị bài" },
-  { href: "/teacher/insights", label: "Chẩn đoán" },
-  { href: "/teacher/students", label: "Học sinh" },
-  { href: "/teacher/after-class", label: "Sau giờ học" },
-  { href: "/teacher/interventions", label: "Can thiệp" },
-  { href: "/teacher/resources", label: "Học liệu" },
-  { href: "/teacher/report", label: "Báo cáo" },
 ];
 
 export function TeacherShell({
@@ -91,6 +78,26 @@ export function TeacherShell({
           </div>
         </div>
 
+        <nav className="teacher-navigation" aria-label="Điều hướng giáo viên">
+          {sidebarNavigation.map((item) => (
+            <a
+              aria-current={currentRoute === item.href ? "page" : undefined}
+              aria-label={item.ariaLabel}
+              href={item.href}
+              key={item.href}
+              onClick={(event) => {
+                event.preventDefault();
+                onNavigate(item.href);
+              }}
+            >
+              <span className="dashboard-nav-icon" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span>{item.label}</span>
+            </a>
+          ))}
+        </nav>
+
         <div className="teacher-sidebar-note">
           <span className="companion-presence">
             <img src="/brand/ailearn-mascot.webp" alt="" />
@@ -123,50 +130,6 @@ export function TeacherShell({
         tabIndex={-1}
       >
         <div className="teacher-product-topbar">
-          <nav
-            className="teacher-top-navigation"
-            aria-label="Điều hướng giáo viên"
-          >
-            {primaryNavigation.map((item) => (
-              <a
-                aria-current={currentRoute === item.href ? "page" : undefined}
-                aria-label={item.ariaLabel}
-                href={item.href}
-                key={item.href}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onNavigate(item.href);
-                }}
-              >
-                {item.label}
-              </a>
-            ))}
-            <details className="teacher-top-overflow">
-              <summary>Thêm</summary>
-              <div>
-                {moreNavigation.map((item) => (
-                  <a
-                    aria-current={
-                      currentRoute === item.href ? "page" : undefined
-                    }
-                    href={item.href}
-                    key={item.href}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      (
-                        event.currentTarget.closest(
-                          "details",
-                        ) as HTMLDetailsElement | null
-                      )?.removeAttribute("open");
-                      onNavigate(item.href);
-                    }}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            </details>
-          </nav>
           <div className="teacher-topbar-status">
             <span className="demo-badge">Dữ liệu minh hoạ</span>
             <span className={`connection-badge is-${connectionStatus}`}>

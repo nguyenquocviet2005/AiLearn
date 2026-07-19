@@ -140,10 +140,8 @@ describe("TeacherWorkspace", () => {
       "page",
     );
 
-    await user.click(screen.getByRole("link", { name: "Kế hoạch" }));
+    await user.click(screen.getByRole("button", { name: "4 Chốt kế hoạch" }));
     expect(onNavigate).toHaveBeenCalledWith("/teacher/lesson-plan");
-    await user.click(screen.getByRole("link", { name: "Báo cáo" }));
-    expect(onNavigate).toHaveBeenCalledWith("/teacher/report");
   });
 
   it("renders the complete synthetic class without calling the backend", async () => {

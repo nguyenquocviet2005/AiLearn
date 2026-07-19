@@ -72,10 +72,20 @@ describe("TeacherProductWorkspace", () => {
         "Dành 30 phút trong kế hoạch hiện tại — thời lượng dài nhất.",
       ),
     ).toBeInTheDocument();
-    expect(screen.getByText("Bài toán năng suất thực tế")).toBeInTheDocument();
-    expect(screen.getByText("Nhân phân số")).toBeInTheDocument();
+    expect(
+      screen.getAllByText("Bài toán năng suất thực tế").length,
+    ).toBeGreaterThan(0);
+    expect(screen.getAllByText("Nhân phân số").length).toBeGreaterThan(0);
     expect(
       screen.getByText("Kết nối tri thức với cuộc sống"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Ba buổi cần chuẩn bị" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Từ kiến thức nền đến mục tiêu bài học",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.queryByText(/skill_ratio_proportion_basics/),

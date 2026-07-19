@@ -6,6 +6,7 @@ import {
 } from "@/lib/adapters/teacher-repository";
 import type { TeacherWorkspaceRepository } from "@/lib/adapters/teacher-workspace-repository";
 import { TeacherShell, type TeacherRoute } from "../TeacherShell";
+import { teacherFacingText } from "../teacher-copy";
 import {
   buildTeacherDemoModel,
   TeacherDemoValidationError,
@@ -286,7 +287,10 @@ export function WorkflowStrip({
   return (
     <ol className="workflow-strip" aria-label="Tiến trình bài dạy">
       {steps.map(([path, label], index) => (
-        <li className={index <= currentIndex ? "is-reached" : ""} key={path}>
+        <li
+          className={`${index <= currentIndex ? "is-reached" : ""} ${path === current ? "is-current" : ""}`}
+          key={path}
+        >
           <button onClick={() => onNavigate(path)} type="button">
             <span>{index + 1}</span>
             {label}
@@ -777,6 +781,42 @@ function AnalyticsPage({
     target: group.target,
   }));
   const maxGroupCount = Math.max(...groupRows.map((group) => group.count), 1);
+  const currentChapterLessons = currentLesson.chapter.lessons;
+  const currentLessonIndex = currentChapterLessons.findIndex(
+    (lesson) => lesson.id === currentLesson.lesson.id,
+  );
+  const nextLesson = currentChapterLessons[currentLessonIndex + 1] ?? null;
+  const lessonStatus =
+    model.plan.decision === "approved" ? "Sẵn sàng dạy" : "Cần chốt cách dạy";
+  const operationSteps = [
+    {
+      label: "Giao bài chuẩn bị",
+      note: `${model.metrics.evidenceTotal} minh chứng đã ghi nhận`,
+      state: "done",
+      route: "/teacher/prepare" as const,
+    },
+    {
+      label: "Thu bài và chẩn đoán",
+      note: `${model.metrics.total - model.metrics.insufficient}/${model.metrics.total} hồ sơ có thể hành động`,
+      state: "current",
+      route: "/teacher/insights" as const,
+    },
+    {
+      label: "Chốt cách dạy",
+      note:
+        model.plan.decision === "approved"
+          ? "Kế hoạch đã được phê duyệt"
+          : "Giáo viên duyệt phương án đề xuất",
+      state: model.plan.decision === "approved" ? "done" : "upcoming",
+      route: "/teacher/lesson-plan" as const,
+    },
+    {
+      label: "Dạy trên lớp",
+      note: "Mở chế độ giảng dạy khi vào tiết",
+      state: "upcoming",
+      route: "/teacher/teaching" as const,
+    },
+  ];
   let accumulated = 0;
 
   return (
@@ -805,6 +845,104 @@ function AnalyticsPage({
           Xem minh chứng chi tiết
         </button>
       </section>
+
+      <div className="operations-grid">
+        <section
+          className="product-panel lesson-operation"
+          aria-labelledby="lesson-operation-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Tiết học sắp tới</span>
+              <h2 id="lesson-operation-title">
+                {model.className} · {model.lessonName}
+              </h2>
+            </div>
+            <span
+              className={`status-pill ${model.plan.decision === "approved" ? "success" : "warning"}`}
+            >
+              {lessonStatus}
+            </span>
+          </div>
+          <div className="operation-metrics">
+            <strong>
+              {model.metrics.total - model.metrics.insufficient}/
+              {model.metrics.total}
+            </strong>
+            <span>hồ sơ đã đủ minh chứng</span>
+            <strong>{rootCauses.length}</strong>
+            <span>nguyên nhân chính cần xử lý</span>
+          </div>
+          <ol className="lesson-operation-steps">
+            {operationSteps.map((step, index) => (
+              <li className={`is-${step.state}`} key={step.label}>
+                <button onClick={() => navigate(step.route)} type="button">
+                  <span>{step.state === "done" ? "✓" : index + 1}</span>
+                  <div>
+                    <strong>{step.label}</strong>
+                    <small>{step.note}</small>
+                  </div>
+                  <b>
+                    {step.state === "current"
+                      ? "Đang làm"
+                      : step.state === "done"
+                        ? "Đã xong"
+                        : "Mở"}
+                  </b>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section
+          className="product-panel upcoming-lessons"
+          aria-labelledby="upcoming-lessons-title"
+        >
+          <div className="panel-heading">
+            <div>
+              <span>Lịch học sắp tới</span>
+              <h2 id="upcoming-lessons-title">Ba buổi cần chuẩn bị</h2>
+            </div>
+          </div>
+          <ol>
+            <li className="is-current">
+              <time>
+                Hôm nay<small>Tiết 2</small>
+              </time>
+              <div>
+                <strong>
+                  {model.className} · {model.lessonName}
+                </strong>
+                <span>Đã chẩn đoán · {lessonStatus.toLowerCase()}</span>
+              </div>
+              <b>{lessonStatus}</b>
+            </li>
+            <li>
+              <time>
+                Ngày mai<small>Tiết 4</small>
+              </time>
+              <div>
+                <strong>
+                  {model.className} · {nextLesson?.title ?? "Bài học tiếp theo"}
+                </strong>
+                <span>Chưa có minh chứng lớp</span>
+              </div>
+              <b>Chuẩn bị</b>
+            </li>
+            <li>
+              <time>
+                Tuần sau<small>Tiết 1</small>
+              </time>
+              <div>
+                <strong>{model.className} · Ôn tập đại lượng tỉ lệ</strong>
+                <span>Dùng kết quả sau giờ học làm đầu vào</span>
+              </div>
+              <b>Chưa mở</b>
+            </li>
+          </ol>
+        </section>
+      </div>
 
       <div className="analytics-grid analytics-grid-top">
         <section
@@ -977,6 +1115,64 @@ function AnalyticsPage({
           </button>
         </section>
       </div>
+
+      <section
+        className="product-panel diagnostic-map"
+        aria-labelledby="diagnostic-map-title"
+      >
+        <div className="panel-heading">
+          <div>
+            <span>Sơ đồ chẩn đoán lớp</span>
+            <h2 id="diagnostic-map-title">
+              Từ kiến thức nền đến mục tiêu bài học
+            </h2>
+          </div>
+          <button
+            className="product-text-button"
+            onClick={() => navigate("/teacher/students")}
+            type="button"
+          >
+            Mở học sinh cần ưu tiên <span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <p>
+          Đường nối thể hiện quan hệ tiền đề cần kiểm tra; mỗi thẻ cho biết số
+          học sinh đang bị ảnh hưởng.
+        </p>
+        <div className="diagnostic-map-flow">
+          <article className="map-foundation">
+            <span>Kiến thức nền</span>
+            <strong>Nền tảng tỉ số và tỉ lệ thức</strong>
+            <b>
+              {rootCauses.find(
+                (item) => item.skill === "skill_ratio_proportion_basics",
+              )?.count ?? 0}{" "}
+              em
+            </b>
+          </article>
+          <div className="map-causes">
+            {rootCauses.slice(0, 3).map((cause) => (
+              <button
+                key={cause.skill}
+                onClick={() => navigate("/teacher/students")}
+                type="button"
+              >
+                <strong>{cause.count}</strong>
+                <span>{cause.label}</span>
+              </button>
+            ))}
+          </div>
+          <article className="map-goal">
+            <span>Mục tiêu bài hiện tại</span>
+            <strong>{currentLesson.lesson.title}</strong>
+            <b>{model.metrics.ready} em sẵn sàng vận dụng</b>
+          </article>
+        </div>
+        <small>
+          Nhấp vào một vùng để mở danh sách học sinh; giáo viên vẫn xem minh
+          chứng trước khi chốt can thiệp.
+        </small>
+      </section>
 
       <section
         className="product-panel syllabus-panel"
@@ -1794,7 +1990,7 @@ function TeachingPage({
         <article>
           <span>Mục tiêu của pha</span>
           <h3>{teacherSkillLabel(activity.skill_id)}</h3>
-          <p>{activity.rationale}</p>
+          <p>{teacherFacingText(activity.rationale)}</p>
           <aside>
             <strong>Minh chứng cần quan sát</strong>
             {activity.expected_evidence}
