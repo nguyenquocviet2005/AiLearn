@@ -189,7 +189,7 @@ async def start_diagnostic_session(
     status_code=status.HTTP_201_CREATED,
     responses={
         404: {"description": "Unknown lesson_id, or no evidence recorded yet"},
-        409: {"description": "Every assessment item has already been answered"},
+        409: {"description": "Assessment item bank is empty"},
         503: {"description": "Supabase evidence storage is unavailable"},
     },
 )
@@ -201,6 +201,9 @@ async def start_probe_session(
 
     Unlike /diagnostics/start, this never restarts a full readiness session: it
     picks the single unanswered item that best resolves the current abstention.
+    When every bank item has already been answered (common on shared demo
+    students), the engine reuses the least-recently-answered item instead of
+    failing the student flow.
     """
     if body.lesson_id != CURRICULUM.lesson_id:
         raise HTTPException(
@@ -234,7 +237,7 @@ async def start_probe_session(
             status_code=status.HTTP_409_CONFLICT,
             detail={
                 "code": "probe_exhausted",
-                "message": "Every assessment item has already been answered.",
+                "message": "No assessment items are available for this lesson.",
             },
         )
 

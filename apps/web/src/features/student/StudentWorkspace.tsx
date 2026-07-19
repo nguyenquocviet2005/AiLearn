@@ -1117,6 +1117,13 @@ function describeError(error: unknown): string {
     ) {
       return "Chưa tải được dữ liệu bài làm. Em hãy bấm Thử lại sau vài giây.";
     }
+    if (
+      error.status === 409 &&
+      (error.code === "probe_exhausted" ||
+        /Every assessment item has already been answered/i.test(error.message))
+    ) {
+      return "Em đã làm hết các câu hỏi sẵn có. Hãy bấm Đặt lại demo hoặc dùng tài khoản học sinh khác.";
+    }
     return error.message;
   }
   if (error instanceof Error) {
