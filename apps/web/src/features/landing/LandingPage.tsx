@@ -101,6 +101,80 @@ const diagnosticFlow = [
   { glyph: "?", label: "Quyết định", detail: "Sẵn sàng · hỗ trợ · hỏi thêm" },
 ];
 
+const paceStages = [
+  {
+    key: "P",
+    term: "Pedagogical",
+    label: "Đọc dấu vết sư phạm",
+    detail:
+      "Phương án nhiễu được đọc như một mẫu lỗi có tên, không chỉ đúng/sai.",
+  },
+  {
+    key: "A",
+    term: "Alignment",
+    label: "Gióng vào chương trình",
+    detail: "Mỗi giả thuyết neo vào một mã kỹ năng của GDPT 2018.",
+  },
+  {
+    key: "C",
+    term: "Classroom",
+    label: "Gom về nhu cầu lớp",
+    detail: "Học sinh cùng một nguyên nhân rơi vào cùng một nhóm dạy.",
+  },
+  {
+    key: "E",
+    term: "Evidence",
+    label: "Chốt bằng minh chứng",
+    detail: "Bài chuyển giao xác nhận; kết quả quay lại thành minh chứng mới.",
+  },
+];
+
+const rlhfLoop = [
+  {
+    step: "01",
+    label: "AI đề xuất",
+    detail: "Chẩn đoán, nhóm nhu cầu, giáo án, bước kế tiếp — ở dạng bản nháp.",
+  },
+  {
+    step: "02",
+    label: "Giáo viên quyết định",
+    detail: "Duyệt · sửa · bỏ · ghi đè. Đây là tín hiệu chính.",
+  },
+  {
+    step: "03",
+    label: "Cặp ưu tiên",
+    detail: "Mỗi lần sửa sinh một cặp so sánh: bản được chọn hơn bản bị bỏ.",
+  },
+  {
+    step: "04",
+    label: "Hàm thưởng R",
+    detail: "Học từ các cặp đó, cộng kết quả chuyển giao đã kiểm chứng.",
+  },
+  {
+    step: "05",
+    label: "Chính sách π",
+    detail: "Bộ đề xuất được hiệu chỉnh, bản nháp tuần sau sát lớp hơn.",
+  },
+];
+
+const rlhfSignalTiers = [
+  {
+    tier: "Chính",
+    who: "Giáo viên",
+    detail: "Quyết định chuyên môn trên giáo án và nhóm nhu cầu",
+  },
+  {
+    tier: "Phụ",
+    who: "Học sinh",
+    detail: "Kết quả chuyển giao đã kiểm chứng, không phải lượt bấm",
+  },
+  {
+    tier: "Tùy chọn",
+    who: "Phụ huynh",
+    detail: "Xác nhận điều kiện học ở nhà khi được chia sẻ",
+  },
+];
+
 const teacherPriorityWeights = [
   {
     value: "40%",
@@ -1097,6 +1171,81 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                         confidence trong phiên bản hiện tại.
                       </p>
                     </div>
+                  </div>
+
+                  <div className="landing-ai-pace">
+                    <div className="landing-ai-pace-heading">
+                      <div>
+                        <span className="landing-ai-pace-badge">PACE</span>
+                        <h4>Pedagogical Alignment from Classroom Evidence</h4>
+                      </div>
+                      <p>
+                        Tên gọi của chính pipeline ở trên: bốn chặng xác định,
+                        chạy hoàn toàn bằng quy tắc trên CPU, không cần LLM và
+                        không cần mạng.
+                      </p>
+                    </div>
+                    <ol className="landing-ai-pace-stages">
+                      {paceStages.map((stage) => (
+                        <li key={stage.key}>
+                          <span aria-hidden="true">{stage.key}</span>
+                          <em>{stage.term}</em>
+                          <strong>{stage.label}</strong>
+                          <small>{stage.detail}</small>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+
+                  <div className="landing-ai-rlhf">
+                    <div className="landing-ai-rlhf-heading">
+                      <div>
+                        <span className="landing-ai-rlhf-badge">RLHF</span>
+                        <h4>Reinforcement Learning from Human Feedback</h4>
+                      </div>
+                      <p className="landing-ai-rlhf-status">
+                        Lộ trình sau MVP — tín hiệu đang được thu
+                      </p>
+                    </div>
+                    <p className="landing-ai-rlhf-intro">
+                      PACE giữ quyết định minh bạch; RLHF là cách nó khá lên sau
+                      mỗi tuần. Hôm nay AiLearn đã ghi đủ tín hiệu để huấn luyện
+                      —{" "}
+                      <strong>
+                        nhật ký giáo viên duyệt/sửa/ghi đè và kết quả chuyển
+                        giao đã kiểm chứng
+                      </strong>{" "}
+                      — phần huấn luyện hàm thưởng nằm ở giai đoạn tiếp theo.
+                    </p>
+                    <ol className="landing-ai-rlhf-loop">
+                      {rlhfLoop.map((item) => (
+                        <li key={item.step}>
+                          <span>{item.step}</span>
+                          <strong>{item.label}</strong>
+                          <small>{item.detail}</small>
+                        </li>
+                      ))}
+                    </ol>
+                    <dl className="landing-ai-rlhf-tiers">
+                      {rlhfSignalTiers.map((tier) => (
+                        <div key={tier.who}>
+                          <dt>
+                            <span>{tier.tier}</span>
+                            {tier.who}
+                          </dt>
+                          <dd>{tier.detail}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <p className="landing-ai-rlhf-guard">
+                      <i aria-hidden="true" />
+                      <span>
+                        Hàm thưởng chỉ học từ quyết định chuyên môn và tiến bộ
+                        đã kiểm chứng, <strong>không học từ lượt bấm</strong>.
+                        Quan hệ tiên quyết và chuẩn chương trình vẫn do dữ liệu
+                        curriculum quyết định, RLHF không được phép sửa.
+                      </span>
+                    </p>
                   </div>
                 </article>
               </li>
