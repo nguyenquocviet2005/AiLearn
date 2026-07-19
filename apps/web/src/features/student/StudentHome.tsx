@@ -1,3 +1,5 @@
+import { KnowledgePathDashboard } from "./KnowledgePathDashboard";
+import { StudyMaterialsPanel } from "./StudyMaterials";
 import type { Stage } from "./StudentWorkspace";
 
 export interface StudentHomeProps {
@@ -15,52 +17,79 @@ export function StudentHome({
 }: StudentHomeProps) {
   if (stage.kind === "idle") {
     return (
-      <article className="student-card student-home-card">
-        <div className="student-home-heading">
-          <div>
-            <span className="student-pill">Hôm nay · khoảng 5 phút</span>
-            <h1>Chuẩn bị để tiết Toán dễ hiểu hơn</h1>
-            <p>
-              Em làm một bài ngắn. Cô sẽ dùng câu trả lời để biết nên giải thích
-              phần nào kỹ hơn — không tính điểm và không xếp hạng.
-            </p>
+      <div className="student-home-stack">
+        <section className="student-panel student-home-prep">
+          <div className="student-panel-heading">
+            <div>
+              <span>Bước 01</span>
+              <h2>Chuẩn bị kiến thức</h2>
+            </div>
+            <span className="student-count-badge">Soạn bài</span>
           </div>
-          <div className="student-home-visual" aria-label="Một việc cần làm">
-            <span className="student-home-orbit" aria-hidden="true" />
-            <img src="/brand/ailearn-mascot.webp" alt="" />
-            <span className="student-firefly-tail" aria-hidden="true" />
-            <span className="student-home-task">
-              <strong>01</strong>
-              <span>việc cần làm</span>
-            </span>
+          <p className="student-panel-lead">
+            Em xem lý thuyết và video trước. Có kiến thức sẵn sẽ giúp làm bài
+            test ngắn và tìm đúng chỗ còn yếu.
+          </p>
+          <KnowledgePathDashboard mode="prep" embedded />
+          <StudyMaterialsPanel />
+        </section>
+
+        <section className="student-panel student-home-test">
+          <div className="student-panel-heading">
+            <div>
+              <span>Bước 02</span>
+              <h2>Làm bài test</h2>
+            </div>
+            <span className="student-count-badge">Khoảng 5 phút</span>
           </div>
-        </div>
-        <div className="student-day-rail">
-          <div className="student-day-stage current">
-            <span className="student-day-index">01</span>
-            <small>Trước lớp · Bây giờ</small>
-            <b>Cho cô biết chỗ vướng</b>
+          <div className="student-home-heading student-home-heading-nested">
+            <div>
+              <span className="student-pill">
+                Không tính điểm · Không xếp hạng
+              </span>
+              <h1>Cho cô biết chỗ em đang vướng</h1>
+              <p>
+                Em làm một bài ngắn. Cô dùng câu trả lời để biết nên giải thích
+                phần nào kỹ hơn trên lớp.
+              </p>
+            </div>
+            <div className="student-home-visual" aria-label="Một việc cần làm">
+              <span className="student-home-orbit" aria-hidden="true" />
+              <img src="/brand/ailearn-mascot.webp" alt="" />
+              <span className="student-firefly-tail" aria-hidden="true" />
+              <span className="student-home-task">
+                <strong>02</strong>
+                <span>làm bài test</span>
+              </span>
+            </div>
           </div>
-          <div className="student-day-stage">
-            <span className="student-day-index">02</span>
-            <small>Trong lớp</small>
-            <b>Học theo lộ trình phù hợp</b>
+          <div className="student-day-rail">
+            <div className="student-day-stage">
+              <span className="student-day-index">01</span>
+              <small>Trước test</small>
+              <b>Soạn bài & xem video</b>
+            </div>
+            <div className="student-day-stage current">
+              <span className="student-day-index">02</span>
+              <small>Bây giờ</small>
+              <b>Làm bài kiểm tra ngắn</b>
+            </div>
+            <div className="student-day-stage">
+              <span className="student-day-index">03</span>
+              <small>Sau test</small>
+              <b>Học đúng chỗ còn yếu</b>
+            </div>
           </div>
-          <div className="student-day-stage">
-            <span className="student-day-index">03</span>
-            <small>Sau lớp</small>
-            <b>Luyện đúng một bước cần thiết</b>
-          </div>
-        </div>
-        <button
-          type="button"
-          className="student-btn teal"
-          onClick={onStart}
-          disabled={busy}
-        >
-          Bắt đầu bài ngắn <span aria-hidden="true">→</span>
-        </button>
-      </article>
+          <button
+            type="button"
+            className="student-btn teal"
+            onClick={onStart}
+            disabled={busy}
+          >
+            Bắt đầu bài ngắn <span aria-hidden="true">→</span>
+          </button>
+        </section>
+      </div>
     );
   }
 

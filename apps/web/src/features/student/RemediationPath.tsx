@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import type { StudentDiagnosticProfileV1 } from "@ailearn/schemas";
+
 import type {
   RemediationAttemptOutcome,
   RemediationResponse,
@@ -11,12 +13,14 @@ import {
   REPRESENTATION_LABELS,
   STATE_COPY,
   STEP_KIND_COPY,
-  STUDY_MATERIALS,
 } from "./copy";
 import { MarkdownLite } from "./markdown-lite";
+import { RootCauseGraph } from "./RootCauseGraph";
+import { StudyMaterialsPanel } from "./StudyMaterials";
 
 export interface RemediationPathProps {
   remediation: RemediationResponse;
+  profile: StudentDiagnosticProfileV1;
   initialRepresentation: string | null;
   pathNotice?: string | null;
   onAttempt: (stepId: string, outcome: RemediationAttemptOutcome) => void;
@@ -24,6 +28,7 @@ export interface RemediationPathProps {
 
 export function RemediationPath({
   remediation,
+  profile,
   initialRepresentation,
   pathNotice = null,
   onAttempt,
@@ -47,9 +52,6 @@ export function RemediationPath({
   const restartedAfterWrong =
     lastAttemptCorrect === false && currentStepKind === "worked_example";
 
-  // Reset local answer UI whenever the visible step changes — including when
-  // the state machine restarts worked_example under a new representation while
-  // reusing the same fallback template_id (which used to leave buttons stuck).
   useEffect(() => {
     setAnswer("");
     setSelfReport(null);
@@ -78,161 +80,154 @@ export function RemediationPath({
 
   if (remediation.is_complete) {
     return (
-      <article className="student-card student-status-card complete">
-        <span className="student-status-icon" aria-hidden="true">
-          ✓
-        </span>
-        <span className="student-pill teal">Hoàn thành</span>
-        <h1>Em đã hoàn thành lộ trình hôm nay!</h1>
-        <p>Cô sẽ xem lại cùng em ở buổi học tiếp theo. Làm tốt lắm!</p>
-        <StepList steps={path.steps} currentKind={currentStepKind} />
-      </article>
+      <div className="student-path-stack">
+        <RootCauseGraph profile={profile} />
+        <article className="student-card student-status-card complete">
+          <span className="student-status-icon" aria-hidden="true">
+            ✓
+          </span>
+          <span className="student-pill teal">Hoàn thành</span>
+          <h1>Em đã hoàn thành lộ trình hôm nay!</h1>
+          <p>Cô sẽ xem lại cùng em ở buổi học tiếp theo. Làm tốt lắm!</p>
+          <StepList steps={path.steps} currentKind={currentStepKind} />
+        </article>
+      </div>
     );
   }
 
   if (path.current_state === "TEACHER_ESCALATION") {
     return (
-      <article className="student-card student-status-card support">
-        <span className="student-status-icon" aria-hidden="true">
-          ?
-        </span>
-        <span className="student-pill">{stateCopy.title}</span>
-        <h1>{escalationReasonCopy(escalationReason)}</h1>
-        <p>{stateCopy.description}</p>
-        <StudyMaterialsPanel />
-      </article>
+      <div className="student-path-stack">
+        <RootCauseGraph profile={profile} />
+        <article className="student-card student-status-card support">
+          <span className="student-status-icon" aria-hidden="true">
+            ?
+          </span>
+          <span className="student-pill">{stateCopy.title}</span>
+          <h1>{escalationReasonCopy(escalationReason)}</h1>
+          <p>{stateCopy.description}</p>
+          <StudyMaterialsPanel />
+        </article>
+      </div>
     );
   }
 
   return (
-    <div className="student-path-layout">
-      <aside className="student-path-progress">
-        <span className="student-pill indigo">{stateCopy.title}</span>
-        <h2>Lộ trình từng bước</h2>
-        <p>{stateCopy.description}</p>
-        <StepList steps={path.steps} currentKind={currentStepKind} />
-        <StudyMaterialsPanel compact />
-      </aside>
+    <div className="student-path-stack">
+      <RootCauseGraph profile={profile} />
 
-      <article className="student-card student-learning-card">
-        {pathNotice && (
-          <div className="student-path-notice" role="status">
-            {pathNotice}
+      <section
+        className="student-panel student-practice-panel"
+        aria-label="Luyện tập"
+      >
+        <div className="student-panel-heading">
+          <div>
+            <span>Phần luyện tập</span>
+            <h2>{stateCopy.title}</h2>
           </div>
-        )}
-        {lastAttemptCorrect !== undefined && (
-          <div className="student-representation-note">
-            {checkpointVerdictCopy(lastAttemptCorrect)}
-          </div>
-        )}
-        {restartedAfterWrong && (
-          <div className="student-representation-note">
-            Em chưa nắm vững tình huống mới. Mình xem lại ví dụ theo cách khác
-            trước khi thử lại nhé.
-          </div>
-        )}
-        {representationChanged && (
-          <div className="student-representation-note">
-            Đã đổi sang{" "}
-            {REPRESENTATION_LABELS[path.representation] ?? path.representation}
-          </div>
-        )}
-        <span className="student-pill">{STEP_KIND_COPY[currentStepKind]}</span>
-        <h2>{content.title}</h2>
-        <div data-representation={content.representation}>
-          <MarkdownLite text={content.body} />
+          <span className="student-count-badge">
+            {path.steps.filter((step) => step.completed).length}/
+            {path.steps.length} bước
+          </span>
         </div>
+        <p className="student-panel-lead">{stateCopy.description}</p>
 
-        {content.checkpoint_question && (
-          <>
-            <p className="student-field-label student-field-label-spaced">
-              {hasGradableCheckpoint
-                ? "Câu hỏi kiểm tra"
-                : "Em đã theo dõi được ví dụ này chưa?"}
-            </p>
-            <p className="student-question-note">
-              {content.checkpoint_question}
-            </p>
-            {hasGradableCheckpoint ? (
-              <div className="student-answer-form">
-                <input
-                  className="student-textarea"
-                  value={answer}
-                  onChange={(event) => setAnswer(event.target.value)}
-                  aria-label="Câu trả lời của em"
-                  placeholder="Nhập đáp án của em, ví dụ: 6 hoặc 36, 24, 18"
-                />
-                <button
-                  type="button"
-                  className="student-btn teal"
-                  disabled={answer.trim().length === 0}
-                  onClick={handleGradedSubmit}
-                >
-                  Kiểm tra <span aria-hidden="true">→</span>
-                </button>
-              </div>
-            ) : (
-              <div
-                className="student-support-row"
-                role="group"
-                aria-label="Tự đánh giá"
-              >
-                <button
-                  type="button"
-                  className="student-btn teal"
-                  onClick={() => handleSelfReportSubmit(true)}
-                  disabled={selfReport !== null}
-                >
-                  Đã hiểu, tiếp tục
-                </button>
-                <button
-                  type="button"
-                  className="student-btn"
-                  onClick={() => handleSelfReportSubmit(false)}
-                  disabled={selfReport !== null}
-                >
-                  Chưa hiểu, xem lại
-                </button>
+        <div className="student-path-layout">
+          <aside className="student-path-progress">
+            <span className="student-pill indigo">Các bước luyện</span>
+            <h3>Tiến trình luyện tập</h3>
+            <StepList steps={path.steps} currentKind={currentStepKind} />
+          </aside>
+
+          <article className="student-card student-learning-card">
+            {pathNotice && (
+              <div className="student-path-notice" role="status">
+                {pathNotice}
               </div>
             )}
-          </>
-        )}
-      </article>
-    </div>
-  );
-}
+            {lastAttemptCorrect !== undefined && (
+              <div className="student-representation-note">
+                {checkpointVerdictCopy(lastAttemptCorrect)}
+              </div>
+            )}
+            {restartedAfterWrong && (
+              <div className="student-representation-note">
+                Em chưa nắm vững tình huống mới. Mình xem lại ví dụ theo cách
+                khác trước khi thử lại nhé.
+              </div>
+            )}
+            {representationChanged && (
+              <div className="student-representation-note">
+                Đã đổi sang{" "}
+                {REPRESENTATION_LABELS[path.representation] ??
+                  path.representation}
+              </div>
+            )}
+            <span className="student-pill">
+              {STEP_KIND_COPY[currentStepKind]}
+            </span>
+            <h2>{content.title}</h2>
+            <div data-representation={content.representation}>
+              <MarkdownLite text={content.body} />
+            </div>
 
-function StudyMaterialsPanel({ compact = false }: { compact?: boolean }) {
-  return (
-    <div
-      className={
-        compact ? "student-study-materials compact" : "student-study-materials"
-      }
-      aria-label="Tài liệu gợi ý"
-    >
-      <strong>Tài liệu gợi ý cho điểm yếu này</strong>
-      {!compact && (
-        <p>
-          Sau khi xác định chỗ em đang vướng, em có thể xem lại lý thuyết hoặc
-          video trước khi làm tiếp.
-        </p>
-      )}
-      <ul>
-        {STUDY_MATERIALS.map((material) => (
-          <li key={material.url}>
-            <a href={material.url} target="_blank" rel="noreferrer">
-              {material.kind === "video"
-                ? "Video"
-                : material.kind === "ly_thuyet"
-                  ? "Lý thuyết"
-                  : "Bài tập"}
-              {" · "}
-              {material.title}
-            </a>
-            {!compact && <small>{material.blurb}</small>}
-          </li>
-        ))}
-      </ul>
+            {content.checkpoint_question && (
+              <>
+                <p className="student-field-label student-field-label-spaced">
+                  {hasGradableCheckpoint
+                    ? "Câu hỏi kiểm tra"
+                    : "Em đã theo dõi được ví dụ này chưa?"}
+                </p>
+                <p className="student-question-note">
+                  {content.checkpoint_question}
+                </p>
+                {hasGradableCheckpoint ? (
+                  <div className="student-answer-form">
+                    <input
+                      className="student-textarea"
+                      value={answer}
+                      onChange={(event) => setAnswer(event.target.value)}
+                      aria-label="Câu trả lời của em"
+                      placeholder="Nhập đáp án của em, ví dụ: 6 hoặc 36, 24, 18"
+                    />
+                    <button
+                      type="button"
+                      className="student-btn teal"
+                      disabled={answer.trim().length === 0}
+                      onClick={handleGradedSubmit}
+                    >
+                      Kiểm tra <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className="student-support-row"
+                    role="group"
+                    aria-label="Tự đánh giá"
+                  >
+                    <button
+                      type="button"
+                      className="student-btn teal"
+                      onClick={() => handleSelfReportSubmit(true)}
+                      disabled={selfReport !== null}
+                    >
+                      Đã hiểu, tiếp tục
+                    </button>
+                    <button
+                      type="button"
+                      className="student-btn"
+                      onClick={() => handleSelfReportSubmit(false)}
+                      disabled={selfReport !== null}
+                    >
+                      Chưa hiểu, xem lại
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </article>
+        </div>
+      </section>
     </div>
   );
 }
@@ -245,7 +240,7 @@ function StepList({
   currentKind: RemediationResponse["current_step_kind"];
 }) {
   return (
-    <div className="student-step-list" aria-label="Các bước của lộ trình">
+    <div className="student-step-list" aria-label="Các bước luyện tập">
       {steps.map((step) => {
         const status = step.completed
           ? "done"

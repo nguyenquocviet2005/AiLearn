@@ -566,6 +566,7 @@ function RemediationSection({
     return (
       <RemediationPath
         remediation={stage.remediation}
+        profile={stage.profile}
         initialRepresentation={initialRepresentation}
         onAttempt={(stepId, outcome) =>
           onAttempt(stage.profile, stepId, outcome)

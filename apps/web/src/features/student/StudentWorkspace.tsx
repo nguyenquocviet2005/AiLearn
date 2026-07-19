@@ -1008,6 +1008,7 @@ function RemediationSection({
     return (
       <RemediationPath
         remediation={stage.remediation}
+        profile={stage.profile}
         initialRepresentation={initialRepresentation}
         pathNotice={pathNotice}
         onAttempt={(stepId, outcome) =>
@@ -1020,6 +1021,7 @@ function RemediationSection({
     return (
       <RemediationPath
         remediation={stage.remediation}
+        profile={stage.profile}
         initialRepresentation={initialRepresentation}
         pathNotice={pathNotice}
         onAttempt={() => undefined}
