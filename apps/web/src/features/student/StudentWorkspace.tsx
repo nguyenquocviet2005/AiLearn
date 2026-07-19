@@ -94,7 +94,11 @@ export type Stage =
       remediation: RemediationResponse;
       profile: StudentDiagnosticProfileV1;
     }
-  | { kind: "complete"; remediation: RemediationResponse }
+  | {
+      kind: "complete";
+      remediation: RemediationResponse;
+      profile: StudentDiagnosticProfileV1;
+    }
   | {
       kind: "exit-ticket";
       remediation: RemediationResponse;
@@ -1008,6 +1012,7 @@ function RemediationSection({
     return (
       <RemediationPath
         remediation={stage.remediation}
+        profile={stage.profile}
         initialRepresentation={initialRepresentation}
         pathNotice={pathNotice}
         onAttempt={(stepId, outcome) =>
@@ -1020,6 +1025,7 @@ function RemediationSection({
     return (
       <RemediationPath
         remediation={stage.remediation}
+        profile={stage.profile}
         initialRepresentation={initialRepresentation}
         pathNotice={pathNotice}
         onAttempt={() => undefined}

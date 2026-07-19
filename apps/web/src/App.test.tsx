@@ -162,8 +162,14 @@ describe("App", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "Chuẩn bị để tiết Toán dễ hiểu hơn",
+        name: "Cho cô biết chỗ em đang vướng",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Chuẩn bị kiến thức" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Làm bài test" }),
     ).toBeInTheDocument();
   });
 });
