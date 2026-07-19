@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { LandingPage } from "@/features/landing/LandingPage";
-import { PrototypeFlow } from "@/features/prototype/PrototypeFlow";
 import { StudentPreviewWorkspace } from "@/features/student-preview/StudentPreviewWorkspace";
 import { StudentWorkspace } from "@/features/student/StudentWorkspace";
 import { PrintableTeacherReport } from "@/features/teacher/print/PrintableTeacherReport";
@@ -19,8 +18,7 @@ type Route =
   | TeacherRoute
   | "/teacher/report/print"
   | "/student"
-  | "/student-preview"
-  | "/prototype";
+  | "/student-preview";
 
 const teacherProductRoutes = new Set<TeacherRoute>([
   "/teacher",
@@ -51,10 +49,6 @@ export default function App() {
     window.history.pushState({}, "", path);
     setPathname(path);
     window.scrollTo({ top: 0 });
-  }
-
-  if (pathname === "/prototype") {
-    return <PrototypeFlow onExit={() => navigate("/")} />;
   }
 
   if (teacherProductRoutes.has(pathname as TeacherRoute)) {

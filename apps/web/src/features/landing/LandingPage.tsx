@@ -2,7 +2,7 @@ import "./landing.css";
 
 import { AppHeader } from "@/components/navigation/AppHeader";
 
-type WorkspaceRoute = "/teacher" | "/student" | "/prototype";
+type WorkspaceRoute = "/teacher" | "/student";
 
 type LandingPageProps = {
   onNavigate: (path: WorkspaceRoute) => void;
@@ -473,13 +473,6 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             <div className="landing-hero-actions">
               <WorkspaceLink
                 className="landing-button landing-button-light"
-                onNavigate={onNavigate}
-                route="/prototype"
-              >
-                Xem prototype thiết kế
-              </WorkspaceLink>
-              <WorkspaceLink
-                className="landing-button landing-button-ghost"
                 onNavigate={onNavigate}
                 route="/teacher"
               >
